@@ -1,0 +1,1 @@
+node_modules\n.next\n.env\n.env.local\n.turbo\n.cache\ncoverage\n.DS_Store\ndist\nbuild\n.vercel\n*.log

@@ -1,0 +1,232 @@
+/* globals.css - Add new gradient and update styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&family=Roboto+Mono&family=Caveat&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply text-charcoal bg-soft-cream; /* Ensure base text has good contrast */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+/* --snip-- existing font styles --snip-- */
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    
+    /* Existing Brand Colors (Keep for reference/sub-brands) */
+    --deep-teal: 187 100% 40%;      
+    --soft-cream: 48 100% 97%;      
+    --charcoal: 0 0% 18%;          
+    --coral: 0 100% 75%;           
+    --muted-gold: 42 100% 75%;     
+    --soft-purple: 252 100% 80%;   
+    --vibrant-pink: 330 100% 65%;  
+    --electric-blue: 210 100% 65%; 
+    --ocean-blue: 210 100% 70%;    
+    --sunset-orange: 20 100% 65%;   
+    --creative-pink: 330 100% 65%; 
+    --sage-green: 120 70% 60%;     
+    --tech-purple: 270 100% 65%;    
+    --anime-pink: 330 100% 70%;     
+    --sky-blue: 195 100% 70%;       
+
+    /* New Vibrant Gradient Colors (approximated from image) */
+    --grad-yellow: 45 100% 60%; /* #FFD54D */
+    --grad-orange: 30 100% 60%; /* #FFB84D */
+    --grad-red: 0 100% 65%;   /* #FF4D4D */
+    --grad-blue: 210 100% 55%; /* #1A8CFF */
+    --grad-teal: 180 100% 45%; /* #00E6E6 */
+
+    /* UI Theme Variables */
+    --background: var(--soft-cream);
+    --foreground: var(--charcoal);
+    --card: 0 0% 100%; /* White cards for high contrast */
+    --card-foreground: var(--charcoal);
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--charcoal);
+    --primary: var(--grad-blue); /* Use a primary color from the gradient */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: var(--charcoal);
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: var(--grad-orange); /* Use an accent from the gradient */
+    --accent-foreground: var(--charcoal);
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: var(--grad-blue);
+    
+    /* --snip-- other theme variables --snip-- */
+  }
+  
+  /* --snip-- dark mode styles --snip-- */
+  
+  /* Remove sub-brand specific themes for now to apply unified gradient */
+  /* .dax-travels { ... } */
+  /* .dax-creates { ... } */
+  /* .dax-tech { ... } */
+  /* .dax-anime { ... } */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Components */
+.hero-section {
+  @apply relative w-full overflow-hidden flex items-center justify-center text-white;
+  min-height: 60vh; /* Adjust height as needed */
+  /* Background image is set inline per page */
+}
+
+.hero-section::before {
+  /* Remove default gradient overlay if using background images */
+  content: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 20; /* Ensure content is above image and overlay */
+  @apply text-center;
+}
+
+.section-title {
+  @apply text-4xl md:text-5xl font-bold mb-10 text-center; /* Increased bottom margin */
+  /* Apply the new vibrant gradient to section titles */
+  background: linear-gradient(90deg, hsl(var(--grad-yellow)), hsl(var(--grad-orange)), hsl(var(--grad-red)), hsl(var(--grad-blue)), hsl(var(--grad-teal)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.card {
+  @apply bg-card rounded-lg shadow-md overflow-hidden transition-all duration-300;
+  border: 1px solid hsl(var(--border)); /* Add subtle border */
+  /* Remove bottom border color change on hover for cleaner look */
+}
+
+.card:hover {
+  @apply shadow-xl transform -translate-y-1;
+}
+
+.button-primary {
+  /* Use a solid color from the gradient for primary buttons */
+  @apply bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium transition-all duration-300 shadow-md;
+  border: none; /* Remove bottom border */
+}
+
+.button-primary:hover {
+  @apply bg-opacity-90 transform -translate-y-0.5 shadow-lg;
+}
+
+/* Update outline buttons to use gradient border */
+.button-outline-gradient {
+    @apply px-6 py-3 rounded-md font-medium transition-all duration-300 border-2 border-transparent;
+    background: linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box, 
+                linear-gradient(90deg, hsl(var(--grad-yellow)), hsl(var(--grad-orange)), hsl(var(--grad-red)), hsl(var(--grad-blue)), hsl(var(--grad-teal))) border-box;
+    color: hsl(var(--primary)); /* Match text color to primary gradient color */
+}
+
+.button-outline-gradient:hover {
+    color: hsl(var(--grad-red)); /* Change text color on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.nav-link {
+  @apply relative px-3 py-2 transition-all duration-300 text-charcoal hover:text-primary;
+}
+
+.nav-link:after {
+  content: '';
+  @apply absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300;
+  /* Use gradient for nav link hover underline */
+  background: linear-gradient(90deg, hsl(var(--grad-yellow)), hsl(var(--grad-orange)), hsl(var(--grad-red)), hsl(var(--grad-blue)), hsl(var(--grad-teal)));
+}
+
+.nav-link:hover:after {
+  @apply w-full;
+}
+
+.nav-link.active:after {
+  @apply w-full;
+}
+
+/* --snip-- animation classes --snip-- */
+
+/* Ensure high contrast for text on various backgrounds */
+.hero-section p {
+  @apply text-white text-opacity-90;
+}
+
+.card p {
+  @apply text-charcoal text-opacity-80;
+}
+
+/* --snip-- other component styles --snip-- */
+
+/* Interactive Effects Styles */
+.splash-effect {
+  position: absolute;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%) scale(0);
+  animation: splash-animation 0.8s ease-out forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes splash-animation {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+.glow-effect {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  transform: translate(-50%, -50%); /* Center the glow on the cursor */
+}
+
+.card-img {
+  transition: transform 0.5s ease;
+}
+
+/* Gradient Text Class */
+.text-gradient {
+  background: linear-gradient(90deg, hsl(var(--grad-yellow)), hsl(var(--grad-orange)), hsl(var(--grad-red)), hsl(var(--grad-blue)), hsl(var(--grad-teal)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
