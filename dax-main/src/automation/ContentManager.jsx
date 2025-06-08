@@ -1,7 +1,7 @@
-// src/ContentMAnager.jsx
+// src/automation/ContentManager.jsx
 import React, { useState, useEffect } from 'react';
-import { collection, query, orderBy, limit, onSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '../../firebase/config';
+import { collection, query, orderBy, limit, onSnapshot, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
+import { db } from '../firebase/config';
 import { 
   PencilIcon, 
   TrashIcon, 
