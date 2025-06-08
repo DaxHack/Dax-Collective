@@ -159,7 +159,7 @@ Social:
 
 YouTube: Dax the Traveler / Timezone Travelers
 
-Instagram: @DaxTheTraveler
+Instagram: @Daniel.Dax.Ryan
 
 Twitter: @DaxTraveler
 
