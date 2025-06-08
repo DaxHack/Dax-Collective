@@ -1,8 +1,8 @@
-// src/pages/TimezoneTravelersPage.jsx
+// src/pages/TimeZoneTravelersPage.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const TimezoneTravelersPage = () => {
+const TimeZoneTravelersPage = () => {
   const [activeSection, setActiveSection] = useState('hacks');
 
   const travelHacks = [
@@ -221,5 +221,5 @@ const TimezoneTravelersPage = () => {
   );
 };
 
-export default TimezoneTravelersPage;
+export default TimeZoneTravelersPage;
 

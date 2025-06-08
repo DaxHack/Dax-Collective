@@ -8,8 +8,9 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import DaxTheTravelerPage from './pages/DaxTheTravelerPage'
 import AniDaxPage from './pages/AniDaxPage'
-import TimezoneTravelersPage from './pages/TimeZoneTravelersPage'  // Fixed to match your actual filename
+import TimeZoneTravelersPage from './pages/TimeZoneTravelersPage'  // Fixed to match actual filename
 import GodsVesselPage from './pages/GodsVesselPage'
+import AutomationDashboard from './pages/AutomationDashboard'
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/dax-the-traveler" element={<DaxTheTravelerPage />} />
           <Route path="/ani-dax" element={<AniDaxPage />} />
-          <Route path="/timezone-travelers" element={<TimezoneTravelersPage />} />
+          <Route path="/timezone-travelers" element={<TimeZoneTravelersPage />} />
           <Route path="/gods-vessel" element={<GodsVesselPage />} />
+          <Route path="/automation" element={<AutomationDashboard />} />
         </Routes>
       </main>
       
