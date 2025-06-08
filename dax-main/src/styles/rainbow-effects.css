@@ -1,0 +1,339 @@
+/* Rainbow and White Effects CSS */
+
+/* Register custom properties for rainbow gradients with white integration */
+@property --rainbow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --rainbow-opacity {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --white-glow-intensity {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+
+.rainbow-white-border-effect {
+  position: relative;
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Primary rainbow gradient with white transitions */
+.rainbow-white-border-effect::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: conic-gradient(
+    from var(--rainbow-angle),
+    #ff0000,
+    #ff4040,
+    #ffffff,
+    #ff8000,
+    #ffff00,
+    #ffffff,
+    #80ff00,
+    #00ff00,
+    #00ff80,
+    #ffffff,
+    #00ffff,
+    #0080ff,
+    #0000ff,
+    #ffffff,
+    #8000ff,
+    #ff00ff,
+    #ff0080,
+    #ffffff,
+    #ff0000
+  );
+  border-radius: inherit;
+  opacity: var(--rainbow-opacity);
+  animation: rainbow-rotate 4s linear infinite;
+  z-index: -1;
+}
+
+/* Subtle white glow overlay */
+.rainbow-white-border-effect::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, var(--white-glow-intensity)) 0%,
+    transparent 60%
+  );
+  border-radius: inherit;
+  opacity: 0.6;
+  animation: white-pulse 2s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes rainbow-rotate {
+  to {
+    --rainbow-angle: 360deg;
+  }
+}
+
+@keyframes white-pulse {
+  0% {
+    --white-glow-intensity: 0.1;
+    transform: scale(1);
+  }
+  100% {
+    --white-glow-intensity: 0.3;
+    transform: scale(1.02);
+  }
+}
+
+/* Hover activation with white glow */
+.rainbow-white-border-effect:hover {
+  --rainbow-opacity: 0.7;
+  --white-glow-intensity: 0.4;
+  transition: --rainbow-opacity 0.3s ease, --white-glow-intensity 0.3s ease;
+}
+
+/* Dark theme preservation */
+.rainbow-white-border-effect .content {
+  background: #1a1a1a;
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+  padding: 1rem;
+}
+
+.preserve-dark .content {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+/* White accent elements that complement the design */
+.white-accent-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  margin: 1rem 0;
+}
+
+.white-shimmer-effect {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Interactive white accent elements */
+.white-corner-accent {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.white-corner-accent::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.white-corner-accent::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.white-corner-accent.top-left {
+  top: 5px;
+  left: 5px;
+}
+
+.white-corner-accent.top-right {
+  top: 5px;
+  right: 5px;
+  transform: rotate(90deg);
+}
+
+.white-corner-accent.bottom-left {
+  bottom: 5px;
+  left: 5px;
+  transform: rotate(-90deg);
+}
+
+.white-corner-accent.bottom-right {
+  bottom: 5px;
+  right: 5px;
+  transform: rotate(180deg);
+}
+
+.white-corner-accent.active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.white-border-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: inherit;
+  transition: border-color 0.3s ease;
+  pointer-events: none;
+}
+
+.white-border-highlight.active {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 0 20px rgba(255, 255, 255, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* Subtle background integration with white highlights */
+.subtle-rainbow-white-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background: #0a0a0a; /* Preserve your dark theme */
+}
+
+.rainbow-white-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.15; /* Very subtle to preserve dark theme */
+  animation: float-with-white 25s ease-in-out infinite;
+}
+
+.rainbow-orb-1 {
+  width: 400px;
+  height: 400px;
+  top: 15%;
+  left: 8%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 100, 150, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    transparent 70%
+  );
+  animation-delay: 0s;
+}
+
+.rainbow-orb-2 {
+  width: 300px;
+  height: 300px;
+  top: 55%;
+  right: 12%;
+  background: radial-gradient(
+    circle,
+    rgba(100, 200, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    transparent 70%
+  );
+  animation-delay: -8s;
+}
+
+.rainbow-orb-3 {
+  width: 350px;
+  height: 350px;
+  bottom: 15%;
+  left: 45%;
+  background: radial-gradient(
+    circle,
+    rgba(150, 255, 100, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    transparent 70%
+  );
+  animation-delay: -16s;
+}
+
+/* White accent particles for subtle sparkle effect */
+.white-accent-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.1), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.05), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.08), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.03), transparent);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: sparkle 15s linear infinite;
+}
+
+@keyframes float-with-white {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    filter: blur(60px) brightness(1);
+  }
+  25% {
+    transform: translateY(-40px) translateX(30px) scale(1.1);
+    filter: blur(50px) brightness(1.2);
+  }
+  50% {
+    transform: translateY(-20px) translateX(-20px) scale(0.9);
+    filter: blur(70px) brightness(0.8);
+  }
+  75% {
+    transform: translateY(30px) translateX(-25px) scale(1.05);
+    filter: blur(55px) brightness(1.1);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0px);
+  }
+  50% {
+    opacity: 0.1;
+    transform: translateY(-10px);
+  }
+}
+
