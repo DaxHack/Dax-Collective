@@ -6,7 +6,6 @@ import {
   BoltIcon,
   ChartBarIcon,
   CurrencyDollarIcon,
-  UserGroupIcon,
   GlobeAltIcon,
   LightBulbIcon,
   FireIcon

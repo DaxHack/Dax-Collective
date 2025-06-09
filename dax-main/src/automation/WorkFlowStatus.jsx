@@ -1,18 +1,18 @@
 //   src/automation/WorkFlowStatus.jsx
 import React, { useState } from 'react';
 import { 
+    
   CogIcon, 
   PlayIcon, 
   PauseIcon, 
   StopIcon,
   ArrowPathIcon,
-  CheckCircleIcon,
   ExclamationTriangleIcon,
   ClockIcon,
   ChartBarIcon,
   EyeIcon,
   PencilIcon,
-  TrashIcon
+
 } from '@heroicons/react/24/outline';
 
 const WorkflowStatus = ({ workflows = [] }) => {

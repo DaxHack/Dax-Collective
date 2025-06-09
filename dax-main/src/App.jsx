@@ -10,7 +10,7 @@ import DaxTheTravelerPage from './pages/DaxTheTravelerPage'
 import AniDaxPage from './pages/AniDaxPage'
 import TimeZoneTravelersPage from './pages/TimeZoneTravelersPage'  // Fixed to match actual filename
 import GodsVesselPage from './pages/GodsVesselPage'
-import AutomationDashboard from './pages/AutomationDashboard'
+import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
           <Route path="/ani-dax" element={<AniDaxPage />} />
           <Route path="/timezone-travelers" element={<TimeZoneTravelersPage />} />
           <Route path="/gods-vessel" element={<GodsVesselPage />} />
-          <Route path="/automation" element={<AutomationDashboard />} />
+          <Route path="/automation" element={<Dashboard />} />
         </Routes>
       </main>
       
