@@ -68,4 +68,3 @@ const RainbowWhiteEffect = ({
 }
 
 export default RainbowWhiteEffect
-

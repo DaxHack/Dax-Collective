@@ -3,18 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, orderBy, limit, onSnapshot, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { 
-  PencilIcon, 
-  TrashIcon, 
-  ArrowPathIcon, 
-  PlusIcon,
-  MagnifyingGlassIcon,
-  FunnelIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  DocumentIcon,
-  EyeIcon
+    PencilIcon, 
+    TrashIcon, 
+    ArrowPathIcon, 
+    PlusIcon,
+    MagnifyingGlassIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    DocumentIcon,
+    EyeIcon
+
 } from '@heroicons/react/24/outline';
 
 const ContentManager = () => {

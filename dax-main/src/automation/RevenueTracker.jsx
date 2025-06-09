@@ -2,12 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  CurrencyDollarIcon,
+
   ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
-  ChartBarIcon,
+  CurrencyDollarIcon,
   CalendarIcon,
-  BanknotesIcon,
+  ChartBarIcon,
   ArrowUpIcon,
   ArrowDownIcon
 } from '@heroicons/react/24/outline';

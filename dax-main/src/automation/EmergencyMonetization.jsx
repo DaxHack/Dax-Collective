@@ -2,14 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  BoltIcon,
   FireIcon,
-  CurrencyDollarIcon,
-  ClockIcon,
-  RocketLaunchIcon,
-  ChartBarIcon,
   ExclamationTriangleIcon,
-  CheckCircleIcon
+  ClockIcon
 } from '@heroicons/react/24/outline';
 
 const EmergencyMonetization = () => {

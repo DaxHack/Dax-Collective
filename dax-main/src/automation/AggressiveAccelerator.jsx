@@ -5,13 +5,9 @@ import {
   RocketLaunchIcon,
   FireIcon,
   BoltIcon,
-  CurrencyDollarIcon,
-  ClockIcon,
   ChartBarIcon,
-  TrophyIcon,
-  ArrowTrendingUpIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon
+  TrophyIcon
+  
 } from '@heroicons/react/24/outline';
 
 const AggressiveAccelerator = () => {
