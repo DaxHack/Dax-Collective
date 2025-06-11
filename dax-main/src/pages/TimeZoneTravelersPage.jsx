@@ -1,6 +1,7 @@
 // src/pages/TimeZoneTravelersPage.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async'
 
 const TimeZoneTravelersPage = () => {
   const [activeSection, setActiveSection] = useState('hacks');
@@ -54,6 +55,19 @@ const TimeZoneTravelersPage = () => {
   ];
 
   return (
+    <>
+    {/* ===== comment for helmet ===== */}
+    <Helmet>
+      <title>Timezone Travelers – Travel Hacks & Global Gems</title>
+        <meta 
+          name="description" 
+          content="Find travel inspiration, destination tips, and hidden gems from across the globe. Your guide to smart and soulful travel." />
+      <meta property="og:title" content="Timezone Travelers – Travel Hacks & Global Gems" />
+      <meta property="og:description" content="Discover the world’s best travel tips and adventures in one place." />
+      <meta property="og:type" content="website" />
+    </Helmet>
+
+    {/* --- comment for divs ---- */}
     <div className="min-h-screen bg-gradient-to-br from-orange-900 via-red-900 to-pink-900 text-white">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
@@ -218,6 +232,7 @@ const TimeZoneTravelersPage = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

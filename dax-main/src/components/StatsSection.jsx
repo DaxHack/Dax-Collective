@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 const StatsSection = () => {
   const [hoveredStat, setHoveredStat] = useState(null)
 
+  // Refined stats based on ChatGPT analysis - clean public-facing metrics
   const stats = [
     {
       id: 'brands',
