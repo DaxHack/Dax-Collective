@@ -14,7 +14,7 @@ const brands = [
     gradient: "from-blue-400 via-cyan-400 to-green-400"
   },
   {
-    name: "Timezone Travelers", 
+    name: "Timezone Travelers",
     description: "Interactive travel experiences & hacks",
     link: "/timezone-travelers",
     icon: "Globe",
@@ -38,20 +38,22 @@ const brands = [
 
 export default function Home() {
   return (
+    // ===== Helmet SEO Tags with fallback =====
     <>
-      {/* <Helmet>
-        <title>The Dax Collective - Creative Content Empire</title>
+      <Helmet>
+        <title>The Dax Collective – Creative Community & Storytelling Hub</title>
         <meta 
           name="description" 
-          content="Explore The Dax Collective's multi-brand content empire featuring travel adventures, anime reviews, faith-based content, and travel guides across four unique brands." 
+          content="Explore The Dax Collective — a hub for inspiring stories in travel, anime, lifestyle, and faith, built to connect and uplift through creativity." 
         />
-        <meta name="keywords" content="travel, anime, faith, content creation, Dax Collective" />
-        <meta property="og:title" content="The Dax Collective - Creative Content Empire" />
-        <meta property="og:description" content="Multi-brand content empire featuring travel, anime, faith, and lifestyle content." />
+        <meta name="keywords" content="travel, anime, faith, lifestyle, community, content creation" />
+        <meta property="og:title" content="The Dax Collective – Creative Community & Storytelling Hub" />
+        <meta property="og:description" content="Multi-brand platform for storytelling, connection, and creative expression across anime, travel, and faith." />
         <meta property="og:type" content="website" />
         <link rel="canonical" href="https://daxcollective.com" />
-      </Helmet> */}
+      </Helmet>
 
+      {/* --- comment for divs ---- */}
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
         {/* Floating Bubbles Background */}
         <FloatingBubbles />
@@ -60,7 +62,7 @@ export default function Home() {
         <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
           <motion.div
             className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl"
-            animate={{ 
+            animate={{
               x: [0, 30, 0],
               y: [0, -20, 0],
               scale: [1, 1.1, 1]
@@ -69,7 +71,7 @@ export default function Home() {
           />
           <motion.div
             className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-3xl"
-            animate={{ 
+            animate={{
               x: [0, -25, 0],
               y: [0, 15, 0],
               scale: [1, 1.05, 1]
@@ -101,8 +103,8 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
                 className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
               >
-                Building a creative content empire across travel, anime, faith, and lifestyle — 
-                inspiring audiences through authentic storytelling and innovative experiences.
+                Building a creative community across travel, anime, faith, and lifestyle — 
+                inspiring connection through storytelling, culture, and purpose-driven experiences.
               </motion.p>
 
               {/* Decorative element */}
@@ -134,7 +136,7 @@ export default function Home() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {brands.map((brand, index) => (
-                  <BrandCard 
+                  <BrandCard
                     key={brand.name}
                     brand={brand}
                     index={index}
@@ -163,22 +165,22 @@ export default function Home() {
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   aria-hidden="true"
                 />
-                
+
                 <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-3xl p-12 border border-gray-700/50">
-                  <h2 
+                  <h2
                     id="cta-heading"
                     className="text-3xl md:text-4xl font-bold text-white mb-6"
                   >
                     Ready to Join the Journey?
                   </h2>
-                  
+
                   <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Follow our multi-brand adventure as we create content that matters, 
-                    explore new horizons, and build meaningful connections worldwide.
+                    Join our journey through stories that spark curiosity, celebrate identity, 
+                    and connect hearts across the globe.
                   </p>
-                  
+
                   <motion.button
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.05,
                       boxShadow: "0 20px 40px rgba(139, 92, 246, 0.3)"
                     }}
@@ -198,4 +200,3 @@ export default function Home() {
     </>
   )
 }
-
