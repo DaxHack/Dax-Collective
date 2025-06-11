@@ -1,6 +1,7 @@
 // src/pages/DaxTheTravelerPage.jsx
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async'
 import { 
   MapPinIcon, 
   CameraIcon, 
@@ -138,6 +139,20 @@ const DaxTheTravelerPage = () => {
   };
 
   return (
+    // ===== comment for helmet =====
+     <>
+    <Helmet>
+      <title>Dax the Traveler – Adventures & Life Abroad</title>
+      <meta 
+        name="description" 
+        content="Personal travel stories, cultural experiences, and lessons from the road. Join Dax’s journey around the world." />
+      <meta property="og:title" content="Dax the Traveler – Adventures & Life Abroad" />
+      <meta property="og:description" content="Explore global journeys and cultural insights with Dax the Traveler." />
+      <meta property="og:type" content="website" />
+    </Helmet>
+
+
+    {/* --- comment for divs ---- */}
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-teal-800 to-green-800">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
@@ -473,6 +488,7 @@ const DaxTheTravelerPage = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
 // src/pages/GodsVesselPage.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async'
 
 const GodsVesselPage = () => {
   const [activeSection, setActiveSection] = useState('faith');
@@ -75,6 +76,21 @@ const GodsVesselPage = () => {
   ];
 
   return (
+    <>
+
+    <Helmet>
+      <title>God’s Vessel – Faith, Purpose, and Creative Light</title>
+      <meta 
+        name="description" 
+        content="A faith-based brand shining light through media, fashion, and storytelling. Glorify God through art and action." 
+      />
+      <meta property="og:title" content="God’s Vessel – Faith, Purpose, and Creative Light" />
+      <meta property="og:description" content="Faith-forward content and apparel designed to inspire, uplift, and empower." />
+      <meta property="og:type" content="website" />
+    </Helmet>
+
+
+    {/* --- comment for divs ---- */}
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
@@ -285,6 +301,7 @@ const GodsVesselPage = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 
