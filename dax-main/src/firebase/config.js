@@ -1,49 +1,30 @@
 // src/firebase/config.js
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
-import { getAnalytics } from 'firebase/analytics';
+// REPLACE THE PLACEHOLDER VALUES BELOW WITH YOUR ACTUAL FIREBASE PROJECT VALUES
+
+import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
+import { getStorage } from 'firebase/storage'
 
 
-<<<<<<< HEAD
-// Your web app's Firebase configuration using environment variables
+  // REPLACE THESE WITH YOUR ACTUAL FIREBASE PROJECT VALUES
+  // Get these from: Firebase Console > Project Settings > General > Your apps
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
-=======
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "demo-api-key",
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "dax-collective-demo.firebaseapp.com",
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "dax-collective-demo",
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "dax-collective-demo.appspot.com",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "123456789",
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-ABCDEF123"
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
+  apiKey: "AIzaSyBBo7l2IcO5Y0HFPkGh1qlvU_kF_TPKyC4",
+  authDomain: "dax-collective.firebaseapp.com",
+  projectId: "dax-collective",
+  storageBucket: "dax-collective.firebasestorage.app",
+  messagingSenderId: "1045143135628",
+  appId: "1:1045143135628:web:461e30f4b783a5835922a9",
+  measurementId: "G-KVXQJ21CZW"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const firebaseApp = initializeApp(firebaseConfig)
 
-// Initialize Firebase services
-export const db = getFirestore(app);
-export const auth = getAuth(app);
-export const storage = getStorage(app);
-<<<<<<< HEAD
-export const analytics = getAnalytics(app);
+// Initialize services
+export const db = getFirestore(firebaseApp)
+export const auth = getAuth(firebaseApp)
+export const storage = getStorage(firebaseApp)
 
-export default app;
-=======
-export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
-
-export default app;
-
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
+// Note: Analytics is initialized separately in utils/analytics.js

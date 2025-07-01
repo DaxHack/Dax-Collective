@@ -3,11 +3,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-<<<<<<< HEAD
 import { AuthProvider } from './contexts/AuthContext';
-=======
-
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 // Import your page components
 import Home from './pages/Home'
 import DaxTheTravelerPage from './pages/DaxTheTravelerPage'
@@ -19,10 +15,7 @@ import DaxTheInvestorPage from './pages/DaxTheInvestorPage'
 
 function App() {
   return (
-<<<<<<< HEAD
   <AuthProvider>
-=======
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
     <div className="App min-h-screen bg-black">
       <Routes>
         {/* Hidden/Private Routes (NO Navbar/Footer) */}
@@ -53,15 +46,8 @@ function App() {
         } />
       </Routes>
     </div>
-<<<<<<< HEAD
     </AuthProvider>
-=======
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
   )
 }
 
 export default App
-<<<<<<< HEAD
-=======
-
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
