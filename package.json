@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "concurrently \"npm --prefix dax-backend start\" \"npm --prefix dax-main start\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}

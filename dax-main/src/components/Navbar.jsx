@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { analytics } from '../utils/analytics'; // Import your analytics utility
 
 const navLinks = [
   { name: 'Home', to: '/' },
@@ -17,6 +18,17 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const isActive = (to) => location.pathname === to
+
+  // Function to handle Buy Me a Coffee button click with analytics tracking
+  const handleDonationClick = () => {
+    // Use the analytics utility to track the donation click
+    // The 'navbar' parameter indicates the source of the click
+    // 'Keep the Lights On Button' is the button text for event labeling
+    analytics.trackDonation('navbar', 'Keep the Lights On Button');
+
+    // Open Buy Me a Coffee page
+    window.open('https://buymeacoffee.com/DaxCollective', '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <nav className="bg-gradient-to-r from-black via-zinc-900 to-black text-white sticky top-0 z-50 shadow-md backdrop-blur-sm bg-opacity-70">
@@ -46,15 +58,14 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* CALL TO ACTION BUTTON */}
-            <a
-              href="https://www.buymeacoffee.com/dax"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-4 px-4 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-lg animate-pulse"
+            {/* CALL TO ACTION BUTTON - Updated with correct link and analytics */}
+            <button
+              onClick={handleDonationClick}
+              className="ml-4 px-4 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-lg animate-pulse focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+              aria-label="Support Dax Collective on Buy Me a Coffee"
             >
               💡 Keep the Lights On
-            </a>
+            </button>
           </div>
 
           {/* MOBILE TOGGLE BUTTON */}
@@ -97,15 +108,17 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* CTA on Mobile */}
-            <a
-              href="https://www.buymeacoffee.com/dax"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-center mt-2 mx-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow"
+            {/* CTA on Mobile - Updated with correct link and analytics */}
+            <button
+              onClick={() => {
+                handleDonationClick();
+                setIsOpen(false); // Close mobile menu
+              }}
+              className="block text-center mt-2 mx-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Support Dax Collective on Buy Me a Coffee"
             >
               💡Help Me Keep the Lights On
-            </a>
+            </button>
           </div>
         </Transition>
       </div>

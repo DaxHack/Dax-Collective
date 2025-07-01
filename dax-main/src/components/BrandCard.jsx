@@ -4,16 +4,14 @@ import { Link } from 'react-router-dom'
 import { Luggage, Globe, Sparkles, Cross } from 'lucide-react'
 
 const BrandCard = ({ brand, index }) => {
-  // Map of available icons - using correct lucide-react names
   const iconComponents = {
     'Luggage': Luggage,
-    'Globe': Globe, 
+    'Globe': Globe,
     'Sparkles': Sparkles,
     'Cross': Cross
   }
 
-  // Get the icon component or fallback to Luggage
-  const IconComponent = iconComponents[brand.icon] || Luggage
+  const IconComponent = iconComponents[brand.icon]
 
   return (
     <motion.article
@@ -36,7 +34,7 @@ const BrandCard = ({ brand, index }) => {
         aria-label={`Explore ${brand.name}`}
       >
         <div className={`
-          relative overflow-hidden rounded-2xl p-8 h-64
+          relative overflow-hidden rounded-3xl p-8 h-72
           bg-gradient-to-br ${brand.gradient}
           transition-all duration-300 ease-in-out
           group-hover:shadow-2xl group-hover:shadow-black/20
@@ -54,10 +52,10 @@ const BrandCard = ({ brand, index }) => {
                   scale: 1.1,
                   transition: { duration: 0.2, ease: "easeInOut" }
                 }}
-                className="p-3 bg-white/20 backdrop-blur-sm rounded-xl"
+                className="p-4 bg-white/20 backdrop-blur-sm rounded-2xl"
               >
                 <IconComponent 
-                  size={32} 
+                  size={28} 
                   className="text-white drop-shadow-sm"
                   aria-hidden="true"
                 />
@@ -65,7 +63,7 @@ const BrandCard = ({ brand, index }) => {
               
               {/* Status indicator */}
               <motion.div
-                className="w-2 h-2 bg-white/60 rounded-full"
+                className="w-3 h-3 bg-white/60 rounded-full"
                 animate={{ 
                   scale: [1, 1.2, 1],
                   opacity: [0.6, 1, 0.6]
@@ -81,16 +79,16 @@ const BrandCard = ({ brand, index }) => {
             </div>
 
             {/* Text content */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-white/95 transition-colors duration-200">
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-white/95 transition-colors duration-200 leading-tight">
                 {brand.name}
               </h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-4">
+              <p className="text-white/85 text-sm leading-relaxed">
                 {brand.description}
               </p>
               
               {/* Call to action */}
-              <div className="flex items-center text-white/80 text-sm font-medium">
+              <div className="flex items-center text-white/80 text-sm font-medium pt-2">
                 <span>Explore</span>
                 <motion.span 
                   className="ml-2"
@@ -108,11 +106,14 @@ const BrandCard = ({ brand, index }) => {
             </div>
           </div>
 
-          {/* Subtle hover glow */}
+          {/* Enhanced hover glow */}
           <motion.div
-            className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+            className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"
             initial={{ opacity: 0 }}
           />
+          
+          {/* Subtle inner glow */}
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
         </div>
       </Link>
     </motion.article>
@@ -120,4 +121,3 @@ const BrandCard = ({ brand, index }) => {
 }
 
 export default BrandCard
-
