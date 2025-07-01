@@ -20,7 +20,10 @@ import {
   PlayIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolid, StarIcon as StarSolid } from '@heroicons/react/24/solid';
+<<<<<<< HEAD
 import BrandGallery from '../components/BrandGallery';
+=======
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
 const DaxTheTravelerPage = () => {
   const [activeTab, setActiveTab] = useState('adventures');
@@ -129,7 +132,11 @@ const DaxTheTravelerPage = () => {
     }
   ];
 
+<<<<<<< HEAD
   const handleLike = (id ) => {
+=======
+  const handleLike = (id) => {
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
     const newLiked = new Set(likedPosts);
     if (newLiked.has(id)) {
       newLiked.delete(id);
@@ -463,6 +470,7 @@ const DaxTheTravelerPage = () => {
         </div>
       </section>
 
+<<<<<<< HEAD
       {/* BrandGallery insertion */}
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
@@ -473,6 +481,8 @@ const DaxTheTravelerPage = () => {
         </div>
       </section>
 
+=======
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
       {/* Travel Stats */}
       <section className="py-16 px-4 bg-black/20">
         <div className="max-w-4xl mx-auto text-center">
@@ -504,3 +514,7 @@ const DaxTheTravelerPage = () => {
 };
 
 export default DaxTheTravelerPage;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
