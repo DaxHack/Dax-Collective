@@ -1,5 +1,5 @@
-# ------//dax-collective/.gitignore------
-#// ------- dax-main/.gitignore# ─── ROOT WORKSPACE ────────────────────────────────────
+# dax-collective/.gitignore  :: ROOT
+# ───────── dax-collective/dax-main/.gitignore# ─── ROOT WORKSPACE ────────────────────
 # ignore installed deps & lockfiles in every package
 /node_modules
 /package-lock.json
@@ -36,6 +36,11 @@
 
 # ─── Never commit any node_modules folders ────────────────
 **/node_modules/
+/node_modules
+/dax-main/node_modules
+/dax-backend/node_modules
+/functions/node_modules
+
 
 # ─── RUNTIME / DATA FILES ──────────────────────────────
 # local uploads & db dumps
@@ -98,3 +103,31 @@ Thumbs.db
 
 # ─── DOCKER & COMPOSE ──────────────────────────────────
 docker-compose.override.yml
+
+
+
+
+# Built nodes & lockfiles
+**/node_modules/                # all node_modules under any folder
+**/package-lock.json
+**/yarn.lock
+
+
+# Env & secrets
+**/.env
+**/serviceAccountKey.json
+**/credentials/                 # your firebase-adminsdk.json gs
+firebase-debug.log*
+**/firebase-debug.*.log
+
+# IDE + OS cruft
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local logs
+npm-debug.log*
+yarn-error.log*
+
+node_modules/
+.cache/                         # if you ever run a local cache here

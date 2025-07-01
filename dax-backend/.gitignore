@@ -1,0 +1,15 @@
+# dax-backend workspace .gitignore
+# Only backend-specific ignores (root .gitignore handles the rest)
+
+# Backend-specific uploads
+uploads/
+
+# Backend-specific environment files (if any beyond what root handles)
+.env.local
+
+# Backend-specific logs (if any beyond what root handles)
+server.log
+
+# Backend-specific temporary files
+temp/
+
