@@ -2,6 +2,7 @@
   "name": "dax-main",
   "version": "0.1.0",
   "private": true,
+<<<<<<< HEAD
   "description": "Frontend React application for Dax Collective",
   "dependencies": {
     "@headlessui/react": "^2.2.4",
@@ -16,16 +17,38 @@
     "react-parallax-tilt": "^1.7.299",
     "react-router-dom": "^7.6.3",
     "react-scripts": "^5.0.1",
+=======
+  "dependencies": {
+    "@headlessui/react": "^2.2.4",
+    "@heroicons/react": "^2.2.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "firebase": "^11.9.0",
+    "framer-motion": "^12.15.0",
+    "lucide-react": "^0.513.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet-async": "^2.0.5",
+    "react-hot-toast": "^2.5.2",
+    "react-parallax-tilt": "^1.7.296",
+    "react-router-dom": "^7.6.1",
+    "react-scripts": "5.0.1",
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+<<<<<<< HEAD
     "eject": "react-scripts eject",
     "lint": "eslint \"src/**/*.{js,jsx}\" --fix",
     "lint:check": "eslint \"src/**/*.{js,jsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,css,md}\""
+=======
+    "eject": "react-scripts eject"
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +69,7 @@
     ]
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -61,3 +85,10 @@
     "node": ">=18.0.0"
   }
 }
+=======
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.23",
+    "tailwindcss": "^3.3.2"
+  }
+}
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c

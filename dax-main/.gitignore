@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # dax-main workspace .gitignore
 # Only frontend-specific ignores (root .gitignore handles the rest)
 
@@ -13,3 +14,55 @@
 # Frontend-specific temporary files
 src/temp/
 
+=======
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# ─── Node ────────────────────────────────
+/node_modules
+/.pnp
+.pnp.js
+
+# ─── Build & Production ─────────────────
+/build
+/dist
+/.next
+/out
+
+# ─── Logs ───────────────────────────────
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── Environment Files ──────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Firebase / Cloud / Local Services ─
+.firebaserc
+.firebase
+/keys
+*.key
+*.pem
+
+# ─── IDE / OS Junk ──────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ─── Coverage / Tests ───────────────────
+/coverage
+/jest-coverage
+
+# ─── Local Database / Dev Dumps ────────
+*.sqlite
+*.db
+dump.rdb
+*.bak
+
+# ─── GitHub Workflows Cache ────────────
+.cache
+.tmp
+>>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
