@@ -6,6 +6,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
+    "dax-collective": "file:..",
     "firebase": "^11.10.0",
     "framer-motion": "^12.20.4",
     "lucide-react": "^0.513.0",

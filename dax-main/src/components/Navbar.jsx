@@ -3,10 +3,7 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-<<<<<<< HEAD
-import { analytics } from '../utils/analytics'; // Import your analytics utility
-=======
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
+import { analytics } from '../utils/analytics'
 
 const navLinks = [
   { name: 'Home', to: '/' },
@@ -22,20 +19,15 @@ export default function Navbar() {
 
   const isActive = (to) => location.pathname === to
 
-<<<<<<< HEAD
   // Function to handle Buy Me a Coffee button click with analytics tracking
   const handleDonationClick = () => {
-    // Use the analytics utility to track the donation click
-    // The 'navbar' parameter indicates the source of the click
-    // 'Keep the Lights On Button' is the button text for event labeling
-    analytics.trackDonation('navbar', 'Keep the Lights On Button');
+    // Track the donation click
+    analytics.trackDonation('navbar', 'Keep the Lights On Button')
 
     // Open Buy Me a Coffee page
-    window.open('https://buymeacoffee.com/DaxCollective', '_blank', 'noopener,noreferrer');
-  };
+    window.open('https://buymeacoffee.com/DaxCollective', '_blank', 'noopener,noreferrer')
+  }
 
-=======
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
   return (
     <nav className="bg-gradient-to-r from-black via-zinc-900 to-black text-white sticky top-0 z-50 shadow-md backdrop-blur-sm bg-opacity-70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,8 +56,7 @@ export default function Navbar() {
               </Link>
             ))}
 
-<<<<<<< HEAD
-            {/* CALL TO ACTION BUTTON - Updated with correct link and analytics */}
+            {/* CALL TO ACTION BUTTON */}
             <button
               onClick={handleDonationClick}
               className="ml-4 px-4 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-lg animate-pulse focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
@@ -73,17 +64,6 @@ export default function Navbar() {
             >
               💡 Keep the Lights On
             </button>
-=======
-            {/* CALL TO ACTION BUTTON */}
-            <a
-              href="https://www.buymeacoffee.com/dax"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-4 px-4 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-lg animate-pulse"
-            >
-              💡 Keep the Lights On
-            </a>
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
           </div>
 
           {/* MOBILE TOGGLE BUTTON */}
@@ -126,36 +106,20 @@ export default function Navbar() {
               </Link>
             ))}
 
-<<<<<<< HEAD
-            {/* CTA on Mobile - Updated with correct link and analytics */}
+            {/* CTA on Mobile */}
             <button
               onClick={() => {
-                handleDonationClick();
-                setIsOpen(false); // Close mobile menu
+                handleDonationClick()
+                setIsOpen(false)
               }}
               className="block text-center mt-2 mx-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Support Dax Collective on Buy Me a Coffee"
             >
               💡Help Me Keep the Lights On
             </button>
-=======
-            {/* CTA on Mobile */}
-            <a
-              href="https://www.buymeacoffee.com/dax"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-center mt-2 mx-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow"
-            >
-              💡Help Me Keep the Lights On
-            </a>
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
           </div>
         </Transition>
       </div>
     </nav>
   )
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c

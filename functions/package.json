@@ -2,7 +2,8 @@
   "name": "functions",
   "description": "Firebase Functions for Dax Collective Automation",
   "scripts": {
-    "lint": "echo \"⚡️ skipping lint; no lint rules configured\"",
+    "lint": "eslint \"**/*.js\" --fix",
+    "lint:check": "eslint \"**/*.js\"",
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
@@ -10,18 +11,29 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "18"
+    "node": ">=18.0.0 <21.0.0"
   },
   "main": "index.js",
   "dependencies": {
-    "firebase-admin": "^11.8.0",
-    "firebase-functions": "^4.3.1",
-    "googleapis": "^118.0.0",
-    "axios": "^1.4.0",
-    "cors": "^2.8.5"
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dax-collective": "file:..",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^4.9.0",
+    "googleapis": "^150.0.1"
   },
   "devDependencies": {
-    "firebase-functions-test": "^3.1.0"
+    "eslint": "^8.57.1",
+    "firebase-functions-test": "^3.3.0",
+    "prettier": "^3.3.3"
   },
-  "private": true
+  "private": true,
+  "keywords": [
+    "firebase",
+    "functions",
+    "serverless",
+    "dax-collective"
+  ],
+  "author": "Dax Collective",
+  "license": "MIT"
 }

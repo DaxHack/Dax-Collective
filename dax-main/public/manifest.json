@@ -1,47 +1,29 @@
+# Commands to check and fix your manifest.json
+
+# 1. First, check what's in your current manifest.json
+type "dax-main\public\manifest.json"
+
+# 2. Look for any references to the missing logo file
+findstr /i "logo@1x.png" "dax-main\public\manifest.json"
+
+# 3. If the file references the missing logo, replace the entire manifest.json with this content:
+
 {
-<<<<<<< HEAD
-  "short_name": "DaxColl",
-  "name": "Dax Collective",
-  "start_url": "/?source=pwa",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0A75FF",
-  "icons": [
-    {
-      "src": "/images/brands/dax-collective/logos/logo@1x.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/images/brands/dax-collective/logos/logo@2x.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
-=======
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Dax Collective",
+  "name": "Dax Collective - Modern Travel & Adventure",
+  "description": "Modern travel insights, AI-driven tips, and adventure stories",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#0A75FF",
+  "background_color": "#000000",
+  "orientation": "portrait-primary"
 }
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
+
+# This uses only favicon.ico which should exist, instead of the missing logo files
