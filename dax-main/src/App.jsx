@@ -3,7 +3,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-
+import { AuthProvider } from './contexts/AuthContext';
 // Import your page components
 import Home from './pages/Home'
 import DaxTheTravelerPage from './pages/DaxTheTravelerPage'
@@ -15,6 +15,7 @@ import DaxTheInvestorPage from './pages/DaxTheInvestorPage'
 
 function App() {
   return (
+  <AuthProvider>
     <div className="App min-h-screen bg-black">
       <Routes>
         {/* Hidden/Private Routes (NO Navbar/Footer) */}
@@ -45,8 +46,8 @@ function App() {
         } />
       </Routes>
     </div>
+    </AuthProvider>
   )
 }
 
 export default App
-

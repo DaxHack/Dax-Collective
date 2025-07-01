@@ -1,9 +1,10 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
-import FloatingBubbles from '../components/FloatingBubbles'
-import StatsSection from '../components/StatsSection'
-import BrandCard from '../components/BrandCard'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import FloatingBubbles from '../components/FloatingBubbles';
+import StatsSection from '../components/StatsSection';
+import BrandCard from '../components/BrandCard';
+import BrandGallery from '../components/BrandGallery'; // Added import
 
 const brands = [
   {
@@ -34,7 +35,7 @@ const brands = [
     icon: "Cross",
     gradient: "from-indigo-600 via-purple-600 to-indigo-700"
   }
-]
+];
 
 export default function Home() {
   return (
@@ -135,7 +136,7 @@ export default function Home() {
               </motion.h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {brands.map((brand, index) => (
+                {brands.map((brand, index ) => (
                   <BrandCard
                     key={brand.name}
                     brand={brand}
@@ -143,6 +144,17 @@ export default function Home() {
                   />
                 ))}
               </div>
+            </div>
+          </section>
+
+          {/* BrandGallery insertion for Home page */}
+          <section className="py-16 px-4">
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-3xl font-bold text-white mb-6 text-center">
+                Dax Collective Gallery
+              </h2>
+              <BrandGallery folderId={process.env.REACT_APP_DRIVE_DAX_HOMEPAGE_PHOTOS} />
+
             </div>
           </section>
 
@@ -187,9 +199,9 @@ export default function Home() {
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeInOut" }}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                    aria-label="Subscribe to updates from The Dax Collective"
+                    aria-label="Subscribe to get updates from The Dax Collective"
                   >
-                    Subscribe to Updates
+                    Subscribe to get Updates
                   </motion.button>
                 </div>
               </motion.div>
@@ -198,5 +210,5 @@ export default function Home() {
         </main>
       </div>
     </>
-  )
+  );
 }

@@ -1,50 +1,31 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# ─── Node ────────────────────────────────
+# ─── Node Modules & Lockfiles ─────────────────────────
 /node_modules
-/.pnp
-.pnp.js
+/package-lock.json
+/yarn.lock
 
-# ─── Build & Production ─────────────────
-/build
-/dist
-/.next
-/out
+# ─── Build & Cache ────────────────────────────────────
+/build/
+/dist/
+/coverage/
+/.cache/
+/tmp/
 
-# ─── Logs ───────────────────────────────
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# ─── Environment Files ──────────────────
+# ─── Environment & Secrets ────────────────────────────
 .env
-.env.*
+.env.*.local
 !.env.example
 
-# ─── Firebase / Cloud / Local Services ─
-.firebaserc
-.firebase
-/keys
-*.key
-*.pem
+# ─── Firebase local artifacts (but keep your .firebaserc!) ─
+/.firebase/       # local emulator data
+# you want to commit this one so GitHub Actions knows your project
+!.firebaserc  
 
-# ─── IDE / OS Junk ──────────────────────
+# ─── IDE / OS ─────────────────────────────────────────
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 
-# ─── Coverage / Tests ───────────────────
-/coverage
-/jest-coverage
-
-# ─── Local Database / Dev Dumps ────────
-*.sqlite
-*.db
-dump.rdb
-*.bak
-
-# ─── GitHub Workflows Cache ────────────
-.cache
-.tmp
+# ─── Logs & Misc ──────────────────────────────────────
+npm-debug.log*
+yarn-error.log*

@@ -1,3 +1,10 @@
-# https://www.robotstxt.org/robotstxt.html
+# Allow all
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# Block any dev-only paths
+Disallow: /temp/
+Disallow: /private/
