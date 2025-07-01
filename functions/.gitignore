@@ -1,4 +1,16 @@
-node_modules/
-*.local
-.env
-serviceAccountKey.json
+# ------//dax-collective/functions/.gitignore------
+# monorepo root
+/node_modules
+/package-lock.json
+
+# front-end
+/dax-main/node_modules
+/dax-main/package-lock.json
+
+# back-end
+/dax-backend/node_modules
+/dax-backend/package-lock.json
+/dax-backend/.env
+
+# Firebase emulator data
+.firebase

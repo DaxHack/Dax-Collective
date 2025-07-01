@@ -3,6 +3,20 @@
     "dev": "concurrently \"npm --prefix dax-backend start\" \"npm --prefix dax-main start\""
   },
   "devDependencies": {
-    "concurrently": "^7.0.0"
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^7.0.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11"
+  },
+  "dependencies": {
+    "firebase": "^11.10.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-parallax-tilt": "^1.7.299",
+    "react-router-dom": "^7.6.3",
+    "react-scripts": "^5.0.1"
   }
 }
