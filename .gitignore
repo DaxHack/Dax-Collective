@@ -30,6 +30,13 @@
 /.next/
 /out/
 
+# ─── Summary files we don’t want in Git ───────────────────
+/dax-backend-structure-summary.txt
+/dax-main-structure-summary.txt
+
+# ─── Never commit any node_modules folders ────────────────
+**/node_modules/
+
 # ─── RUNTIME / DATA FILES ──────────────────────────────
 # local uploads & db dumps
 /dax-backend/uploads/
