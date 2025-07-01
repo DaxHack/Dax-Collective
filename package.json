@@ -1,22 +1,30 @@
 {
+  "name": "dax-collective",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dax Collective - Multi-brand platform with travel, faith, and creative content",
   "scripts": {
-    "dev": "concurrently \"npm --prefix dax-backend start\" \"npm --prefix dax-main start\""
+    "dev": "concurrently \"npm --prefix dax-backend start\" \"npm --prefix dax-main start\"",
+    "start": "npm run dev",
+    "build": "npm --prefix dax-main run build",
+    "install:all": "npm install && npm --prefix dax-main install && npm --prefix dax-backend install && npm --prefix functions install",
+    "clean": "rimraf node_modules dax-main/node_modules dax-backend/node_modules functions/node_modules",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:functions": "firebase deploy --only functions"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
-    "autoprefixer": "^10.4.21",
-    "concurrently": "^7.0.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11"
+    "concurrently": "^8.2.2",
+    "rimraf": "^5.0.10"
   },
-  "dependencies": {
-    "firebase": "^11.10.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-parallax-tilt": "^1.7.299",
-    "react-router-dom": "^7.6.3",
-    "react-scripts": "^5.0.1"
-  }
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DaxHack/Dax-Collective.git"
+  },
+  "author": "Dax Collective",
+  "license": "MIT"
 }
