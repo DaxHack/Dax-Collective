@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -8,16 +7,6 @@ import BrandGallery from '../components/BrandGallery'; // Added import
 const DaxTheInvestorPage = () => {
   const [hoveredMetric, setHoveredMetric] = useState(null);
   const [activeTab, setActiveTab] = useState('financial');
-=======
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
-import { TrendingUp, DollarSign, BarChart3, Brain, Target, Zap, Building, PieChart, Activity, Cpu } from 'lucide-react'
-
-const DaxTheInvestorPage = () => {
-  const [hoveredMetric, setHoveredMetric] = useState(null)
-  const [activeTab, setActiveTab] = useState('financial')
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
   // Financial Metrics (Private/Internal)
   const financialStats = [
@@ -53,11 +42,7 @@ const DaxTheInvestorPage = () => {
       icon: Target,
       description: 'Expected return on investment'
     }
-<<<<<<< HEAD
   ];
-=======
-  ]
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
   // AI & Automation Metrics
   const aiStats = [
@@ -93,11 +78,7 @@ const DaxTheInvestorPage = () => {
       icon: Activity,
       description: 'Unlimited scaling possibilities'
     }
-<<<<<<< HEAD
   ];
-=======
-  ]
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
   // Growth Tracking
   const growthMetrics = [
@@ -133,25 +114,15 @@ const DaxTheInvestorPage = () => {
       icon: TrendingUp,
       description: 'Infinite scaling potential'
     }
-<<<<<<< HEAD
   ];
-=======
-  ]
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
   const tabs = [
     { id: 'financial', label: 'Financial', stats: financialStats },
     { id: 'ai', label: 'AI & Automation', stats: aiStats },
     { id: 'growth', label: 'Growth Metrics', stats: growthMetrics }
-<<<<<<< HEAD
   ];
 
   const currentStats = tabs.find(tab => tab.id === activeTab)?.stats || financialStats;
-=======
-  ]
-
-  const currentStats = tabs.find(tab => tab.id === activeTab)?.stats || financialStats
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
   return (
     <>
@@ -262,11 +233,7 @@ const DaxTheInvestorPage = () => {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
             >
               {currentStats.map((stat, index) => {
-<<<<<<< HEAD
                 const IconComponent = stat.icon;
-=======
-                const IconComponent = stat.icon
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
                 return (
                   <motion.div
                     key={stat.id}
@@ -360,7 +327,6 @@ const DaxTheInvestorPage = () => {
                       />
                     </div>
                   </motion.div>
-<<<<<<< HEAD
                 );
               })}
             </motion.div>
@@ -375,12 +341,6 @@ const DaxTheInvestorPage = () => {
               </div>
             </section>
 
-=======
-                )
-              })}
-            </motion.div>
-
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
             {/* Brand Integration Notice */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -425,15 +385,7 @@ const DaxTheInvestorPage = () => {
         </div>
       </div>
     </>
-<<<<<<< HEAD
   );
 };
 
 export default DaxTheInvestorPage;
-=======
-  )
-}
-
-export default DaxTheInvestorPage
-
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c

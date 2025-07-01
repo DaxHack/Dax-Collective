@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -6,14 +5,6 @@ import FloatingBubbles from '../components/FloatingBubbles';
 import StatsSection from '../components/StatsSection';
 import BrandCard from '../components/BrandCard';
 import BrandGallery from '../components/BrandGallery'; // Added import
-=======
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
-import FloatingBubbles from '../components/FloatingBubbles'
-import StatsSection from '../components/StatsSection'
-import BrandCard from '../components/BrandCard'
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
 const brands = [
   {
@@ -44,11 +35,7 @@ const brands = [
     icon: "Cross",
     gradient: "from-indigo-600 via-purple-600 to-indigo-700"
   }
-<<<<<<< HEAD
 ];
-=======
-]
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 
 export default function Home() {
   return (
@@ -149,11 +136,7 @@ export default function Home() {
               </motion.h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-<<<<<<< HEAD
                 {brands.map((brand, index ) => (
-=======
-                {brands.map((brand, index) => (
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
                   <BrandCard
                     key={brand.name}
                     brand={brand}
@@ -164,7 +147,6 @@ export default function Home() {
             </div>
           </section>
 
-<<<<<<< HEAD
           {/* BrandGallery insertion for Home page */}
           <section className="py-16 px-4">
             <div className="max-w-7xl mx-auto">
@@ -176,8 +158,6 @@ export default function Home() {
             </div>
           </section>
 
-=======
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
           {/* Call to Action Section */}
           <section className="px-4 py-20" aria-labelledby="cta-heading">
             <div className="max-w-4xl mx-auto text-center">
@@ -219,15 +199,9 @@ export default function Home() {
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeInOut" }}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-<<<<<<< HEAD
                     aria-label="Subscribe to get updates from The Dax Collective"
                   >
                     Subscribe to get Updates
-=======
-                    aria-label="Subscribe to updates from The Dax Collective"
-                  >
-                    Subscribe to Updates
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
                   </motion.button>
                 </div>
               </motion.div>
@@ -236,9 +210,5 @@ export default function Home() {
         </main>
       </div>
     </>
-<<<<<<< HEAD
   );
-=======
-  )
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
 }
