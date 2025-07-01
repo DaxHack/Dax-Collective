@@ -1,31 +1,43 @@
-# ─── Node Modules & Lockfiles ─────────────────────────
-/node_modules
-/package-lock.json
-/yarn.lock
+#//dax-main/.gitignore
+# ─── Dependencies ────────────────────────────────────
+/node_modules/               # root dependencies
+/dax-main/node_modules/      # if you ever add a node_modules under dax-main
 
-# ─── Build & Cache ────────────────────────────────────
-/build/
-/dist/
-/coverage/
-/.cache/
-/tmp/
+# ─── Build & Production ─────────────────────────────
+/build/                      # root build output (if you ever run `npm run build` here)
+/dax-main/build/             # CRA build output from dax-main
 
-# ─── Environment & Secrets ────────────────────────────
-.env
-.env.*.local
-!.env.example
+# ─── Environment & Secrets ──────────────────────────
+.env                         # local env vars
+.env.*.local                 # local override files
+!.env.example                # but keep your example
 
-# ─── Firebase local artifacts (but keep your .firebaserc!) ─
-/.firebase/       # local emulator data
-# you want to commit this one so GitHub Actions knows your project
-!.firebaserc  
+# ─── Firebase emulator data ─────────────────────────
+/.firebase/                   # local emulator state
 
-# ─── IDE / OS ─────────────────────────────────────────
-.DS_Store
-Thumbs.db
+# ─── Logs ───────────────────────────────────────────
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ─── Caches & Coverage ──────────────────────────────
+.cache/
+.tmp/
+coverage/
+jest-coverage/
+dist/
+.out/
+
+# ─── IDE & OS files ─────────────────────────────────
 .vscode/
 .idea/
+*.suo
+*.ntvs*
+*.DS_Store
+Thumbs.db
 
-# ─── Logs & Misc ──────────────────────────────────────
-npm-debug.log*
-yarn-error.log*
+# ─── Keys & Credentials ─────────────────────────────
+keys/
+*.key
+*.pem
+credentials/*.json
