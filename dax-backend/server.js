@@ -1,17 +1,16 @@
 // dax-backend/server.js
-require('dotenv').config();
-
-const express = require('express');
-const cors    = require('cors');
-const path    = require('path');
-const admin   = require('firebase-admin');
-const uploadRoutes = require('./routes/uploadApi'); // Correct path to your backend routes
+require("dotenv").config(); // now process.env.YOUR_KEY is available
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const admin = require("firebase-admin");
+const uploadRoutes = require("./routes/uploadApi"); // Correct path to your backend routes
 
 // ─── 1. Firebase Admin Initialization ───────────────────────────────────────
 // Allow pointing GOOGLE_APPLICATION_CREDENTIALS at your JSON, else use default:
 const serviceAccountPath =
   process.env.FIREBASE_SERVICE_ACCOUNT_PATH || // Use this env var for flexibility
-  path.join(__dirname, 'credentials/firebase-adminsdk.json');
+  path.join(__dirname, "credentials/firebase-adminsdk.json");
 
 // Check if the service account file exists before requiring it
 let serviceAccount;
@@ -26,8 +25,8 @@ if (!admin.apps.length) { // Initialize only if not already initialized
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: process.env.FIREBASE_DATABASE_URL, // if you need RTDB
-    projectId:   process.env.FIREBASE_PROJECT_ID,
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET // Crucial for Firebase Storage
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET, // Crucial for Firebase Storage
   });
 }
 
@@ -37,7 +36,7 @@ if (!admin.apps.length) { // Initialize only if not already initialized
 const {
   // APP & ENV
   PORT = 5000,
-  NODE_ENV = 'development',
+  NODE_ENV = "development",
   FRONTEND_URL,
 
   // GOOGLE CLOUD & ANALYTICS
@@ -118,7 +117,7 @@ const {
   BRAND_TIMEZONE_TRAVELERS_ENABLED,
   AUTO_POSTING_ENABLED,
   SCHEDULE_ANIDAX_POSTING,
-  MAX_POSTS_PER_DAY_ANIDAX
+  MAX_POSTS_PER_DAY_ANIDAX,
 
   // …and any other keys you’ll need…
 } = process.env;
@@ -128,10 +127,10 @@ const {
 function getAccountIds(brand) {
   const B = brand.toUpperCase();
   return {
-    tiktok:    process.env[`TIKTOK_ACCOUNT_ID_${B}`],
-    facebook:  process.env[`FACEBOOK_PAGE_ID_${B}`],
+    tiktok: process.env[`TIKTOK_ACCOUNT_ID_${B}`],
+    facebook: process.env[`FACEBOOK_PAGE_ID_${B}`],
     instagram: process.env[`INSTAGRAM_ACCOUNT_ID_${B}`],
-    youtube:   process.env[`YOUTUBE_CHANNEL_ID_${B}`],
+    youtube: process.env[`YOUTUBE_CHANNEL_ID_${B}`],
   };
 }
 
@@ -157,20 +156,20 @@ async function authGuard(req, res, next) {
 const app = express();
 
 // Enhanced, environment-aware CORS
-const corsOrigins = NODE_ENV === 'production'
-  ? ['https://daxcollective.com', 'https://www.daxcollective.com']
-  : [FRONTEND_URL || 'http://localhost:3000'];
+const corsOrigins = NODE_ENV === "production" ?
+  ["https://daxcollective.com", "https://www.daxcollective.com"] :
+  [FRONTEND_URL || "http://localhost:3000"];
 
 app.use(cors({
   origin: corsOrigins,
   credentials: true,
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization']
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 // Body parsers with size limits
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({limit: "10mb"}));
+app.use(express.urlencoded({extended: true, limit: "10mb"}));
 
 // Simple request logger
 app.use((req, res, next) => {
@@ -181,45 +180,45 @@ app.use((req, res, next) => {
 // ─── 6. Routes ────────────────────────────────────────────────────────────
 // Mount your upload routes. The authGuard is now handled within uploadApi.js
 // for specific routes, or you can add it here to protect all routes under /api
-app.use('/api', uploadRoutes); // This will apply all routes from uploadApi.js under /api
+app.use("/api", uploadRoutes); // This will apply all routes from uploadApi.js under /api
 
 // If you ever need a public mount, you can also do:
 // app.use('/api/public', uploadRoutes);
 
 // Brand-aware posting endpoint (stub)
-app.post('/api/post/:brand', async (req, res) => {
+app.post("/api/post/:brand", async (req, res) => {
   const ids = getAccountIds(req.params.brand);
-  if (Object.values(ids).some(v => !v)) {
+  if (Object.values(ids).some((v) => !v)) {
     return res.status(400).json({
-      error: `Missing one of [tiktok,facebook,instagram,youtube] ID for "${req.params.brand}"`
+      error: `Missing one of [tiktok,facebook,instagram,youtube] ID for "${req.params.brand}"`,
     });
   }
   try {
     // TODO: call your actual social-post functions here
-    return res.json({ success: true, used: ids });
+    return res.json({success: true, used: ids});
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({error: err.message});
   }
 });
 
 // Health check with uptime and memory info
-app.get('/api/health', (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({
-    status:      'OK',
+    status: "OK",
     environment: NODE_ENV,
-    version:     '1.0.0',
-    uptime:      process.uptime(),
-    memory:      process.memoryUsage(),
-    timestamp:   new Date().toISOString()
+    version: "1.0.0",
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    timestamp: new Date().toISOString(),
   });
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('❌ Server error', err);
+  console.error("❌ Server error", err);
   res.status(500).json({
-    error: NODE_ENV === 'development' ? err.message : 'Internal server error'
+    error: NODE_ENV === "development" ? err.message : "Internal server error",
   });
 });
 
@@ -227,5 +226,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🚀 Dax Backend listening on port ${PORT}`);
   console.log(`📡 Health: http://localhost:${PORT}/api/health`);
-  console.log(`🔗 CORS allowed origins: ${corsOrigins.join(', ')}`);
+  console.log(`🔗 CORS allowed origins: ${corsOrigins.join(", ")}`);
 });

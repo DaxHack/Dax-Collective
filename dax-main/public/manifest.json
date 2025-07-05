@@ -1,29 +1,38 @@
-# Commands to check and fix your manifest.json
-
-# 1. First, check what's in your current manifest.json
-type "dax-main\public\manifest.json"
-
-# 2. Look for any references to the missing logo file
-findstr /i "logo@1x.png" "dax-main\public\manifest.json"
-
-# 3. If the file references the missing logo, replace the entire manifest.json with this content:
-
 {
+  "name": "Dax Collective",
   "short_name": "Dax Collective",
-  "name": "Dax Collective - Modern Travel & Adventure",
-  "description": "Modern travel insights, AI-driven tips, and adventure stories",
+  "description": "Inspiring stories, practical tips, and mindful insights for every journey.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0A75FF",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["travel", "lifestyle", "culture", "inspiration", "tips"],
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "src": "/logo-main(yellow).png",
+      "sizes": "96x96 180x180 192x192 512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/logo-main(red).png",
+      "sizes": "72x72 180x180 144x144 192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/logo-main.png",
+      "sizes": "72x72 96x96 180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32 24x24 16x16 64x64",
       "type": "image/x-icon"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#0A75FF",
-  "background_color": "#000000",
-  "orientation": "portrait-primary"
+  ]
 }
-
-# This uses only favicon.ico which should exist, instead of the missing logo files

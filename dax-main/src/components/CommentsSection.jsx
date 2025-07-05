@@ -22,7 +22,7 @@ import {
   doc,
   serverTimestamp
 } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { db } from '../config/firebase';
 
 const CommentsSection = ({ sectionId, sectionTitle = "Comments" }) => {
   const [comments, setComments] = useState([]);

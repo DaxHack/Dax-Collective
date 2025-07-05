@@ -1,7 +1,6 @@
 // src/automation/RevenueTracker.jsx
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-<<<<<<< HEAD
 
 import {
   PhotoIcon,
@@ -14,10 +13,6 @@ import {
   CloudArrowUpIcon,
   Cog6ToothIcon,
   XMarkIcon,        
-=======
-import {
-
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
   ArrowTrendingUpIcon,
   CurrencyDollarIcon,
   CalendarIcon,

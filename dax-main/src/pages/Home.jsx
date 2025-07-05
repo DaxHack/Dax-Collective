@@ -1,10 +1,13 @@
+// src/pages/Home.jsx
+// OPTIMIZED VERSION - Original styling preserved, improved functionality
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import FloatingBubbles from '../components/FloatingBubbles';
 import StatsSection from '../components/StatsSection';
 import BrandCard from '../components/BrandCard';
-import BrandGallery from '../components/BrandGallery'; // Added import
+import BrandGallery from '../components/BrandGallery';
 
 const brands = [
   {
@@ -39,7 +42,6 @@ const brands = [
 
 export default function Home() {
   return (
-    // ===== Helmet SEO Tags with fallback =====
     <>
       <Helmet>
         <title>The Dax Collective – Creative Community & Storytelling Hub</title>
@@ -54,7 +56,6 @@ export default function Home() {
         <link rel="canonical" href="https://daxcollective.com" />
       </Helmet>
 
-      {/* --- comment for divs ---- */}
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
         {/* Floating Bubbles Background */}
         <FloatingBubbles />
@@ -136,7 +137,7 @@ export default function Home() {
               </motion.h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {brands.map((brand, index ) => (
+                {brands.map((brand, index) => (
                   <BrandCard
                     key={brand.name}
                     brand={brand}
@@ -147,14 +148,30 @@ export default function Home() {
             </div>
           </section>
 
-          {/* BrandGallery insertion for Home page */}
+          {/* OPTIMIZED BrandGallery Section */}
           <section className="py-16 px-4">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-3xl font-bold text-white mb-6 text-center">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="text-3xl font-bold text-white mb-6 text-center"
+              >
                 Dax Collective Gallery
-              </h2>
-              <BrandGallery folderId={process.env.REACT_APP_DRIVE_DAX_HOMEPAGE_PHOTOS} />
-
+              </motion.h2>
+              
+              {/* OPTIMIZED: Use brand prop instead of folderId */}
+              <div className="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
+                <BrandGallery 
+                  brand="dax-collective"
+                  category="homepage"
+                  maxImages={12}
+                  layout="grid"
+                  showControls={true}
+                  enableUpload={false}
+                  className="home-gallery"
+                />
+              </div>
             </div>
           </section>
 
@@ -212,3 +229,4 @@ export default function Home() {
     </>
   );
 }
+

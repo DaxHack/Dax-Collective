@@ -1,7 +1,50 @@
-//src/services/driveApi.js
+// src/services/driveApi.js
+// CORRECTED VERSION - Copy this to replace your existing driveApi.js
+
 import { API_BASE } from '../config/apiConfig';
-// Assuming you have a driveFolders.js for folder IDs, if not, you can keep process.env directly
-import { FOLDER_IDS, getFolderIdByTags } from '../config/driveFolder'; 
+
+// FIXED: Proper FOLDER_IDS export with all your folder IDs
+export const FOLDER_IDS = {
+  DAX_TRAVELER_PHOTOS: process.env.REACT_APP_DRIVE_DAX_TRAVELER_PHOTOS || "1Jn-3NZ38qiy7nm-VFfmSOrriXCBA7ccr",
+  GODS_VESSEL_PHOTOS: process.env.REACT_APP_DRIVE_GODS_VESSEL_PHOTOS || "",
+  TIMEZONE_TRAVELERS_PHOTOS: process.env.REACT_APP_DRIVE_TIMEZONE_TRAVELERS_PHOTOS || "",
+  DAX_HOMEPAGE_PHOTOS: process.env.REACT_APP_DRIVE_DAX_HOMEPAGE_PHOTOS || "",
+  ANI_DAX_PHOTOS: process.env.REACT_APP_DRIVE_ANI_DAX_PHOTOS || "",
+  DAX_ANALYTICS_IMAGES: process.env.REACT_APP_DRIVE_DAX_ANALYTICS_IMAGES || "",
+  SATIATED_TASTE_PHOTOS: process.env.REACT_APP_DRIVE_SATIATED_TASTE_PHOTOS || "",
+  TSHIRT_DESIGNS: process.env.REACT_APP_DRIVE_TSHIRT_DESIGNS || ""
+};
+
+// FIXED: Proper getFolderIdByTags function
+export const getFolderIdByTags = (tags) => {
+  if (!tags) return FOLDER_IDS.DAX_HOMEPAGE_PHOTOS;
+  
+  const tagLower = tags.toLowerCase();
+  
+  if (tagLower.includes('travel') || tagLower.includes('adventure') || tagLower.includes('dax-traveler')) {
+    return FOLDER_IDS.DAX_TRAVELER_PHOTOS;
+  }
+  if (tagLower.includes('faith') || tagLower.includes('god') || tagLower.includes('vessel')) {
+    return FOLDER_IDS.GODS_VESSEL_PHOTOS;
+  }
+  if (tagLower.includes('timezone') || tagLower.includes('productivity')) {
+    return FOLDER_IDS.TIMEZONE_TRAVELERS_PHOTOS;
+  }
+  if (tagLower.includes('anime') || tagLower.includes('ani-dax')) {
+    return FOLDER_IDS.ANI_DAX_PHOTOS;
+  }
+  if (tagLower.includes('food') || tagLower.includes('satiated')) {
+    return FOLDER_IDS.SATIATED_TASTE_PHOTOS;
+  }
+  if (tagLower.includes('tshirt') || tagLower.includes('design')) {
+    return FOLDER_IDS.TSHIRT_DESIGNS;
+  }
+  if (tagLower.includes('analytics') || tagLower.includes('dashboard')) {
+    return FOLDER_IDS.DAX_ANALYTICS_IMAGES;
+  }
+  
+  return FOLDER_IDS.DAX_HOMEPAGE_PHOTOS; // Default fallback
+};
 
 /**
  * Enhanced Drive API service with comprehensive upload and management features
@@ -58,7 +101,7 @@ class DriveApiService {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({})); // Try to parse error, fallback to empty object
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(`Failed to fetch images: ${errorData.error || response.statusText}`);
       }
 
@@ -99,12 +142,12 @@ class DriveApiService {
         formData.append('description', options.description);
       }
 
-      const token = await user.getIdToken(); // Get token for FormData requests
+      const token = await user.getIdToken();
       
       const response = await fetch(`${this.baseUrl}/api/drive`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`, // Authorization for FormData
+          'Authorization': `Bearer ${token}`,
         },
         body: formData,
       });
@@ -156,46 +199,37 @@ class DriveApiService {
   }
 
   /**
-   * Check for duplicate images before upload
-   * @param {FileList|Array} files - Files to check
+   * Get all folder statistics for dashboard
    * @param {Object} user - The authenticated Firebase user object
-   * @param {string} folderId - Target folder ID
-   * @param {string} category - Category for folder lookup
-   * @returns {Promise<Object>} Duplicate check results
+   * @returns {Promise<Object>} Statistics for all folders
    */
-  async checkDuplicates(files, user, folderId = null, category = null) {
+  async getAllFolderStats(user) {
     try {
-      const formData = new FormData();
-      
-      Array.from(files).forEach((file) => {
-        formData.append('files', file);
-      });
-      
-      if (folderId) {
-        formData.append('folderId', folderId);
-      }
-      if (category) {
-        formData.append('category', category);
-      }
-
-      const token = await user.getIdToken();
-
-      const response = await fetch(`${this.baseUrl}/api/check-duplicates`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formData,
+      const stats = {};
+      const promises = Object.entries(FOLDER_IDS).map(async ([key, folderId]) => {
+        if (folderId) {
+          try {
+            const info = await this.getFolderInfo(folderId, user); 
+            stats[key] = {
+              count: info.imageCount || 0,
+              size: info.totalSize || 0,
+              formattedSize: info.formattedSize || '0 Bytes',
+              name: info.name,
+              lastModified: info.modifiedTime
+            };
+          } catch (error) {
+            console.warn(`Failed to load ${key} folder stats:`, error);
+            stats[key] = { count: 0, size: 0, formattedSize: '0 Bytes' };
+          }
+        } else {
+          stats[key] = { count: 0, size: 0, formattedSize: '0 Bytes' };
+        }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Duplicate check failed: ${response.statusText}`);
-      }
-
-      return await response.json();
+      await Promise.all(promises);
+      return stats;
     } catch (error) {
-      console.error('Error checking duplicates:', error);
+      console.error('Error getting all folder stats:', error);
       throw error;
     }
   }
@@ -228,172 +262,14 @@ class DriveApiService {
   }
 
   /**
-   * Batch upload images from URLs (for photo search integration)
-   * @param {Array} urls - Array of image URLs
-   * @param {string} category - Category for smart routing
-   * @param {Object} user - The authenticated Firebase user object
-   * @param {Object} options - Additional options (tags, descriptions)
-   * @returns {Promise<Object>} Batch upload results
-   */
-  async batchUploadFromUrls(urls, category = 'collective', user, options = {}) {
-    try {
-      const { tags = [], descriptions = [] } = options;
-      const headers = await this.getAuthHeaders(user);
-
-      const response = await fetch(`${this.baseUrl}/api/drive/batch-from-urls`, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify({
-          urls,
-          category,
-          tags,
-          descriptions
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Batch upload failed: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error in batch upload from URLs:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get all folder statistics for dashboard
-   * @param {Object} user - The authenticated Firebase user object
-   * @returns {Promise<Object>} Statistics for all folders
-   */
-  async getAllFolderStats(user) {
-    try {
-      // Use your driveFolders.js for these IDs if you have it, otherwise keep process.env
-      const folders = {
-        travel: process.env.REACT_APP_DRIVE_FOLDER_TRAVEL,
-        faith: process.env.REACT_APP_DRIVE_FOLDER_FAITH,
-        collective: process.env.REACT_APP_DRIVE_FOLDER_COLLECTIVE,
-        timezone: process.env.REACT_APP_DRIVE_FOLDER_TIMEZONE
-      };
-
-      const stats = {};
-      const promises = Object.entries(folders).map(async ([key, folderId]) => {
-        if (folderId) {
-          try {
-            // Pass the user object to getFolderInfo
-            const info = await this.getFolderInfo(folderId, user); 
-            stats[key] = {
-              count: info.imageCount || 0,
-              size: info.totalSize || 0,
-              formattedSize: info.formattedSize || '0 Bytes',
-              name: info.name,
-              lastModified: info.modifiedTime
-            };
-          } catch (error) {
-            console.warn(`Failed to load ${key} folder stats:`, error);
-            stats[key] = { count: 0, size: 0, formattedSize: '0 Bytes' };
-          }
-        } else {
-          stats[key] = { count: 0, size: 0, formattedSize: '0 Bytes' };
-        }
-      });
-
-      await Promise.all(promises);
-      return stats;
-    } catch (error) {
-      console.error('Error getting all folder stats:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Search and fetch images from multiple folders
-   * @param {Object} user - The authenticated Firebase user object
-   * @param {Object} options - Search options (maxPerFolder, category)
-   * @returns {Promise<Array>} Combined images from all folders
-   */
-  async searchAllFolders(user, options = {}) {
-    try {
-      const { maxPerFolder = 12, category = null } = options;
-      // Use your driveFolders.js for these IDs if you have it, otherwise keep process.env
-      const folders = {
-        travel: process.env.REACT_APP_DRIVE_FOLDER_TRAVEL,
-        faith: process.env.REACT_APP_DRIVE_FOLDER_FAITH,
-        collective: process.env.REACT_APP_DRIVE_FOLDER_COLLECTIVE,
-        timezone: process.env.REACT_APP_DRIVE_FOLDER_TIMEZONE
-      };
-
-      // If category specified, only search that folder
-      const foldersToSearch = category && folders[category] 
-        ? { [category]: folders[category] }
-        : folders;
-
-      const allImages = [];
-      const promises = Object.entries(foldersToSearch).map(async ([key, folderId]) => {
-        if (folderId) {
-          try {
-            // Pass the user object to fetchDriveImages
-            const result = await this.fetchDriveImages(folderId, user, { pageSize: maxPerFolder });
-            const imagesWithCategory = result.images.map(img => ({
-              ...img,
-              category: key,
-              folderId
-            }));
-            allImages.push(...imagesWithCategory);
-          } catch (error) {
-            console.warn(`Failed to fetch images from ${key} folder:`, error);
-          }
-        }
-      });
-
-      await Promise.all(promises);
-
-      // Sort by creation time (newest first)
-      allImages.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
-
-      return allImages;
-    } catch (error) {
-      console.error('Error searching all folders:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get category-specific folder ID
-   * @param {string} category - Category name
-   * @returns {string|null} Folder ID for the category
-   */
-  getFolderIdForCategory(category) {
-    // Use your driveFolders.js for these IDs if you have it, otherwise keep process.env
-    const folders = {
-      travel: process.env.REACT_APP_DRIVE_FOLDER_TRAVEL,
-      faith: process.env.REACT_APP_DRIVE_FOLDER_FAITH,
-      collective: process.env.REACT_APP_DRIVE_FOLDER_COLLECTIVE,
-      timezone: process.env.REACT_APP_DRIVE_FOLDER_TIMEZONE
-    };
-
-    return folders[category] || null;
-  }
-
-  /**
    * Validate if all required folder IDs are configured
    * @returns {Object} Validation results
    */
   validateFolderConfiguration() {
-    // Use your driveFolders.js for these IDs if you have it, otherwise keep process.env
-    const folders = {
-      travel: process.env.REACT_APP_DRIVE_FOLDER_TRAVEL,
-      faith: process.env.REACT_APP_DRIVE_FOLDER_FAITH,
-      collective: process.env.REACT_APP_DRIVE_FOLDER_COLLECTIVE,
-      timezone: process.env.REACT_APP_DRIVE_FOLDER_TIMEZONE
-    };
-
     const missing = [];
     const configured = [];
 
-    Object.entries(folders).forEach(([key, value]) => {
+    Object.entries(FOLDER_IDS).forEach(([key, value]) => {
       if (value) {
         configured.push(key);
       } else {
@@ -405,20 +281,49 @@ class DriveApiService {
       isValid: missing.length === 0,
       configured,
       missing,
-      totalFolders: Object.keys(folders).length
+      totalFolders: Object.keys(FOLDER_IDS).length
     };
   }
 }
 
-// Helper function to format bytes (kept from your original comprehensive file)
-function formatBytes(bytes, decimals = 2) {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
+// FIXED: Direct fetch function for backward compatibility
+export const fetchDriveImages = async (folderId, maxResults = 50, user = null) => {
+  try {
+    if (!folderId) {
+      console.warn('No folder ID provided to fetchDriveImages');
+      return [];
+    }
+
+    // If no user provided, try to get from auth context or return empty
+    if (!user) {
+      console.warn('No user authentication provided to fetchDriveImages');
+      return [];
+    }
+
+    const driveService = new DriveApiService();
+    const result = await driveService.fetchDriveImages(folderId, user, { pageSize: maxResults });
+    return result.images || [];
+  } catch (error) {
+    console.error('Error in fetchDriveImages:', error);
+    return [];
+  }
+};
+
+// FIXED: Fetch brand images function
+export const fetchBrandImages = async (brandKey, maxResults = 50, user = null) => {
+  try {
+    const folderId = FOLDER_IDS[brandKey];
+    if (!folderId) {
+      console.warn(`No folder ID found for brand: ${brandKey}`);
+      return [];
+    }
+
+    return await fetchDriveImages(folderId, maxResults, user);
+  } catch (error) {
+    console.error(`Error fetching brand images for ${brandKey}:`, error);
+    return [];
+  }
+};
 
 // Create and export singleton instance
 const driveApiService = new DriveApiService();
@@ -427,17 +332,12 @@ const driveApiService = new DriveApiService();
 export { DriveApiService };
 export default driveApiService;
 
-// Also export individual functions for backward compatibility
-// Note: These now require 'user' as an argument when called directly
+// Export individual functions for backward compatibility
 export const {
-  fetchDriveImages,
   uploadToDrive,
   uploadToFirebase,
-  checkDuplicates,
   getFolderInfo,
-  batchUploadFromUrls,
   getAllFolderStats,
-  searchAllFolders,
-  getFolderIdForCategory,
   validateFolderConfiguration
 } = driveApiService;
+

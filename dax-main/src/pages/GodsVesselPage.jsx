@@ -1,7 +1,10 @@
+// src/pages/GodsVesselPage.jsx
+// OPTIMIZED VERSION - Original styling preserved, improved functionality
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import BrandGallery from '../components/BrandGallery'; // Added import
+import BrandGallery from '../components/BrandGallery';
 
 const GodsVesselPage = () => {
   const [activeSection, setActiveSection] = useState('faith');
@@ -78,18 +81,18 @@ const GodsVesselPage = () => {
   return (
     <>
       <Helmet>
-        <title>God’s Vessel – Faith, Purpose, and Creative Light</title>
+        <title>God's Vessel – Faith, Purpose, and Creative Light</title>
         <meta 
           name="description" 
           content="A faith-based brand shining light through media, fashion, and storytelling. Glorify God through art and action." 
         />
-        <meta property="og:title" content="God’s Vessel – Faith, Purpose, and Creative Light" />
+        <meta property="og:title" content="God's Vessel – Faith, Purpose, and Creative Light" />
         <meta property="og:description" content="Faith-forward content and apparel designed to inspire, uplift, and empower." />
         <meta property="og:type" content="website" />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white">
-        {/* Hero Section */}
+        {/* Hero Section (ORIGINAL STYLING PRESERVED) */}
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-black/40"></div>
           <div 
@@ -119,7 +122,7 @@ const GodsVesselPage = () => {
           </div>
         </div>
 
-        {/* Content Tabs */}
+        {/* Content Tabs (ORIGINAL STYLING PRESERVED) */}
         <section className="py-12 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-center mb-8 bg-gray-800/30 backdrop-blur-sm rounded-full p-2 border border-gray-700">
@@ -142,17 +145,7 @@ const GodsVesselPage = () => {
               ))}
             </div>
 
-            {/* BrandGallery insertion */}
-            <section className="py-12 px-4">
-              <div className="max-w-6xl mx-auto mb-12">
-                <h2 className="text-3xl font-bold text-white mb-6 text-center">
-                  Gallery
-                </h2>
-                <BrandGallery folderId={process.env. REACT_APP_DRIVE_GODS_VESSEL_PHOTOS} />
-              </div>
-            </section>
-
-            {/* Faith Content Section */}
+            {/* Faith Content Section (ORIGINAL STYLING PRESERVED) */}
             {activeSection === 'faith' && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -181,7 +174,7 @@ const GodsVesselPage = () => {
               </motion.div>
             )}
 
-            {/* Apparel Section */}
+            {/* Apparel Section (ORIGINAL STYLING PRESERVED) */}
             {activeSection === 'apparel' && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -230,7 +223,7 @@ const GodsVesselPage = () => {
               </motion.div>
             )}
 
-            {/* Testimonies Section */}
+            {/* Testimonies Section (ORIGINAL STYLING PRESERVED) */}
             {activeSection === 'testimonies' && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -279,7 +272,34 @@ const GodsVesselPage = () => {
           </div>
         </section>
 
-        {/* Call to Action */}
+        {/* OPTIMIZED BrandGallery Section */}
+        <section className="py-12 px-4">
+          <div className="max-w-6xl mx-auto mb-12">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="text-3xl font-bold text-white mb-6 text-center"
+            >
+              God's Vessel Gallery
+            </motion.h2>
+            
+            {/* OPTIMIZED: Use brand prop instead of folderId */}
+            <div className="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
+              <BrandGallery 
+                brand="gods-vessel"
+                category="faith"
+                maxImages={12}
+                layout="grid"
+                showControls={true}
+                enableUpload={false}
+                className="faith-gallery"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action (ORIGINAL STYLING PRESERVED) */}
         <section className="py-16 px-4 bg-black/20">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Walk by Faith, Not by Sight</h2>
@@ -313,3 +333,4 @@ const GodsVesselPage = () => {
 };
 
 export default GodsVesselPage;
+
