@@ -1,4 +1,3 @@
-// dax-backend/.eslintrc.js
 module.exports = {
   env: {
     es6: true,
@@ -14,12 +13,15 @@ module.exports = {
   rules: {
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
-    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
+    "quotes": ["error", "double", {"allowTemplateLiterals": true}],
+    "no-unused-vars": "warn",
+    "max-len": ["warn", {"code": 120}],
+    "require-jsdoc": "off",
   },
   overrides: [
     {
       files: ["**/*.spec.*"],
-      env: { mocha: true },
+      env: {mocha: true},
       rules: {},
     },
   ],

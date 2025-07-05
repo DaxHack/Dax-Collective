@@ -18,6 +18,7 @@
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dax-collective": "file:..",
+    "dotenv": "^17.0.1",
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^4.9.0",
     "googleapis": "^150.0.1"

@@ -26,5 +26,8 @@
     "url": "https://github.com/DaxHack/Dax-Collective.git"
   },
   "author": "Dax Collective",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.0.1"
+  }
 }

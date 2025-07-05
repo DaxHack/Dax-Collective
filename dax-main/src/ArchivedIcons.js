@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // src/archivedIcons.js
 
 // — your automation components —
@@ -40,35 +39,11 @@ export const ArchivedIcons = {
   MoonIcon,
   StarIcon,
   TrashIcon,
-=======
-import AggressiveAccelerator from "./automation/AggressiveAccelerator"
-import ContentManager from "./automation/ContentManager"
-import EmergencyMonetization from "./automation/EmergencyMonetization"
-import GrowthAccelerator from "./automation/GrowthAccelerator"
-import WorkflowStatus from "./automation/workFlowStatus"
-
-export const ArchivedIcons = {
-  MoonIcon,
-  StarIcon,
-  TrashIcon,
-
-  //AggressiveAccelerator Icons
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
   CurrencyDollarIcon,
   ClockIcon,
   ArrowTrendingUpIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
-<<<<<<< HEAD
-  FunnelIcon,
-  BoltIcon,
-  RocketLaunchIcon,
-  ChartBarIcon,
-  UserGroupIcon,
-  ArrowTrendingDownIcon,
-  BanknotesIcon
-};
-=======
 
 
    ///ContentManager Icons
@@ -100,4 +75,3 @@ export const ArchivedIcons = {
   TrashIcon
 
 }
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c

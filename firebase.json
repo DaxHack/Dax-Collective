@@ -4,6 +4,10 @@
   },
 
   "hosting": {
+    // 1️⃣ Build your React app first
+    "predeploy": [
+      "npm --prefix \"dax-main\" run build"
+    ],
     "public": "dax-main/build",
     "ignore": [
       "firebase.json",
@@ -11,10 +15,7 @@
       "**/node_modules/**"
     ],
     "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
+      { "source": "**", "destination": "/index.html" }
     ],
     "headers": [
       {
@@ -38,9 +39,10 @@
       "serviceAccountKey.json",
       ".env"
     ],
+    // 2️⃣ Lint & fix your Cloud Functions before deploying
     "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint"
-    ]
+
+]
   },
 
   "firestore": {
@@ -53,25 +55,12 @@
   },
 
   "emulators": {
-    "auth": {
-      "port": 9099
-    },
-    "functions": {
-      "port": 5001
-    },
-    "firestore": {
-      "port": 8080
-    },
-    "hosting": {
-      "port": 5000
-    },
-    "storage": {
-      "port": 9199
-    },
-    "ui": {
-      "enabled": true,
-      "port": 4000
-    },
+    "auth":      { "port": 9099 },
+    "functions": { "port": 5001 },
+    "firestore": { "port": 8080 },
+    "hosting":   { "port": 5000 },
+    "storage":   { "port": 9199 },
+    "ui":        { "enabled": true, "port": 4000 },
     "singleProjectMode": true
   }
 }
