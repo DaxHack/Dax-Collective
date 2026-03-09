@@ -21,6 +21,12 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+.env.local
+.env.production
+.env.development
+*.json.backup
+credentials.json
+.n8n
 
 # ─── Firebase / Cloud / Local Services ─
 .firebaserc
