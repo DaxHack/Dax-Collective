@@ -23,11 +23,11 @@ else
     echo "ℹ️  ani-dax.jpg not found (may already be moved)"
 fi
 
-if [ -f "public/images/daxt-the-traveler.jpg" ]; then
-    mv "public/images/daxt-the-traveler.jpg" "public/images/brands/dax-the-traveler/hero/"
-    echo "✅ Moved daxt-the-traveler.jpg → brands/dax-the-traveler/hero/"
+if [ -f "public/images/dax-the travaler.jpg" ]; then
+    mv "public/images/dax-the travaler.jpg" "public/images/brands/dax-the-traveler/hero/"
+    echo "✅ Moved dax-the travaler.jpg → brands/dax-the-traveler/hero/"
 else
-    echo "ℹ️  daxt-the-traveler.jpg not found (may already be moved)"
+    echo "ℹ️  dax-the travaler.jpg not found (may already be moved)"
 fi
 
 if [ -f "public/images/gods-vessel.jpg" ]; then

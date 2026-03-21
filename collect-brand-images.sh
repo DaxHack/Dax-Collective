@@ -74,9 +74,9 @@ if [ -f "public/images/dax-collective.jpg" ]; then
     echo "✅ Moved dax-collective.jpg to organized structure"
 fi
 
-if [ -f "public/images/daxt-the-traveler.jpg" ]; then
-    cp "public/images/daxt-the-traveler.jpg" "public/images/brands/dax-the-traveler/hero/"
-    echo "✅ Moved daxt-the-traveler.jpg to organized structure"
+if [ -f "public/images/dax-the travaler.jpg" ]; then
+    cp "public/images/dax-the travaler.jpg" "public/images/brands/dax-the-traveler/hero/"
+    echo "✅ Moved dax-the travaler.jpg to organized structure"
 fi
 
 if [ -f "public/images/ani-dax.jpg" ]; then

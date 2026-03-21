@@ -1,0 +1,400 @@
+{
+  "name": "God's Vessel - Faith Content Creator",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": "1w3Rj5BPbm9om9hTkCbhcGPgntEqHhy3LBS0sQ2eFMrM",
+        "sheetName": "Sheet1",
+        "range": "A:Z",
+        "dataMode": "autoMapInputData",
+        "options": {}
+      },
+      "id": "gods-vessel-trigger",
+      "name": "God's Vessel Content Monitor",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [240, 300],
+      "webhookId": "gods-vessel-trigger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-oauth",
+          "name": "Google Sheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json['Production Status'] }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-faith-ready",
+      "name": "Check Faith Content Ready",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Determine voice based on content type and theological depth\nconst contentType = $json['Story Category'] || $json['Content Type'] || 'General';\nconst theologicalDepth = $json['Theological Depth'] || 'Intermediate';\nconst ageGroup = $json['Age Appropriateness'] || 'All ages';\n\nlet voiceId = 'WtA85syCrJwasGeHGH2p'; // Default comforting voice\n\n// Voice selection logic\nif (contentType.includes('Courage') || contentType.includes('Battle')) {\n  voiceId = 'ZF6FPAbjXT4488VcRRnw'; // Strong voice\n} else if (ageGroup.includes('Children') || ageGroup.includes('Families')) {\n  voiceId = 'WtA85syCrJwasGeHGH2p'; // Gentle voice\n} else if (theologicalDepth === 'Advanced' || contentType.includes('Teaching')) {\n  voiceId = 'ZF6FPAbjXT4488VcRRnw'; // Teaching voice\n}\n\nreturn {\n  json: {\n    ...($json),\n    selectedVoiceId: voiceId,\n    contentStyle: contentType,\n    targetAudience: ageGroup\n  }\n};"
+      },
+      "id": "faith-voice-selector",
+      "name": "Faith Voice Selector",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "operation": "create",
+        "model": "gpt-4-turbo-preview",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a faithful Christian content creator for God's Vessel. Create inspiring, biblically-grounded scripts that strengthen faith and provide spiritual guidance. Focus on {{ $json['Story Category'] || 'faith building' }} content for {{ $json['Age Appropriateness'] || 'all ages' }}. Include the Bible reference {{ $json['Bible Reference'] || '' }}, emphasize the moral lesson: {{ $json['Moral Lesson'] || 'God\\'s love and faithfulness' }}, and connect to modern life. Return JSON: {\"script\": \"inspiring narration with biblical truth\", \"scenes\": [{\"timestamp\": \"0-15s\", \"visual_description\": \"biblical scene or modern application\", \"text_overlay\": \"key verse or truth\"}], \"tags\": [\"faith hashtags\"], \"title\": \"inspiring faith title\", \"description\": \"YouTube description with biblical encouragement\", \"merchandise_cta\": \"God\\'s Vessel apparel promotion\"}"
+            },
+            {
+              "role": "user",
+              "content": "Create a {{ $json['Video Length'] || '8-12 minute' }} faith video about: {{ $json['Story Title'] }}\\n\\nBible Reference: {{ $json['Bible Reference'] }}\\nMoral Lesson: {{ $json['Moral Lesson'] }}\\nTarget Audience: {{ $json['Age Appropriateness'] }}\\nTheological Depth: {{ $json['Theological Depth'] }}\\nKey Characters: {{ $json['Key Characters'] || 'Biblical heroes' }}\\nModern Application: {{ $json['Modern Parallels'] || 'Daily faith challenges' }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.6,
+          "maxTokens": 2500
+        }
+      },
+      "id": "generate-faith-script",
+      "name": "Generate Faith Script",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-api",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://fal.run/fal-ai/flux/schnell",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "falAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key {{ $credentials.falAiApi.apiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "{{ $json['Visual Elements'] }}, biblical scene, {{ $json['Key Characters'] }}, inspirational, peaceful, divine light, spiritual, faith-based, warm colors, heavenly atmosphere, {{ $json['Animation Style'] || 'realistic biblical art' }}"
+            },
+            {
+              "name": "image_size",
+              "value": "landscape_16_9"
+            },
+            {
+              "name": "num_inference_steps",
+              "value": 8
+            },
+            {
+              "name": "enable_safety_checker",
+              "value": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "generate-biblical-visual",
+      "name": "Generate Biblical Visual",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 200],
+      "credentials": {
+        "falAiApi": {
+          "id": "fal-ai-api",
+          "name": "Fal.AI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/={{ $json.selectedVoiceId }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "elevenLabsApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "{{ $credentials.elevenLabsApi.apiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).script }}"
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_multilingual_v2"
+            },
+            {
+              "name": "voice_settings",
+              "value": {
+                "stability": 0.8,
+                "similarity_boost": 0.9,
+                "style": 0.2,
+                "use_speaker_boost": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "generate-faith-voiceover",
+      "name": "Generate Faith Voiceover",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 400],
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "elevenlabs-api",
+          "name": "ElevenLabs API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).title }}",
+        "description": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).description }}\\n\\n📖 Bible Reference: {{ $json['Bible Reference'] }}\\n✝️ God's Vessel Apparel: {{ $json['Merchandise Tie-in'] }}\\n🙏 {{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).merchandise_cta }}\\n\\n#GodsVessel #Faith #BibleStory #ChristianContent",
+        "tags": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).tags.join(',') }},GodsVessel,Faith,Christian,Bible",
+        "categoryId": "22",
+        "privacyStatus": "public",
+        "binaryData": true,
+        "binaryPropertyName": "data"
+      },
+      "id": "upload-faith-video",
+      "name": "Upload Faith Video",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 2,
+      "position": [1340, 300],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "youtube-oauth",
+          "name": "YouTube OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": "1w3Rj5BPbm9om9hTkCbhcGPgntEqHhy3LBS0sQ2eFMrM",
+        "sheetName": "Sheet1",
+        "range": "A{{ $json.rowIndex || '2' }}:Z{{ $json.rowIndex || '2' }}",
+        "dataMode": "autoMapInputData",
+        "valueInputMode": "raw",
+        "values": {
+          "values": [
+            [
+              "={{ $json['Story ID'] }}",
+              "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).title }}",
+              "={{ $json['Bible Reference'] }}",
+              "={{ $json['Story Category'] }}",
+              "={{ $json['Target Audience'] }}",
+              "={{ $json['Video Length'] }}",
+              "={{ $json['Narrative Style'] }}",
+              "={{ $json['Key Characters'] }}",
+              "={{ $json['Moral Lesson'] }}",
+              "={{ $json['Visual Elements'] }}",
+              "={{ $json['Engagement Strategy'] }}",
+              "={{ $json['Revenue Potential'] }}",
+              "={{ $json['Theological Depth'] }}",
+              "={{ $json['Age Appropriateness'] }}",
+              "={{ $json['Seasonal Relevance'] }}",
+              "={{ $json['Viral Score'] }}",
+              "={{ $json['Revenue Type'] }}",
+              "={{ $json['Automation Trigger'] }}",
+              "={{ $json.selectedVoiceId }}",
+              "Done",
+              "={{ $json['Animation Style'] }}",
+              "={{ $json['Music Theme'] }}",
+              "={{ $json['Educational Value'] }}",
+              "={{ $json['Cross-References'] }}",
+              "={{ $json['Application Points'] }}",
+              "={{ $json['Merchandise Tie-in'] }}",
+              "={{ $json['CTA Strategy'] }}",
+              "={{ $json['Upload Schedule'] }}",
+              "={{ $json['Series Connection'] }}",
+              "={{ $json['Modern Parallels'] }}",
+              "https://youtube.com/watch?v={{ $('Upload Faith Video').first().json.id }}"
+            ]
+          ]
+        }
+      },
+      "id": "update-gods-vessel-sheet",
+      "name": "Update God's Vessel Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1560, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-oauth",
+          "name": "Google Sheets OAuth2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "God's Vessel Content Monitor": {
+      "main": [
+        [
+          {
+            "node": "Check Faith Content Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Faith Content Ready": {
+      "main": [
+        [
+          {
+            "node": "Faith Voice Selector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Faith Voice Selector": {
+      "main": [
+        [
+          {
+            "node": "Generate Faith Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Faith Script": {
+      "main": [
+        [
+          {
+            "node": "Generate Biblical Visual",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Faith Voiceover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Biblical Visual": {
+      "main": [
+        [
+          {
+            "node": "Upload Faith Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Faith Voiceover": {
+      "main": [
+        [
+          {
+            "node": "Upload Faith Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Faith Video": {
+      "main": [
+        [
+          {
+            "node": "Update God's Vessel Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "id": "gods-vessel",
+      "name": "Gods Vessel"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}
+

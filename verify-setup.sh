@@ -34,9 +34,9 @@ if [ -f "public/images/dax-collective.jpg" ]; then
     existing_images+=("dax-collective.jpg")
 fi
 
-if [ -f "public/images/daxt-the-traveler.jpg" ]; then
-    echo "✅ Found: daxt-the-traveler.jpg"
-    existing_images+=("daxt-the-traveler.jpg")
+if [ -f "public/images/dax-the-travaler.jpg" ]; then
+    echo "✅ Found: dax-the-travaler.jpg"
+    existing_images+=("dax-the-traveler.jpg")
 fi
 
 if [ -f "public/images/ani-dax.jpg" ]; then

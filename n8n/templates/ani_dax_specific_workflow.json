@@ -1,0 +1,317 @@
+{
+  "name": "Ani-Dax - Anime Analysis Creator",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": "1w_pJUiglYTT4G_ku4ySxXSXeHKr-BpEplTX3iKT5YZ4",
+        "sheetName": "Sheet1",
+        "range": "A:Z",
+        "dataMode": "autoMapInputData",
+        "options": {}
+      },
+      "id": "ani-dax-trigger",
+      "name": "Ani-Dax Content Monitor",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [240, 300],
+      "webhookId": "ani-dax-trigger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-oauth",
+          "name": "Google Sheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json['Production Status'] }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "condition2",
+              "leftValue": "={{ $json['Viral Score'] }}",
+              "rightValue": 75,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-anime-ready",
+      "name": "Check Anime Content Ready",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "operation": "create",
+        "model": "gpt-4-turbo-preview",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an energetic anime analyst for Ani-Dax. Create engaging anime analysis content with deep character insights, power scaling discussions, and cultural commentary. Focus on {{ $json['Anime Series'] || 'popular anime' }} with {{ $json['Content Type'] || 'character analysis' }}. Include modern relevance ({{ $json['Modern Relevance'] || 'contemporary themes' }}) and cross-brand opportunities ({{ $json['Cross-Brand Opportunity'] || 'none' }}). Return JSON: {\"script\": \"energetic anime analysis narration\", \"scenes\": [{\"timestamp\": \"0-15s\", \"visual_description\": \"anime scene or character focus\", \"text_overlay\": \"key analysis point\"}], \"tags\": [\"anime hashtags\"], \"title\": \"engaging anime title\", \"description\": \"YouTube description with anime insights\", \"power_ranking\": \"if applicable, power level analysis\"}"
+            },
+            {
+              "role": "user",
+              "content": "Create a {{ $json['Video Length'] || '12-15 minute' }} anime analysis video about: {{ $json['Video Title'] }}\\n\\nAnime Series: {{ $json['Anime Series'] }}\\nContent Type: {{ $json['Content Type'] }}\\nCategory: {{ $json['Category'] }}\\nTarget Audience: {{ $json['Target Audience'] }}\\nViral Score: {{ $json['Viral Score'] }}\\nModern Relevance: {{ $json['Modern Relevance'] }}\\nCompetition Level: {{ $json['Competition Level'] }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 2500
+        }
+      },
+      "id": "generate-anime-script",
+      "name": "Generate Anime Script",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-api",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://fal.run/fal-ai/flux/schnell",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "falAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key {{ $credentials.falAiApi.apiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "{{ $json['Anime Series'] }}, anime style, dynamic composition, {{ $json['Category'] }}, vibrant colors, action-packed, character focus, manga style, high energy, dramatic lighting, anime aesthetic"
+            },
+            {
+              "name": "image_size",
+              "value": "landscape_16_9"
+            },
+            {
+              "name": "num_inference_steps",
+              "value": 6
+            },
+            {
+              "name": "enable_safety_checker",
+              "value": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "generate-anime-visual",
+      "name": "Generate Anime Visual",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 200],
+      "credentials": {
+        "falAiApi": {
+          "id": "fal-ai-api",
+          "name": "Fal.AI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/1t1EeRixsJrKbiF1zwM6",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "elevenLabsApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "{{ $credentials.elevenLabsApi.apiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).script }}"
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_multilingual_v2"
+            },
+            {
+              "name": "voice_settings",
+              "value": {
+                "stability": 0.6,
+                "similarity_boost": 0.8,
+                "style": 0.5,
+                "use_speaker_boost": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "generate-anime-voiceover",
+      "name": "Generate Anime Voiceover",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 400],
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "elevenlabs-api",
+          "name": "ElevenLabs API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).title }}",
+        "description": "={{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).description }}\\n\\n🔥 Anime Series: {{ $json['Anime Series'] }}\\n⚡ Power Level: {{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).power_ranking || 'Over 9000!' }}\\n🎌 #AniDax #AnimeAnalysis #{{ $json['Anime Series'].replace(/\\s+/g, '') }}",
+        "tags": "={{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).tags.join(',') }},AniDax,Anime,Analysis,{{ $json['Anime Series'] }}",
+        "categoryId": "24",
+        "privacyStatus": "public",
+        "binaryData": true,
+        "binaryPropertyName": "data"
+      },
+      "id": "upload-anime-video",
+      "name": "Upload Anime Video",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 2,
+      "position": [1120, 300],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "youtube-oauth",
+          "name": "YouTube OAuth2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Ani-Dax Content Monitor": {
+      "main": [
+        [
+          {
+            "node": "Check Anime Content Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Anime Content Ready": {
+      "main": [
+        [
+          {
+            "node": "Generate Anime Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Anime Script": {
+      "main": [
+        [
+          {
+            "node": "Generate Anime Visual",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Anime Voiceover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Anime Visual": {
+      "main": [
+        [
+          {
+            "node": "Upload Anime Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Anime Voiceover": {
+      "main": [
+        [
+          {
+            "node": "Upload Anime Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "id": "ani-dax",
+      "name": "Ani-Dax"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}
+

@@ -1,0 +1,308 @@
+{
+  "name": "Dax the Traveler - Travel Content Creator",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": "1MKWg5QKx_tqDK7UHBWyAMNfCU_7nO6mp64uD-4P8Wto",
+        "sheetName": "Sheet1",
+        "range": "A:Z",
+        "dataMode": "autoMapInputData",
+        "options": {}
+      },
+      "id": "dax-traveler-trigger",
+      "name": "Dax Traveler Content Monitor",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [240, 300],
+      "webhookId": "dax-traveler-trigger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-oauth",
+          "name": "Google Sheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json['Upload Status'] }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-ready-status",
+      "name": "Check Ready Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "operation": "create",
+        "model": "gpt-4-turbo-preview",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are Dax, an adventurous travel content creator. Create engaging travel scripts with personal storytelling, budget tips, and authentic experiences. Focus on {{ $json['Destination Focus'] || 'travel destinations' }} for {{ $json['Audience Segment'] || 'young adventurers' }}. Include practical advice, budget considerations ({{ $json['Budget Category'] || '$20-50/day' }}), and cultural insights. Return JSON: {\"script\": \"full narration with personal touch\", \"scenes\": [{\"timestamp\": \"0-15s\", \"visual_description\": \"travel scene description\", \"text_overlay\": \"key tip or location\"}], \"tags\": [\"travel hashtags\"], \"title\": \"engaging travel title\", \"description\": \"YouTube description with affiliate links\", \"patreon_cta\": \"Traveler's Club promotion\"}"
+            },
+            {
+              "role": "user",
+              "content": "Create a {{ $json['Video Length'] || '10-12 minute' }} travel video about: {{ $json['Script Prompt'] }}\\n\\nDestination: {{ $json['Destination Focus'] }}\\nBudget: {{ $json['Budget Category'] }}\\nSeason: {{ $json['Travel Season'] }}\\nAudience: {{ $json['Audience Segment'] }}\\nAffiliate Focus: {{ $json['Affiliate Link'] }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 2500
+        }
+      },
+      "id": "generate-travel-script",
+      "name": "Generate Travel Script",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-api",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://fal.run/fal-ai/flux/schnell",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "falAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key {{ $credentials.falAiApi.apiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "{{ $json['Destination Focus'] }}, travel photography, backpacking adventure, {{ $json['Travel Season'] }} season, budget travel, authentic local experience, vibrant colors, wanderlust, exploration"
+            },
+            {
+              "name": "image_size",
+              "value": "landscape_16_9"
+            },
+            {
+              "name": "num_inference_steps",
+              "value": 6
+            },
+            {
+              "name": "enable_safety_checker",
+              "value": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "generate-travel-visual",
+      "name": "Generate Travel Visual",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 200],
+      "credentials": {
+        "falAiApi": {
+          "id": "fal-ai-api",
+          "name": "Fal.AI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/MINE",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "elevenLabsApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "{{ $credentials.elevenLabsApi.apiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).script }}"
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_multilingual_v2"
+            },
+            {
+              "name": "voice_settings",
+              "value": {
+                "stability": 0.7,
+                "similarity_boost": 0.8,
+                "style": 0.4,
+                "use_speaker_boost": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "generate-dax-voiceover",
+      "name": "Generate Dax Voiceover",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 400],
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "elevenlabs-api",
+          "name": "ElevenLabs API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).title }}",
+        "description": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).description }}\\n\\n🎒 Join the Traveler's Club: {{ $json['Patreon Integration'] }}\\n🔗 Travel Gear: {{ $json['Affiliate Link'] }}\\n\\n{{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).patreon_cta }}",
+        "tags": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).tags.join(',') }},DaxTheTraveler,BudgetTravel",
+        "categoryId": "19",
+        "privacyStatus": "public",
+        "binaryData": true,
+        "binaryPropertyName": "data"
+      },
+      "id": "upload-travel-video",
+      "name": "Upload Travel Video",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 2,
+      "position": [1120, 300],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "youtube-oauth",
+          "name": "YouTube OAuth2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Dax Traveler Content Monitor": {
+      "main": [
+        [
+          {
+            "node": "Check Ready Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Ready Status": {
+      "main": [
+        [
+          {
+            "node": "Generate Travel Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Travel Script": {
+      "main": [
+        [
+          {
+            "node": "Generate Travel Visual",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Dax Voiceover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Travel Visual": {
+      "main": [
+        [
+          {
+            "node": "Upload Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Dax Voiceover": {
+      "main": [
+        [
+          {
+            "node": "Upload Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "id": "dax-traveler",
+      "name": "Dax Traveler"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}
+
