@@ -1,0 +1,619 @@
+{
+  "name": "Time-Zone Travelers Video Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 8
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.TIMEZONE_TRAVELERS_SHEET_ID}}",
+        "sheetName": "Video Queue",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Read Timezone Travelers Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Upload Status']}}",
+              "rightValue": "Not Started",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{$json['Viral Score']}}",
+              "rightValue": 75,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Filter Travel Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "options": {
+          "qs": {
+            "q": "={{$json['Location Focus']}}",
+            "appid": "={{$env.OPENWEATHER_API_KEY}}",
+            "units": "metric"
+          }
+        }
+      },
+      "id": "4",
+      "name": "Get Location Weather Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        680,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 1200
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an expert travel content creator specializing in survival tips, cultural insights, and practical travel advice. Create engaging, informative scripts that could save lives and enhance travel experiences."
+            },
+            {
+              "role": "user",
+              "content": "Create a detailed travel video script based on this prompt: {{$json['Script Prompt']}}\n\nLocation: {{$json['Location Focus']}}\nCurrent weather: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C\nContent type: {{$json['Content Type']}}\nTarget platform: {{$json['Target Platform']}}\nSurvival element: {{$json['Survival Element']}}\n\nInclude practical tips, cultural insights, and safety warnings. Start with a compelling hook about the dangers or unique aspects of this location. Include CTAs for Patreon travel guides and affiliate travel gear."
+            }
+          ]
+        }
+      },
+      "id": "5",
+      "name": "Generate Travel Script",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "eleven_multilingual_v2",
+        "text": "={{$json.choices[0].message.content}}",
+        "voice": "={{$('Read Timezone Travelers Sheet').item.json['Audio Style']}}",
+        "options": {
+          "stability": 0.6,
+          "similarityBoost": 0.7,
+          "style": 0.4
+        }
+      },
+      "id": "6",
+      "name": "Generate Adventure Voice",
+      "type": "n8n-nodes-base.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "3",
+          "name": "ElevenLabs API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{$('Read Timezone Travelers Sheet').item.json['Location Focus']}} travel destination landscape",
+        "per_page": 8,
+        "orientation": "landscape"
+      },
+      "id": "7",
+      "name": "Search Location Images",
+      "type": "n8n-nodes-base.pexels",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        480
+      ],
+      "credentials": {
+        "pexelsApi": {
+          "id": "4",
+          "name": "Pexels API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "survival gear backpack travel equipment",
+        "per_page": 5,
+        "orientation": "square"
+      },
+      "id": "8",
+      "name": "Search Survival Gear Images",
+      "type": "n8n-nodes-base.pexels",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        660
+      ],
+      "credentials": {
+        "pexelsApi": {
+          "id": "4",
+          "name": "Pexels API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "dall-e-3",
+        "prompt": "Travel YouTube thumbnail: {{$('Read Timezone Travelers Sheet').item.json['Thumbnail Prompt']}} - dramatic lighting, adventure theme, bold text overlay, high contrast colors",
+        "options": {
+          "size": "1792x1024",
+          "quality": "hd"
+        }
+      },
+      "id": "9",
+      "name": "Generate Travel Thumbnail",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1340,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -i {{$('Search Location Images').item.json.photos[0].src.large}} -i {{$('Search Survival Gear Images').item.json.photos[0].src.large}} -i {{$('Generate Adventure Voice').item.binary.data}} -filter_complex \"[0:v]scale=1920:1080,setsar=1[bg];[1:v]scale=400:400[gear];[bg][gear]overlay=W-w-50:50[v]\" -map \"[v]\" -map 2:a -c:v libx264 -c:a aac -b:a 192k -pix_fmt yuv420p -t 60 /tmp/timezone_{{$('Read Timezone Travelers Sheet').item.json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4"
+      },
+      "id": "10",
+      "name": "Create Travel Video",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.6,
+          "maxTokens": 800
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a travel blog writer. Convert video scripts into engaging blog posts with SEO optimization, practical tips, and clear structure."
+            },
+            {
+              "role": "user",
+              "content": "Convert this travel video script into a comprehensive blog post:\n\n{{$('Generate Travel Script').item.json.choices[0].message.content}}\n\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nInclude: Introduction, main content sections, practical tips, safety warnings, packing list, and conclusion with CTAs for Patreon travel guides."
+            }
+          ]
+        }
+      },
+      "id": "11",
+      "name": "Generate Travel Blog",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1560,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.TIMEZONE_TRAVELERS_SHEET_ID}}",
+        "sheetName": "Video Queue",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": false
+        },
+        "columnToMatchOn": "Video Title",
+        "valueToMatchOn": "={{$('Read Timezone Travelers Sheet').item.json['Video Title']}}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Full Script",
+              "fieldValue": "={{$('Generate Travel Script').item.json.choices[0].message.content}}"
+            },
+            {
+              "column": "Upload Status",
+              "fieldValue": "Generated"
+            },
+            {
+              "column": "Generated By",
+              "fieldValue": "n8n Travel Automation"
+            }
+          ]
+        }
+      },
+      "id": "12",
+      "name": "Update Travel Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1780,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "/tmp/travel_blog_{{$('Read Timezone Travelers Sheet').item.json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.md",
+        "fileContent": "# {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n\n{{$('Generate Travel Blog').item.json.choices[0].message.content}}\n\n---\n\n**Join the Traveler's Club on Patreon for exclusive travel guides and insider tips!**\n\n**Affiliate Links:**\n{{$('Read Timezone Travelers Sheet').item.json['Affiliate Link']}}"
+      },
+      "id": "13",
+      "name": "Save Blog Post",
+      "type": "n8n-nodes-base.writeFile",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_CHANNEL_ID}}",
+        "text": "🌍 New Time-Zone Travelers content generated!\n\n**Title:** {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n**Location:** {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\n**Viral Score:** {{$('Read Timezone Travelers Sheet').item.json['Viral Score']}}\n**Platform:** {{$('Read Timezone Travelers Sheet').item.json['Target Platform']}}\n\n✅ Video created\n✅ Blog post generated\n✅ Ready for upload\n\nCurrent weather in {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C"
+      },
+      "id": "14",
+      "name": "Travel Discord Notification",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        300
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$('Read Timezone Travelers Sheet').item.json['Revenue Potential']}}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "15",
+      "name": "Check High Revenue Potential",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 400
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a travel affiliate marketing expert. Suggest specific products and strategies to maximize revenue from travel content."
+            },
+            {
+              "role": "user",
+              "content": "This travel content has high revenue potential:\n\nTitle: {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nSurvival Element: {{$('Read Timezone Travelers Sheet').item.json['Survival Element']}}\n\nSuggest 5 specific affiliate products that would be perfect for this content, including Amazon product categories and potential commission rates."
+            }
+          ]
+        }
+      },
+      "id": "16",
+      "name": "Generate Affiliate Suggestions",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        2220,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Timezone Travelers Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Timezone Travelers Sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter Travel Content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Location Weather Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Travel Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Travel Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Location Weather Data": {
+      "main": [
+        [
+          {
+            "node": "Generate Travel Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Travel Script": {
+      "main": [
+        [
+          {
+            "node": "Generate Adventure Voice",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Search Location Images",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Travel Thumbnail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Travel Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Adventure Voice": {
+      "main": [
+        [
+          {
+            "node": "Create Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Location Images": {
+      "main": [
+        [
+          {
+            "node": "Search Survival Gear Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Survival Gear Images": {
+      "main": [
+        [
+          {
+            "node": "Create Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Travel Thumbnail": {
+      "main": [
+        [
+          {
+            "node": "Create Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Travel Video": {
+      "main": [
+        [
+          {
+            "node": "Update Travel Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Travel Blog": {
+      "main": [
+        [
+          {
+            "node": "Save Blog Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Travel Sheet": {
+      "main": [
+        [
+          {
+            "node": "Travel Discord Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check High Revenue Potential",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Blog Post": {
+      "main": [
+        [
+          {
+            "node": "Travel Discord Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check High Revenue Potential": {
+      "main": [
+        [
+          {
+            "node": "Generate Affiliate Suggestions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "timezone-travelers-video-generator"
+  },
+  "id": "timezone-travelers-video-generator",
+  "tags": []
+}
+

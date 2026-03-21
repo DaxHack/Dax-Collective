@@ -1,0 +1,456 @@
+{
+  "name": "AI Content Strategist Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "content-strategy-trigger",
+      "name": "Daily Content Strategy at 8 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// AI Content Strategist Agent\n// Analyzes content performance, identifies trends, and generates strategic recommendations\n\nconst contentStrategyConfig = {\n  brands: {\n    dax_traveler: {\n      enabled: $env.BRAND_DAX_TRAVELER_ENABLED === 'true',\n      content_types: ['vlogs', 'travel_guides', 'destination_reviews', 'travel_tips'],\n      platforms: ['youtube', 'instagram', 'tiktok', 'blog'],\n      target_audience: 'adventure_travelers',\n      content_pillars: ['adventure', 'budget_travel', 'cultural_experiences', 'solo_travel'],\n      posting_frequency: {\n        youtube: 3, // per week\n        instagram: 7, // per week\n        tiktok: 5, // per week\n        blog: 2 // per week\n      }\n    },\n    gods_vessel: {\n      enabled: $env.BRAND_GODS_VESSEL_ENABLED === 'true',\n      content_types: ['devotionals', 'bible_studies', 'inspirational_quotes', 'testimonies'],\n      platforms: ['instagram', 'facebook', 'pinterest', 'blog'],\n      target_audience: 'christian_community',\n      content_pillars: ['faith', 'hope', 'love', 'spiritual_growth'],\n      posting_frequency: {\n        instagram: 7, // per week\n        facebook: 5, // per week\n        pinterest: 10, // per week\n        blog: 3 // per week\n      }\n    },\n    timezone_travelers: {\n      enabled: $env.BRAND_TIMEZONE_TRAVELERS_ENABLED === 'true',\n      content_types: ['itineraries', 'travel_hacks', 'destination_guides', 'packing_lists'],\n      platforms: ['blog', 'pinterest', 'linkedin'],\n      target_audience: 'travel_planners',\n      content_pillars: ['planning', 'efficiency', 'budget_optimization', 'time_management'],\n      posting_frequency: {\n        blog: 5, // per week\n        pinterest: 15, // per week\n        linkedin: 3 // per week\n      }\n    },\n    ani_dax: {\n      enabled: $env.BRAND_ANI_DAX_ENABLED === 'true',\n      content_types: ['anime_reviews', 'manga_discussions', 'character_analysis', 'recommendations'],\n      platforms: ['tiktok', 'instagram', 'twitter', 'blog'],\n      target_audience: 'anime_enthusiasts',\n      content_pillars: ['anime_culture', 'reviews', 'recommendations', 'community'],\n      posting_frequency: {\n        tiktok: 10, // per week\n        instagram: 7, // per week\n        twitter: 14, // per week\n        blog: 2 // per week\n      }\n    }\n  },\n  \n  ai_models: {\n    content_analysis: {\n      provider: $env.AI_CONTENT_PROVIDER || 'openai',\n      model: $env.AI_CONTENT_MODEL || 'gpt-4',\n      api_key: $env.OPENAI_API_KEY || $env.OPENROUTER_API_KEY\n    },\n    trend_analysis: {\n      provider: $env.AI_TREND_PROVIDER || 'claude',\n      model: $env.AI_TREND_MODEL || 'claude-3-sonnet',\n      api_key: $env.ANTHROPIC_API_KEY\n    },\n    seo_optimization: {\n      provider: $env.AI_SEO_PROVIDER || 'deepseek',\n      model: $env.AI_SEO_MODEL || 'deepseek-chat',\n      api_key: $env.DEEPSEEK_API_KEY\n    }\n  },\n  \n  analysis_sources: {\n    youtube_analytics: {\n      enabled: $env.YOUTUBE_ANALYTICS_ENABLED === 'true',\n      api_key: $env.YOUTUBE_API_KEY\n    },\n    google_trends: {\n      enabled: $env.GOOGLE_TRENDS_ENABLED === 'true',\n      api_key: $env.GOOGLE_TRENDS_API_KEY\n    },\n    social_listening: {\n      enabled: $env.SOCIAL_LISTENING_ENABLED === 'true',\n      platforms: ['twitter', 'reddit', 'instagram']\n    },\n    competitor_analysis: {\n      enabled: $env.COMPETITOR_ANALYSIS_ENABLED === 'true',\n      competitors: {\n        travel: ['nomadic_fanatic', 'kara_and_nate', 'drew_binsky'],\n        faith: ['jesus_calling', 'proverbs31', 'elevation_church'],\n        anime: ['anime_man', 'gigguk', 'mother_basement']\n      }\n    }\n  },\n  \n  strategy_goals: {\n    engagement: {\n      target_increase: 0.25, // 25% monthly increase\n      key_metrics: ['likes', 'comments', 'shares', 'saves']\n    },\n    reach: {\n      target_increase: 0.30, // 30% monthly increase\n      key_metrics: ['impressions', 'reach', 'views']\n    },\n    conversion: {\n      target_increase: 0.20, // 20% monthly increase\n      key_metrics: ['click_through_rate', 'sign_ups', 'purchases']\n    },\n    seo: {\n      target_keywords: 50, // per brand\n      ranking_improvement: 10 // positions per month\n    }\n  }\n};\n\nconst analysisTimestamp = new Date().toISOString();\nconst enabledBrands = Object.keys(contentStrategyConfig.brands).filter(\n  brand => contentStrategyConfig.brands[brand].enabled\n);\n\nreturn {\n  contentStrategyConfig,\n  enabledBrands,\n  analysisTimestamp,\n  totalBrands: enabledBrands.length\n};"
+      },
+      "id": "prepare-content-strategy",
+      "name": "Prepare Content Strategy Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-brands",
+      "name": "Analyze Each Brand",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Configure brand-specific content analysis\nconst strategyData = $('Prepare Content Strategy Analysis').first();\nconst currentBrand = strategyData.enabledBrands[$('Analyze Each Brand').itemIndex];\n\nif (!currentBrand) {\n  return null;\n}\n\nconst brandConfig = strategyData.contentStrategyConfig.brands[currentBrand];\nconst aiModels = strategyData.contentStrategyConfig.ai_models;\nconst analysisSources = strategyData.contentStrategyConfig.analysis_sources;\nconst strategyGoals = strategyData.contentStrategyConfig.strategy_goals;\n\n// Generate content analysis prompts for AI\nconst contentAnalysisPrompts = {\n  performance_analysis: `Analyze the content performance for ${currentBrand} brand focusing on:\n  - Content types: ${brandConfig.content_types.join(', ')}\n  - Target audience: ${brandConfig.target_audience}\n  - Content pillars: ${brandConfig.content_pillars.join(', ')}\n  - Platforms: ${brandConfig.platforms.join(', ')}\n  \n  Provide insights on:\n  1. Top performing content themes\n  2. Optimal posting times and frequency\n  3. Audience engagement patterns\n  4. Content format preferences\n  5. Seasonal trends and opportunities`,\n  \n  trend_identification: `Identify trending topics and opportunities for ${currentBrand} in the ${brandConfig.target_audience} niche:\n  - Analyze current social media trends\n  - Identify emerging topics in the industry\n  - Suggest viral content opportunities\n  - Recommend trending hashtags and keywords\n  - Predict upcoming seasonal content opportunities`,\n  \n  seo_optimization: `Generate SEO content strategy for ${currentBrand}:\n  - Identify high-value keywords for ${brandConfig.content_pillars.join(', ')}\n  - Suggest content topics with search volume potential\n  - Recommend long-tail keyword opportunities\n  - Analyze competitor content gaps\n  - Provide content cluster recommendations`,\n  \n  content_calendar: `Create a strategic content calendar for ${currentBrand}:\n  - Weekly content themes aligned with ${brandConfig.content_pillars.join(', ')}\n  - Platform-specific content adaptation\n  - Seasonal content opportunities\n  - Cross-promotion strategies\n  - Engagement optimization timing`\n};\n\n// Prepare data collection for analysis\nconst dataCollection = {\n  recent_content: {\n    timeframe: '30d',\n    platforms: brandConfig.platforms,\n    metrics: ['views', 'likes', 'comments', 'shares', 'click_through_rate']\n  },\n  audience_insights: {\n    demographics: ['age', 'gender', 'location', 'interests'],\n    behavior: ['peak_activity_times', 'content_preferences', 'engagement_patterns']\n  },\n  competitor_content: {\n    analysis_depth: 'top_performing',\n    timeframe: '14d',\n    metrics: ['engagement_rate', 'content_format', 'posting_frequency']\n  }\n};\n\nreturn {\n  brand: currentBrand,\n  brandConfig,\n  aiModels,\n  contentAnalysisPrompts,\n  dataCollection,\n  strategyGoals,\n  analysisTimestamp: strategyData.analysisTimestamp\n};"
+      },
+      "id": "configure-brand-analysis",
+      "name": "Configure Brand Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.aiModels.content_analysis.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"{{ $json.aiModels.content_analysis.model }}\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an expert content strategist specializing in multi-platform content optimization and audience engagement. Provide detailed, actionable insights based on data analysis.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.contentAnalysisPrompts.performance_analysis }}\"\n    }\n  ],\n  \"max_tokens\": 2000,\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "id": "analyze-content-performance",
+      "name": "Analyze Content Performance",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "{{ $('Configure Brand Analysis').first().aiModels.trend_analysis.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"{{ $('Configure Brand Analysis').first().aiModels.trend_analysis.model }}\",\n  \"max_tokens\": 2000,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $('Configure Brand Analysis').first().contentAnalysisPrompts.trend_identification }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "identify-trends",
+      "name": "Identify Content Trends",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.deepseek.com/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $('Configure Brand Analysis').first().aiModels.seo_optimization.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"{{ $('Configure Brand Analysis').first().aiModels.seo_optimization.model }}\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an SEO expert specializing in content optimization and keyword strategy. Provide specific, actionable SEO recommendations.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $('Configure Brand Analysis').first().contentAnalysisPrompts.seo_optimization }}\"\n    }\n  ],\n  \"max_tokens\": 2000,\n  \"temperature\": 0.3\n}",
+        "options": {}
+      },
+      "id": "optimize-seo-strategy",
+      "name": "Optimize SEO Strategy",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-ai-analysis",
+      "name": "Merge AI Analysis",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process AI analysis results and generate strategic recommendations\nconst brandConfig = $('Configure Brand Analysis').first();\nconst performanceAnalysis = $('Analyze Content Performance').first();\nconst trendAnalysis = $('Identify Content Trends').first();\nconst seoAnalysis = $('Optimize SEO Strategy').first();\n\n// Extract AI responses\nconst performanceInsights = performanceAnalysis.choices?.[0]?.message?.content || '';\nconst trendInsights = trendAnalysis.content?.[0]?.text || '';\nconst seoInsights = seoAnalysis.choices?.[0]?.message?.content || '';\n\n// Parse and structure insights\nfunction parseInsights(text, category) {\n  const lines = text.split('\\n').filter(line => line.trim());\n  const insights = [];\n  \n  lines.forEach(line => {\n    if (line.includes('•') || line.includes('-') || line.includes('1.') || line.includes('2.')) {\n      insights.push({\n        category,\n        insight: line.replace(/^[•\\-\\d\\.\\s]+/, '').trim(),\n        priority: line.toLowerCase().includes('urgent') || line.toLowerCase().includes('immediate') ? 'high' : 'medium'\n      });\n    }\n  });\n  \n  return insights;\n}\n\nconst allInsights = [\n  ...parseInsights(performanceInsights, 'performance'),\n  ...parseInsights(trendInsights, 'trends'),\n  ...parseInsights(seoInsights, 'seo')\n];\n\n// Generate content calendar recommendations\nfunction generateContentCalendar(brand, insights, brandConfig) {\n  const calendar = {\n    weekly_themes: [],\n    daily_content_types: {},\n    seasonal_opportunities: [],\n    cross_platform_strategy: {}\n  };\n  \n  // Weekly themes based on content pillars\n  brandConfig.content_pillars.forEach((pillar, index) => {\n    calendar.weekly_themes.push({\n      week: index + 1,\n      theme: pillar,\n      focus: `${pillar} content with emphasis on engagement and value delivery`,\n      content_types: brandConfig.content_types.slice(0, 2)\n    });\n  });\n  \n  // Daily content distribution\n  brandConfig.platforms.forEach(platform => {\n    const frequency = brandConfig.posting_frequency[platform] || 1;\n    calendar.daily_content_types[platform] = {\n      posts_per_week: frequency,\n      optimal_times: getOptimalPostingTimes(platform, brand),\n      content_mix: getContentMix(platform, brandConfig.content_types)\n    };\n  });\n  \n  // Seasonal opportunities (next 3 months)\n  calendar.seasonal_opportunities = getSeasonalOpportunities(brand, brandConfig.target_audience);\n  \n  return calendar;\n}\n\nfunction getOptimalPostingTimes(platform, brand) {\n  const timingMap = {\n    youtube: ['Tuesday 2PM', 'Thursday 3PM', 'Saturday 10AM'],\n    instagram: ['Monday 11AM', 'Wednesday 2PM', 'Friday 5PM'],\n    tiktok: ['Tuesday 6AM', 'Thursday 7PM', 'Sunday 9AM'],\n    facebook: ['Wednesday 1PM', 'Friday 3PM', 'Sunday 2PM'],\n    pinterest: ['Saturday 8PM', 'Sunday 9PM', 'Tuesday 8PM'],\n    linkedin: ['Tuesday 10AM', 'Wednesday 12PM', 'Thursday 2PM'],\n    twitter: ['Monday 9AM', 'Wednesday 3PM', 'Friday 5PM'],\n    blog: ['Tuesday 10AM', 'Thursday 2PM']\n  };\n  \n  return timingMap[platform] || ['Monday 12PM', 'Wednesday 3PM', 'Friday 5PM'];\n}\n\nfunction getContentMix(platform, contentTypes) {\n  const platformMix = {\n    youtube: { video: 0.8, shorts: 0.2 },\n    instagram: { posts: 0.4, stories: 0.3, reels: 0.3 },\n    tiktok: { videos: 1.0 },\n    facebook: { posts: 0.6, videos: 0.4 },\n    pinterest: { pins: 0.8, idea_pins: 0.2 },\n    linkedin: { posts: 0.7, articles: 0.3 },\n    twitter: { tweets: 0.8, threads: 0.2 },\n    blog: { articles: 1.0 }\n  };\n  \n  return platformMix[platform] || { posts: 1.0 };\n}\n\nfunction getSeasonalOpportunities(brand, audience) {\n  const currentMonth = new Date().getMonth();\n  const opportunities = [];\n  \n  // Generate next 3 months of opportunities\n  for (let i = 0; i < 3; i++) {\n    const month = (currentMonth + i) % 12;\n    const monthName = new Date(2024, month).toLocaleString('default', { month: 'long' });\n    \n    const seasonalContent = {\n      travel: {\n        0: 'New Year travel resolutions', 1: 'Valentine\\'s romantic getaways', 2: 'Spring break destinations',\n        3: 'Easter travel traditions', 4: 'Mother\\'s Day trips', 5: 'Summer vacation planning',\n        6: 'Independence Day celebrations', 7: 'Back-to-school family trips', 8: 'Fall foliage tours',\n        9: 'Halloween destinations', 10: 'Thanksgiving travel tips', 11: 'Christmas markets'\n      },\n      faith: {\n        0: 'New Year spiritual goals', 1: 'Love and relationships', 2: 'Lenten reflections',\n        3: 'Easter celebrations', 4: 'Mother\\'s Day blessings', 5: 'Summer spiritual retreats',\n        6: 'Freedom in faith', 7: 'Back-to-school prayers', 8: 'Gratitude practices',\n        9: 'All Saints Day', 10: 'Thanksgiving devotions', 11: 'Christmas preparations'\n      },\n      anime: {\n        0: 'New Year anime resolutions', 1: 'Romance anime recommendations', 2: 'Spring anime season',\n        3: 'Easter anime specials', 4: 'Mother figures in anime', 5: 'Summer anime festivals',\n        6: 'Patriotic anime themes', 7: 'School anime series', 8: 'Fall anime premieres',\n        9: 'Halloween anime episodes', 10: 'Thanksgiving anime moments', 11: 'Christmas anime specials'\n      }\n    };\n    \n    const brandCategory = brand.includes('traveler') ? 'travel' : \n                         brand.includes('vessel') ? 'faith' : \n                         brand.includes('ani') ? 'anime' : 'travel';\n    \n    opportunities.push({\n      month: monthName,\n      theme: seasonalContent[brandCategory][month],\n      content_focus: `${monthName} ${brandCategory} content opportunities`,\n      estimated_engagement_boost: '15-30%'\n    });\n  }\n  \n  return opportunities;\n}\n\n// Generate strategic recommendations\nconst contentCalendar = generateContentCalendar(brandConfig.brand, allInsights, brandConfig.brandConfig);\n\n// Calculate strategy scores\nconst strategyScore = {\n  content_diversity: Math.min(100, (brandConfig.brandConfig.content_types.length / 6) * 100),\n  platform_coverage: Math.min(100, (brandConfig.brandConfig.platforms.length / 8) * 100),\n  posting_frequency: Math.min(100, Object.values(brandConfig.brandConfig.posting_frequency).reduce((a, b) => a + b, 0) / 10 * 100),\n  audience_alignment: 85 // Based on content pillar alignment\n};\n\nconst overallScore = Object.values(strategyScore).reduce((a, b) => a + b, 0) / 4;\n\n// Priority action items\nconst actionItems = allInsights\n  .filter(insight => insight.priority === 'high')\n  .slice(0, 5)\n  .map((insight, index) => ({\n    priority: index + 1,\n    category: insight.category,\n    action: insight.insight,\n    estimated_impact: 'medium_to_high',\n    timeframe: '1-2 weeks'\n  }));\n\nreturn {\n  brand: brandConfig.brand,\n  strategy_analysis: {\n    performance_insights: performanceInsights.substring(0, 500),\n    trend_insights: trendInsights.substring(0, 500),\n    seo_insights: seoInsights.substring(0, 500)\n  },\n  content_calendar: contentCalendar,\n  strategy_score: {\n    individual_scores: strategyScore,\n    overall_score: overallScore,\n    grade: overallScore >= 90 ? 'A' : overallScore >= 80 ? 'B' : overallScore >= 70 ? 'C' : 'D'\n  },\n  action_items: actionItems,\n  insights_summary: {\n    total_insights: allInsights.length,\n    high_priority: allInsights.filter(i => i.priority === 'high').length,\n    categories: {\n      performance: allInsights.filter(i => i.category === 'performance').length,\n      trends: allInsights.filter(i => i.category === 'trends').length,\n      seo: allInsights.filter(i => i.category === 'seo').length\n    }\n  },\n  analysis_timestamp: brandConfig.analysisTimestamp\n};"
+      },
+      "id": "compile-strategy-report",
+      "name": "Compile Strategy Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.CONTENT_STRATEGY_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Brand_Strategy_Analysis",
+        "columnToMatchOn": "analysis_id",
+        "valueToMatchOn": "={{ $json.brand }}_{{ $json.analysis_timestamp }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "analysis_id",
+              "value": "={{ $json.brand }}_{{ $json.analysis_timestamp }}"
+            },
+            {
+              "column": "brand",
+              "value": "={{ $json.brand }}"
+            },
+            {
+              "column": "overall_score",
+              "value": "={{ $json.strategy_score.overall_score }}"
+            },
+            {
+              "column": "strategy_grade",
+              "value": "={{ $json.strategy_score.grade }}"
+            },
+            {
+              "column": "content_diversity_score",
+              "value": "={{ $json.strategy_score.individual_scores.content_diversity }}"
+            },
+            {
+              "column": "platform_coverage_score",
+              "value": "={{ $json.strategy_score.individual_scores.platform_coverage }}"
+            },
+            {
+              "column": "posting_frequency_score",
+              "value": "={{ $json.strategy_score.individual_scores.posting_frequency }}"
+            },
+            {
+              "column": "audience_alignment_score",
+              "value": "={{ $json.strategy_score.individual_scores.audience_alignment }}"
+            },
+            {
+              "column": "total_insights",
+              "value": "={{ $json.insights_summary.total_insights }}"
+            },
+            {
+              "column": "high_priority_insights",
+              "value": "={{ $json.insights_summary.high_priority }}"
+            },
+            {
+              "column": "action_items_count",
+              "value": "={{ $json.action_items.length }}"
+            },
+            {
+              "column": "analysis_timestamp",
+              "value": "={{ $json.analysis_timestamp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-strategy-analysis",
+      "name": "Save Strategy Analysis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1780,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "strategy-report",
+              "name": "strategyReport",
+              "value": "🎯 *Content Strategy Report: {{ $json.brand.toUpperCase() }}*\\n\\n*Strategy Score:* {{ $json.strategy_score.overall_score.toFixed(1) }}% (Grade {{ $json.strategy_score.grade }})\\n\\n*Performance Breakdown:*\\n• Content Diversity: {{ $json.strategy_score.individual_scores.content_diversity.toFixed(0) }}%\\n• Platform Coverage: {{ $json.strategy_score.individual_scores.platform_coverage.toFixed(0) }}%\\n• Posting Frequency: {{ $json.strategy_score.individual_scores.posting_frequency.toFixed(0) }}%\\n• Audience Alignment: {{ $json.strategy_score.individual_scores.audience_alignment.toFixed(0) }}%\\n\\n*Insights Generated:* {{ $json.insights_summary.total_insights }} ({{ $json.insights_summary.high_priority }} high priority)\\n\\n*Priority Actions:*\\n{{ $json.action_items.slice(0, 3).map((item, i) => `${i+1}. ${item.action.substring(0, 80)}...`).join('\\n') }}\\n\\n*Next Analysis:* Tomorrow 8 AM",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-strategy-report",
+      "name": "Format Strategy Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2000,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.strategyReport }}\",\n  \"username\": \"Content Strategist\",\n  \"icon_emoji\": \":dart:\"\n}",
+        "options": {}
+      },
+      "id": "send-strategy-report",
+      "name": "Send Strategy Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2220,
+        350
+      ]
+    }
+  ],
+  "connections": {
+    "Daily Content Strategy at 8 AM": {
+      "main": [
+        [
+          {
+            "node": "Prepare Content Strategy Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Content Strategy Analysis": {
+      "main": [
+        [
+          {
+            "node": "Analyze Each Brand",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Each Brand": {
+      "main": [
+        [
+          {
+            "node": "Configure Brand Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure Brand Analysis": {
+      "main": [
+        [
+          {
+            "node": "Analyze Content Performance",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Identify Content Trends",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Optimize SEO Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Content Performance": {
+      "main": [
+        [
+          {
+            "node": "Merge AI Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identify Content Trends": {
+      "main": [
+        [
+          {
+            "node": "Merge AI Analysis",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Optimize SEO Strategy": {
+      "main": [
+        [
+          {
+            "node": "Merge AI Analysis",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge AI Analysis": {
+      "main": [
+        [
+          {
+            "node": "Compile Strategy Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compile Strategy Report": {
+      "main": [
+        [
+          {
+            "node": "Save Strategy Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Strategy Analysis": {
+      "main": [
+        [
+          {
+            "node": "Format Strategy Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Strategy Report": {
+      "main": [
+        [
+          {
+            "node": "Send Strategy Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "content-strategy",
+      "name": "Content Strategy"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "ai-analysis",
+      "name": "AI Analysis"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

@@ -1,0 +1,460 @@
+{
+  "name": "Analytics Dashboard Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 */2 * * *"
+            }
+          ]
+        }
+      },
+      "id": "analytics-trigger",
+      "name": "Collect Analytics Every 2 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analytics Dashboard Agent\n// Aggregates data from all platforms and generates comprehensive performance insights\n\nconst analyticsConfig = {\n  platforms: {\n    youtube: {\n      enabled: $env.YOUTUBE_ANALYTICS_ENABLED === 'true',\n      apiKey: $env.YOUTUBE_API_KEY,\n      channels: [\n        { id: $env.DAX_TRAVELER_CHANNEL_ID, brand: 'dax_traveler' },\n        { id: $env.GODS_VESSEL_CHANNEL_ID, brand: 'gods_vessel' },\n        { id: $env.TIMEZONE_TRAVELERS_CHANNEL_ID, brand: 'timezone_travelers' },\n        { id: $env.ANI_DAX_CHANNEL_ID, brand: 'ani_dax' }\n      ]\n    },\n    google_analytics: {\n      enabled: $env.GOOGLE_ANALYTICS_ENABLED === 'true',\n      propertyId: $env.GA4_PROPERTY_ID,\n      credentials: $env.GOOGLE_ANALYTICS_CREDENTIALS\n    },\n    social_media: {\n      instagram: {\n        enabled: $env.INSTAGRAM_INSIGHTS_ENABLED === 'true',\n        accessToken: $env.INSTAGRAM_ACCESS_TOKEN\n      },\n      facebook: {\n        enabled: $env.FACEBOOK_INSIGHTS_ENABLED === 'true',\n        accessToken: $env.FACEBOOK_ACCESS_TOKEN,\n        pageId: $env.FACEBOOK_PAGE_ID\n      },\n      twitter: {\n        enabled: $env.TWITTER_ANALYTICS_ENABLED === 'true',\n        bearerToken: $env.TWITTER_BEARER_TOKEN\n      },\n      tiktok: {\n        enabled: $env.TIKTOK_ANALYTICS_ENABLED === 'true',\n        accessToken: $env.TIKTOK_ACCESS_TOKEN\n      }\n    },\n    email_marketing: {\n      enabled: $env.EMAIL_ANALYTICS_ENABLED === 'true',\n      provider: $env.EMAIL_PROVIDER || 'mailchimp',\n      apiKey: $env.MAILCHIMP_API_KEY || $env.SENDGRID_API_KEY\n    }\n  },\n  \n  // Key Performance Indicators to track\n  kpis: {\n    revenue: {\n      sources: ['patreon', 'shopify', 'printify', 'youtube', 'affiliates'],\n      targets: {\n        daily: 167, // $50k/month = ~$167/day\n        weekly: 1167,\n        monthly: 50000\n      }\n    },\n    engagement: {\n      metrics: ['views', 'likes', 'comments', 'shares', 'saves'],\n      targets: {\n        youtube_views: 10000,\n        social_engagement_rate: 0.05,\n        email_open_rate: 0.25\n      }\n    },\n    growth: {\n      metrics: ['subscribers', 'followers', 'email_list', 'customers'],\n      targets: {\n        youtube_subscribers: 1000,\n        social_followers: 5000,\n        email_subscribers: 2000\n      }\n    },\n    conversion: {\n      metrics: ['click_through_rate', 'conversion_rate', 'customer_lifetime_value'],\n      targets: {\n        affiliate_ctr: 0.03,\n        ecommerce_conversion: 0.02,\n        patreon_conversion: 0.01\n      }\n    }\n  },\n  \n  // Time periods for analysis\n  timePeriods: {\n    realtime: '1h',\n    daily: '24h',\n    weekly: '7d',\n    monthly: '30d',\n    quarterly: '90d'\n  }\n};\n\nconst analysisTimestamp = new Date().toISOString();\nconst enabledPlatforms = [];\n\n// Collect enabled platforms\nObject.keys(analyticsConfig.platforms).forEach(platform => {\n  if (platform === 'social_media') {\n    Object.keys(analyticsConfig.platforms.social_media).forEach(social => {\n      if (analyticsConfig.platforms.social_media[social].enabled) {\n        enabledPlatforms.push(`social_${social}`);\n      }\n    });\n  } else if (analyticsConfig.platforms[platform].enabled) {\n    enabledPlatforms.push(platform);\n  }\n});\n\nreturn {\n  analyticsConfig,\n  enabledPlatforms,\n  analysisTimestamp,\n  totalPlatforms: enabledPlatforms.length\n};"
+      },
+      "id": "prepare-analytics-collection",
+      "name": "Prepare Analytics Collection",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-platforms",
+      "name": "Process Each Platform",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Configure platform-specific analytics collection\nconst analyticsData = $('Prepare Analytics Collection').first();\nconst currentPlatform = analyticsData.enabledPlatforms[$('Process Each Platform').itemIndex];\n\nif (!currentPlatform) {\n  return null;\n}\n\n// Platform-specific API configurations\nfunction getYouTubeAnalyticsConfig(config) {\n  return {\n    platform: 'youtube',\n    endpoints: config.channels.map(channel => ({\n      url: `https://youtubeanalytics.googleapis.com/v2/reports`,\n      params: {\n        ids: `channel==${channel.id}`,\n        startDate: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0],\n        endDate: new Date().toISOString().split('T')[0],\n        metrics: 'views,likes,comments,shares,subscribersGained,estimatedRevenue',\n        dimensions: 'day',\n        key: config.apiKey\n      },\n      brand: channel.brand\n    }))\n  };\n}\n\nfunction getGoogleAnalyticsConfig(config) {\n  return {\n    platform: 'google_analytics',\n    endpoint: {\n      url: `https://analyticsdata.googleapis.com/v1beta/properties/${config.propertyId}:runReport`,\n      headers: {\n        'Authorization': `Bearer ${config.credentials}`,\n        'Content-Type': 'application/json'\n      },\n      body: {\n        dateRanges: [{\n          startDate: '7daysAgo',\n          endDate: 'today'\n        }],\n        metrics: [\n          { name: 'sessions' },\n          { name: 'users' },\n          { name: 'pageviews' },\n          { name: 'bounceRate' },\n          { name: 'sessionDuration' }\n        ],\n        dimensions: [\n          { name: 'date' },\n          { name: 'source' },\n          { name: 'medium' }\n        ]\n      }\n    }\n  };\n}\n\nfunction getSocialMediaConfig(platform, config) {\n  const configs = {\n    social_instagram: {\n      platform: 'instagram',\n      endpoint: {\n        url: 'https://graph.facebook.com/v18.0/me/insights',\n        params: {\n          metric: 'impressions,reach,profile_views,website_clicks',\n          period: 'day',\n          since: Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000),\n          until: Math.floor(Date.now() / 1000),\n          access_token: config.accessToken\n        }\n      }\n    },\n    social_facebook: {\n      platform: 'facebook',\n      endpoint: {\n        url: `https://graph.facebook.com/v18.0/${config.pageId}/insights`,\n        params: {\n          metric: 'page_impressions,page_reach,page_views,page_engaged_users',\n          period: 'day',\n          since: Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000),\n          until: Math.floor(Date.now() / 1000),\n          access_token: config.accessToken\n        }\n      }\n    },\n    social_twitter: {\n      platform: 'twitter',\n      endpoint: {\n        url: 'https://api.twitter.com/2/users/me/tweets',\n        headers: {\n          'Authorization': `Bearer ${config.bearerToken}`\n        },\n        params: {\n          'tweet.fields': 'public_metrics,created_at',\n          'max_results': 100\n        }\n      }\n    },\n    social_tiktok: {\n      platform: 'tiktok',\n      endpoint: {\n        url: 'https://open-api.tiktok.com/research/video/query/',\n        headers: {\n          'Authorization': `Bearer ${config.accessToken}`,\n          'Content-Type': 'application/json'\n        },\n        body: {\n          query: {\n            and: [\n              {\n                operation: 'IN',\n                field_name: 'region_code',\n                field_values: ['US', 'GB', 'CA']\n              }\n            ]\n          },\n          max_count: 100,\n          cursor: 0\n        }\n      }\n    }\n  };\n  \n  return configs[platform];\n}\n\n// Get configuration for current platform\nlet platformConfig;\nconst config = analyticsData.analyticsConfig.platforms;\n\nif (currentPlatform === 'youtube') {\n  platformConfig = getYouTubeAnalyticsConfig(config.youtube);\n} else if (currentPlatform === 'google_analytics') {\n  platformConfig = getGoogleAnalyticsConfig(config.google_analytics);\n} else if (currentPlatform.startsWith('social_')) {\n  const socialPlatform = currentPlatform.replace('social_', '');\n  const socialConfig = config.social_media[socialPlatform];\n  platformConfig = getSocialMediaConfig(currentPlatform, socialConfig);\n} else {\n  return null;\n}\n\nreturn {\n  ...platformConfig,\n  analysisTimestamp: analyticsData.analysisTimestamp,\n  kpis: analyticsData.analyticsConfig.kpis\n};"
+      },
+      "id": "configure-platform-analytics",
+      "name": "Configure Platform Analytics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "platform-configured",
+              "leftValue": "={{ $json.platform }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-platform-config",
+      "name": "Platform Configured?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fetch analytics data from configured platform\nconst platformConfig = $input.first();\n\n// Handle different platform types\nif (platformConfig.platform === 'youtube' && platformConfig.endpoints) {\n  // YouTube has multiple channels to process\n  return platformConfig.endpoints.map(endpoint => ({\n    platform: 'youtube',\n    brand: endpoint.brand,\n    apiCall: {\n      url: endpoint.url,\n      params: endpoint.params,\n      method: 'GET'\n    }\n  }));\n} else if (platformConfig.endpoint) {\n  // Single endpoint platforms\n  return [{\n    platform: platformConfig.platform,\n    apiCall: {\n      url: platformConfig.endpoint.url,\n      params: platformConfig.endpoint.params,\n      headers: platformConfig.endpoint.headers,\n      body: platformConfig.endpoint.body,\n      method: platformConfig.endpoint.body ? 'POST' : 'GET'\n    }\n  }];\n}\n\nreturn [];"
+      },
+      "id": "prepare-api-calls",
+      "name": "Prepare API Calls",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-api-calls",
+      "name": "Execute Each API Call",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1560,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.apiCall.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": "={{ Object.entries($json.apiCall.headers || {}).map(([key, value]) => ({ name: key, value })) }}"
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": "={{ Object.entries($json.apiCall.params || {}).map(([key, value]) => ({ name: key, value: String(value) })) }}"
+        },
+        "sendBody": "={{ $json.apiCall.method === 'POST' }}",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.apiCall.body || {}) }}",
+        "options": {}
+      },
+      "id": "fetch-analytics-data",
+      "name": "Fetch Analytics Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1780,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process analytics data and calculate KPIs\nconst apiResponse = $input.first();\nconst apiConfig = $('Execute Each API Call').first();\nconst platformConfig = $('Configure Platform Analytics').first();\n\n// Platform-specific data processing\nfunction processYouTubeData(data, brand) {\n  const rows = data.rows || [];\n  if (rows.length === 0) return null;\n  \n  const totals = rows.reduce((acc, row) => {\n    return {\n      views: acc.views + (row[1] || 0),\n      likes: acc.likes + (row[2] || 0),\n      comments: acc.comments + (row[3] || 0),\n      shares: acc.shares + (row[4] || 0),\n      subscribers_gained: acc.subscribers_gained + (row[5] || 0),\n      estimated_revenue: acc.estimated_revenue + (row[6] || 0)\n    };\n  }, { views: 0, likes: 0, comments: 0, shares: 0, subscribers_gained: 0, estimated_revenue: 0 });\n  \n  return {\n    platform: 'youtube',\n    brand,\n    metrics: totals,\n    engagement_rate: totals.views > 0 ? (totals.likes + totals.comments) / totals.views : 0,\n    growth_rate: totals.subscribers_gained\n  };\n}\n\nfunction processGoogleAnalyticsData(data) {\n  const rows = data.rows || [];\n  if (rows.length === 0) return null;\n  \n  const totals = rows.reduce((acc, row) => {\n    return {\n      sessions: acc.sessions + (row.metricValues[0]?.value || 0),\n      users: acc.users + (row.metricValues[1]?.value || 0),\n      pageviews: acc.pageviews + (row.metricValues[2]?.value || 0),\n      bounce_rate: Math.max(acc.bounce_rate, row.metricValues[3]?.value || 0),\n      session_duration: acc.session_duration + (row.metricValues[4]?.value || 0)\n    };\n  }, { sessions: 0, users: 0, pageviews: 0, bounce_rate: 0, session_duration: 0 });\n  \n  return {\n    platform: 'website',\n    metrics: totals,\n    conversion_rate: totals.sessions > 0 ? totals.users / totals.sessions : 0,\n    engagement_quality: totals.bounce_rate < 0.5 ? 'high' : 'medium'\n  };\n}\n\nfunction processSocialMediaData(data, platform) {\n  let metrics = {};\n  \n  if (platform === 'instagram' || platform === 'facebook') {\n    const insights = data.data || [];\n    insights.forEach(insight => {\n      const values = insight.values || [];\n      const total = values.reduce((sum, val) => sum + (val.value || 0), 0);\n      metrics[insight.name] = total;\n    });\n  } else if (platform === 'twitter') {\n    const tweets = data.data || [];\n    metrics = tweets.reduce((acc, tweet) => {\n      const publicMetrics = tweet.public_metrics || {};\n      return {\n        retweet_count: acc.retweet_count + (publicMetrics.retweet_count || 0),\n        like_count: acc.like_count + (publicMetrics.like_count || 0),\n        reply_count: acc.reply_count + (publicMetrics.reply_count || 0),\n        quote_count: acc.quote_count + (publicMetrics.quote_count || 0)\n      };\n    }, { retweet_count: 0, like_count: 0, reply_count: 0, quote_count: 0 });\n  }\n  \n  return {\n    platform,\n    metrics,\n    engagement_rate: calculateSocialEngagementRate(metrics, platform)\n  };\n}\n\nfunction calculateSocialEngagementRate(metrics, platform) {\n  if (platform === 'instagram') {\n    const impressions = metrics.impressions || 1;\n    const engagements = (metrics.likes || 0) + (metrics.comments || 0) + (metrics.saves || 0);\n    return engagements / impressions;\n  } else if (platform === 'twitter') {\n    const totalTweets = 1; // Simplified calculation\n    const engagements = (metrics.like_count || 0) + (metrics.retweet_count || 0) + (metrics.reply_count || 0);\n    return engagements / totalTweets;\n  }\n  return 0;\n}\n\n// Process data based on platform\nlet processedData;\nconst platform = apiConfig.platform;\n\nif (platform === 'youtube') {\n  processedData = processYouTubeData(apiResponse, apiConfig.brand);\n} else if (platform === 'google_analytics') {\n  processedData = processGoogleAnalyticsData(apiResponse);\n} else if (['instagram', 'facebook', 'twitter', 'tiktok'].includes(platform)) {\n  processedData = processSocialMediaData(apiResponse, platform);\n} else {\n  processedData = { platform, error: 'Unknown platform type' };\n}\n\nif (!processedData) {\n  return { platform, error: 'No data available' };\n}\n\n// Calculate performance scores against KPIs\nconst kpis = platformConfig.kpis;\nlet performanceScore = 0;\n\nif (processedData.metrics) {\n  // Calculate performance based on platform type\n  if (platform === 'youtube') {\n    const viewsScore = Math.min(100, (processedData.metrics.views / kpis.engagement.targets.youtube_views) * 100);\n    const engagementScore = Math.min(100, (processedData.engagement_rate / kpis.engagement.targets.social_engagement_rate) * 100);\n    performanceScore = (viewsScore + engagementScore) / 2;\n  } else if (platform === 'website') {\n    const sessionScore = Math.min(100, (processedData.metrics.sessions / 1000) * 100);\n    const conversionScore = Math.min(100, (processedData.conversion_rate / 0.02) * 100);\n    performanceScore = (sessionScore + conversionScore) / 2;\n  } else {\n    const engagementScore = Math.min(100, (processedData.engagement_rate / kpis.engagement.targets.social_engagement_rate) * 100);\n    performanceScore = engagementScore;\n  }\n}\n\nreturn {\n  ...processedData,\n  performance_score: performanceScore,\n  analysis_timestamp: platformConfig.analysisTimestamp,\n  kpi_status: performanceScore >= 80 ? 'excellent' : performanceScore >= 60 ? 'good' : performanceScore >= 40 ? 'needs_improvement' : 'critical'\n};"
+      },
+      "id": "process-analytics-data",
+      "name": "Process Analytics Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-all-analytics",
+      "name": "Merge All Analytics",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        2220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Compile comprehensive analytics dashboard\nconst allAnalytics = $input.all().filter(item => !item.error);\nconst analyticsConfig = $('Prepare Analytics Collection').first();\n\n// Aggregate metrics by platform type\nconst platformSummary = {};\nconst brandSummary = {};\nlet totalPerformanceScore = 0;\nlet validPlatforms = 0;\n\nallAnalytics.forEach(analytics => {\n  const platform = analytics.platform;\n  const brand = analytics.brand || 'general';\n  \n  // Platform summary\n  if (!platformSummary[platform]) {\n    platformSummary[platform] = {\n      metrics: {},\n      performance_score: 0,\n      count: 0\n    };\n  }\n  \n  // Brand summary\n  if (!brandSummary[brand]) {\n    brandSummary[brand] = {\n      platforms: [],\n      total_performance: 0,\n      metrics: {}\n    };\n  }\n  \n  // Aggregate metrics\n  if (analytics.metrics) {\n    Object.keys(analytics.metrics).forEach(metric => {\n      platformSummary[platform].metrics[metric] = \n        (platformSummary[platform].metrics[metric] || 0) + analytics.metrics[metric];\n      brandSummary[brand].metrics[metric] = \n        (brandSummary[brand].metrics[metric] || 0) + analytics.metrics[metric];\n    });\n  }\n  \n  // Performance scores\n  if (analytics.performance_score) {\n    platformSummary[platform].performance_score += analytics.performance_score;\n    platformSummary[platform].count += 1;\n    \n    brandSummary[brand].total_performance += analytics.performance_score;\n    if (!brandSummary[brand].platforms.includes(platform)) {\n      brandSummary[brand].platforms.push(platform);\n    }\n    \n    totalPerformanceScore += analytics.performance_score;\n    validPlatforms += 1;\n  }\n});\n\n// Calculate average performance scores\nObject.keys(platformSummary).forEach(platform => {\n  if (platformSummary[platform].count > 0) {\n    platformSummary[platform].performance_score /= platformSummary[platform].count;\n  }\n});\n\nObject.keys(brandSummary).forEach(brand => {\n  if (brandSummary[brand].platforms.length > 0) {\n    brandSummary[brand].average_performance = \n      brandSummary[brand].total_performance / brandSummary[brand].platforms.length;\n  }\n});\n\n// Overall performance metrics\nconst overallPerformance = validPlatforms > 0 ? totalPerformanceScore / validPlatforms : 0;\n\n// Identify top performers and areas for improvement\nconst topPerformingPlatform = Object.keys(platformSummary).reduce((a, b) => \n  platformSummary[a].performance_score > platformSummary[b].performance_score ? a : b\n);\n\nconst topPerformingBrand = Object.keys(brandSummary).reduce((a, b) => \n  (brandSummary[a].average_performance || 0) > (brandSummary[b].average_performance || 0) ? a : b\n);\n\n// Generate insights and recommendations\nconst insights = [];\nconst recommendations = [];\n\n// Performance insights\nif (overallPerformance >= 80) {\n  insights.push('Excellent overall performance across all platforms');\n} else if (overallPerformance >= 60) {\n  insights.push('Good performance with room for optimization');\n} else {\n  insights.push('Performance needs significant improvement');\n  recommendations.push('Focus on content quality and engagement strategies');\n}\n\n// Platform-specific insights\nObject.keys(platformSummary).forEach(platform => {\n  const score = platformSummary[platform].performance_score;\n  if (score < 50) {\n    recommendations.push(`Optimize ${platform} strategy - current score: ${score.toFixed(1)}%`);\n  }\n});\n\n// Brand-specific insights\nObject.keys(brandSummary).forEach(brand => {\n  const score = brandSummary[brand].average_performance || 0;\n  if (score < 50) {\n    recommendations.push(`Review ${brand} brand strategy - current score: ${score.toFixed(1)}%`);\n  }\n});\n\n// Revenue correlation (if available)\nconst revenueMetrics = allAnalytics.filter(a => a.metrics && a.metrics.estimated_revenue);\nconst totalEstimatedRevenue = revenueMetrics.reduce((sum, a) => sum + a.metrics.estimated_revenue, 0);\n\n// Create dashboard summary\nconst dashboardSummary = {\n  overview: {\n    total_platforms: validPlatforms,\n    overall_performance: overallPerformance,\n    top_performing_platform: topPerformingPlatform,\n    top_performing_brand: topPerformingBrand,\n    estimated_revenue: totalEstimatedRevenue\n  },\n  platform_performance: platformSummary,\n  brand_performance: brandSummary,\n  insights,\n  recommendations: recommendations.slice(0, 5), // Top 5 recommendations\n  analysis_timestamp: analyticsConfig.analysisTimestamp,\n  next_analysis: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString() // Next analysis in 2 hours\n};\n\nreturn dashboardSummary;"
+      },
+      "id": "compile-dashboard",
+      "name": "Compile Analytics Dashboard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.ANALYTICS_DASHBOARD_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Dashboard_Summary",
+        "columnToMatchOn": "analysis_timestamp",
+        "valueToMatchOn": "={{ $json.analysis_timestamp }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "analysis_timestamp",
+              "value": "={{ $json.analysis_timestamp }}"
+            },
+            {
+              "column": "total_platforms",
+              "value": "={{ $json.overview.total_platforms }}"
+            },
+            {
+              "column": "overall_performance",
+              "value": "={{ $json.overview.overall_performance }}"
+            },
+            {
+              "column": "top_performing_platform",
+              "value": "={{ $json.overview.top_performing_platform }}"
+            },
+            {
+              "column": "top_performing_brand",
+              "value": "={{ $json.overview.top_performing_brand }}"
+            },
+            {
+              "column": "estimated_revenue",
+              "value": "={{ $json.overview.estimated_revenue }}"
+            },
+            {
+              "column": "insights_count",
+              "value": "={{ $json.insights.length }}"
+            },
+            {
+              "column": "recommendations_count",
+              "value": "={{ $json.recommendations.length }}"
+            },
+            {
+              "column": "next_analysis",
+              "value": "={{ $json.next_analysis }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-dashboard-data",
+      "name": "Save Dashboard Data",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dashboard-report",
+              "name": "dashboardReport",
+              "value": "📊 *Analytics Dashboard Report*\\n\\n*Overall Performance:* {{ $json.overview.overall_performance.toFixed(1) }}%\\n*Platforms Monitored:* {{ $json.overview.total_platforms }}\\n*Top Platform:* {{ $json.overview.top_performing_platform.toUpperCase() }}\\n*Top Brand:* {{ $json.overview.top_performing_brand.toUpperCase() }}\\n*Est. Revenue:* ${{ $json.overview.estimated_revenue.toFixed(2) }}\\n\\n*Key Insights:*\\n{{ $json.insights.slice(0, 3).map((insight, i) => `• ${insight}`).join('\\n') }}\\n\\n*Priority Recommendations:*\\n{{ $json.recommendations.slice(0, 3).map((rec, i) => `${i+1}. ${rec}`).join('\\n') }}\\n\\n*Next Analysis:* {{ new Date($json.next_analysis).toLocaleString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-dashboard-report",
+      "name": "Format Dashboard Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.dashboardReport }}\",\n  \"username\": \"Analytics Dashboard\",\n  \"icon_emoji\": \":bar_chart:\"\n}",
+        "options": {}
+      },
+      "id": "send-dashboard-report",
+      "name": "Send Dashboard Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        3100,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Collect Analytics Every 2 Hours": {
+      "main": [
+        [
+          {
+            "node": "Prepare Analytics Collection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Analytics Collection": {
+      "main": [
+        [
+          {
+            "node": "Process Each Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Platform": {
+      "main": [
+        [
+          {
+            "node": "Configure Platform Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure Platform Analytics": {
+      "main": [
+        [
+          {
+            "node": "Platform Configured?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Platform Configured?": {
+      "main": [
+        [
+          {
+            "node": "Prepare API Calls",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Prepare API Calls": {
+      "main": [
+        [
+          {
+            "node": "Execute Each API Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Each API Call": {
+      "main": [
+        [
+          {
+            "node": "Fetch Analytics Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Analytics Data": {
+      "main": [
+        [
+          {
+            "node": "Process Analytics Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Analytics Data": {
+      "main": [
+        [
+          {
+            "node": "Merge All Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge All Analytics": {
+      "main": [
+        [
+          {
+            "node": "Compile Analytics Dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compile Analytics Dashboard": {
+      "main": [
+        [
+          {
+            "node": "Save Dashboard Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Dashboard Data": {
+      "main": [
+        [
+          {
+            "node": "Format Dashboard Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Dashboard Report": {
+      "main": [
+        [
+          {
+            "node": "Send Dashboard Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "analytics",
+      "name": "Analytics"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "dashboard",
+      "name": "Dashboard"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

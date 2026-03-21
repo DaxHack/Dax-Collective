@@ -1,0 +1,484 @@
+{
+  "name": "YouTube Sentinel Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 */15 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "youtube-monitor-trigger",
+      "name": "Monitor Every 15 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// YouTube Sentinel Agent\n// Monitors all brand channels for new uploads and triggers content generation\n\nconst channels = [\n  {\n    id: $env.DAX_TRAVELER_CHANNEL_ID,\n    name: 'Dax The Traveler',\n    brand: 'dax_traveler',\n    enabled: $env.BRAND_DAX_TRAVELER_ENABLED === 'true'\n  },\n  {\n    id: $env.GODS_VESSEL_CHANNEL_ID,\n    name: \"God's Vessel\",\n    brand: 'gods_vessel',\n    enabled: $env.BRAND_GODS_VESSEL_ENABLED === 'true'\n  },\n  {\n    id: $env.TIMEZONE_TRAVELERS_CHANNEL_ID,\n    name: 'Time-Zone Travelers',\n    brand: 'timezone_travelers',\n    enabled: $env.BRAND_TIMEZONE_TRAVELERS_ENABLED === 'true'\n  },\n  {\n    id: $env.ANI_DAX_CHANNEL_ID,\n    name: 'Ani-Dax',\n    brand: 'ani_dax',\n    enabled: $env.BRAND_ANI_DAX_ENABLED === 'true'\n  }\n];\n\n// Filter enabled channels\nconst enabledChannels = channels.filter(channel => channel.enabled && channel.id);\n\nreturn enabledChannels.map(channel => ({\n  channelId: channel.id,\n  channelName: channel.name,\n  brand: channel.brand,\n  apiKey: $env.YOUTUBE_API_KEY\n}));"
+      },
+      "id": "prepare-channels",
+      "name": "Prepare Channel List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-channels",
+      "name": "Process Each Channel",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "channelId",
+              "value": "={{ $json.channelId }}"
+            },
+            {
+              "name": "maxResults",
+              "value": "5"
+            },
+            {
+              "name": "order",
+              "value": "date"
+            },
+            {
+              "name": "type",
+              "value": "video"
+            },
+            {
+              "name": "key",
+              "value": "={{ $json.apiKey }}"
+            },
+            {
+              "name": "publishedAfter",
+              "value": "={{ new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fetch-recent-videos",
+      "name": "Fetch Recent Videos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process YouTube API response and check for new videos\nconst response = $input.first();\nconst channelData = $('Process Each Channel').first();\n\nif (!response.items || response.items.length === 0) {\n  return [];\n}\n\n// Get last processed video from static data\nconst staticData = $workflow.staticData || {};\nconst lastProcessedKey = `${channelData.brand}_last_video_id`;\nconst lastProcessedVideoId = staticData[lastProcessedKey];\n\nconst newVideos = [];\nlet latestVideoId = null;\n\nfor (const video of response.items) {\n  const videoId = video.id.videoId;\n  \n  // Track the latest video ID\n  if (!latestVideoId) {\n    latestVideoId = videoId;\n  }\n  \n  // If this is the last processed video, stop here\n  if (videoId === lastProcessedVideoId) {\n    break;\n  }\n  \n  // This is a new video\n  newVideos.push({\n    videoId,\n    title: video.snippet.title,\n    description: video.snippet.description,\n    publishedAt: video.snippet.publishedAt,\n    thumbnailUrl: video.snippet.thumbnails.high?.url || video.snippet.thumbnails.default.url,\n    channelId: channelData.channelId,\n    channelName: channelData.channelName,\n    brand: channelData.brand,\n    videoUrl: `https://www.youtube.com/watch?v=${videoId}`\n  });\n}\n\n// Update static data with latest video ID\nif (latestVideoId) {\n  staticData[lastProcessedKey] = latestVideoId;\n}\n\nreturn newVideos;"
+      },
+      "id": "process-videos",
+      "name": "Process New Videos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-new-videos",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-new-videos",
+      "name": "New Videos Found?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-new-videos",
+      "name": "Process Each Video",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1560,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/captions",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "videoId",
+              "value": "={{ $json.videoId }}"
+            },
+            {
+              "name": "key",
+              "value": "={{ $env.YOUTUBE_API_KEY }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fetch-captions",
+      "name": "Fetch Video Captions",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1780,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract transcript and analyze content\nconst videoData = $('Process Each Video').first();\nconst captionsResponse = $input.first();\n\nlet transcript = '';\nlet hasTranscript = false;\n\n// Check if captions are available\nif (captionsResponse.items && captionsResponse.items.length > 0) {\n  // For now, we'll use the description as content since caption download requires OAuth\n  transcript = videoData.description;\n  hasTranscript = true;\n} else {\n  // Use title and description for content analysis\n  transcript = `${videoData.title}\\n\\n${videoData.description}`;\n}\n\n// Analyze content for key themes and topics\nfunction extractKeywords(text) {\n  const words = text.toLowerCase()\n    .replace(/[^a-z0-9\\s]/g, ' ')\n    .split(/\\s+/)\n    .filter(word => word.length > 3);\n  \n  const frequency = {};\n  words.forEach(word => {\n    frequency[word] = (frequency[word] || 0) + 1;\n  });\n  \n  return Object.entries(frequency)\n    .sort(([,a], [,b]) => b - a)\n    .slice(0, 10)\n    .map(([word]) => word);\n}\n\nfunction extractTopics(text, brand) {\n  const topics = [];\n  const lowerText = text.toLowerCase();\n  \n  // Brand-specific topic extraction\n  if (brand === 'dax_traveler' || brand === 'timezone_travelers') {\n    const travelKeywords = ['travel', 'destination', 'trip', 'adventure', 'explore', 'journey', 'vacation', 'backpack', 'culture', 'food'];\n    topics.push(...travelKeywords.filter(keyword => lowerText.includes(keyword)));\n  }\n  \n  if (brand === 'gods_vessel') {\n    const faithKeywords = ['faith', 'god', 'jesus', 'prayer', 'bible', 'christian', 'worship', 'blessing', 'grace', 'love'];\n    topics.push(...faithKeywords.filter(keyword => lowerText.includes(keyword)));\n  }\n  \n  if (brand === 'ani_dax') {\n    const animeKeywords = ['anime', 'manga', 'otaku', 'cosplay', 'japan', 'character', 'series', 'episode', 'review', 'recommendation'];\n    topics.push(...animeKeywords.filter(keyword => lowerText.includes(keyword)));\n  }\n  \n  return [...new Set(topics)];\n}\n\nconst keywords = extractKeywords(transcript);\nconst topics = extractTopics(transcript, videoData.brand);\n\n// Create content analysis\nconst contentAnalysis = {\n  ...videoData,\n  transcript,\n  hasTranscript,\n  keywords,\n  topics,\n  contentLength: transcript.length,\n  analysisTimestamp: new Date().toISOString(),\n  readyForContentGeneration: true\n};\n\nreturn contentAnalysis;"
+      },
+      "id": "analyze-content",
+      "name": "Analyze Video Content",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "notification-message",
+              "name": "notificationMessage",
+              "value": "🎥 *New Video Detected - {{ $json.brand.toUpperCase() }}*\\n\\n*Title:* {{ $json.title }}\\n*Channel:* {{ $json.channelName }}\\n*Published:* {{ $json.publishedAt }}\\n*Video URL:* {{ $json.videoUrl }}\\n\\n*Content Analysis:*\\n• Keywords: {{ $json.keywords.slice(0, 5).join(', ') }}\\n• Topics: {{ $json.topics.join(', ') }}\\n• Content Length: {{ $json.contentLength }} characters\\n\\n*Status:* Ready for content generation",
+              "type": "string"
+            },
+            {
+              "id": "webhook-payload",
+              "name": "webhookPayload",
+              "value": "{{ JSON.stringify($json) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-notifications",
+      "name": "Prepare Notifications",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2220,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.notificationMessage }}\",\n  \"username\": \"YouTube Sentinel\",\n  \"icon_emoji\": \":movie_camera:\"\n}",
+        "options": {}
+      },
+      "id": "slack-notification",
+      "name": "Send Slack Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2440,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.CONTENT_GENERATION_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{{ $json.webhookPayload }}",
+        "options": {}
+      },
+      "id": "trigger-content-generation",
+      "name": "Trigger Content Generation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2440,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.CONTENT_TRACKING_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "YouTube_Videos",
+        "columnToMatchOn": "video_id",
+        "valueToMatchOn": "={{ $json.videoId }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "video_id",
+              "value": "={{ $json.videoId }}"
+            },
+            {
+              "column": "title",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "column": "brand",
+              "value": "={{ $json.brand }}"
+            },
+            {
+              "column": "channel_name",
+              "value": "={{ $json.channelName }}"
+            },
+            {
+              "column": "published_at",
+              "value": "={{ $json.publishedAt }}"
+            },
+            {
+              "column": "video_url",
+              "value": "={{ $json.videoUrl }}"
+            },
+            {
+              "column": "keywords",
+              "value": "={{ $json.keywords.join(', ') }}"
+            },
+            {
+              "column": "topics",
+              "value": "={{ $json.topics.join(', ') }}"
+            },
+            {
+              "column": "content_length",
+              "value": "={{ $json.contentLength }}"
+            },
+            {
+              "column": "has_transcript",
+              "value": "={{ $json.hasTranscript }}"
+            },
+            {
+              "column": "analysis_timestamp",
+              "value": "={{ $json.analysisTimestamp }}"
+            },
+            {
+              "column": "status",
+              "value": "detected"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "log-video",
+      "name": "Log Video Detection",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2660,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Monitor Every 15 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Prepare Channel List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Channel List": {
+      "main": [
+        [
+          {
+            "node": "Process Each Channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Channel": {
+      "main": [
+        [
+          {
+            "node": "Fetch Recent Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Recent Videos": {
+      "main": [
+        [
+          {
+            "node": "Process New Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process New Videos": {
+      "main": [
+        [
+          {
+            "node": "New Videos Found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Videos Found?": {
+      "main": [
+        [
+          {
+            "node": "Process Each Video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Process Each Video": {
+      "main": [
+        [
+          {
+            "node": "Fetch Video Captions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Video Captions": {
+      "main": [
+        [
+          {
+            "node": "Analyze Video Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Video Content": {
+      "main": [
+        [
+          {
+            "node": "Prepare Notifications",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Notifications": {
+      "main": [
+        [
+          {
+            "node": "Send Slack Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trigger Content Generation",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log Video Detection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "content-monitoring",
+      "name": "Content Monitoring"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "youtube",
+      "name": "YouTube"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

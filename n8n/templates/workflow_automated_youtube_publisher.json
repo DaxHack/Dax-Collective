@@ -1,0 +1,662 @@
+{
+  "name": "Automated YouTube Publisher",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 2
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Check for Ready Content",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_MASTER_SHEET_ID}}",
+        "sheetName": "Master Control",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Read Master Control Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Upload Status']}}",
+              "rightValue": "Generated",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{$json['Platform']}}",
+              "rightValue": "YouTube",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "3",
+              "leftValue": "={{new Date($json['Scheduled Date']).getTime()}}",
+              "rightValue": "={{new Date().getTime()}}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Filter Ready for YouTube",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Brand']}}",
+              "rightValue": "Ani-Dax",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "Route Ani-Dax Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        900,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Brand']}}",
+              "rightValue": "Time-Zone Travelers",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5",
+      "name": "Route Travel Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Brand']}}",
+              "rightValue": "God's Vessel",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6",
+      "name": "Route Faith Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        900,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "title": "={{$json['Video Title']}}",
+        "description": "{{$json['Video Title']}}\n\n🎌 Welcome to Ani-Dax! Your ultimate destination for anime character analysis, hidden lore, and mind-blowing theories that will change how you see your favorite series.\n\n🔥 In this video:\n{{$json['Content Type']}} featuring {{$json['Character Focus'] || 'your favorite anime characters'}}\n\n💡 Don't forget to:\n✅ LIKE if this blew your mind\n✅ SUBSCRIBE for more anime secrets\n✅ COMMENT your theories below\n✅ SHARE with fellow anime fans\n\n🔗 Join our community:\n📱 Discord: [Link in bio]\n🎯 Patreon: [Link in bio]\n\n#anime #{{$json['Character Focus'] || 'animetheory'}} #animelore #shorts\n\n{{$json['Tags/Hashtags']}}",
+        "categoryId": "24",
+        "privacyStatus": "public",
+        "tags": "={{$json['Tags/Hashtags'].split(' ')}}",
+        "videoFile": "/tmp/ani_dax_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4",
+        "thumbnailFile": "/tmp/ani_dax_thumbnail_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.jpg"
+      },
+      "id": "7",
+      "name": "Upload Ani-Dax to YouTube",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        200
+      ],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "6",
+          "name": "Ani-Dax YouTube"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": "={{$json['Video Title']}}",
+        "description": "{{$json['Video Title']}}\n\n🌍 Welcome to Time-Zone Travelers! Your guide to surviving the world's most challenging destinations and uncovering travel secrets that could save your life.\n\n🎒 In this video:\n{{$json['Content Type']}} about {{$json['Location Focus'] || 'dangerous travel destinations'}}\n{{$json['Survival Element'] || 'Essential survival tips'}}\n\n🔥 What you'll learn:\n✅ Critical safety information\n✅ Cultural insights and local customs\n✅ Practical travel hacks\n✅ Gear recommendations\n\n🎯 Join the Traveler's Club on Patreon:\n🌟 Explorer Tier: Exclusive travel guides\n🌟 Adventurer Tier: Personal Q&A sessions\n🌟 Globetrotter VIP: Custom itineraries\n\n🛒 Recommended gear (affiliate links):\n{{$json['Affiliate Link']}}\n\n#travel #survival #{{$json['Location Focus'] || 'adventure'}} #backpacking #traveltips\n\n{{$json['Tags/Hashtags']}}",
+        "categoryId": "19",
+        "privacyStatus": "public",
+        "tags": "={{$json['Tags/Hashtags'].split(' ')}}",
+        "videoFile": "/tmp/timezone_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4",
+        "thumbnailFile": "/tmp/timezone_thumbnail_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.jpg"
+      },
+      "id": "8",
+      "name": "Upload Travel to YouTube",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "7",
+          "name": "Time-Zone Travelers YouTube"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": "={{$json['Video Title']}}",
+        "description": "{{$json['Video Title']}}\n\n✝️ Welcome to God's Vessel! A place of hope, faith, and encouragement where we explore God's Word and its practical application in our daily lives.\n\n🙏 In this devotional:\n{{$json['Content Type']}} focusing on {{$json['Scripture Focus'] || 'Biblical truth'}}\nTheme: {{$json['Message Theme'] || 'Faith and hope'}}\n\n💝 What you'll discover:\n✅ Biblical insights for real-life challenges\n✅ Encouragement for your faith journey\n✅ Practical application of God's Word\n✅ Community and prayer support\n\n🛍️ Shop faith-inspired apparel:\nFind t-shirts and merchandise that share your faith\n{{$json['Affiliate Link']}}\n\n🤝 Join our faith community:\n💬 Share your testimony in the comments\n🙏 Request prayer in our community tab\n📖 Suggest Bible verses for future videos\n\n#faith #christian #bible #hope #testimony #godsword #devotional\n\n{{$json['Tags/Hashtags']}}",
+        "categoryId": "22",
+        "privacyStatus": "public",
+        "tags": "={{$json['Tags/Hashtags'].split(' ')}}",
+        "videoFile": "/tmp/gods_vessel_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4",
+        "thumbnailFile": "/tmp/gods_vessel_thumbnail_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.jpg"
+      },
+      "id": "9",
+      "name": "Upload Faith to YouTube",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        400
+      ],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "8",
+          "name": "God's Vessel YouTube"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_MASTER_SHEET_ID}}",
+        "sheetName": "Master Control",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": false
+        },
+        "columnToMatchOn": "Video Title",
+        "valueToMatchOn": "={{$json['Video Title']}}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Upload Status",
+              "fieldValue": "Published"
+            },
+            {
+              "column": "Performance Views",
+              "fieldValue": "0"
+            },
+            {
+              "column": "Last Updated",
+              "fieldValue": "={{$now.format('yyyy-MM-dd HH:mm')}}"
+            },
+            {
+              "column": "Next Action Required",
+              "fieldValue": "Monitor performance"
+            }
+          ]
+        }
+      },
+      "id": "10",
+      "name": "Update Upload Status",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1340,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_CHANNEL_ID}}",
+        "text": "🎬 **NEW VIDEO PUBLISHED!**\n\n**Brand:** {{$json['Brand']}}\n**Title:** {{$json['Video Title']}}\n**Platform:** YouTube\n**Viral Score:** {{$json['Viral Score']}}\n**Revenue Potential:** {{$json['Revenue Potential']}}\n\n**YouTube URL:** {{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}\n\n**Next Steps:**\n✅ Monitor performance in first 24 hours\n✅ Engage with early comments\n✅ Share on other social platforms\n✅ Track revenue metrics\n\n*Let's see this content reach its viral potential!* 🚀"
+      },
+      "id": "11",
+      "name": "Success Notification",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        300
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Viral Score']}}",
+              "rightValue": 85,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "12",
+      "name": "Check High Viral Potential",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.twitter.com/2/tweets",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🔥 NEW VIDEO: {{$json['Video Title']}}\n\nThis {{$json['Content Type']}} will blow your mind! 🤯\n\n{{$json['Brand'] === 'Ani-Dax' ? '#anime #animetheory' : $json['Brand'] === 'Time-Zone Travelers' ? '#travel #adventure' : '#faith #christian'}}\n\nWatch now: [YouTube Link]\n\n{{$json['Tags/Hashtags']}}"
+            }
+          ]
+        }
+      },
+      "id": "13",
+      "name": "Cross-Post to Twitter",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1780,
+        480
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "9",
+          "name": "Twitter API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v18.0/me/feed",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "🎬 Just dropped a new {{$json['Content Type']}}!\n\n{{$json['Video Title']}}\n\n{{$json['Brand'] === 'Ani-Dax' ? 'Anime fans, this one is for you! 🎌' : $json['Brand'] === 'Time-Zone Travelers' ? 'Travelers, this could save your life! 🌍' : 'Faith family, this message is for you! ✝️'}}\n\nCheck it out and let me know what you think in the comments!\n\n{{$json['Tags/Hashtags']}}"
+            },
+            {
+              "name": "link",
+              "value": "https://youtube.com/watch?v={{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}"
+            }
+          ]
+        }
+      },
+      "id": "14",
+      "name": "Cross-Post to Facebook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1780,
+        600
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "10",
+          "name": "Facebook API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Revenue Potential']}}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "15",
+      "name": "Check High Revenue Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_REVENUE_CHANNEL_ID}}",
+        "text": "💰 **HIGH REVENUE CONTENT PUBLISHED!**\n\n**Title:** {{$json['Video Title']}}\n**Brand:** {{$json['Brand']}}\n**Revenue Potential:** {{$json['Revenue Potential']}}\n**Viral Score:** {{$json['Viral Score']}}\n\n**Revenue Optimization Actions:**\n🎯 Monitor affiliate link clicks\n💳 Track Patreon sign-ups\n📊 Analyze engagement metrics\n🔄 Prepare follow-up content\n\n**Projected Revenue:** ${{$json['Viral Score'] * 2}}-${{$json['Viral Score'] * 5}} in first week\n\n*This content has serious money-making potential!* 💸"
+      },
+      "id": "16",
+      "name": "Revenue Alert",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        660
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Check for Ready Content": {
+      "main": [
+        [
+          {
+            "node": "Read Master Control Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Master Control Sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter Ready for YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Ready for YouTube": {
+      "main": [
+        [
+          {
+            "node": "Route Ani-Dax Content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Route Travel Content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Route Faith Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Ani-Dax Content": {
+      "main": [
+        [
+          {
+            "node": "Upload Ani-Dax to YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Travel Content": {
+      "main": [
+        [
+          {
+            "node": "Upload Travel to YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Faith Content": {
+      "main": [
+        [
+          {
+            "node": "Upload Faith to YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Ani-Dax to YouTube": {
+      "main": [
+        [
+          {
+            "node": "Update Upload Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Travel to YouTube": {
+      "main": [
+        [
+          {
+            "node": "Update Upload Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Faith to YouTube": {
+      "main": [
+        [
+          {
+            "node": "Update Upload Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Upload Status": {
+      "main": [
+        [
+          {
+            "node": "Success Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check High Viral Potential",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check High Revenue Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check High Viral Potential": {
+      "main": [
+        [
+          {
+            "node": "Cross-Post to Twitter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cross-Post to Facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check High Revenue Content": {
+      "main": [
+        [
+          {
+            "node": "Revenue Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "automated-youtube-publisher"
+  },
+  "id": "automated-youtube-publisher",
+  "tags": []
+}
+

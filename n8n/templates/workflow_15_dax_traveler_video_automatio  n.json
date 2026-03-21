@@ -1,0 +1,330 @@
+{
+  "name": "Dax the Traveler Video Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression", 
+              "expression": "0 9 * * 1,3,5"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Travel Content Schedule",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "messages": {
+          "messageType": "multipleMessages",
+          "messages": [
+            {
+              "role": "system",
+              "message": "You are Dax, a travel content creator focused on authentic travel experiences, budget-friendly adventures, and inspiring others to explore the world. Your content helps people plan amazing trips while building a community of passionate travelers."
+            },
+            {
+              "role": "user",
+              "message": "Generate a travel video concept for this week. Consider:\n\nCurrent trends: {{ $json.travel_trends }}\nSeason: {{ $now.format('MMMM YYYY') }}\nUpcoming holidays: {{ $json.upcoming_holidays }}\nPopular destinations: {{ $json.trending_destinations }}\n\nCreate:\n1. Engaging video title (8-12 words, SEO optimized)\n2. Video description with travel tips and inspiration\n3. Key talking points covering practical advice\n4. Patreon Traveler's Club integration opportunities\n5. Affiliate product recommendations (travel gear, booking sites)\n6. Thumbnail concept featuring destination/travel theme\n7. Target 8-12 minute video length\n\nFocus on actionable travel advice that provides real value to viewers planning their next adventure."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 1500
+        }
+      },
+      "id": "2",
+      "name": "Generate Travel Video Concept",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "messages": {
+          "messageType": "multipleMessages",
+          "messages": [
+            {
+              "role": "system",
+              "message": "You are Dax, creating an authentic travel video script. Write in first person, conversational tone as if talking to a friend about travel. Include personal anecdotes, practical tips, and genuine enthusiasm for travel."
+            },
+            {
+              "role": "user",
+              "message": "Create a detailed script for this travel video concept:\n\n{{ $json.video_concept }}\n\nScript structure:\n1. Hook (0-15 seconds): Compelling opening question or statement\n2. Introduction (15-45 seconds): What viewers will learn\n3. Main content (2-10 minutes): Detailed travel advice with personal insights\n4. Patreon promotion (30 seconds): Natural integration of Traveler's Club benefits\n5. Affiliate recommendations (1 minute): Genuine product recommendations\n6. Conclusion (30 seconds): Call-to-action and subscribe reminder\n\nInclude markers:\n- [PAUSE] for natural breaks\n- [EMPHASIS] for important points\n- [VISUAL: description] for b-roll footage\n- [CTA: specific action] for calls-to-action\n\nMaintain authentic, enthusiastic tone throughout. Make it feel like a conversation with a knowledgeable travel friend."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 3000
+        }
+      },
+      "id": "3",
+      "name": "Create Travel Script",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Clean script for text-to-speech\nconst script = $input.first().json.script;\n\n// Remove stage directions and markers\nlet cleanScript = script\n  .replace(/\\[PAUSE\\]/g, '... ')\n  .replace(/\\[EMPHASIS\\]/g, '')\n  .replace(/\\[VISUAL:.*?\\]/g, '')\n  .replace(/\\[CTA:.*?\\]/g, '')\n  .replace(/\\[.*?\\]/g, '')\n  .replace(/\\s+/g, ' ')\n  .trim();\n\n// Extract visual cues for video generation\nconst visualCues = [];\nconst visualMatches = script.match(/\\[VISUAL:(.*?)\\]/g);\nif (visualMatches) {\n  visualMatches.forEach(match => {\n    const cue = match.replace(/\\[VISUAL:|\\]/g, '').trim();\n    visualCues.push(cue);\n  });\n}\n\n// Extract CTAs\nconst ctas = [];\nconst ctaMatches = script.match(/\\[CTA:(.*?)\\]/g);\nif (ctaMatches) {\n  ctaMatches.forEach(match => {\n    const cta = match.replace(/\\[CTA:|\\]/g, '').trim();\n    ctas.push(cta);\n  });\n}\n\n// Generate keywords for stock footage\nconst keywords = [\n  'travel', 'adventure', 'destination', 'vacation',\n  'backpacking', 'tourism', 'exploration', 'journey'\n];\n\nreturn {\n  script_clean: cleanScript,\n  script_original: script,\n  visual_cues: visualCues,\n  ctas: ctas,\n  visual_keywords: keywords.join(' '),\n  word_count: cleanScript.split(' ').length\n};"
+      },
+      "id": "4",
+      "name": "Process Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "voice": "{{ $env.DAX_VOICE_ID }}",
+        "text": "{{ $json.script_clean }}",
+        "model": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.8,
+          "similarity_boost": 0.75,
+          "style": 0.3
+        }
+      },
+      "id": "5",
+      "name": "Generate Dax Voice",
+      "type": "n8n-nodes-base.elevenLabs",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "query": "{{ $json.visual_keywords }} travel adventure destination",
+        "count": 15,
+        "license": "free",
+        "orientation": "landscape"
+      },
+      "id": "6",
+      "name": "Get Travel Stock Footage",
+      "type": "n8n-nodes-base.unsplash",
+      "typeVersion": 1,
+      "position": [1120, 480]
+    },
+    {
+      "parameters": {
+        "command": "python3 /home/ubuntu/scripts/travel_video_generator.py",
+        "additionalFields": {
+          "workingDirectory": "/home/ubuntu/video_production/dax_traveler",
+          "env": {
+            "AUDIO_FILE": "{{ $json.audio_file_path }}",
+            "VISUAL_CUES": "{{ $json.visual_cues }}",
+            "STOCK_IMAGES": "{{ $json.stock_images }}",
+            "BRAND_COLORS": "#4A90E2,#F5A623",
+            "LOGO_PATH": "/home/ubuntu/assets/dax_traveler_logo.png"
+          }
+        }
+      },
+      "id": "7",
+      "name": "Create Travel Video",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "model": "dall-e-3",
+        "prompt": "YouTube thumbnail for travel video: {{ $json.thumbnail_concept }}. Bright, adventurous style with Dax the Traveler branding. Include text overlay, vibrant travel imagery, and engaging composition. Colors: blue and orange theme.",
+        "size": "1792x1024",
+        "quality": "hd"
+      },
+      "id": "8",
+      "name": "Create Travel Thumbnail",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [1340, 480]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "title": "{{ $json.video_title }}",
+        "description": "{{ $json.video_description }}\n\n🌍 Join the Traveler's Club on Patreon for exclusive travel guides and planning resources!\n💼 Patreon: {{ $env.PATREON_URL }}\n\n🎒 Travel gear I recommend:\n{{ $json.affiliate_links }}\n\n📱 Follow my adventures:\n• Instagram: @daxthetraveler\n• TikTok: @daxthetraveler\n• Twitter: @daxthetraveler\n\n🔔 Subscribe for weekly travel tips and destination guides!\n\n#Travel #Adventure #TravelTips #Backpacking #TravelGuide #DaxTheTraveler",
+        "tags": "travel,adventure,travel tips,backpacking,travel guide,destination guide,budget travel,travel vlog",
+        "categoryId": "19",
+        "privacyStatus": "private",
+        "videoFilename": "{{ $json.video_file_path }}",
+        "thumbnailFilename": "{{ $json.thumbnail_file_path }}"
+      },
+      "id": "9",
+      "name": "Upload Travel Video",
+      "type": "n8n-nodes-base.youtube",
+      "typeVersion": 1,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": "{{ $env.DAX_TRAVELER_TRACKING_SHEET }}",
+        "sheetName": "Video Production",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "{{ $now.format('YYYY-MM-DD') }}",
+            "Video Title": "{{ $json.video_title }}",
+            "YouTube URL": "{{ $json.youtube_url }}",
+            "Duration": "{{ $json.video_duration }}",
+            "Script Word Count": "{{ $json.word_count }}",
+            "Visual Cues": "{{ $json.visual_cues.length }}",
+            "Affiliate Products": "{{ $json.affiliate_products }}",
+            "Patreon Integration": "Yes",
+            "Status": "Uploaded - Private",
+            "Publish Date": "{{ $now.plus({days: 1}).format('YYYY-MM-DD') }}",
+            "Cross-Platform Ready": "Pending"
+          }
+        }
+      },
+      "id": "10",
+      "name": "Track Video Production",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1780, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#dax-traveler-content",
+        "text": "🎬 New Dax the Traveler video ready!\n\n📹 *{{ $json.video_title }}*\n🔗 YouTube: {{ $json.youtube_url }}\n⏱️ Duration: {{ $json.video_duration }}\n📊 Word count: {{ $json.word_count }}\n\n💰 Revenue integrations:\n• Patreon Traveler's Club promotion\n• {{ $json.affiliate_products }} affiliate products\n• Subscribe & engagement CTAs\n\n✅ Next steps:\n1. Review video quality and audio sync\n2. Adjust thumbnail if needed\n3. Schedule publication for tomorrow\n4. Prepare cross-platform content\n5. Set up Instagram/TikTok promotion\n\n🚀 Ready to drive traffic to Patreon and affiliate partners!"
+      },
+      "id": "11",
+      "name": "Notify Team",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [2000, 300]
+    }
+  ],
+  "connections": {
+    "Travel Content Schedule": {
+      "main": [
+        [
+          {
+            "node": "Generate Travel Video Concept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Travel Video Concept": {
+      "main": [
+        [
+          {
+            "node": "Create Travel Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Travel Script": {
+      "main": [
+        [
+          {
+            "node": "Process Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Script": {
+      "main": [
+        [
+          {
+            "node": "Generate Dax Voice",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Travel Stock Footage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Dax Voice": {
+      "main": [
+        [
+          {
+            "node": "Create Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Travel Stock Footage": {
+      "main": [
+        [
+          {
+            "node": "Create Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Travel Video": {
+      "main": [
+        [
+          {
+            "node": "Create Travel Thumbnail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Travel Thumbnail": {
+      "main": [
+        [
+          {
+            "node": "Upload Travel Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Travel Video": {
+      "main": [
+        [
+          {
+            "node": "Track Video Production",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Track Video Production": {
+      "main": [
+        [
+          {
+            "node": "Notify Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}
