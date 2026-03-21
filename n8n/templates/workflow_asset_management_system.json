@@ -1,0 +1,742 @@
+{
+  "name": "Asset Management System",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Asset Sync Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "folderId": "={{$env.GOOGLE_DRIVE_MASTER_ASSETS_FOLDER_ID}}",
+        "options": {
+          "fields": "files(id,name,mimeType,modifiedTime,size,webViewLink)"
+        }
+      },
+      "id": "2",
+      "name": "Scan Google Drive Assets",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "15",
+          "name": "Google Drive API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json.mimeType}}",
+              "rightValue": "image/",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Filter Image Assets",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json.mimeType}}",
+              "rightValue": "video/",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "Filter Video Assets",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json.mimeType}}",
+              "rightValue": "audio/",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5",
+      "name": "Filter Audio Assets",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.3,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an AI asset categorization expert. Analyze file names and organize digital assets into logical categories for content creation workflows."
+            },
+            {
+              "role": "user",
+              "content": "Categorize this image asset:\n\nFilename: {{$json.name}}\nSize: {{$json.size}} bytes\nModified: {{$json.modifiedTime}}\n\nDetermine:\n1. Brand category (Ani-Dax, Time-Zone Travelers, God's Vessel, or General)\n2. Content type (thumbnail, sticker, background, character, location, etc.)\n3. Usage recommendations\n4. Quality assessment\n5. Optimization suggestions\n6. Cross-brand potential\n\nProvide structured categorization for asset management."
+            }
+          ]
+        }
+      },
+      "id": "6",
+      "name": "Categorize Image Assets",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        200
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.3,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a video asset management specialist. Analyze video files and provide optimization and usage recommendations for content workflows."
+            },
+            {
+              "role": "user",
+              "content": "Analyze this video asset:\n\nFilename: {{$json.name}}\nSize: {{$json.size}} bytes\nModified: {{$json.modifiedTime}}\n\nDetermine:\n1. Brand association\n2. Video type (short-form, long-form, raw footage, etc.)\n3. Platform optimization status\n4. Quality and resolution assessment\n5. Repurposing opportunities\n6. Archive vs active status\n\nProvide management recommendations."
+            }
+          ]
+        }
+      },
+      "id": "7",
+      "name": "Analyze Video Assets",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.3,
+          "maxTokens": 400
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an audio asset specialist. Categorize and optimize audio files for content production workflows."
+            },
+            {
+              "role": "user",
+              "content": "Process this audio asset:\n\nFilename: {{$json.name}}\nSize: {{$json.size}} bytes\nModified: {{$json.modifiedTime}}\n\nAnalyze:\n1. Audio type (voiceover, music, sound effect, etc.)\n2. Brand relevance\n3. Quality assessment\n4. Usage potential\n5. Optimization needs\n6. Licensing considerations\n\nProvide categorization and recommendations."
+            }
+          ]
+        }
+      },
+      "id": "8",
+      "name": "Process Audio Assets",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.ASSET_MANAGEMENT_SHEET_ID}}",
+        "sheetName": "Image Assets",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": true
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Asset Name",
+              "fieldValue": "={{$('Filter Image Assets').item.json.name}}"
+            },
+            {
+              "column": "File ID",
+              "fieldValue": "={{$('Filter Image Assets').item.json.id}}"
+            },
+            {
+              "column": "Size",
+              "fieldValue": "={{$('Filter Image Assets').item.json.size}}"
+            },
+            {
+              "column": "Modified Date",
+              "fieldValue": "={{$('Filter Image Assets').item.json.modifiedTime}}"
+            },
+            {
+              "column": "Drive Link",
+              "fieldValue": "={{$('Filter Image Assets').item.json.webViewLink}}"
+            },
+            {
+              "column": "AI Analysis",
+              "fieldValue": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "column": "Last Scanned",
+              "fieldValue": "={{$now.format('yyyy-MM-dd HH:mm')}}"
+            }
+          ]
+        }
+      },
+      "id": "9",
+      "name": "Log Image Assets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1120,
+        200
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.ASSET_MANAGEMENT_SHEET_ID}}",
+        "sheetName": "Video Assets",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": true
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Asset Name",
+              "fieldValue": "={{$('Filter Video Assets').item.json.name}}"
+            },
+            {
+              "column": "File ID",
+              "fieldValue": "={{$('Filter Video Assets').item.json.id}}"
+            },
+            {
+              "column": "Size",
+              "fieldValue": "={{$('Filter Video Assets').item.json.size}}"
+            },
+            {
+              "column": "Modified Date",
+              "fieldValue": "={{$('Filter Video Assets').item.json.modifiedTime}}"
+            },
+            {
+              "column": "Drive Link",
+              "fieldValue": "={{$('Filter Video Assets').item.json.webViewLink}}"
+            },
+            {
+              "column": "AI Analysis",
+              "fieldValue": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "column": "Last Scanned",
+              "fieldValue": "={{$now.format('yyyy-MM-dd HH:mm')}}"
+            }
+          ]
+        }
+      },
+      "id": "10",
+      "name": "Log Video Assets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.ASSET_MANAGEMENT_SHEET_ID}}",
+        "sheetName": "Audio Assets",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": true
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Asset Name",
+              "fieldValue": "={{$('Filter Audio Assets').item.json.name}}"
+            },
+            {
+              "column": "File ID",
+              "fieldValue": "={{$('Filter Audio Assets').item.json.id}}"
+            },
+            {
+              "column": "Size",
+              "fieldValue": "={{$('Filter Audio Assets').item.json.size}}"
+            },
+            {
+              "column": "Modified Date",
+              "fieldValue": "={{$('Filter Audio Assets').item.json.modifiedTime}}"
+            },
+            {
+              "column": "Drive Link",
+              "fieldValue": "={{$('Filter Audio Assets').item.json.webViewLink}}"
+            },
+            {
+              "column": "AI Analysis",
+              "fieldValue": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "column": "Last Scanned",
+              "fieldValue": "={{$now.format('yyyy-MM-dd HH:mm')}}"
+            }
+          ]
+        }
+      },
+      "id": "11",
+      "name": "Log Audio Assets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1120,
+        400
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.6,
+          "maxTokens": 600
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an asset optimization specialist. Analyze asset collections and provide strategic recommendations for content creation and revenue generation."
+            },
+            {
+              "role": "user",
+              "content": "Analyze the current asset collection and provide optimization recommendations:\n\nTotal Images: {{$('Log Image Assets').all().length}}\nTotal Videos: {{$('Log Video Assets').all().length}}\nTotal Audio: {{$('Log Audio Assets').all().length}}\n\nProvide:\n1. Asset utilization analysis\n2. Gap identification (missing asset types)\n3. Quality improvement recommendations\n4. Cross-brand synergy opportunities\n5. Revenue generation potential\n6. Storage optimization suggestions\n7. Workflow integration improvements\n\nFocus on maximizing content creation efficiency and revenue potential."
+            }
+          ]
+        }
+      },
+      "id": "12",
+      "name": "Generate Asset Strategy",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1340,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length}}",
+              "rightValue": 50,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "13",
+      "name": "Check Asset Volume",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 400
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an automated content generation strategist. Create workflows that leverage large asset collections for maximum content output."
+            },
+            {
+              "role": "user",
+              "content": "With {{$('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length}} total assets available, create an automated content generation strategy:\n\n1. Asset combination workflows\n2. Automated remix opportunities\n3. Cross-platform content variations\n4. Batch processing recommendations\n5. Revenue multiplication strategies\n6. Quality control automation\n\nFocus on scaling content production while maintaining quality and brand consistency."
+            }
+          ]
+        }
+      },
+      "id": "14",
+      "name": "Generate Scaling Strategy",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1560,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_CHANNEL_ID}}",
+        "text": "📁 **ASSET MANAGEMENT REPORT**\n\n**Asset Inventory:**\n🖼️ Images: {{$('Log Image Assets').all().length}}\n🎬 Videos: {{$('Log Video Assets').all().length}}\n🎵 Audio: {{$('Log Audio Assets').all().length}}\n📊 Total Assets: {{$('Log Image Assets').all().length + $('Log Video Assets').all().length + $('Log Audio Assets').all().length}}\n\n**Strategic Analysis:**\n{{$('Generate Asset Strategy').item.json.choices[0].message.content}}\n\n**Asset Organization:**\n✅ All assets categorized and analyzed\n✅ Brand associations identified\n✅ Usage recommendations provided\n✅ Quality assessments completed\n✅ Cross-brand opportunities mapped\n\n**Next Actions:**\n🎯 Implement optimization recommendations\n🔄 Update content workflows\n💰 Explore revenue opportunities\n📈 Monitor asset utilization\n\n*Asset library is organized and optimized for maximum content creation efficiency!* 🚀"
+      },
+      "id": "15",
+      "name": "Asset Management Report",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        300
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_STRATEGY_CHANNEL_ID}}",
+        "text": "🚀 **SCALING OPPORTUNITY DETECTED!**\n\n**Asset Volume:** {{$('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length}} total assets\n\n**AUTOMATED SCALING STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**IMMEDIATE IMPLEMENTATION:**\n⚡ Activate batch processing workflows\n🎯 Launch automated content variations\n💰 Implement revenue multiplication tactics\n📊 Set up performance tracking\n🔄 Optimize asset utilization rates\n\n**REVENUE POTENTIAL:** With this asset volume, we can scale to ${{($('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length) * 100}}-${{($('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length) * 500}} monthly revenue\n\n*Time to scale the content empire to the next level!* 📈"
+      },
+      "id": "16",
+      "name": "Scaling Strategy Alert",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        480
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Asset Sync Trigger": {
+      "main": [
+        [
+          {
+            "node": "Scan Google Drive Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan Google Drive Assets": {
+      "main": [
+        [
+          {
+            "node": "Filter Image Assets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter Video Assets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter Audio Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Image Assets": {
+      "main": [
+        [
+          {
+            "node": "Categorize Image Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Video Assets": {
+      "main": [
+        [
+          {
+            "node": "Analyze Video Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Audio Assets": {
+      "main": [
+        [
+          {
+            "node": "Process Audio Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Categorize Image Assets": {
+      "main": [
+        [
+          {
+            "node": "Log Image Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Video Assets": {
+      "main": [
+        [
+          {
+            "node": "Log Video Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Audio Assets": {
+      "main": [
+        [
+          {
+            "node": "Log Audio Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Image Assets": {
+      "main": [
+        [
+          {
+            "node": "Generate Asset Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Video Assets": {
+      "main": [
+        [
+          {
+            "node": "Generate Asset Strategy",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Asset Volume",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Audio Assets": {
+      "main": [
+        [
+          {
+            "node": "Generate Asset Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Asset Strategy": {
+      "main": [
+        [
+          {
+            "node": "Asset Management Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Asset Volume": {
+      "main": [
+        [
+          {
+            "node": "Generate Scaling Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Scaling Strategy": {
+      "main": [
+        [
+          {
+            "node": "Scaling Strategy Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "asset-management-system"
+  },
+  "id": "asset-management-system",
+  "tags": []
+}
+

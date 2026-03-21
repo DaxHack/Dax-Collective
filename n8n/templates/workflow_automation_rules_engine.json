@@ -1,0 +1,782 @@
+{
+  "name": "Automation Rules Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Rules Engine Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_MASTER_SHEET_ID}}",
+        "sheetName": "Master Control",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Read Current State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Upload Status']}}",
+              "rightValue": "Generated",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{new Date($json['Scheduled Date']).getTime()}}",
+              "rightValue": "={{new Date().getTime()}}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "3",
+              "leftValue": "={{$json['Viral Score']}}",
+              "rightValue": 80,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Rule: Auto-Publish High Viral",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Upload Status']}}",
+              "rightValue": "Published",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{$json['Performance Views']}}",
+              "rightValue": 1000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "3",
+              "leftValue": "={{$json['Revenue Potential']}}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "Rule: Create Follow-up Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Upload Status']}}",
+              "rightValue": "Published",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{$json['Performance Views']}}",
+              "rightValue": 100,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            },
+            {
+              "id": "3",
+              "leftValue": "={{Math.floor((new Date().getTime() - new Date($json['Last Updated']).getTime()) / (1000 * 60 * 60))}}",
+              "rightValue": 24,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5",
+      "name": "Rule: Boost Underperforming",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Brand']}}",
+              "rightValue": "Ani-Dax",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{$json['Upload Status']}}",
+              "rightValue": "Published",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "3",
+              "leftValue": "={{$json['Performance Views']}}",
+              "rightValue": 5000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6",
+      "name": "Rule: Generate Anime Stickers",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5678/webhook/auto-publish-trigger",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content_data",
+              "value": "={{JSON.stringify($json)}}"
+            },
+            {
+              "name": "rule_triggered",
+              "value": "auto_publish_high_viral"
+            },
+            {
+              "name": "priority",
+              "value": "high"
+            }
+          ]
+        }
+      },
+      "id": "7",
+      "name": "Trigger Auto-Publish Workflow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        900,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 600
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an AI content strategist. Create follow-up content ideas that capitalize on successful content performance."
+            },
+            {
+              "role": "user",
+              "content": "This content is performing well and needs follow-up:\n\nTitle: {{$json['Video Title']}}\nBrand: {{$json['Brand']}}\nViews: {{$json['Performance Views']}}\nViral Score: {{$json['Viral Score']}}\nRevenue Potential: {{$json['Revenue Potential']}}\n\nGenerate 3 follow-up content ideas that:\n1. Capitalize on the success\n2. Expand the topic\n3. Drive more revenue\n4. Maintain audience engagement\n5. Cross-promote other brands\n\nProvide specific titles, content angles, and revenue strategies."
+            }
+          ]
+        }
+      },
+      "id": "8",
+      "name": "Generate Follow-up Ideas",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a content performance optimizer. Create strategies to boost underperforming content and salvage potential revenue."
+            },
+            {
+              "role": "user",
+              "content": "This content is underperforming and needs intervention:\n\nTitle: {{$json['Video Title']}}\nBrand: {{$json['Brand']}}\nViews: {{$json['Performance Views']}}\nViral Score: {{$json['Viral Score']}}\nHours Since Published: {{Math.floor((new Date().getTime() - new Date($json['Last Updated']).getTime()) / (1000 * 60 * 60))}}\n\nCreate a performance boost strategy:\n1. Content optimization recommendations\n2. Cross-platform promotion tactics\n3. Community engagement strategies\n4. SEO improvements\n5. Paid promotion options\n6. Repurposing opportunities\n\nFocus on salvaging and maximizing the content's potential."
+            }
+          ]
+        }
+      },
+      "id": "9",
+      "name": "Generate Boost Strategy",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5678/webhook/sticker-generation-trigger",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content_data",
+              "value": "={{JSON.stringify($json)}}"
+            },
+            {
+              "name": "rule_triggered",
+              "value": "generate_anime_stickers"
+            },
+            {
+              "name": "performance_threshold",
+              "value": "5000_views"
+            }
+          ]
+        }
+      },
+      "id": "10",
+      "name": "Trigger Sticker Generation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        900,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_MASTER_SHEET_ID}}",
+        "sheetName": "Master Control",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": true
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Video Title",
+              "fieldValue": "Follow-up: {{$('Rule: Create Follow-up Content').item.json['Video Title']}}"
+            },
+            {
+              "column": "Brand",
+              "fieldValue": "={{$('Rule: Create Follow-up Content').item.json['Brand']}}"
+            },
+            {
+              "column": "Content Type",
+              "fieldValue": "Follow-up Content"
+            },
+            {
+              "column": "Script Prompt",
+              "fieldValue": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "column": "Upload Status",
+              "fieldValue": "Queued"
+            },
+            {
+              "column": "Viral Score",
+              "fieldValue": "={{Math.min(95, $('Rule: Create Follow-up Content').item.json['Viral Score'] + 5)}}"
+            },
+            {
+              "column": "Revenue Potential",
+              "fieldValue": "High"
+            },
+            {
+              "column": "Scheduled Date",
+              "fieldValue": "={{$now.plus({days: 1}).format('yyyy-MM-dd')}}"
+            },
+            {
+              "column": "Platform",
+              "fieldValue": "YouTube, TikTok, Instagram"
+            },
+            {
+              "column": "Next Action Required",
+              "fieldValue": "Generate content"
+            }
+          ]
+        }
+      },
+      "id": "11",
+      "name": "Queue Follow-up Content",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_MASTER_SHEET_ID}}",
+        "sheetName": "Master Control",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": false
+        },
+        "columnToMatchOn": "Video Title",
+        "valueToMatchOn": "={{$('Rule: Boost Underperforming').item.json['Video Title']}}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Next Action Required",
+              "fieldValue": "Performance boost needed"
+            },
+            {
+              "column": "Boost Strategy",
+              "fieldValue": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "column": "Last Updated",
+              "fieldValue": "={{$now.format('yyyy-MM-dd HH:mm')}}"
+            }
+          ]
+        }
+      },
+      "id": "12",
+      "name": "Update Boost Strategy",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1120,
+        400
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_CHANNEL_ID}}",
+        "text": "🤖 **AUTOMATION RULES ENGINE ACTIVATED** 🤖\n\n**AUTO-PUBLISH TRIGGERED:**\nContent: {{$('Rule: Auto-Publish High Viral').item.json['Video Title'] || 'None'}}\nViral Score: {{$('Rule: Auto-Publish High Viral').item.json['Viral Score'] || 'N/A'}}\nAction: Automatic publishing initiated\n\n**FOLLOW-UP CONTENT QUEUED:**\nOriginal: {{$('Rule: Create Follow-up Content').item.json['Video Title'] || 'None'}}\nPerformance: {{$('Rule: Create Follow-up Content').item.json['Performance Views'] || 'N/A'}} views\nAction: Follow-up content generated and queued\n\n**PERFORMANCE BOOST ACTIVATED:**\nContent: {{$('Rule: Boost Underperforming').item.json['Video Title'] || 'None'}}\nViews: {{$('Rule: Boost Underperforming').item.json['Performance Views'] || 'N/A'}}\nAction: Boost strategy implemented\n\n**STICKER GENERATION TRIGGERED:**\nAnime Content: {{$('Rule: Generate Anime Stickers').item.json['Video Title'] || 'None'}}\nViews: {{$('Rule: Generate Anime Stickers').item.json['Performance Views'] || 'N/A'}}\nAction: Sticker creation workflow activated\n\n*Automation rules are working 24/7 to optimize the empire!* ⚡"
+      },
+      "id": "13",
+      "name": "Rules Engine Status Report",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        350
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "14",
+      "name": "Check Success Threshold",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.9,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a scaling strategist. When content performance reaches success thresholds, create aggressive scaling strategies to multiply revenue and reach."
+            },
+            {
+              "role": "user",
+              "content": "SUCCESS THRESHOLD REACHED! {{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content have 1000+ views.\n\nSuccessful content:\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).map(item => `- ${item['Brand']}: ${item['Video Title']} (${item['Performance Views']} views)`).join('\\n')}}\n\nCreate an aggressive scaling strategy:\n1. Content multiplication tactics\n2. Revenue scaling opportunities\n3. Brand expansion strategies\n4. Automation scaling recommendations\n5. Investment priorities\n6. Team scaling needs\n\nThis is the moment to scale from thousands to tens of thousands in revenue!"
+            }
+          ]
+        }
+      },
+      "id": "15",
+      "name": "Generate Scaling Strategy",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1560,
+        500
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_STRATEGY_CHANNEL_ID}}",
+        "text": "🚀 **SUCCESS THRESHOLD REACHED - SCALING MODE ACTIVATED!** 🚀\n\n**PERFORMANCE MILESTONE:**\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content with 1000+ views!\n\n**AGGRESSIVE SCALING STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**IMMEDIATE SCALING ACTIONS:**\n⚡ Multiply successful content formats\n💰 Scale revenue streams aggressively\n🎯 Expand to new platforms and audiences\n🤖 Increase automation capacity\n📊 Implement advanced analytics\n💸 Reinvest profits for exponential growth\n\n**REVENUE PROJECTION:** With this performance level, we're on track for ${{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length * 500}}-${{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length * 2000}} monthly revenue\n\n*This is the breakthrough moment - time to scale to the moon!* 🌙"
+      },
+      "id": "16",
+      "name": "Scaling Success Alert",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        500
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Rules Engine Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Current State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Current State": {
+      "main": [
+        [
+          {
+            "node": "Rule: Auto-Publish High Viral",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rule: Create Follow-up Content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rule: Boost Underperforming",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rule: Generate Anime Stickers",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Success Threshold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rule: Auto-Publish High Viral": {
+      "main": [
+        [
+          {
+            "node": "Trigger Auto-Publish Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rule: Create Follow-up Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Follow-up Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rule: Boost Underperforming": {
+      "main": [
+        [
+          {
+            "node": "Generate Boost Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rule: Generate Anime Stickers": {
+      "main": [
+        [
+          {
+            "node": "Trigger Sticker Generation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Auto-Publish Workflow": {
+      "main": [
+        [
+          {
+            "node": "Rules Engine Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Follow-up Ideas": {
+      "main": [
+        [
+          {
+            "node": "Queue Follow-up Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Boost Strategy": {
+      "main": [
+        [
+          {
+            "node": "Update Boost Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Sticker Generation": {
+      "main": [
+        [
+          {
+            "node": "Rules Engine Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Queue Follow-up Content": {
+      "main": [
+        [
+          {
+            "node": "Rules Engine Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Boost Strategy": {
+      "main": [
+        [
+          {
+            "node": "Rules Engine Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Success Threshold": {
+      "main": [
+        [
+          {
+            "node": "Generate Scaling Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Scaling Strategy": {
+      "main": [
+        [
+          {
+            "node": "Scaling Success Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "automation-rules-engine"
+  },
+  "id": "automation-rules-engine",
+  "tags": []
+}
+

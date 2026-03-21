@@ -1,0 +1,497 @@
+{
+  "name": "Multi-Format Video Creator with FFmpeg",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-video",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook_trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "create-video-webhook"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": "={{ $json.body.sheetId }}",
+        "sheetName": "Sheet1",
+        "range": "={{ 'A' + $json.body.rowNumber + ':Z' + $json.body.rowNumber }}",
+        "options": {
+          "valueInputOption": "USER_ENTERED"
+        }
+      },
+      "id": "read_content_data",
+      "name": "Read Content Data",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [460, 300],
+      "credentials": {
+        "googleSheetsApi": {
+          "id": "google_sheets_api",
+          "name": "Google Sheets API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check_format",
+              "leftValue": "={{ $json.Video_Format }}",
+              "rightValue": "short",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "format_router",
+      "name": "Format Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.deepseek.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.DEEPSEEK_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "deepseek-chat"
+            },
+            {
+              "name": "messages",
+              "value": "[{\"role\": \"user\", \"content\": \"{{ $json.Script_Prompt }} Create a {{ $json.Video_Length }}-second {{ $json.Video_Format }} video script for {{ $json.Brand }}. Make it highly engaging and viral-worthy. Include hooks, emotional triggers, and clear call-to-action.\"}]"
+            },
+            {
+              "name": "max_tokens",
+              "value": 800
+            },
+            {
+              "name": "temperature",
+              "value": 0.8
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "generate_script",
+      "name": "Generate Script",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/{{ $json.Voice_ID }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "{{ $env.ELEVENLABS_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $('Generate Script').item.json.choices[0].message.content }}"
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_multilingual_v2"
+            },
+            {
+              "name": "voice_settings",
+              "value": "{\"stability\": 0.75, \"similarity_boost\": 0.85, \"style\": 0.4, \"use_speaker_boost\": true}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "generate_voice",
+      "name": "Generate Voice",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "command": "python3 /app/scripts/create_video.py",
+        "additionalFlags": {
+          "flags": [
+            "--script=\"{{ $('Generate Script').item.json.choices[0].message.content }}\"",
+            "--audio-file=\"{{ $('Generate Voice').item.binary.data }}\"",
+            "--title=\"{{ $json.Video_Title }}\"",
+            "--format=\"{{ $json.Video_Format }}\"",
+            "--brand=\"{{ $json.Brand }}\"",
+            "--viral-score=\"{{ $json.Viral_Score }}\"",
+            "--output-dir=\"/app/output/videos\""
+          ]
+        }
+      },
+      "id": "create_short_video",
+      "name": "Create Short Video",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1340, 120]
+    },
+    {
+      "parameters": {
+        "command": "python3 /app/scripts/create_longform_video.py",
+        "additionalFlags": {
+          "flags": [
+            "--script=\"{{ $('Generate Script').item.json.choices[0].message.content }}\"",
+            "--audio-file=\"{{ $('Generate Voice').item.binary.data }}\"",
+            "--title=\"{{ $json.Video_Title }}\"",
+            "--format=\"{{ $json.Video_Format }}\"",
+            "--brand=\"{{ $json.Brand }}\"",
+            "--duration=\"{{ $json.Video_Length }}\"",
+            "--output-dir=\"/app/output/videos\""
+          ]
+        }
+      },
+      "id": "create_longform_video",
+      "name": "Create Longform Video",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1340, 280]
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg",
+        "additionalFlags": {
+          "flags": [
+            "-i", "/app/output/videos/{{ $json.Video_Title }}.mp4",
+            "-vf", "scale=1080:1920,setsar=1:1",
+            "-c:v", "libx264",
+            "-c:a", "aac",
+            "-b:v", "2M",
+            "-b:a", "128k",
+            "-movflags", "+faststart",
+            "/app/output/videos/{{ $json.Video_Title }}_portrait.mp4"
+          ]
+        }
+      },
+      "id": "convert_to_portrait",
+      "name": "Convert to Portrait",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1560, 120]
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg",
+        "additionalFlags": {
+          "flags": [
+            "-i", "/app/output/videos/{{ $json.Video_Title }}.mp4",
+            "-vf", "scale=1920:1080,setsar=1:1",
+            "-c:v", "libx264",
+            "-c:a", "aac",
+            "-b:v", "4M",
+            "-b:a", "192k",
+            "-movflags", "+faststart",
+            "/app/output/videos/{{ $json.Video_Title }}_landscape.mp4"
+          ]
+        }
+      },
+      "id": "convert_to_landscape",
+      "name": "Convert to Landscape",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1560, 280]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/api/upload-to-platforms",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "videoPath",
+              "value": "/app/output/videos/{{ $json.Video_Title }}_{{ $json.Video_Format === 'short' ? 'portrait' : 'landscape' }}.mp4"
+            },
+            {
+              "name": "title",
+              "value": "{{ $json.Video_Title }}"
+            },
+            {
+              "name": "description",
+              "value": "{{ $('Generate Script').item.json.choices[0].message.content }}"
+            },
+            {
+              "name": "tags",
+              "value": "{{ $json.SEO_Keywords }}"
+            },
+            {
+              "name": "platforms",
+              "value": "{{ $json.Target_Platforms }}"
+            },
+            {
+              "name": "brand",
+              "value": "{{ $json.Brand }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "upload_to_platforms",
+      "name": "Upload to Platforms",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1780, 200]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": "={{ $json.body.sheetId }}",
+        "sheetName": "Sheet1",
+        "range": "={{ 'I' + $json.body.rowNumber }}",
+        "options": {
+          "valueInputOption": "USER_ENTERED"
+        },
+        "dataToSend": "defineInNode",
+        "valueToSend": "uploaded"
+      },
+      "id": "update_sheet_status",
+      "name": "Update Sheet Status",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [2000, 200],
+      "credentials": {
+        "googleSheetsApi": {
+          "id": "google_sheets_api",
+          "name": "Google Sheets API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "{{ $env.DISCORD_WEBHOOK_URL }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "🎬 **Video Created & Uploaded!**\\n\\n**Brand:** {{ $json.Brand }}\\n**Title:** {{ $json.Video_Title }}\\n**Format:** {{ $json.Video_Format }}\\n**Platforms:** {{ $json.Target_Platforms }}\\n**Viral Score:** {{ $json.Viral_Score }}/100\\n\\n✅ Ready for engagement!"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "success_notification",
+      "name": "Success Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2220, 200]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Content Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Content Data": {
+      "main": [
+        [
+          {
+            "node": "Format Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Router": {
+      "main": [
+        [
+          {
+            "node": "Generate Script",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Script": {
+      "main": [
+        [
+          {
+            "node": "Generate Voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voice": {
+      "main": [
+        [
+          {
+            "node": "Create Short Video",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Longform Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Short Video": {
+      "main": [
+        [
+          {
+            "node": "Convert to Portrait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Longform Video": {
+      "main": [
+        [
+          {
+            "node": "Convert to Landscape",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to Portrait": {
+      "main": [
+        [
+          {
+            "node": "Upload to Platforms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to Landscape": {
+      "main": [
+        [
+          {
+            "node": "Upload to Platforms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Platforms": {
+      "main": [
+        [
+          {
+            "node": "Update Sheet Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Sheet Status": {
+      "main": [
+        [
+          {
+            "node": "Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-01-09T00:00:00.000Z",
+  "versionId": "1"
+}

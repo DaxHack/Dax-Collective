@@ -1,0 +1,583 @@
+{
+  "name": "Financial Tracking & Tax Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "financial-tracking-trigger",
+      "name": "Daily Financial Check at 6 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Financial Tracking & Tax Agent\n// Monitors all revenue streams, tracks expenses, and manages tax obligations\n\nconst financialConfig = {\n  revenue_sources: {\n    patreon: {\n      enabled: $env.PATREON_ENABLED === 'true',\n      apiKey: $env.PATREON_API_KEY,\n      campaignId: $env.PATREON_CAMPAIGN_ID,\n      taxCategory: 'subscription_income'\n    },\n    shopify: {\n      enabled: $env.SHOPIFY_ENABLED === 'true',\n      apiKey: $env.SHOPIFY_API_KEY,\n      shopDomain: $env.SHOPIFY_SHOP_DOMAIN,\n      accessToken: $env.SHOPIFY_ACCESS_TOKEN,\n      taxCategory: 'product_sales'\n    },\n    printify: {\n      enabled: $env.PRINTIFY_ENABLED === 'true',\n      apiKey: $env.PRINTIFY_API_KEY,\n      shopId: $env.PRINTIFY_SHOP_ID,\n      taxCategory: 'product_sales'\n    },\n    youtube: {\n      enabled: $env.YOUTUBE_MONETIZATION_ENABLED === 'true',\n      apiKey: $env.YOUTUBE_API_KEY,\n      taxCategory: 'advertising_revenue'\n    },\n    affiliates: {\n      enabled: $env.AFFILIATE_TRACKING_ENABLED === 'true',\n      networks: {\n        amazon: { tag: $env.AMAZON_AFFILIATE_TAG },\n        booking: { id: $env.BOOKING_AFFILIATE_ID },\n        worldnomads: { id: $env.WORLDNOMADS_AFFILIATE_ID }\n      },\n      taxCategory: 'affiliate_commissions'\n    },\n    stripe: {\n      enabled: $env.STRIPE_ENABLED === 'true',\n      apiKey: $env.STRIPE_API_KEY,\n      taxCategory: 'payment_processing'\n    },\n    paypal: {\n      enabled: $env.PAYPAL_ENABLED === 'true',\n      clientId: $env.PAYPAL_CLIENT_ID,\n      clientSecret: $env.PAYPAL_CLIENT_SECRET,\n      taxCategory: 'payment_processing'\n    }\n  },\n  \n  expense_categories: {\n    business_operations: {\n      subcategories: ['software_subscriptions', 'hosting', 'domain_names', 'api_costs'],\n      deductible: true\n    },\n    content_creation: {\n      subcategories: ['equipment', 'editing_software', 'stock_photos', 'music_licensing'],\n      deductible: true\n    },\n    marketing: {\n      subcategories: ['advertising', 'influencer_payments', 'promotional_materials'],\n      deductible: true\n    },\n    travel: {\n      subcategories: ['flights', 'accommodation', 'meals', 'transportation'],\n      deductible: true,\n      business_percentage: 0.80 // 80% business use\n    },\n    professional_services: {\n      subcategories: ['accounting', 'legal', 'consulting', 'freelancers'],\n      deductible: true\n    }\n  },\n  \n  tax_settings: {\n    business_structure: $env.BUSINESS_STRUCTURE || 'sole_proprietorship',\n    tax_year: new Date().getFullYear(),\n    quarterly_due_dates: [\n      `${new Date().getFullYear()}-04-15`, // Q1\n      `${new Date().getFullYear()}-06-15`, // Q2\n      `${new Date().getFullYear()}-09-15`, // Q3\n      `${new Date().getFullYear() + 1}-01-15`  // Q4\n    ],\n    estimated_tax_rate: parseFloat($env.ESTIMATED_TAX_RATE || '0.25'), // 25% default\n    self_employment_tax_rate: 0.1413, // 14.13% for 2024\n    standard_deduction: 14600, // 2024 standard deduction for single filers\n    quarterly_threshold: 1000 // Minimum quarterly payment threshold\n  },\n  \n  tracking_periods: {\n    daily: new Date().toISOString().split('T')[0],\n    weekly: getWeekRange(),\n    monthly: getMonthRange(),\n    quarterly: getQuarterRange(),\n    yearly: getYearRange()\n  }\n};\n\n// Helper functions for date ranges\nfunction getWeekRange() {\n  const now = new Date();\n  const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));\n  const endOfWeek = new Date(now.setDate(startOfWeek.getDate() + 6));\n  return {\n    start: startOfWeek.toISOString().split('T')[0],\n    end: endOfWeek.toISOString().split('T')[0]\n  };\n}\n\nfunction getMonthRange() {\n  const now = new Date();\n  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);\n  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);\n  return {\n    start: startOfMonth.toISOString().split('T')[0],\n    end: endOfMonth.toISOString().split('T')[0]\n  };\n}\n\nfunction getQuarterRange() {\n  const now = new Date();\n  const quarter = Math.floor(now.getMonth() / 3);\n  const startOfQuarter = new Date(now.getFullYear(), quarter * 3, 1);\n  const endOfQuarter = new Date(now.getFullYear(), quarter * 3 + 3, 0);\n  return {\n    start: startOfQuarter.toISOString().split('T')[0],\n    end: endOfQuarter.toISOString().split('T')[0]\n  };\n}\n\nfunction getYearRange() {\n  const now = new Date();\n  const startOfYear = new Date(now.getFullYear(), 0, 1);\n  const endOfYear = new Date(now.getFullYear(), 11, 31);\n  return {\n    start: startOfYear.toISOString().split('T')[0],\n    end: endOfYear.toISOString().split('T')[0]\n  };\n}\n\nreturn {\n  financialConfig,\n  analysisTimestamp: new Date().toISOString(),\n  enabledSources: Object.keys(financialConfig.revenue_sources).filter(\n    source => financialConfig.revenue_sources[source].enabled\n  )\n};"
+      },
+      "id": "prepare-financial-analysis",
+      "name": "Prepare Financial Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-revenue-sources",
+      "name": "Process Each Revenue Source",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Configure revenue source data collection\nconst financialData = $('Prepare Financial Analysis').first();\nconst currentSource = financialData.enabledSources[$('Process Each Revenue Source').itemIndex];\n\nif (!currentSource) {\n  return null;\n}\n\nconst sourceConfig = financialData.financialConfig.revenue_sources[currentSource];\nconst trackingPeriods = financialData.financialConfig.tracking_periods;\n\n// Revenue source API configurations\nfunction getPatreonFinancialConfig(config, periods) {\n  return {\n    source: 'patreon',\n    apiUrl: `https://www.patreon.com/api/oauth2/v2/campaigns/${config.campaignId}/pledges`,\n    headers: { 'Authorization': `Bearer ${config.apiKey}` },\n    params: {\n      'include': 'patron,reward',\n      'page[count]': 1000\n    },\n    taxCategory: config.taxCategory,\n    revenueType: 'recurring'\n  };\n}\n\nfunction getShopifyFinancialConfig(config, periods) {\n  return {\n    source: 'shopify',\n    apiUrl: `https://${config.shopDomain}.myshopify.com/admin/api/2023-10/orders.json`,\n    headers: { 'X-Shopify-Access-Token': config.accessToken },\n    params: {\n      'created_at_min': periods.monthly.start + 'T00:00:00Z',\n      'created_at_max': periods.monthly.end + 'T23:59:59Z',\n      'financial_status': 'paid',\n      'limit': 250\n    },\n    taxCategory: config.taxCategory,\n    revenueType: 'one_time'\n  };\n}\n\nfunction getStripeFinancialConfig(config, periods) {\n  return {\n    source: 'stripe',\n    apiUrl: 'https://api.stripe.com/v1/charges',\n    headers: { 'Authorization': `Bearer ${config.apiKey}` },\n    params: {\n      'created[gte]': Math.floor(new Date(periods.monthly.start).getTime() / 1000),\n      'created[lte]': Math.floor(new Date(periods.monthly.end).getTime() / 1000),\n      'limit': 100\n    },\n    taxCategory: config.taxCategory,\n    revenueType: 'payment_processing'\n  };\n}\n\nfunction getPayPalFinancialConfig(config, periods) {\n  return {\n    source: 'paypal',\n    apiUrl: 'https://api.paypal.com/v1/reporting/transactions',\n    headers: { \n      'Authorization': `Bearer ${config.accessToken}`,\n      'Content-Type': 'application/json'\n    },\n    params: {\n      'start_date': periods.monthly.start + 'T00:00:00Z',\n      'end_date': periods.monthly.end + 'T23:59:59Z',\n      'fields': 'all',\n      'page_size': 500\n    },\n    taxCategory: config.taxCategory,\n    revenueType: 'payment_processing'\n  };\n}\n\n// Get configuration for current source\nlet apiConfig;\nswitch (currentSource) {\n  case 'patreon':\n    apiConfig = getPatreonFinancialConfig(sourceConfig, trackingPeriods);\n    break;\n  case 'shopify':\n    apiConfig = getShopifyFinancialConfig(sourceConfig, trackingPeriods);\n    break;\n  case 'stripe':\n    apiConfig = getStripeFinancialConfig(sourceConfig, trackingPeriods);\n    break;\n  case 'paypal':\n    apiConfig = getPayPalFinancialConfig(sourceConfig, trackingPeriods);\n    break;\n  default:\n    // For sources without direct API access, return manual tracking config\n    apiConfig = {\n      source: currentSource,\n      manual_tracking: true,\n      taxCategory: sourceConfig.taxCategory,\n      revenueType: 'manual_entry'\n    };\n}\n\nreturn {\n  ...apiConfig,\n  trackingPeriods,\n  taxSettings: financialData.financialConfig.tax_settings,\n  analysisTimestamp: financialData.analysisTimestamp\n};"
+      },
+      "id": "configure-revenue-tracking",
+      "name": "Configure Revenue Tracking",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-api-url",
+              "leftValue": "={{ $json.apiUrl }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-api-available",
+      "name": "API Available?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.apiUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": "={{ Object.entries($json.headers || {}).map(([key, value]) => ({ name: key, value })) }}"
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": "={{ Object.entries($json.params || {}).map(([key, value]) => ({ name: key, value: String(value) })) }}"
+        },
+        "options": {}
+      },
+      "id": "fetch-revenue-data",
+      "name": "Fetch Revenue Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process revenue data and calculate financial metrics\nconst apiResponse = $input.first();\nconst sourceConfig = $('Configure Revenue Tracking').first();\n\n// Process different revenue source responses\nfunction processPatreonRevenue(data) {\n  const pledges = data.data || [];\n  const totalRevenue = pledges.reduce((sum, pledge) => {\n    return sum + (pledge.attributes?.amount_cents || 0) / 100;\n  }, 0);\n  \n  return {\n    gross_revenue: totalRevenue,\n    transaction_count: pledges.length,\n    average_transaction: pledges.length > 0 ? totalRevenue / pledges.length : 0,\n    revenue_type: 'subscription',\n    processing_fees: totalRevenue * 0.05 // Patreon's 5% fee\n  };\n}\n\nfunction processShopifyRevenue(data) {\n  const orders = data.orders || [];\n  const totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.total_price || 0), 0);\n  const totalTax = orders.reduce((sum, order) => sum + parseFloat(order.total_tax || 0), 0);\n  const shippingCosts = orders.reduce((sum, order) => {\n    return sum + order.shipping_lines?.reduce((shipSum, line) => shipSum + parseFloat(line.price || 0), 0) || 0;\n  }, 0);\n  \n  return {\n    gross_revenue: totalRevenue,\n    net_revenue: totalRevenue - totalTax,\n    transaction_count: orders.length,\n    average_transaction: orders.length > 0 ? totalRevenue / orders.length : 0,\n    revenue_type: 'product_sales',\n    taxes_collected: totalTax,\n    shipping_revenue: shippingCosts,\n    processing_fees: totalRevenue * 0.029 // Shopify Payments fee\n  };\n}\n\nfunction processStripeRevenue(data) {\n  const charges = data.data || [];\n  const successfulCharges = charges.filter(charge => charge.status === 'succeeded');\n  const totalRevenue = successfulCharges.reduce((sum, charge) => sum + (charge.amount / 100), 0);\n  const totalFees = successfulCharges.reduce((sum, charge) => {\n    return sum + ((charge.application_fee_amount || 0) / 100);\n  }, 0);\n  \n  return {\n    gross_revenue: totalRevenue,\n    net_revenue: totalRevenue - totalFees,\n    transaction_count: successfulCharges.length,\n    average_transaction: successfulCharges.length > 0 ? totalRevenue / successfulCharges.length : 0,\n    revenue_type: 'payment_processing',\n    processing_fees: totalFees\n  };\n}\n\nfunction processPayPalRevenue(data) {\n  const transactions = data.transaction_details || [];\n  const revenue_transactions = transactions.filter(t => \n    t.transaction_info?.transaction_status === 'S' && \n    parseFloat(t.transaction_info?.transaction_amount?.value || 0) > 0\n  );\n  \n  const totalRevenue = revenue_transactions.reduce((sum, transaction) => {\n    return sum + parseFloat(transaction.transaction_info?.transaction_amount?.value || 0);\n  }, 0);\n  \n  const totalFees = revenue_transactions.reduce((sum, transaction) => {\n    return sum + Math.abs(parseFloat(transaction.transaction_info?.fee_amount?.value || 0));\n  }, 0);\n  \n  return {\n    gross_revenue: totalRevenue,\n    net_revenue: totalRevenue - totalFees,\n    transaction_count: revenue_transactions.length,\n    average_transaction: revenue_transactions.length > 0 ? totalRevenue / revenue_transactions.length : 0,\n    revenue_type: 'payment_processing',\n    processing_fees: totalFees\n  };\n}\n\n// Process data based on source type\nlet revenueData;\nswitch (sourceConfig.source) {\n  case 'patreon':\n    revenueData = processPatreonRevenue(apiResponse);\n    break;\n  case 'shopify':\n    revenueData = processShopifyRevenue(apiResponse);\n    break;\n  case 'stripe':\n    revenueData = processStripeRevenue(apiResponse);\n    break;\n  case 'paypal':\n    revenueData = processPayPalRevenue(apiResponse);\n    break;\n  default:\n    revenueData = { gross_revenue: 0, net_revenue: 0, transaction_count: 0 };\n}\n\n// Calculate tax implications\nconst taxSettings = sourceConfig.taxSettings;\nconst grossRevenue = revenueData.gross_revenue || 0;\nconst netRevenue = revenueData.net_revenue || grossRevenue;\n\n// Estimate taxes owed\nconst estimatedIncomeTax = netRevenue * taxSettings.estimated_tax_rate;\nconst estimatedSelfEmploymentTax = netRevenue * taxSettings.self_employment_tax_rate;\nconst totalEstimatedTax = estimatedIncomeTax + estimatedSelfEmploymentTax;\n\n// Calculate quarterly payment recommendation\nconst quarterlyPayment = totalEstimatedTax / 4;\nconst shouldMakeQuarterlyPayment = quarterlyPayment >= taxSettings.quarterly_threshold;\n\nreturn {\n  source: sourceConfig.source,\n  tax_category: sourceConfig.taxCategory,\n  revenue_data: revenueData,\n  tax_calculations: {\n    gross_revenue: grossRevenue,\n    net_revenue: netRevenue,\n    estimated_income_tax: estimatedIncomeTax,\n    estimated_self_employment_tax: estimatedSelfEmploymentTax,\n    total_estimated_tax: totalEstimatedTax,\n    quarterly_payment: quarterlyPayment,\n    should_make_quarterly_payment: shouldMakeQuarterlyPayment\n  },\n  tracking_period: sourceConfig.trackingPeriods.monthly,\n  analysis_timestamp: sourceConfig.analysisTimestamp\n};"
+      },
+      "id": "process-revenue-data",
+      "name": "Process Revenue Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "manual-revenue-entry",
+              "name": "manualRevenueEntry",
+              "value": "{ \"source\": \"{{ $('Configure Revenue Tracking').first().source }}\", \"status\": \"manual_tracking_required\", \"tax_category\": \"{{ $('Configure Revenue Tracking').first().taxCategory }}\", \"revenue_type\": \"{{ $('Configure Revenue Tracking').first().revenueType }}\", \"timestamp\": \"{{ new Date().toISOString() }}\" }",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "manual-revenue-tracking",
+      "name": "Manual Revenue Tracking",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        1340,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-revenue-data",
+      "name": "Merge Revenue Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1780,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Compile comprehensive financial report\nconst allRevenueData = $input.all();\nconst financialData = $('Prepare Financial Analysis').first();\n\n// Aggregate revenue by source and tax category\nconst revenueBySource = {};\nconst revenueByTaxCategory = {};\nlet totalGrossRevenue = 0;\nlet totalNetRevenue = 0;\nlet totalEstimatedTax = 0;\nlet totalQuarterlyPayment = 0;\n\nallRevenueData.forEach(sourceData => {\n  if (sourceData.revenue_data) {\n    const source = sourceData.source;\n    const taxCategory = sourceData.tax_category;\n    const revenueData = sourceData.revenue_data;\n    const taxCalcs = sourceData.tax_calculations;\n    \n    // Aggregate by source\n    revenueBySource[source] = {\n      gross_revenue: revenueData.gross_revenue || 0,\n      net_revenue: revenueData.net_revenue || revenueData.gross_revenue || 0,\n      transaction_count: revenueData.transaction_count || 0,\n      processing_fees: revenueData.processing_fees || 0,\n      estimated_tax: taxCalcs?.total_estimated_tax || 0\n    };\n    \n    // Aggregate by tax category\n    if (!revenueByTaxCategory[taxCategory]) {\n      revenueByTaxCategory[taxCategory] = {\n        gross_revenue: 0,\n        net_revenue: 0,\n        estimated_tax: 0\n      };\n    }\n    \n    revenueByTaxCategory[taxCategory].gross_revenue += revenueData.gross_revenue || 0;\n    revenueByTaxCategory[taxCategory].net_revenue += revenueData.net_revenue || revenueData.gross_revenue || 0;\n    revenueByTaxCategory[taxCategory].estimated_tax += taxCalcs?.total_estimated_tax || 0;\n    \n    // Overall totals\n    totalGrossRevenue += revenueData.gross_revenue || 0;\n    totalNetRevenue += revenueData.net_revenue || revenueData.gross_revenue || 0;\n    totalEstimatedTax += taxCalcs?.total_estimated_tax || 0;\n    totalQuarterlyPayment += taxCalcs?.quarterly_payment || 0;\n  }\n});\n\n// Calculate financial health metrics\nconst profitMargin = totalGrossRevenue > 0 ? (totalNetRevenue / totalGrossRevenue) * 100 : 0;\nconst effectiveTaxRate = totalNetRevenue > 0 ? (totalEstimatedTax / totalNetRevenue) * 100 : 0;\nconst cashFlowAfterTax = totalNetRevenue - totalEstimatedTax;\n\n// Check quarterly payment requirements\nconst taxSettings = financialData.financialConfig.tax_settings;\nconst nextQuarterlyDue = getNextQuarterlyDueDate(taxSettings.quarterly_due_dates);\nconst daysUntilDue = Math.ceil((new Date(nextQuarterlyDue) - new Date()) / (1000 * 60 * 60 * 24));\nconst quarterlyPaymentRequired = totalQuarterlyPayment >= taxSettings.quarterly_threshold;\n\n// Generate financial insights and recommendations\nconst insights = [];\nconst recommendations = [];\n\n// Revenue insights\nif (totalGrossRevenue > 0) {\n  insights.push(`Generated $${totalGrossRevenue.toFixed(2)} in gross revenue this month`);\n  \n  if (profitMargin > 70) {\n    insights.push('Excellent profit margins - consider scaling operations');\n  } else if (profitMargin < 30) {\n    insights.push('Low profit margins - review expenses and pricing');\n    recommendations.push('Analyze cost structure and optimize pricing strategy');\n  }\n}\n\n// Tax insights\nif (quarterlyPaymentRequired) {\n  insights.push(`Quarterly tax payment of $${totalQuarterlyPayment.toFixed(2)} recommended`);\n  if (daysUntilDue <= 30) {\n    recommendations.push(`URGENT: Quarterly tax payment due in ${daysUntilDue} days`);\n  }\n}\n\n// Cash flow insights\nif (cashFlowAfterTax < 0) {\n  recommendations.push('Negative cash flow after taxes - consider tax planning strategies');\n} else if (cashFlowAfterTax > totalNetRevenue * 0.8) {\n  recommendations.push('Strong cash position - consider business investments or tax-advantaged savings');\n}\n\n// Top performing revenue source\nconst topRevenueSource = Object.keys(revenueBySource).reduce((a, b) => \n  revenueBySource[a].gross_revenue > revenueBySource[b].gross_revenue ? a : b\n);\n\nfunction getNextQuarterlyDueDate(dueDates) {\n  const now = new Date();\n  return dueDates.find(date => new Date(date) > now) || dueDates[0];\n}\n\n// Create comprehensive financial summary\nconst financialSummary = {\n  overview: {\n    total_gross_revenue: totalGrossRevenue,\n    total_net_revenue: totalNetRevenue,\n    total_estimated_tax: totalEstimatedTax,\n    cash_flow_after_tax: cashFlowAfterTax,\n    profit_margin: profitMargin,\n    effective_tax_rate: effectiveTaxRate,\n    top_revenue_source: topRevenueSource\n  },\n  revenue_by_source: revenueBySource,\n  revenue_by_tax_category: revenueByTaxCategory,\n  tax_obligations: {\n    quarterly_payment_due: totalQuarterlyPayment,\n    payment_required: quarterlyPaymentRequired,\n    next_due_date: nextQuarterlyDue,\n    days_until_due: daysUntilDue\n  },\n  insights,\n  recommendations: recommendations.slice(0, 5),\n  analysis_timestamp: financialData.analysisTimestamp,\n  tracking_period: financialData.financialConfig.tracking_periods.monthly\n};\n\nreturn financialSummary;"
+      },
+      "id": "compile-financial-report",
+      "name": "Compile Financial Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.FINANCIAL_TRACKING_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Monthly_Financial_Summary",
+        "columnToMatchOn": "analysis_timestamp",
+        "valueToMatchOn": "={{ $json.analysis_timestamp }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "analysis_timestamp",
+              "value": "={{ $json.analysis_timestamp }}"
+            },
+            {
+              "column": "tracking_period_start",
+              "value": "={{ $json.tracking_period.start }}"
+            },
+            {
+              "column": "tracking_period_end",
+              "value": "={{ $json.tracking_period.end }}"
+            },
+            {
+              "column": "total_gross_revenue",
+              "value": "={{ $json.overview.total_gross_revenue }}"
+            },
+            {
+              "column": "total_net_revenue",
+              "value": "={{ $json.overview.total_net_revenue }}"
+            },
+            {
+              "column": "total_estimated_tax",
+              "value": "={{ $json.overview.total_estimated_tax }}"
+            },
+            {
+              "column": "cash_flow_after_tax",
+              "value": "={{ $json.overview.cash_flow_after_tax }}"
+            },
+            {
+              "column": "profit_margin",
+              "value": "={{ $json.overview.profit_margin }}"
+            },
+            {
+              "column": "effective_tax_rate",
+              "value": "={{ $json.overview.effective_tax_rate }}"
+            },
+            {
+              "column": "top_revenue_source",
+              "value": "={{ $json.overview.top_revenue_source }}"
+            },
+            {
+              "column": "quarterly_payment_due",
+              "value": "={{ $json.tax_obligations.quarterly_payment_due }}"
+            },
+            {
+              "column": "payment_required",
+              "value": "={{ $json.tax_obligations.payment_required }}"
+            },
+            {
+              "column": "next_due_date",
+              "value": "={{ $json.tax_obligations.next_due_date }}"
+            },
+            {
+              "column": "days_until_due",
+              "value": "={{ $json.tax_obligations.days_until_due }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-financial-data",
+      "name": "Save Financial Data",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "financial-report",
+              "name": "financialReport",
+              "value": "💰 *Monthly Financial Report*\\n\\n*Revenue Summary:*\\n• Gross Revenue: ${{ $json.overview.total_gross_revenue.toFixed(2) }}\\n• Net Revenue: ${{ $json.overview.total_net_revenue.toFixed(2) }}\\n• Profit Margin: {{ $json.overview.profit_margin.toFixed(1) }}%\\n• Top Source: {{ $json.overview.top_revenue_source.toUpperCase() }}\\n\\n*Tax Obligations:*\\n• Estimated Tax: ${{ $json.overview.total_estimated_tax.toFixed(2) }}\\n• Quarterly Payment: ${{ $json.tax_obligations.quarterly_payment_due.toFixed(2) }}\\n• Next Due: {{ $json.tax_obligations.next_due_date }} ({{ $json.tax_obligations.days_until_due }} days)\\n• Payment Required: {{ $json.tax_obligations.payment_required ? 'YES' : 'NO' }}\\n\\n*Cash Flow:*\\n• After Tax: ${{ $json.overview.cash_flow_after_tax.toFixed(2) }}\\n• Tax Rate: {{ $json.overview.effective_tax_rate.toFixed(1) }}%\\n\\n*Key Insights:*\\n{{ $json.insights.slice(0, 3).map(insight => `• ${insight}`).join('\\n') }}\\n\\n*Recommendations:*\\n{{ $json.recommendations.slice(0, 3).map((rec, i) => `${i+1}. ${rec}`).join('\\n') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-financial-report",
+      "name": "Format Financial Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.financialReport }}\",\n  \"username\": \"Financial Tracker\",\n  \"icon_emoji\": \":moneybag:\"\n}",
+        "options": {}
+      },
+      "id": "send-financial-report",
+      "name": "Send Financial Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "quarterly-payment-due",
+              "leftValue": "={{ $json.tax_obligations.days_until_due }}",
+              "rightValue": 30,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "payment-required",
+              "leftValue": "={{ $json.tax_obligations.payment_required }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-tax-urgency",
+      "name": "Tax Payment Urgent?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "urgent-tax-alert",
+              "name": "urgentTaxAlert",
+              "value": "🚨 *URGENT TAX PAYMENT ALERT* 🚨\\n\\n*Quarterly Payment Due:* ${{ $('Compile Financial Report').first().tax_obligations.quarterly_payment_due.toFixed(2) }}\\n*Due Date:* {{ $('Compile Financial Report').first().tax_obligations.next_due_date }}\\n*Days Remaining:* {{ $('Compile Financial Report').first().tax_obligations.days_until_due }}\\n\\n*Action Required:*\\n• Schedule quarterly tax payment immediately\\n• Review estimated tax calculations\\n• Consider consulting with tax professional\\n\\n*Payment Methods:*\\n• IRS Direct Pay: https://www.irs.gov/payments/direct-pay\\n• EFTPS: https://www.eftps.gov\\n• Mail check to IRS processing center\\n\\n*Important:* Late payments may incur penalties and interest charges.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-urgent-tax-alert",
+      "name": "Format Urgent Tax Alert",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        3100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.urgentTaxAlert }}\",\n  \"username\": \"Tax Alert System\",\n  \"icon_emoji\": \":warning:\",\n  \"attachments\": [\n    {\n      \"color\": \"danger\",\n      \"title\": \"Immediate Action Required\",\n      \"text\": \"Quarterly tax payment deadline approaching\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "send-urgent-tax-alert",
+      "name": "Send Urgent Tax Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        3320,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Daily Financial Check at 6 AM": {
+      "main": [
+        [
+          {
+            "node": "Prepare Financial Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Financial Analysis": {
+      "main": [
+        [
+          {
+            "node": "Process Each Revenue Source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Revenue Source": {
+      "main": [
+        [
+          {
+            "node": "Configure Revenue Tracking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure Revenue Tracking": {
+      "main": [
+        [
+          {
+            "node": "API Available?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Available?": {
+      "main": [
+        [
+          {
+            "node": "Fetch Revenue Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Manual Revenue Tracking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Revenue Data": {
+      "main": [
+        [
+          {
+            "node": "Process Revenue Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Revenue Data": {
+      "main": [
+        [
+          {
+            "node": "Merge Revenue Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Revenue Tracking": {
+      "main": [
+        [
+          {
+            "node": "Merge Revenue Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Revenue Data": {
+      "main": [
+        [
+          {
+            "node": "Compile Financial Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compile Financial Report": {
+      "main": [
+        [
+          {
+            "node": "Save Financial Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Financial Data": {
+      "main": [
+        [
+          {
+            "node": "Format Financial Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Financial Report": {
+      "main": [
+        [
+          {
+            "node": "Send Financial Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Financial Report": {
+      "main": [
+        [
+          {
+            "node": "Tax Payment Urgent?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tax Payment Urgent?": {
+      "main": [
+        [
+          {
+            "node": "Format Urgent Tax Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Format Urgent Tax Alert": {
+      "main": [
+        [
+          {
+            "node": "Send Urgent Tax Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "financial-tracking",
+      "name": "Financial Tracking"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "tax-management",
+      "name": "Tax Management"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

@@ -1,0 +1,675 @@
+{
+  "name": "Blog Auto Publisher",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Check Blog Content",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "path": "/tmp/",
+        "fileExtension": "md"
+      },
+      "id": "2",
+      "name": "Scan for Blog Files",
+      "type": "n8n-nodes-base.readFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json.fileName}}",
+              "rightValue": "travel_blog_",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Filter Travel Blogs",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json.fileName}}",
+              "rightValue": "devotional_",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "Filter Faith Blogs",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.5,
+          "maxTokens": 800
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a travel blog SEO expert. Optimize blog content for search engines while maintaining readability and engagement."
+            },
+            {
+              "role": "user",
+              "content": "Optimize this travel blog content for SEO:\n\n{{$json.data}}\n\nAdd:\n- SEO-optimized title and meta description\n- Strategic keyword placement\n- Internal linking suggestions\n- Call-to-action for Patreon Traveler's Club\n- Affiliate product recommendations\n- Social sharing optimization\n\nMaintain the authentic voice while maximizing search visibility."
+            }
+          ]
+        }
+      },
+      "id": "5",
+      "name": "SEO Optimize Travel Blog",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        200
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.4,
+          "maxTokens": 600
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a Christian blog editor. Enhance devotional content for maximum spiritual impact and community engagement."
+            },
+            {
+              "role": "user",
+              "content": "Enhance this devotional blog for publication:\n\n{{$json.data}}\n\nAdd:\n- Compelling SEO title for faith-based searches\n- Meta description for Christian audience\n- Scripture cross-references\n- Discussion questions for community engagement\n- Prayer points\n- Call-to-action for God's Vessel merchandise\n- Social sharing for Christian community\n\nKeep the spiritual authenticity while optimizing for reach."
+            }
+          ]
+        }
+      },
+      "id": "6",
+      "name": "Enhance Faith Blog",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.wordpress.com/rest/v1.1/sites/{{$env.TRAVEL_BLOG_SITE_ID}}/posts/new",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordPressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{$json.choices[0].message.content.split('\\n')[0].replace('# ', '')}}"
+            },
+            {
+              "name": "content",
+              "value": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            },
+            {
+              "name": "categories",
+              "value": "Travel Tips,Adventure,Survival"
+            },
+            {
+              "name": "tags",
+              "value": "travel,adventure,survival,backpacking,tips"
+            }
+          ]
+        }
+      },
+      "id": "7",
+      "name": "Publish Travel Blog",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        200
+      ],
+      "credentials": {
+        "wordPressApi": {
+          "id": "13",
+          "name": "Travel Blog WordPress"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.wordpress.com/rest/v1.1/sites/{{$env.FAITH_BLOG_SITE_ID}}/posts/new",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordPressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{$json.choices[0].message.content.split('\\n')[0].replace('# ', '')}}"
+            },
+            {
+              "name": "content",
+              "value": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            },
+            {
+              "name": "categories",
+              "value": "Devotional,Faith,Christian Living"
+            },
+            {
+              "name": "tags",
+              "value": "faith,christian,bible,devotional,prayer"
+            }
+          ]
+        }
+      },
+      "id": "8",
+      "name": "Publish Faith Blog",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        400
+      ],
+      "credentials": {
+        "wordPressApi": {
+          "id": "14",
+          "name": "Faith Blog WordPress"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v18.0/me/feed",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "🌍 New travel blog post is live!\n\n{{$('Publish Travel Blog').item.json.title}}\n\nDiscover survival tips, cultural insights, and travel hacks that could save your life on your next adventure.\n\n🎒 Join the Traveler's Club on Patreon for exclusive guides and insider tips!\n\n#travel #adventure #survival #backpacking"
+            },
+            {
+              "name": "link",
+              "value": "={{$('Publish Travel Blog').item.json.URL}}"
+            }
+          ]
+        }
+      },
+      "id": "9",
+      "name": "Share Travel Blog on Facebook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        200
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "10",
+          "name": "Facebook API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v18.0/me/feed",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "✝️ New devotional blog post is live!\n\n{{$('Publish Faith Blog').item.json.title}}\n\nFind hope, encouragement, and practical faith application for your daily walk with God.\n\n🙏 Share this with someone who needs encouragement today!\n\n#faith #christian #devotional #hope #bible"
+            },
+            {
+              "name": "link",
+              "value": "={{$('Publish Faith Blog').item.json.URL}}"
+            }
+          ]
+        }
+      },
+      "id": "10",
+      "name": "Share Faith Blog on Facebook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        400
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "10",
+          "name": "Facebook API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twitter.com/2/tweets",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🌍 New travel survival guide: {{$('Publish Travel Blog').item.json.title}}\n\nThese tips could save your life on your next adventure! 🎒\n\n{{$('Publish Travel Blog').item.json.URL}}\n\n#travel #survival #adventure #backpacking #traveltips"
+            }
+          ]
+        }
+      },
+      "id": "11",
+      "name": "Tweet Travel Blog",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1560,
+        200
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "9",
+          "name": "Twitter API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twitter.com/2/tweets",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "✝️ New devotional: {{$('Publish Faith Blog').item.json.title}}\n\nFind hope and encouragement for your faith journey 🙏\n\n{{$('Publish Faith Blog').item.json.URL}}\n\n#faith #christian #devotional #hope #bible #prayer"
+            }
+          ]
+        }
+      },
+      "id": "12",
+      "name": "Tweet Faith Blog",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1560,
+        400
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "9",
+          "name": "Twitter API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_CHANNEL_ID}}",
+        "text": "📝 **BLOG CONTENT PUBLISHED!**\n\n**Travel Blog:** {{$('Publish Travel Blog').item.json.title || 'No travel content'}}\n**Faith Blog:** {{$('Publish Faith Blog').item.json.title || 'No faith content'}}\n\n**Published URLs:**\n🌍 Travel: {{$('Publish Travel Blog').item.json.URL || 'N/A'}}\n✝️ Faith: {{$('Publish Faith Blog').item.json.URL || 'N/A'}}\n\n**Social Media:**\n✅ Facebook posts shared\n✅ Twitter posts published\n✅ SEO optimized for search\n\n**Next Steps:**\n📊 Monitor blog traffic and engagement\n💰 Track affiliate link clicks\n🎯 Analyze conversion to Patreon\n📈 Optimize based on performance\n\n*Blog content is live and driving traffic!* 📈"
+      },
+      "id": "13",
+      "name": "Blog Success Notification",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        300
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "rm /tmp/travel_blog_*.md /tmp/devotional_*.md 2>/dev/null || true"
+      },
+      "id": "14",
+      "name": "Clean Up Processed Files",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 300
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a content performance analyst. Predict blog performance and suggest optimization strategies."
+            },
+            {
+              "role": "user",
+              "content": "Analyze these published blog posts for performance potential:\n\nTravel: {{$('Publish Travel Blog').item.json.title || 'None'}}\nFaith: {{$('Publish Faith Blog').item.json.title || 'None'}}\n\nPredict:\n1. Traffic potential (1-10)\n2. Engagement likelihood\n3. Revenue generation potential\n4. SEO ranking probability\n5. Social sharing potential\n\nSuggest immediate optimization actions for maximum performance."
+            }
+          ]
+        }
+      },
+      "id": "15",
+      "name": "Analyze Blog Performance Potential",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        2000,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Check Blog Content": {
+      "main": [
+        [
+          {
+            "node": "Scan for Blog Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan for Blog Files": {
+      "main": [
+        [
+          {
+            "node": "Filter Travel Blogs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter Faith Blogs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Travel Blogs": {
+      "main": [
+        [
+          {
+            "node": "SEO Optimize Travel Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Faith Blogs": {
+      "main": [
+        [
+          {
+            "node": "Enhance Faith Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SEO Optimize Travel Blog": {
+      "main": [
+        [
+          {
+            "node": "Publish Travel Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enhance Faith Blog": {
+      "main": [
+        [
+          {
+            "node": "Publish Faith Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Travel Blog": {
+      "main": [
+        [
+          {
+            "node": "Share Travel Blog on Facebook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tweet Travel Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Faith Blog": {
+      "main": [
+        [
+          {
+            "node": "Share Faith Blog on Facebook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tweet Faith Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share Travel Blog on Facebook": {
+      "main": [
+        [
+          {
+            "node": "Blog Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share Faith Blog on Facebook": {
+      "main": [
+        [
+          {
+            "node": "Blog Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tweet Travel Blog": {
+      "main": [
+        [
+          {
+            "node": "Blog Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tweet Faith Blog": {
+      "main": [
+        [
+          {
+            "node": "Blog Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog Success Notification": {
+      "main": [
+        [
+          {
+            "node": "Clean Up Processed Files",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze Blog Performance Potential",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "blog-auto-publisher"
+  },
+  "id": "blog-auto-publisher",
+  "tags": []
+}
+

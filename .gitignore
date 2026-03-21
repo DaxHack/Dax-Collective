@@ -131,3 +131,17 @@ yarn-error.log*
 
 node_modules/
 .cache/                         # if you ever run a local cache here
+
+
+# ─── n8n project files ────────────────────────────────────
+# Never commit the live n8n data directory:
+/.n8n/
+
+# Ignore our local n8n sub-folder contents that shouldn’t be checked in:
+/n8n/env/
+/n8n/docker/
+/n8n/templates/*.sqlite
+/n8n/scripts/*.log
+
+# If you ever mount n8n runtime into .n8n-custom:
+.n8n-custom/

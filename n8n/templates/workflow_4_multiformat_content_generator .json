@@ -1,0 +1,372 @@
+{
+  "name": "Multiformat Content Generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "content-webhook-trigger",
+      "name": "Content Generation Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "content-generation"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Multiformat Content Generator\n// Processes video content and generates platform-specific content\n\nconst videoData = $input.first();\n\n// Validate input data\nif (!videoData.videoId || !videoData.brand || !videoData.title) {\n  throw new Error('Invalid video data received');\n}\n\n// Brand-specific content strategies\nconst brandStrategies = {\n  dax_traveler: {\n    platforms: ['instagram', 'facebook', 'twitter', 'linkedin', 'tiktok', 'blog'],\n    tone: 'personal, adventurous, inspiring',\n    hashtags: ['#DaxTheTraveler', '#TravelAdventure', '#Wanderlust', '#TravelVlog'],\n    cta: 'Join the Traveler\\'s Club on Patreon for exclusive content!',\n    affiliateOpportunities: ['travel gear', 'booking platforms', 'travel insurance']\n  },\n  timezone_travelers: {\n    platforms: ['instagram', 'facebook', 'twitter', 'pinterest', 'blog'],\n    tone: 'informative, helpful, professional',\n    hashtags: ['#TimezoneTravel', '#TravelTips', '#TravelGuide', '#TravelHacks'],\n    cta: 'Get our complete travel guides and itineraries!',\n    affiliateOpportunities: ['travel guides', 'booking platforms', 'travel apps']\n  },\n  gods_vessel: {\n    platforms: ['instagram', 'facebook', 'twitter', 'pinterest', 'blog'],\n    tone: 'inspirational, faithful, encouraging',\n    hashtags: ['#GodsVessel', '#Faith', '#ChristianLife', '#Inspiration'],\n    cta: 'Shop faith-inspired apparel at God\\'s Vessel!',\n    affiliateOpportunities: ['christian books', 'devotionals', 'faith merchandise']\n  },\n  ani_dax: {\n    platforms: ['instagram', 'facebook', 'twitter', 'tiktok', 'reddit'],\n    tone: 'enthusiastic, knowledgeable, community-focused',\n    hashtags: ['#AniDax', '#Anime', '#Manga', '#AnimeReview', '#Otaku'],\n    cta: 'Join our anime community for reviews and recommendations!',\n    affiliateOpportunities: ['anime merchandise', 'manga', 'streaming services']\n  }\n};\n\nconst strategy = brandStrategies[videoData.brand];\nif (!strategy) {\n  throw new Error(`Unknown brand: ${videoData.brand}`);\n}\n\n// Prepare content generation data\nconst contentData = {\n  ...videoData,\n  strategy,\n  generationTimestamp: new Date().toISOString(),\n  contentId: `${videoData.brand}_${videoData.videoId}_${Date.now()}`\n};\n\nreturn contentData;"
+      },
+      "id": "prepare-content-data",
+      "name": "Prepare Content Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-platforms",
+      "name": "Process Each Platform",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate platform-specific content using AI\nconst contentData = $('Prepare Content Data').first();\nconst currentPlatform = contentData.strategy.platforms[$('Process Each Platform').itemIndex];\n\nif (!currentPlatform) {\n  return null;\n}\n\n// Platform-specific content requirements\nconst platformSpecs = {\n  instagram: {\n    maxLength: 2200,\n    format: 'visual-first',\n    hashtagLimit: 30,\n    includeEmojis: true,\n    callToAction: true\n  },\n  facebook: {\n    maxLength: 63206,\n    format: 'engaging-story',\n    hashtagLimit: 5,\n    includeEmojis: true,\n    callToAction: true\n  },\n  twitter: {\n    maxLength: 280,\n    format: 'concise-thread',\n    hashtagLimit: 3,\n    includeEmojis: true,\n    callToAction: false\n  },\n  linkedin: {\n    maxLength: 3000,\n    format: 'professional',\n    hashtagLimit: 5,\n    includeEmojis: false,\n    callToAction: true\n  },\n  tiktok: {\n    maxLength: 2200,\n    format: 'trendy-engaging',\n    hashtagLimit: 10,\n    includeEmojis: true,\n    callToAction: true\n  },\n  pinterest: {\n    maxLength: 500,\n    format: 'descriptive-seo',\n    hashtagLimit: 20,\n    includeEmojis: false,\n    callToAction: true\n  },\n  reddit: {\n    maxLength: 40000,\n    format: 'community-discussion',\n    hashtagLimit: 0,\n    includeEmojis: false,\n    callToAction: false\n  },\n  blog: {\n    maxLength: 10000,\n    format: 'comprehensive-article',\n    hashtagLimit: 10,\n    includeEmojis: false,\n    callToAction: true\n  }\n};\n\nconst spec = platformSpecs[currentPlatform];\n\n// Create AI prompt for content generation\nfunction createContentPrompt(videoData, platform, spec, strategy) {\n  const basePrompt = `Generate ${platform} content based on this YouTube video:\n\nTitle: ${videoData.title}\nBrand: ${videoData.brand}\nKeywords: ${videoData.keywords.join(', ')}\nTopics: ${videoData.topics.join(', ')}\nTranscript excerpt: ${videoData.transcript.substring(0, 500)}...\n\nBrand Strategy:\n- Tone: ${strategy.tone}\n- Target hashtags: ${strategy.hashtags.join(', ')}\n- Call to action: ${strategy.cta}\n\nPlatform Requirements:\n- Max length: ${spec.maxLength} characters\n- Format: ${spec.format}\n- Hashtag limit: ${spec.hashtagLimit}\n- Include emojis: ${spec.includeEmojis}\n- Include CTA: ${spec.callToAction}\n\n`;\n\n  const platformInstructions = {\n    instagram: 'Create an engaging Instagram post with visual storytelling. Include relevant emojis and hashtags. Focus on the visual aspect and encourage engagement.',\n    facebook: 'Write a compelling Facebook post that tells a story and encourages discussion. Use a conversational tone and include a clear call to action.',\n    twitter: 'Create a Twitter thread (if needed) that captures the key points concisely. Use trending hashtags and encourage retweets.',\n    linkedin: 'Write a professional LinkedIn post that provides value and insights. Focus on lessons learned and professional development aspects.',\n    tiktok: 'Create TikTok caption that\\'s trendy and engaging. Include popular hashtags and encourage user interaction.',\n    pinterest: 'Write a Pinterest description that\\'s SEO-optimized and descriptive. Focus on searchable keywords and visual appeal.',\n    reddit: 'Create a Reddit post that encourages community discussion. Be authentic and provide value to the community.',\n    blog: 'Write a comprehensive blog post outline with introduction, main points, and conclusion. Include SEO keywords and internal linking opportunities.'\n  };\n\n  return basePrompt + platformInstructions[platform] + '\\n\\nGenerate only the content, no explanations or meta-commentary.';\n}\n\nconst prompt = createContentPrompt(contentData, currentPlatform, spec, contentData.strategy);\n\nreturn {\n  platform: currentPlatform,\n  prompt,\n  spec,\n  contentData,\n  aiModel: 'gpt-4o-mini' // Use cost-effective model for content generation\n};"
+      },
+      "id": "generate-platform-prompt",
+      "name": "Generate Platform Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "platform-exists",
+              "leftValue": "={{ $json.platform }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-platform",
+      "name": "Platform Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.OPENAI_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"{{ $json.aiModel }}\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an expert content creator specializing in {{ $json.contentData.brand }} brand content. Create engaging, platform-optimized content that drives engagement and conversions.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.prompt }}\"\n    }\n  ],\n  \"max_tokens\": 1000,\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "id": "generate-ai-content",
+      "name": "Generate AI Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process AI response and format content\nconst aiResponse = $input.first();\nconst platformData = $('Generate Platform Prompt').first();\n\nif (!aiResponse.choices || !aiResponse.choices[0]) {\n  throw new Error('Invalid AI response received');\n}\n\nconst generatedContent = aiResponse.choices[0].message.content.trim();\n\n// Extract hashtags from content\nfunction extractHashtags(content) {\n  const hashtagRegex = /#[a-zA-Z0-9_]+/g;\n  return content.match(hashtagRegex) || [];\n}\n\n// Add affiliate links based on content and brand\nfunction addAffiliateLinks(content, brand, topics) {\n  const affiliateLinks = {\n    dax_traveler: {\n      'travel gear': 'https://amzn.to/travel-gear',\n      'booking': 'https://booking.com/ref/dax-traveler',\n      'insurance': 'https://worldnomads.com/ref/dax'\n    },\n    timezone_travelers: {\n      'guides': 'https://amzn.to/travel-guides',\n      'apps': 'https://apps.com/ref/timezone',\n      'booking': 'https://booking.com/ref/timezone'\n    },\n    gods_vessel: {\n      'books': 'https://amzn.to/christian-books',\n      'merchandise': 'https://godsvesselstore.com',\n      'devotionals': 'https://amzn.to/devotionals'\n    },\n    ani_dax: {\n      'merchandise': 'https://amzn.to/anime-merch',\n      'manga': 'https://amzn.to/manga-collection',\n      'streaming': 'https://crunchyroll.com/ref/anidax'\n    }\n  };\n\n  let contentWithLinks = content;\n  const brandLinks = affiliateLinks[brand] || {};\n  \n  // Add relevant affiliate links based on topics\n  Object.keys(brandLinks).forEach(keyword => {\n    if (topics.some(topic => topic.toLowerCase().includes(keyword)) || \n        content.toLowerCase().includes(keyword)) {\n      contentWithLinks += `\\n\\n🔗 ${brandLinks[keyword]}`;\n    }\n  });\n\n  return contentWithLinks;\n}\n\n// Format final content\nconst hashtags = extractHashtags(generatedContent);\nconst contentWithAffiliates = addAffiliateLinks(\n  generatedContent, \n  platformData.contentData.brand, \n  platformData.contentData.topics\n);\n\n// Create final content object\nconst finalContent = {\n  platform: platformData.platform,\n  content: contentWithAffiliates,\n  hashtags,\n  characterCount: contentWithAffiliates.length,\n  brand: platformData.contentData.brand,\n  videoId: platformData.contentData.videoId,\n  contentId: platformData.contentData.contentId,\n  generatedAt: new Date().toISOString(),\n  status: 'generated',\n  readyForPublishing: contentWithAffiliates.length <= platformData.spec.maxLength\n};\n\nreturn finalContent;"
+      },
+      "id": "process-ai-response",
+      "name": "Process AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.CONTENT_QUEUE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Generated_Content",
+        "columnToMatchOn": "content_id",
+        "valueToMatchOn": "={{ $json.contentId }}_{{ $json.platform }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "content_id",
+              "value": "={{ $json.contentId }}_{{ $json.platform }}"
+            },
+            {
+              "column": "platform",
+              "value": "={{ $json.platform }}"
+            },
+            {
+              "column": "brand",
+              "value": "={{ $json.brand }}"
+            },
+            {
+              "column": "video_id",
+              "value": "={{ $json.videoId }}"
+            },
+            {
+              "column": "content",
+              "value": "={{ $json.content }}"
+            },
+            {
+              "column": "hashtags",
+              "value": "={{ $json.hashtags.join(' ') }}"
+            },
+            {
+              "column": "character_count",
+              "value": "={{ $json.characterCount }}"
+            },
+            {
+              "column": "generated_at",
+              "value": "={{ $json.generatedAt }}"
+            },
+            {
+              "column": "status",
+              "value": "={{ $json.status }}"
+            },
+            {
+              "column": "ready_for_publishing",
+              "value": "={{ $json.readyForPublishing }}"
+            },
+            {
+              "column": "scheduled_time",
+              "value": ""
+            },
+            {
+              "column": "published_at",
+              "value": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-to-queue",
+      "name": "Save to Content Queue",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1780,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "completion-message",
+              "name": "completionMessage",
+              "value": "✅ *Content Generated Successfully*\\n\\n*Brand:* {{ $json.brand.toUpperCase() }}\\n*Platform:* {{ $json.platform.toUpperCase() }}\\n*Video:* {{ $('Prepare Content Data').first().title }}\\n*Content Length:* {{ $json.characterCount }} characters\\n*Hashtags:* {{ $json.hashtags.length }}\\n*Ready for Publishing:* {{ $json.readyForPublishing ? 'Yes' : 'No' }}\\n\\n*Preview:* {{ $json.content.substring(0, 100) }}...",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-completion",
+      "name": "Format Completion Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.completionMessage }}\",\n  \"username\": \"Content Generator\",\n  \"icon_emoji\": \":writing_hand:\"\n}",
+        "options": {}
+      },
+      "id": "slack-completion",
+      "name": "Send Completion Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2220,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Content Generation Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Content Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Content Data": {
+      "main": [
+        [
+          {
+            "node": "Process Each Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Platform": {
+      "main": [
+        [
+          {
+            "node": "Generate Platform Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Platform Prompt": {
+      "main": [
+        [
+          {
+            "node": "Platform Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Platform Valid?": {
+      "main": [
+        [
+          {
+            "node": "Generate AI Content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Generate AI Content": {
+      "main": [
+        [
+          {
+            "node": "Process AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process AI Response": {
+      "main": [
+        [
+          {
+            "node": "Save to Content Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Content Queue": {
+      "main": [
+        [
+          {
+            "node": "Format Completion Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Completion Message": {
+      "main": [
+        [
+          {
+            "node": "Send Completion Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "content-generation",
+      "name": "Content Generation"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "ai-automation",
+      "name": "AI Automation"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

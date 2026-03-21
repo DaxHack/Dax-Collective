@@ -1,0 +1,431 @@
+{
+  "name": "E-commerce Automation Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 */4 * * *"
+            }
+          ]
+        }
+      },
+      "id": "ecommerce-trigger",
+      "name": "Monitor E-commerce Every 4 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// E-commerce Automation Agent\n// Manages Shopify, Printify, and Etsy operations with automated optimization\n\nconst ecommerceConfig = {\n  shopify: {\n    enabled: $env.SHOPIFY_ENABLED === 'true',\n    shopDomain: $env.SHOPIFY_SHOP_DOMAIN,\n    apiKey: $env.SHOPIFY_API_KEY,\n    apiSecret: $env.SHOPIFY_API_SECRET,\n    accessToken: $env.SHOPIFY_ACCESS_TOKEN\n  },\n  printify: {\n    enabled: $env.PRINTIFY_ENABLED === 'true',\n    apiKey: $env.PRINTIFY_API_KEY,\n    shopId: $env.PRINTIFY_SHOP_ID\n  },\n  etsy: {\n    enabled: $env.ETSY_ENABLED === 'true',\n    apiKey: $env.ETSY_API_KEY,\n    shopId: $env.ETSY_SHOP_ID,\n    accessToken: $env.ETSY_ACCESS_TOKEN\n  }\n};\n\n// Brand-specific product strategies\nconst brandStrategies = {\n  gods_vessel: {\n    platforms: ['shopify', 'printify', 'etsy'],\n    productTypes: ['t-shirts', 'hoodies', 'mugs', 'stickers'],\n    priceRange: { min: 15, max: 45 },\n    themes: ['faith', 'inspiration', 'christian', 'bible verses'],\n    targetMargin: 0.40, // 40% profit margin\n    seasonality: {\n      christmas: { boost: 1.5, products: ['ornaments', 'cards'] },\n      easter: { boost: 1.3, products: ['resurrection themed'] },\n      back_to_school: { boost: 1.2, products: ['student faith gear'] }\n    }\n  },\n  dax_traveler: {\n    platforms: ['shopify', 'etsy'],\n    productTypes: ['travel gear', 'accessories', 'guides'],\n    priceRange: { min: 20, max: 80 },\n    themes: ['adventure', 'wanderlust', 'travel quotes'],\n    targetMargin: 0.35,\n    seasonality: {\n      summer: { boost: 1.4, products: ['travel accessories'] },\n      winter: { boost: 1.2, products: ['cold weather gear'] }\n    }\n  },\n  timezone_travelers: {\n    platforms: ['shopify'],\n    productTypes: ['digital guides', 'planners', 'maps'],\n    priceRange: { min: 10, max: 50 },\n    themes: ['travel planning', 'itineraries', 'tips'],\n    targetMargin: 0.80, // High margin for digital products\n    seasonality: {\n      new_year: { boost: 1.6, products: ['travel planners'] },\n      summer: { boost: 1.3, products: ['vacation guides'] }\n    }\n  },\n  ani_dax: {\n    platforms: ['printify', 'etsy'],\n    productTypes: ['anime merchandise', 'posters', 'accessories'],\n    priceRange: { min: 12, max: 35 },\n    themes: ['anime', 'manga', 'otaku culture'],\n    targetMargin: 0.45,\n    seasonality: {\n      convention_season: { boost: 1.8, products: ['cosplay accessories'] },\n      back_to_school: { boost: 1.3, products: ['anime school supplies'] }\n    }\n  }\n};\n\n// Automation tasks to perform\nconst automationTasks = [\n  'inventory_sync',\n  'price_optimization',\n  'product_performance_analysis',\n  'order_fulfillment_check',\n  'customer_service_automation',\n  'marketing_campaign_optimization'\n];\n\nreturn {\n  ecommerceConfig,\n  brandStrategies,\n  automationTasks,\n  analysisTimestamp: new Date().toISOString(),\n  enabledPlatforms: Object.keys(ecommerceConfig).filter(platform => ecommerceConfig[platform].enabled)\n};"
+      },
+      "id": "prepare-ecommerce-analysis",
+      "name": "Prepare E-commerce Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-platforms",
+      "name": "Process Each Platform",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Configure platform-specific analysis\nconst ecommerceData = $('Prepare E-commerce Analysis').first();\nconst currentPlatform = ecommerceData.enabledPlatforms[$('Process Each Platform').itemIndex];\n\nif (!currentPlatform) {\n  return null;\n}\n\nconst platformConfig = ecommerceData.ecommerceConfig[currentPlatform];\n\n// Platform-specific API configurations\nfunction getShopifyConfig(config) {\n  return {\n    platform: 'shopify',\n    baseUrl: `https://${config.shopDomain}.myshopify.com/admin/api/2023-10`,\n    headers: {\n      'X-Shopify-Access-Token': config.accessToken,\n      'Content-Type': 'application/json'\n    },\n    endpoints: {\n      products: '/products.json',\n      orders: '/orders.json',\n      inventory: '/inventory_levels.json',\n      analytics: '/analytics/reports/orders.json'\n    }\n  };\n}\n\nfunction getPrintifyConfig(config) {\n  return {\n    platform: 'printify',\n    baseUrl: 'https://api.printify.com/v1',\n    headers: {\n      'Authorization': `Bearer ${config.apiKey}`,\n      'Content-Type': 'application/json'\n    },\n    endpoints: {\n      products: `/shops/${config.shopId}/products.json`,\n      orders: `/shops/${config.shopId}/orders.json`,\n      catalog: '/catalog/blueprints.json'\n    }\n  };\n}\n\nfunction getEtsyConfig(config) {\n  return {\n    platform: 'etsy',\n    baseUrl: 'https://openapi.etsy.com/v3/application',\n    headers: {\n      'Authorization': `Bearer ${config.accessToken}`,\n      'Content-Type': 'application/json'\n    },\n    endpoints: {\n      products: `/shops/${config.shopId}/listings`,\n      orders: `/shops/${config.shopId}/receipts`,\n      analytics: `/shops/${config.shopId}/stats`\n    }\n  };\n}\n\n// Get configuration for current platform\nlet apiConfig;\nswitch (currentPlatform) {\n  case 'shopify':\n    apiConfig = getShopifyConfig(platformConfig);\n    break;\n  case 'printify':\n    apiConfig = getPrintifyConfig(platformConfig);\n    break;\n  case 'etsy':\n    apiConfig = getEtsyConfig(platformConfig);\n    break;\n  default:\n    return null;\n}\n\nreturn {\n  ...apiConfig,\n  brandStrategies: ecommerceData.brandStrategies,\n  automationTasks: ecommerceData.automationTasks,\n  analysisTimestamp: ecommerceData.analysisTimestamp\n};"
+      },
+      "id": "configure-platform-api",
+      "name": "Configure Platform API",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "platform-configured",
+              "leftValue": "={{ $json.platform }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-platform-config",
+      "name": "Platform Configured?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.baseUrl + $json.endpoints.products }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": "={{ Object.entries($json.headers).map(([key, value]) => ({ name: key, value })) }}"
+        },
+        "options": {}
+      },
+      "id": "fetch-products",
+      "name": "Fetch Products",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Configure Platform API').first().baseUrl + $('Configure Platform API').first().endpoints.orders }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": "={{ Object.entries($('Configure Platform API').first().headers).map(([key, value]) => ({ name: key, value })) }}"
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "created_at_min",
+              "value": "={{ new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() }}"
+            },
+            {
+              "name": "limit",
+              "value": "250"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fetch-orders",
+      "name": "Fetch Recent Orders",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-platform-data",
+      "name": "Merge Platform Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1560,
+        275
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyze platform performance and generate optimization recommendations\nconst platformConfig = $('Configure Platform API').first();\nconst productsData = $('Fetch Products').first();\nconst ordersData = $('Fetch Recent Orders').first();\n\n// Process platform-specific data\nfunction processShopifyData(products, orders) {\n  const productList = products.products || [];\n  const orderList = orders.orders || [];\n  \n  const totalRevenue = orderList.reduce((sum, order) => sum + parseFloat(order.total_price || 0), 0);\n  const totalOrders = orderList.length;\n  const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;\n  \n  // Analyze product performance\n  const productPerformance = productList.map(product => {\n    const productOrders = orderList.filter(order => \n      order.line_items?.some(item => item.product_id === product.id)\n    );\n    const productRevenue = productOrders.reduce((sum, order) => \n      sum + order.line_items\n        .filter(item => item.product_id === product.id)\n        .reduce((itemSum, item) => itemSum + parseFloat(item.price || 0), 0), 0\n    );\n    \n    return {\n      id: product.id,\n      title: product.title,\n      revenue: productRevenue,\n      orders: productOrders.length,\n      inventory: product.variants?.reduce((sum, variant) => sum + (variant.inventory_quantity || 0), 0) || 0\n    };\n  });\n  \n  return {\n    totalProducts: productList.length,\n    totalRevenue,\n    totalOrders,\n    averageOrderValue,\n    topProducts: productPerformance.sort((a, b) => b.revenue - a.revenue).slice(0, 5),\n    lowStockProducts: productPerformance.filter(p => p.inventory < 10)\n  };\n}\n\nfunction processPrintifyData(products, orders) {\n  const productList = products.data || [];\n  const orderList = orders.data || [];\n  \n  const totalRevenue = orderList.reduce((sum, order) => sum + parseFloat(order.total_price || 0), 0);\n  const totalOrders = orderList.length;\n  \n  return {\n    totalProducts: productList.length,\n    totalRevenue,\n    totalOrders,\n    averageOrderValue: totalOrders > 0 ? totalRevenue / totalOrders : 0,\n    printOnDemandStatus: 'active'\n  };\n}\n\nfunction processEtsyData(products, orders) {\n  const productList = products.results || [];\n  const orderList = orders.results || [];\n  \n  const totalRevenue = orderList.reduce((sum, order) => sum + parseFloat(order.grandtotal || 0), 0);\n  const totalOrders = orderList.length;\n  \n  return {\n    totalProducts: productList.length,\n    totalRevenue,\n    totalOrders,\n    averageOrderValue: totalOrders > 0 ? totalRevenue / totalOrders : 0,\n    handmadeStatus: 'active'\n  };\n}\n\n// Process data based on platform\nlet platformAnalysis;\nswitch (platformConfig.platform) {\n  case 'shopify':\n    platformAnalysis = processShopifyData(productsData, ordersData);\n    break;\n  case 'printify':\n    platformAnalysis = processPrintifyData(productsData, ordersData);\n    break;\n  case 'etsy':\n    platformAnalysis = processEtsyData(productsData, ordersData);\n    break;\n  default:\n    platformAnalysis = { error: 'Unknown platform' };\n}\n\n// Generate optimization recommendations\nfunction generateEcommerceOptimizations(platform, analysis, brandStrategies) {\n  const recommendations = [];\n  \n  // Revenue optimization\n  if (analysis.averageOrderValue < 30) {\n    recommendations.push({\n      type: 'increase_aov',\n      priority: 'high',\n      description: 'Implement product bundles and upselling to increase average order value',\n      potential_impact: analysis.totalRevenue * 0.25,\n      action: 'Create product bundles and cross-sell recommendations'\n    });\n  }\n  \n  // Inventory management\n  if (analysis.lowStockProducts && analysis.lowStockProducts.length > 0) {\n    recommendations.push({\n      type: 'inventory_management',\n      priority: 'medium',\n      description: `${analysis.lowStockProducts.length} products are low in stock`,\n      potential_impact: analysis.totalRevenue * 0.10,\n      action: 'Restock low inventory items and implement automated reorder points'\n    });\n  }\n  \n  // Product performance optimization\n  if (analysis.topProducts && analysis.topProducts.length > 0) {\n    const topProduct = analysis.topProducts[0];\n    recommendations.push({\n      type: 'product_optimization',\n      priority: 'medium',\n      description: `Optimize top-performing product: ${topProduct.title}`,\n      potential_impact: topProduct.revenue * 0.15,\n      action: 'Create variations and expand marketing for top-performing products'\n    });\n  }\n  \n  // Platform-specific optimizations\n  if (platform === 'shopify' && analysis.totalProducts < 20) {\n    recommendations.push({\n      type: 'product_expansion',\n      priority: 'high',\n      description: 'Expand product catalog to increase sales opportunities',\n      potential_impact: analysis.totalRevenue * 0.40,\n      action: 'Add 10-15 new products based on trending themes and customer demand'\n    });\n  }\n  \n  return recommendations;\n}\n\nconst optimizations = generateEcommerceOptimizations(\n  platformConfig.platform,\n  platformAnalysis,\n  platformConfig.brandStrategies\n);\n\n// Calculate performance score\nconst performanceScore = Math.min(100, (\n  (platformAnalysis.totalRevenue / 1000) * 20 + // Revenue component\n  (platformAnalysis.averageOrderValue / 50) * 30 + // AOV component\n  (platformAnalysis.totalOrders / 10) * 25 + // Order volume component\n  (platformAnalysis.totalProducts / 20) * 25 // Product diversity component\n));\n\nreturn {\n  platform: platformConfig.platform,\n  analysis: platformAnalysis,\n  optimizations,\n  performanceScore,\n  analysisTimestamp: platformConfig.analysisTimestamp,\n  nextActions: optimizations.filter(opt => opt.priority === 'high').slice(0, 3)\n};"
+      },
+      "id": "analyze-platform-performance",
+      "name": "Analyze Platform Performance",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        275
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.ECOMMERCE_TRACKING_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Platform_Performance",
+        "columnToMatchOn": "analysis_id",
+        "valueToMatchOn": "={{ $json.platform }}_{{ $json.analysisTimestamp }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "analysis_id",
+              "value": "={{ $json.platform }}_{{ $json.analysisTimestamp }}"
+            },
+            {
+              "column": "platform",
+              "value": "={{ $json.platform }}"
+            },
+            {
+              "column": "total_revenue",
+              "value": "={{ $json.analysis.totalRevenue }}"
+            },
+            {
+              "column": "total_orders",
+              "value": "={{ $json.analysis.totalOrders }}"
+            },
+            {
+              "column": "average_order_value",
+              "value": "={{ $json.analysis.averageOrderValue }}"
+            },
+            {
+              "column": "total_products",
+              "value": "={{ $json.analysis.totalProducts }}"
+            },
+            {
+              "column": "performance_score",
+              "value": "={{ $json.performanceScore }}"
+            },
+            {
+              "column": "optimizations_count",
+              "value": "={{ $json.optimizations.length }}"
+            },
+            {
+              "column": "high_priority_actions",
+              "value": "={{ $json.nextActions.length }}"
+            },
+            {
+              "column": "analysis_timestamp",
+              "value": "={{ $json.analysisTimestamp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-platform-analysis",
+      "name": "Save Platform Analysis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2000,
+        275
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "platform-report",
+              "name": "platformReport",
+              "value": "🛒 *{{ $json.platform.toUpperCase() }} Performance Report*\\n\\n*Revenue Metrics:*\\n• Total Revenue: ${{ $json.analysis.totalRevenue.toFixed(2) }}\\n• Orders: {{ $json.analysis.totalOrders }}\\n• AOV: ${{ $json.analysis.averageOrderValue.toFixed(2) }}\\n• Products: {{ $json.analysis.totalProducts }}\\n\\n*Performance Score:* {{ $json.performanceScore.toFixed(1) }}%\\n\\n*Priority Actions:*\\n{{ $json.nextActions.map((action, i) => `${i+1}. ${action.description}`).join('\\n') }}\\n\\n*Optimization Potential:* +${{ $json.optimizations.reduce((sum, opt) => sum + (opt.potential_impact || 0), 0).toFixed(2) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-platform-report",
+      "name": "Format Platform Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2220,
+        275
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.platformReport }}\",\n  \"username\": \"E-commerce Agent\",\n  \"icon_emoji\": \":shopping_cart:\"\n}",
+        "options": {}
+      },
+      "id": "send-platform-report",
+      "name": "Send Platform Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2440,
+        275
+      ]
+    }
+  ],
+  "connections": {
+    "Monitor E-commerce Every 4 Hours": {
+      "main": [
+        [
+          {
+            "node": "Prepare E-commerce Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare E-commerce Analysis": {
+      "main": [
+        [
+          {
+            "node": "Process Each Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Platform": {
+      "main": [
+        [
+          {
+            "node": "Configure Platform API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure Platform API": {
+      "main": [
+        [
+          {
+            "node": "Platform Configured?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Platform Configured?": {
+      "main": [
+        [
+          {
+            "node": "Fetch Products",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Recent Orders",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Fetch Products": {
+      "main": [
+        [
+          {
+            "node": "Merge Platform Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Recent Orders": {
+      "main": [
+        [
+          {
+            "node": "Merge Platform Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Platform Data": {
+      "main": [
+        [
+          {
+            "node": "Analyze Platform Performance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Platform Performance": {
+      "main": [
+        [
+          {
+            "node": "Save Platform Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Platform Analysis": {
+      "main": [
+        [
+          {
+            "node": "Format Platform Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Platform Report": {
+      "main": [
+        [
+          {
+            "node": "Send Platform Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "ecommerce",
+      "name": "E-commerce"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "automation",
+      "name": "Automation"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}
