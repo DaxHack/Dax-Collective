@@ -1,0 +1,690 @@
+{
+  "name": "Dax Collective Master Automation - Optimized v2.0",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": "1BD94iz3ujRh8WdIVHcCVXDdH5Is_zgyg9pbmubwj1c0",
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=1523975780",
+          "cachedResultName": "Master_Automation_Control_Content_Series"
+        },
+        "options": {
+          "range": "A:Q",
+          "useAppend": false
+        },
+        "filters": {
+          "conditions": [
+            {
+              "leftValue": "={{ $json.Active }}",
+              "rightValue": "TRUE",
+              "operation": "equal"
+            },
+            {
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Ready",
+              "operation": "equal"
+            },
+            {
+              "leftValue": "={{ $json.Error_Count }}",
+              "rightValue": "3",
+              "operation": "smaller"
+            }
+          ],
+          "combineOperation": "AND"
+        }
+      },
+      "id": "read-master-control",
+      "name": "Read Master Control",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [420, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Dax Main GSheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Priority-based sorting and processing logic\nconst items = $input.all();\n\n// Sort by Priority (ascending) then by Last_Updated (ascending)\nconst sortedItems = items.sort((a, b) => {\n  const priorityA = parseInt(a.json.Priority) || 999;\n  const priorityB = parseInt(b.json.Priority) || 999;\n  \n  if (priorityA !== priorityB) {\n    return priorityA - priorityB;\n  }\n  \n  // If same priority, sort by last updated (oldest first)\n  const dateA = new Date(a.json.Last_Updated || '1970-01-01');\n  const dateB = new Date(b.json.Last_Updated || '1970-01-01');\n  return dateA - dateB;\n});\n\n// Process only the highest priority item to avoid overwhelming the system\nconst itemToProcess = sortedItems[0];\n\nif (!itemToProcess) {\n  return [];\n}\n\n// Add processing metadata\nitemToProcess.json.processedAt = new Date().toISOString();\nitemToProcess.json.rowNumber = items.findIndex(item => \n  item.json.Brand_Name === itemToProcess.json.Brand_Name && \n  item.json.Series_Name === itemToProcess.json.Series_Name\n) + 2; // +2 because row 1 is headers and arrays are 0-indexed\n\nreturn [itemToProcess];"
+      },
+      "id": "priority-processor",
+      "name": "Priority Processor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": "1BD94iz3ujRh8WdIVHcCVXDdH5Is_zgyg9pbmubwj1c0",
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=1523975780",
+          "cachedResultName": "Master_Automation_Control_Content_Series"
+        },
+        "range": "N{{ $json.rowNumber }}",
+        "valueInputMode": "raw",
+        "values": {
+          "values": [
+            [
+              "Processing"
+            ]
+          ]
+        }
+      },
+      "id": "update-status-processing",
+      "name": "Update Status Processing",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [860, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Dax Main GSheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": "={{ $json.SheetID }}",
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=0",
+          "cachedResultName": "Sheet1"
+        },
+        "options": {
+          "range": "A:Z",
+          "useAppend": false
+        },
+        "filters": {
+          "conditions": [
+            {
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Ready",
+              "operation": "equal"
+            }
+          ],
+          "combineOperation": "AND"
+        }
+      },
+      "id": "read-content-sheet",
+      "name": "Read Content Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1080, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Dax Main GSheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Brand configuration and content processing\nconst masterControl = $input.first().json;\nconst contentItems = $input.all().slice(1); // Skip the master control item\n\nif (contentItems.length === 0) {\n  throw new Error(`No ready content found in sheet: ${masterControl.SheetName}`);\n}\n\n// Select the first ready content item\nconst contentItem = contentItems[0].json;\n\n// Brand-specific configurations\nconst brandConfigs = {\n  'Dax the Traveler': {\n    voiceId: 'pNInz6obpgDQGcFmaJgB',\n    style: 'personal travel experiences and adventures',\n    audience: 'travel enthusiasts and adventure seekers',\n    tone: 'adventurous, inspiring, and authentic',\n    hashtagStyle: '#travel #adventure #explore #wanderlust #daxtheTraveler'\n  },\n  'God\\'s Vessel': {\n    voiceId: 'EXAVITQu4vr4xnSDxMaL',\n    style: 'faith-based inspiration and biblical wisdom',\n    audience: 'Christian community and faith seekers',\n    tone: 'uplifting, spiritual, and encouraging',\n    hashtagStyle: '#faith #christian #bible #inspiration #godsvessel'\n  },\n  'Ani-Dax': {\n    voiceId: 'pNInz6obpgDQGcFmaJgB',\n    style: 'anime analysis, character breakdowns, and hype content',\n    audience: 'anime fans and otaku community',\n    tone: 'energetic, passionate, and knowledgeable',\n    hashtagStyle: '#anime #manga #otaku #animeanalysis #anidax'\n  },\n  'Time-Zone Travelers': {\n    voiceId: 'pNInz6obpgDQGcFmaJgB',\n    style: 'practical travel tips, hacks, and budget advice',\n    audience: 'budget travelers and travel planners',\n    tone: 'helpful, practical, and informative',\n    hashtagStyle: '#traveltips #budgettravel #travelhacks #timezonetravelers'\n  }\n};\n\nconst brandConfig = brandConfigs[masterControl.Brand_Name] || brandConfigs['Dax the Traveler'];\n\n// Content optimization based on type\nconst contentOptimization = {\n  'Shorts': {\n    duration: '30-60 seconds',\n    format: 'vertical 9:16',\n    style: 'fast-paced, hook-heavy, trending',\n    platform: 'YouTube Shorts, TikTok, Instagram Reels'\n  },\n  'Long-form': {\n    duration: '5-15 minutes',\n    format: 'horizontal 16:9',\n    style: 'educational, detailed, storytelling',\n    platform: 'YouTube main feed'\n  },\n  'Social': {\n    duration: '15-30 seconds',\n    format: 'square 1:1',\n    style: 'engaging, shareable, text-overlay',\n    platform: 'Instagram, Facebook, Twitter'\n  }\n};\n\nconst contentConfig = contentOptimization[masterControl.Content_Type] || contentOptimization['Shorts'];\n\nreturn {\n  json: {\n    // Master Control Data\n    masterControl: masterControl,\n    \n    // Content Data\n    contentPrompt: contentItem.Prompt || contentItem['Video Prompt'] || contentItem.Content || contentItem.Title,\n    contentDescription: contentItem.Description || '',\n    \n    // Brand Configuration\n    brandConfig: brandConfig,\n    contentConfig: contentConfig,\n    \n    // Processing Metadata\n    processedAt: new Date().toISOString(),\n    contentRowNumber: 2, // Will be updated based on actual row\n    \n    // YouTube Metadata\n    youtubeChannelId: masterControl.YouTube_Channel_ID,\n    videoTitle: `${masterControl.Series_Name}: ${contentItem.Prompt || contentItem.Title || 'New Content'}`,\n    videoDescription: `${contentItem.Description || contentItem.Prompt || ''} \\n\\n${brandConfig.hashtagStyle}`,\n    videoTags: masterControl.Series_Name.split(' ').concat(masterControl.Brand_Name.split(' '))\n  }\n};"
+      },
+      "id": "content-processor",
+      "name": "Content Processor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1300, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.deepseek.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "deepseek-chat"
+            },
+            {
+              "name": "messages",
+              "value": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"You are a professional video script writer for {{ $json.masterControl.Brand_Name }}. Create engaging, high-quality scripts optimized for {{ $json.contentConfig.platform }}. Style: {{ $json.brandConfig.style }}. Target audience: {{ $json.brandConfig.audience }}. Tone: {{ $json.brandConfig.tone }}. Duration: {{ $json.contentConfig.duration }}. Format: {{ $json.contentConfig.format }}.\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"Create a {{ $json.contentConfig.duration }} video script based on this prompt: {{ $json.contentPrompt }}. Include specific scene descriptions for visuals in [VISUAL: description] format. Make it {{ $json.contentConfig.style }} and optimized for {{ $json.contentConfig.platform }}. Ensure strong hook in first 3 seconds.\"\n  }\n]"
+            },
+            {
+              "name": "temperature",
+              "value": "0.7"
+            },
+            {
+              "name": "max_tokens",
+              "value": "800"
+            }
+          ]
+        }
+      },
+      "id": "script-generator",
+      "name": "Script Generator",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1520, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process the generated script and extract components\nconst response = $input.first().json;\nconst script = response.choices[0].message.content;\nconst masterControl = $input.first().json.masterControl;\nconst brandConfig = $input.first().json.brandConfig;\nconst contentConfig = $input.first().json.contentConfig;\n\n// Extract visual prompts from script\nconst visualPrompts = [];\nconst lines = script.split('\\n');\n\nfor (const line of lines) {\n  const visualMatch = line.match(/\\[VISUAL:([^\\]]+)\\]/);\n  if (visualMatch) {\n    visualPrompts.push(visualMatch[1].trim());\n  }\n}\n\n// If no visual prompts found, create default ones based on brand and content\nif (visualPrompts.length === 0) {\n  const defaultVisuals = {\n    'Dax the Traveler': 'stunning travel destination, adventure scene, beautiful landscape',\n    'God\\'s Vessel': 'peaceful spiritual scene, nature with soft lighting, inspirational background',\n    'Ani-Dax': 'dynamic anime-style scene, colorful animation background, character focus',\n    'Time-Zone Travelers': 'travel planning scene, world map, travel essentials'\n  };\n  \n  visualPrompts.push(defaultVisuals[masterControl.Brand_Name] || defaultVisuals['Dax the Traveler']);\n}\n\n// Clean script for audio (remove visual tags)\nconst audioText = script\n  .replace(/\\[VISUAL:[^\\]]+\\]/g, '')\n  .replace(/Scene \\d+:/g, '')\n  .replace(/\\n\\n+/g, '\\n')\n  .trim();\n\n// Create video metadata\nconst videoMetadata = {\n  title: `${masterControl.Series_Name}: ${$input.first().json.contentPrompt.substring(0, 50)}...`,\n  description: `${$input.first().json.contentDescription || $input.first().json.contentPrompt}\\n\\n${brandConfig.hashtagStyle}\\n\\nCreated with Dax Collective Automation`,\n  tags: [\n    masterControl.Brand_Name.replace(/[^a-zA-Z0-9]/g, ''),\n    masterControl.Series_Name.replace(/[^a-zA-Z0-9]/g, ''),\n    masterControl.Content_Type,\n    'automation',\n    'ai'\n  ],\n  categoryId: '22', // People & Blogs\n  privacyStatus: 'public'\n};\n\nreturn {\n  json: {\n    // Original data\n    masterControl: masterControl,\n    brandConfig: brandConfig,\n    contentConfig: contentConfig,\n    \n    // Generated content\n    fullScript: script,\n    audioText: audioText,\n    visualPrompts: visualPrompts,\n    \n    // Video metadata\n    videoMetadata: videoMetadata,\n    \n    // Processing info\n    processedAt: new Date().toISOString(),\n    scriptLength: audioText.length,\n    visualCount: visualPrompts.length\n  }\n};"
+      },
+      "id": "script-processor",
+      "name": "Script Processor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1740, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pexels.com/videos/search",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $json.visualPrompts[0] }}"
+            },
+            {
+              "name": "per_page",
+              "value": "5"
+            },
+            {
+              "name": "orientation",
+              "value": "={{ $json.contentConfig.format.includes('9:16') ? 'portrait' : 'landscape' }}"
+            }
+          ]
+        }
+      },
+      "id": "generate-visuals",
+      "name": "Generate Visuals",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1960, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Pexels API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/{{ $json.brandConfig.voiceId }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.audioText }}"
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_multilingual_v2"
+            },
+            {
+              "name": "voice_settings",
+              "value": "{\\\"stability\\\": 0.6, \\\"similarity_boost\\\": 0.8, \\\"style\\\": 0.2}"
+            }
+          ]
+        }
+      },
+      "id": "generate-voiceover",
+      "name": "Generate Voiceover",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1960, 400],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "ElevenLabs API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Combine visual and audio assets for video creation\nconst scriptData = $input.first().json;\nconst visualData = $input.all()[1].json;\nconst audioData = $input.all()[2].json;\n\n// Select best visual from Pexels results\nlet selectedVisual = null;\nif (visualData.videos && visualData.videos.length > 0) {\n  // Prefer HD quality videos\n  selectedVisual = visualData.videos.find(video => \n    video.video_files.some(file => file.quality === 'hd')\n  ) || visualData.videos[0];\n}\n\n// Get the best quality video file\nlet videoUrl = null;\nif (selectedVisual) {\n  const hdFile = selectedVisual.video_files.find(file => file.quality === 'hd');\n  const sdFile = selectedVisual.video_files.find(file => file.quality === 'sd');\n  videoUrl = (hdFile || sdFile || selectedVisual.video_files[0]).link;\n}\n\nconst combinedAssets = {\n  // Video assets\n  visualUrl: videoUrl,\n  visualDuration: selectedVisual ? selectedVisual.duration : 30,\n  visualId: selectedVisual ? selectedVisual.id : null,\n  \n  // Audio assets\n  audioData: audioData,\n  audioText: scriptData.audioText,\n  \n  // Metadata\n  masterControl: scriptData.masterControl,\n  videoMetadata: scriptData.videoMetadata,\n  brandConfig: scriptData.brandConfig,\n  contentConfig: scriptData.contentConfig,\n  \n  // Processing info\n  combinedAt: new Date().toISOString(),\n  readyForAssembly: !!(videoUrl && audioData)\n};\n\nif (!combinedAssets.readyForAssembly) {\n  throw new Error('Missing required assets for video assembly');\n}\n\nreturn { json: combinedAssets };"
+      },
+      "id": "combine-assets",
+      "name": "Combine Assets",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2180, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/create-video",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "visualUrl",
+              "value": "={{ $json.visualUrl }}"
+            },
+            {
+              "name": "audioData",
+              "value": "={{ $json.audioData }}"
+            },
+            {
+              "name": "brandName",
+              "value": "={{ $json.masterControl.Brand_Name }}"
+            },
+            {
+              "name": "contentType",
+              "value": "={{ $json.masterControl.Content_Type }}"
+            },
+            {
+              "name": "videoMetadata",
+              "value": "={{ $json.videoMetadata }}"
+            },
+            {
+              "name": "format",
+              "value": "={{ $json.contentConfig.format }}"
+            }
+          ]
+        }
+      },
+      "id": "ffmpeg-video-assembly",
+      "name": "FFmpeg Video Assembly",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2400, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.googleapis.com/upload/youtube/v3/videos",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "youTubeOAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet,status"
+            },
+            {
+              "name": "uploadType",
+              "value": "multipart"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "snippet",
+              "value": "{\n  \\\"title\\\": \\\"{{ $json.videoMetadata.title }}\\\",\n  \\\"description\\\": \\\"{{ $json.videoMetadata.description }}\\\",\n  \\\"tags\\\": {{ JSON.stringify($json.videoMetadata.tags) }},\n  \\\"categoryId\\\": \\\"{{ $json.videoMetadata.categoryId }}\\\",\n  \\\"channelId\\\": \\\"{{ $json.masterControl.YouTube_Channel_ID }}\\\"\n}"
+            },
+            {
+              "name": "status",
+              "value": "{\n  \\\"privacyStatus\\\": \\\"{{ $json.videoMetadata.privacyStatus }}\\\",\n  \\\"selfDeclaredMadeForKids\\\": false\n}"
+            }
+          ]
+        }
+      },
+      "id": "youtube-upload",
+      "name": "YouTube Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2620, 300],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "name": "YouTube OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": "1BD94iz3ujRh8WdIVHcCVXDdH5Is_zgyg9pbmubwj1c0",
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=1523975780",
+          "cachedResultName": "Master_Automation_Control_Content_Series"
+        },
+        "range": "J{{ $json.masterControl.rowNumber }}:Q{{ $json.masterControl.rowNumber }}",
+        "valueInputMode": "raw",
+        "values": {
+          "values": [
+            [
+              "={{ parseInt($json.masterControl.Video_Count) + 1 }}",
+              "={{ $json.estimatedRevenue || $json.masterControl.Revenue_Estimate }}",
+              "={{ new Date().toISOString().split('T')[0] }}",
+              "={{ new Date(Date.now() + ($json.masterControl.Frequency_Hours * 60 * 60 * 1000)).toISOString() }}",
+              "Done",
+              "0",
+              "",
+              "={{ new Date().toISOString() }}"
+            ]
+          ]
+        }
+      },
+      "id": "update-master-control-success",
+      "name": "Update Master Control Success",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [2840, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Dax Main GSheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": "={{ $json.masterControl.SheetID }}",
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=0",
+          "cachedResultName": "Sheet1"
+        },
+        "range": "Status{{ $json.contentRowNumber }}:VideoURL{{ $json.contentRowNumber }}",
+        "valueInputMode": "raw",
+        "values": {
+          "values": [
+            [
+              "Done",
+              "={{ $json.youtubeUrl }}",
+              "={{ new Date().toISOString() }}"
+            ]
+          ]
+        }
+      },
+      "id": "update-content-sheet-success",
+      "name": "Update Content Sheet Success",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [3060, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Dax Main GSheets OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": "1BD94iz3ujRh8WdIVHcCVXDdH5Is_zgyg9pbmubwj1c0",
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=1523975780",
+          "cachedResultName": "Master_Automation_Control_Content_Series"
+        },
+        "range": "N{{ $json.masterControl.rowNumber }}:Q{{ $json.masterControl.rowNumber }}",
+        "valueInputMode": "raw",
+        "values": {
+          "values": [
+            [
+              "Error",
+              "={{ parseInt($json.masterControl.Error_Count || 0) + 1 }}",
+              "={{ $json.error.message || 'Unknown error occurred' }}",
+              "={{ new Date().toISOString() }}"
+            ]
+          ]
+        }
+      },
+      "id": "update-master-control-error",
+      "name": "Update Master Control Error",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [2840, 500],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Dax Main GSheets OAuth2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Master Control",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Master Control": {
+      "main": [
+        [
+          {
+            "node": "Priority Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Priority Processor": {
+      "main": [
+        [
+          {
+            "node": "Update Status Processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Status Processing": {
+      "main": [
+        [
+          {
+            "node": "Read Content Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Content Sheet": {
+      "main": [
+        [
+          {
+            "node": "Content Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Processor": {
+      "main": [
+        [
+          {
+            "node": "Script Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Script Generator": {
+      "main": [
+        [
+          {
+            "node": "Script Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Script Processor": {
+      "main": [
+        [
+          {
+            "node": "Generate Visuals",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Voiceover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Visuals": {
+      "main": [
+        [
+          {
+            "node": "Combine Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voiceover": {
+      "main": [
+        [
+          {
+            "node": "Combine Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Assets": {
+      "main": [
+        [
+          {
+            "node": "FFmpeg Video Assembly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FFmpeg Video Assembly": {
+      "main": [
+        [
+          {
+            "node": "YouTube Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Upload": {
+      "main": [
+        [
+          {
+            "node": "Update Master Control Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Master Control Success": {
+      "main": [
+        [
+          {
+            "node": "Update Content Sheet Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "update-master-control-error"
+  },
+  "staticData": null,
+  "tags": [
+    "dax-collective",
+    "automation",
+    "video-creation",
+    "multi-brand"
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-15T00:00:00.000Z",
+  "versionId": "2.0"
+}
