@@ -1,5 +1,8 @@
 // src/pages/DaxTheTravelerPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useApprovedMedia } from '../hooks/useApprovedMedia';
+import HeroMedia from '../components/HeroMedia';
+import MediaGallery from '../components/MediaGallery';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async'
 import { 
@@ -24,6 +27,11 @@ import { HeartIcon as HeartSolid, StarIcon as StarSolid } from '@heroicons/react
 const DaxTheTravelerPage = () => {
   const [activeTab, setActiveTab] = useState('adventures');
   const [likedPosts, setLikedPosts] = useState(new Set());
+
+  const { media: heroMedia } = useApprovedMedia({ brand: 'dax-the-traveler', isHero: true, limit: 1 });
+  const { media: galleryMedia, loading: galleryLoading } = useApprovedMedia({ brand: 'dax-the-traveler', isGallery: true, limit: 6 });
+
+  const heroItem = heroMedia[0] || null;
 
   // Mock data for travel content
   const featuredTrip = {
@@ -157,12 +165,8 @@ const DaxTheTravelerPage = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-black/40"></div>
-        <div 
-          className="h-screen bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('/api/placeholder/1920/1080')`
-          }}
-        >
+        <HeroMedia item={heroItem} fallbackUrl="/images/daxt-the-traveler.jpg" fallbackAlt="Dax the Traveler">
+          <div className="h-screen flex items-center justify-center">
           <div className="relative z-10 flex items-center justify-center h-full px-4">
             <div className="text-center max-w-4xl">
               <motion.div
@@ -198,7 +202,8 @@ const DaxTheTravelerPage = () => {
               </motion.div>
             </div>
           </div>
-        </div>
+          </div>
+        </HeroMedia>
       </div>
 
       {/* Featured Trip Section */}
@@ -326,13 +331,18 @@ const DaxTheTravelerPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
+              {galleryMedia.length > 0 && (
+                <div className="mb-8">
+                  <MediaGallery media={galleryMedia} loading={galleryLoading} />
+                </div>
+              )}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recentAdventures.map((adventure) => (
                 <div key={adventure.id} className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 hover:border-blue-500 transition-all duration-300 transform hover:scale-105">
                   <div className="relative">
-                    <img 
-                      src={adventure.image} 
+                    <img
+                      src={adventure.image}
                       alt={adventure.title}
                       className="w-full h-48 object-cover"
                     />
@@ -388,6 +398,7 @@ const DaxTheTravelerPage = () => {
                   </div>
                 </div>
               ))}
+              </div>
             </motion.div>
           )}
 
