@@ -1,8 +1,8 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Root .gitignore — The Dax Collective
 
 # ─── Node ────────────────────────────────
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.js
 
 # ─── Build & Production ─────────────────
@@ -24,16 +24,7 @@ pnpm-debug.log*
 .env.local
 .env.production
 .env.development
-*.json.backup
-credentials.json
-.n8n
-
-# ─── Firebase / Cloud / Local Services ─
-.firebaserc
-.firebase
-/keys
-*.key
-*.pem
+env.production
 
 # ─── Credentials & Secrets ──────────────
 *firebase-adminsdk*.json
@@ -42,6 +33,11 @@ credentials/
 **/credentials/
 dax-backend/credentials/
 .secrets/
+*.key
+*.pem
+
+# ─── Firebase / Cloud ───────────────────
+.firebase/
 
 # ─── IDE / OS Junk ──────────────────────
 .DS_Store
@@ -49,16 +45,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# ─── Coverage / Tests ───────────────────
-/coverage
-/jest-coverage
-
-# ─── Local Database / Dev Dumps ────────
-*.sqlite
-*.db
-dump.rdb
-*.bak
-
-# ─── GitHub Workflows Cache ────────────
+# ─── Cache & Temp ───────────────────────
 .cache
 .tmp

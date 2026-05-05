@@ -3,8 +3,14 @@ const admin = require('firebase-admin');
 const { google } = require('googleapis');
 const axios = require('axios');
 
-// Initialize Firebase Admin
-admin.initializeApp();
+// Initialize Firebase Admin.
+// Deployed Firebase Functions: uses the runtime service account automatically.
+// Local development: set GOOGLE_APPLICATION_CREDENTIALS to your service account JSON path.
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault()
+  });
+}
 const db = admin.firestore();
 
 // Google Sheets API setup
