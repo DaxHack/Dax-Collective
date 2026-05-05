@@ -13,9 +13,9 @@ const HeroMedia = ({ item = null, fallbackUrl = null, fallbackAlt = '', children
   if (!src) return null;
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full">
       <div
-        className="h-full bg-cover bg-center bg-no-repeat"
+        className="h-screen bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('${src}')`
         }}

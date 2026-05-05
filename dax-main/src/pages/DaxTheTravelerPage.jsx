@@ -166,7 +166,6 @@ const DaxTheTravelerPage = () => {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-black/40"></div>
         <HeroMedia item={heroItem} fallbackUrl="/images/daxt-the-traveler.jpg" fallbackAlt="Dax the Traveler">
-          <div className="h-screen flex items-center justify-center">
           <div className="relative z-10 flex items-center justify-center h-full px-4">
             <div className="text-center max-w-4xl">
               <motion.div
@@ -201,7 +200,6 @@ const DaxTheTravelerPage = () => {
                 </button>
               </motion.div>
             </div>
-          </div>
           </div>
         </HeroMedia>
       </div>
