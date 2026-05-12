@@ -1,0 +1,395 @@
+{
+  "name": "Dax Collective Master Orchestrator - CLEAN",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 */30 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "cron-scheduler",
+      "name": "Content Scheduler",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": "15QhULGRVWvYUw0l0kPZahVeUnnvvlJW9Oll402KdNVo",
+        "sheetName": "Sheet1",
+        "range": "A:Z",
+        "dataMode": "autoMapInputData"
+      },
+      "id": "read-master-control",
+      "name": "Read Master Control",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [460, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "SELECT_YOUR_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const brands = $input.all();\nconst currentHour = new Date().getHours();\n\nconst brandSchedules = {\n  'Dax the Traveler': { hours: [8, 14, 20], priority: 1 },\n  'God\\'s Vessel': { hours: [7, 12, 19], priority: 2 },\n  'Ani-Dax': { hours: [9, 15, 21], priority: 3 },\n  'Time-Zone Travelers': { hours: [10, 16, 22], priority: 4 }\n};\n\nconst activeBrands = [];\n\nfor (const brand of brands) {\n  const brandData = brand.json;\n  const brandName = brandData['Brand Name'];\n  const schedule = brandSchedules[brandName];\n  \n  if (!schedule) continue;\n  \n  const shouldPost = schedule.hours.includes(currentHour);\n  const isEnabled = brandData['Automation Status'] === 'Ready';\n  \n  if (shouldPost && isEnabled) {\n    activeBrands.push({\n      json: {\n        ...brandData,\n        priority: schedule.priority,\n        shouldTrigger: true,\n        triggerTime: new Date().toISOString()\n      }\n    });\n  }\n}\n\nactiveBrands.sort((a, b) => a.json.priority - b.json.priority);\n\nreturn activeBrands;"
+      },
+      "id": "content-prioritizer",
+      "name": "Content Prioritizer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json['Brand Name'] }}",
+              "rightValue": "Dax the Traveler",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      },
+      "id": "route-dax-traveler",
+      "name": "Route Dax Traveler",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json['Brand Name'] }}",
+              "rightValue": "God's Vessel",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      },
+      "id": "route-gods-vessel",
+      "name": "Route God's Vessel",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json['Brand Name'] }}",
+              "rightValue": "Ani-Dax",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      },
+      "id": "route-ani-dax",
+      "name": "Route Ani-Dax",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json['Brand Name'] }}",
+              "rightValue": "Time-Zone Travelers",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      },
+      "id": "route-timezone-travelers",
+      "name": "Route Time-Zone Travelers",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 500]
+    },
+    {
+      "parameters": {
+        "workflowId": "{{ $vars.dax_traveler_workflow_id }}",
+        "source": "parameter"
+      },
+      "id": "trigger-dax-traveler",
+      "name": "Trigger Dax Traveler",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "workflowId": "{{ $vars.gods_vessel_workflow_id }}",
+        "source": "parameter"
+      },
+      "id": "trigger-gods-vessel",
+      "name": "Trigger God's Vessel",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "workflowId": "{{ $vars.ani_dax_workflow_id }}",
+        "source": "parameter"
+      },
+      "id": "trigger-ani-dax",
+      "name": "Trigger Ani-Dax",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [1120, 400]
+    },
+    {
+      "parameters": {
+        "workflowId": "{{ $vars.timezone_travelers_workflow_id }}",
+        "source": "parameter"
+      },
+      "id": "trigger-timezone-travelers",
+      "name": "Trigger Time-Zone Travelers",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [1120, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = $input.all();\nconst analytics = {\n  totalVideosCreated: results.length,\n  brandPerformance: {},\n  timestamp: new Date().toISOString()\n};\n\nfor (const result of results) {\n  const brandName = result.json.brandName || 'Unknown';\n  if (!analytics.brandPerformance[brandName]) {\n    analytics.brandPerformance[brandName] = {\n      videosCreated: 0,\n      lastExecution: new Date().toISOString()\n    };\n  }\n  analytics.brandPerformance[brandName].videosCreated++;\n}\n\nreturn { json: analytics };"
+      },
+      "id": "performance-analytics",
+      "name": "Performance Analytics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 350]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "sheet",
+        "operation": "append",
+        "documentId": "1e2n00Pv95RUTrmu3uzpAruLdw2oXQrZum_BOiF5uVKc",
+        "sheetName": "Analytics",
+        "dataMode": "autoMapInputData",
+        "valueInputMode": "raw",
+        "values": {
+          "values": [
+            [
+              "={{ $json.timestamp }}",
+              "={{ $json.totalVideosCreated }}",
+              "={{ JSON.stringify($json.brandPerformance) }}"
+            ]
+          ]
+        }
+      },
+      "id": "log-analytics",
+      "name": "Log Analytics",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1560, 350],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "SELECT_YOUR_CREDENTIAL"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Content Scheduler": {
+      "main": [
+        [
+          {
+            "node": "Read Master Control",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Master Control": {
+      "main": [
+        [
+          {
+            "node": "Content Prioritizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Prioritizer": {
+      "main": [
+        [
+          {
+            "node": "Route Dax Traveler",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Route God's Vessel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Route Ani-Dax",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Route Time-Zone Travelers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Dax Traveler": {
+      "main": [
+        [
+          {
+            "node": "Trigger Dax Traveler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route God's Vessel": {
+      "main": [
+        [
+          {
+            "node": "Trigger God's Vessel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Ani-Dax": {
+      "main": [
+        [
+          {
+            "node": "Trigger Ani-Dax",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Time-Zone Travelers": {
+      "main": [
+        [
+          {
+            "node": "Trigger Time-Zone Travelers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Dax Traveler": {
+      "main": [
+        [
+          {
+            "node": "Performance Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger God's Vessel": {
+      "main": [
+        [
+          {
+            "node": "Performance Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Ani-Dax": {
+      "main": [
+        [
+          {
+            "node": "Performance Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Time-Zone Travelers": {
+      "main": [
+        [
+          {
+            "node": "Performance Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Performance Analytics": {
+      "main": [
+        [
+          {
+            "node": "Log Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}
