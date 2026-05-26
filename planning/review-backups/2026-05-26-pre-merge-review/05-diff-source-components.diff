@@ -1,0 +1,89 @@
+DIFFS: Source Component Changes — unstaged
+==========================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: dax-main/src/components/BrandGallery.css
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHANGE: Added 76 lines of base gallery styles before the existing horizontal-scroll variant.
+REASON: BrandGallery component was using grid layout class names (.brand-gallery, .gallery-item,
+        .gallery-img, .gallery-overlay, .gallery-overlay-text) that had no CSS definitions.
+VERDICT: Feature addition — needed for gallery to render correctly. Safe to commit.
+
+New classes added:
+  .brand-gallery-container  — width: 100% wrapper
+  .brand-gallery            — CSS Grid, auto-fill minmax(200px,1fr), gap 1rem
+  .gallery-item             — rounded, overflow-hidden, aspect-ratio 4/3, hover lift effect
+  .gallery-img              — cover fit, hover scale(1.05)
+  .gallery-overlay          — gradient overlay, fades in on hover
+  .gallery-overlay-text     — white bold text, text-shadow
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: dax-main/src/components/FloatingBubbles.jsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHANGE: Moved bubble array generation from inside the component function to module-level constants.
+REASON: Arrays generated inside the component created new random values on every re-render,
+        causing Framer Motion to restart animations on every parent re-render.
+        Module-level constants are computed once at import time and stable forever.
+VERDICT: Performance fix. No visual change. Safe to commit.
+
+  OLD: bubbles and largeBubbles generated inside FloatingBubbles()
+  NEW: BUBBLES and LARGE_BUBBLES as module-level const arrays
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: dax-main/src/services/enhanced-driveApi.js
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHANGE: One-line fix to API_BASE_URL constant.
+  OLD: process.env.REACT_APP_API_URL || 'http://localhost:5000'
+  NEW: process.env.REACT_APP_API_BASE_URL || process.env.REACT_APP_API_URL || 'http://localhost:5000'
+REASON: .env.example uses REACT_APP_API_BASE_URL as the canonical var name,
+        but code was only checking REACT_APP_API_URL. Added the correct var as primary.
+VERDICT: Bug fix. Safe to commit.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: dax-main/src/utils/imageSourcer.js
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHANGE: Added sourceImagesForBrand() method to ImageSourcer class (+55 lines) and exported it.
+REASON: BrandGallery needs a way to load local images for each brand before falling back
+        to placeholder tiles. This method maps brand keys to local public-folder image paths.
+VERDICT: Feature addition. No secrets. All paths are relative to /public. Safe to commit.
+
+Brand image path mappings added:
+  dax-the-traveler  → /images/brands/dax-the-traveler/hero/* and /content/*
+  ani-dax           → /images/brands/ani-dax/hero/* and /logos/*
+  gods-vessel       → /images/brands/gods-vessel/hero/* and /logos/*
+  timezone-travelers → /images/brands/timezone-travelers/hero/* and /logos/*
+  dax-collective    → cross-brand selection
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILES: dax-main/src/pages/*.jsx (4 page components)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AniDaxPage.jsx:
+  - Hero category badges (Anime Analysis / Reviews / Seasonal Picks) converted
+    from plain <div> to <button> with onClick handlers that scroll to #ani-dax-tabs
+  - Section gets id="ani-dax-tabs" for the scroll target
+  VERDICT: UX improvement. Safe to commit.
+
+DaxTheTravelerPage.jsx:
+  - Removed hardcoded /home/ubuntu/upload/ paths (Replit/Ubuntu artifact!)
+  - Updated DAX_PHOTOS to use real project paths under /images/brands/dax-the-traveler/
+  - Changed loading initial state from true → false (prevents blank flash)
+  - Simplified ProfileImage: removed complex motion.div with springs/parallax,
+    replaced with plain <div> (simpler, more stable)
+  - Added h-64 md:h-80 height to AdventuresCollage
+  VERDICT: Bug fixes + path fixes. Removes Replit-specific hardcoded paths. Safe to commit.
+
+GodsVesselPage.jsx:
+  - Added import for GodsVesselQuotesSection component
+  - Wired in <GodsVesselQuotesSection maxQuotes={5} showTitle={true} /> for quotes tab
+  - Added faith content grid below (with mt-8 spacing)
+  VERDICT: Feature addition. Requires GodsVesselQuotes component to exist. Safe to commit
+           IF that component file exists in the project.
+
+TimeZoneTravelersPage.jsx:
+  - Hero background changed from placeholder API URL to real brand image path
+  - Section gets id="tz-content" scroll target
+  - "Read Hack" button now scrolls to content (was dead)
+  - "Get Full Itinerary" button now scrolls to itineraries tab (was dead)
+  - "Start Your Journey Today" button now opens YouTube channel in new tab
+  VERDICT: Bug fixes + UX improvement. Safe to commit.

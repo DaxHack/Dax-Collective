@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import BrandGallery from '../components/BrandGallery';
+import GodsVesselQuotesSection from '../components/GodsVesselQuotes';
 
 const GodsVesselPage = () => {
   const [activeSection, setActiveSection] = useState('faith');
@@ -151,7 +152,17 @@ const GodsVesselPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                <GodsVesselQuotesSection maxQuotes={5} showTitle={true} />
+              </motion.div>
+            )}
+
+            {activeSection === 'faith' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"
               >
                 {faithContent.map((content) => (
                   <div key={content.id} className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">

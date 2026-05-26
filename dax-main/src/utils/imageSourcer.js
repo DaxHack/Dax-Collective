@@ -599,6 +599,55 @@ export class ImageSourcer {
   }
 
   /**
+   * Return local public-folder images for a given brand key.
+   * Used by BrandGallery as the primary image source before falling back to mock tiles.
+   */
+  sourceImagesForBrand(brand, options = {}) {
+    const { limit = 12 } = options;
+
+    const brandMap = {
+      'dax-the-traveler': [
+        { id: 'dt-1', src: '/images/brands/dax-the-traveler/hero/1714962873240.jpeg',            alt: 'Dax the Traveler',        title: 'Travel Adventure' },
+        { id: 'dt-2', src: '/images/brands/dax-the-traveler/hero/Adventures.png',                alt: 'Adventures',              title: 'Adventures' },
+        { id: 'dt-3', src: '/images/brands/dax-the-traveler/hero/me smiling cuba.jpg',           alt: 'Cuba',                    title: 'Cuba' },
+        { id: 'dt-4', src: '/images/brands/dax-the-traveler/content/dax_traveler_profile_pic.png', alt: 'Profile',               title: 'Profile' },
+        { id: 'dt-5', src: '/images/brands/dax-the-traveler/hero/dax_traveler_youtube_banner.png', alt: 'YouTube Banner',        title: 'YouTube' },
+        { id: 'dt-6', src: '/images/brands/dax-the-traveler/logos/dax_the_traveler_logo.png',    alt: 'Logo',                    title: 'Brand Logo' },
+      ],
+      'ani-dax': [
+        { id: 'ad-1', src: '/images/brands/ani-dax/hero/ani-dax.jpg',                           alt: 'Ani-Dax',                 title: 'Ani-Dax' },
+        { id: 'ad-2', src: '/images/brands/ani-dax/hero/social_header_rem_theme.png',           alt: 'Rem Theme',               title: 'Rem Theme' },
+        { id: 'ad-3', src: '/images/brands/ani-dax/hero/website_mockup_rem_theme.png',          alt: 'Website Mockup',          title: 'Site Mockup' },
+        { id: 'ad-4', src: '/images/brands/ani-dax/logos/logo_rem_concept_main.png',            alt: 'Rem Logo',                title: 'Rem Concept' },
+        { id: 'ad-5', src: '/images/brands/ani-dax/logos/logo_beatrice_concept.png',            alt: 'Beatrice Logo',           title: 'Beatrice Concept' },
+        { id: 'ad-6', src: '/images/brands/ani-dax/logos/ani_dax_avatar.png',                   alt: 'Ani-Dax Avatar',          title: 'Avatar' },
+      ],
+      'gods-vessel': [
+        { id: 'gv-1', src: '/images/brands/gods-vessel/hero/gods-vessel.jpg',                   alt: "God's Vessel",            title: "God's Vessel" },
+        { id: 'gv-2', src: '/images/brands/gods-vessel/hero/gods_vessel_merchandise_banner.png', alt: 'Merchandise Banner',     title: 'Merch Banner' },
+        { id: 'gv-3', src: '/images/brands/gods-vessel/logos/gods_vessel_logo.png',             alt: 'Brand Logo',              title: 'Brand Logo' },
+        { id: 'gv-4', src: '/images/brands/gods-vessel/logos/tshirt_design_vessel_cross.png',   alt: 'Cross T-Shirt Design',    title: 'Cross Design' },
+      ],
+      'timezone-travelers': [
+        { id: 'tt-1', src: '/images/brands/timezone-travelers/hero/timezone-travelers.jpg',     alt: 'Timezone Travelers',      title: 'Timezone Travelers' },
+        { id: 'tt-2', src: '/images/brands/timezone-travelers/hero/professional_travel_banner.png', alt: 'Travel Banner',       title: 'Travel Banner' },
+        { id: 'tt-3', src: '/images/brands/timezone-travelers/logos/timezone_travelers_logo.png',   alt: 'Brand Logo',          title: 'Brand Logo' },
+        { id: 'tt-4', src: '/images/brands/timezone-travelers/content/timezone_travelers_instagram_post.png', alt: 'Social Post', title: 'Social Post' },
+      ],
+      'dax-collective': [
+        { id: 'dc-1', src: '/images/brands/dax-collective/logos/primary/logo-main(yellow).png', alt: 'Dax Collective',         title: 'Dax Collective' },
+        { id: 'dc-2', src: '/images/brands/dax-the-traveler/hero/1714962873240.jpeg',            alt: 'Dax the Traveler',       title: 'Dax the Traveler' },
+        { id: 'dc-3', src: '/images/brands/ani-dax/hero/ani-dax.jpg',                           alt: 'Ani-Dax',                title: 'Ani-Dax' },
+        { id: 'dc-4', src: '/images/brands/gods-vessel/hero/gods-vessel.jpg',                   alt: "God's Vessel",           title: "God's Vessel" },
+        { id: 'dc-5', src: '/images/brands/timezone-travelers/hero/timezone-travelers.jpg',      alt: 'Timezone Travelers',     title: 'Timezone Travelers' },
+      ],
+    };
+
+    const images = brandMap[brand] || brandMap['dax-collective'];
+    return Promise.resolve(images.slice(0, limit));
+  }
+
+  /**
    * Clear search cache
    */
   clearCache() {
@@ -619,6 +668,7 @@ export const {
   batchDownloadAndSave,
   getRecommendations,
   getAvailableSources,
-  clearCache
+  clearCache,
+  sourceImagesForBrand
 } = imageSourcer;
 

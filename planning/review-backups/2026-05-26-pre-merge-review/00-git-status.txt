@@ -1,0 +1,28 @@
+GIT STATUS — captured 2026-05-26
+================================================
+
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  deleted:    dax-backend/credentials/firebase-adminsdk.json
+
+Changes not staged for commit:
+  modified:   .gitignore
+  modified:   dax-backend/routes/uploadApi.js
+  modified:   dax-main/.env.example
+  modified:   dax-main/.gitignore
+  modified:   dax-main/build/favicon.ico           [binary — skipped in backup]
+  modified:   dax-main/build/manifest.json
+  modified:   dax-main/src/components/BrandGallery.css
+  modified:   dax-main/src/components/FloatingBubbles.jsx
+  modified:   dax-main/src/pages/AniDaxPage.jsx
+  modified:   dax-main/src/pages/DaxTheTravelerPage.jsx
+  modified:   dax-main/src/pages/GodsVesselPage.jsx
+  modified:   dax-main/src/pages/TimeZoneTravelersPage.jsx
+  modified:   dax-main/src/services/enhanced-driveApi.js
+  modified:   dax-main/src/utils/imageSourcer.js
+
+Untracked files:
+  dax-backend/.env.example
+  package-lock.json

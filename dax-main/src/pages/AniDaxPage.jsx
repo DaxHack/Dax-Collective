@@ -494,18 +494,36 @@ const AniDaxPage = () => {
             )}
 
             <div className="flex flex-wrap justify-center gap-4 mb-12">
-              <div className="flex items-center gap-2 bg-purple-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-purple-600/30">
+              <button
+                onClick={() => {
+                  setActiveTab('re-zero-glaze');
+                  document.getElementById('ani-dax-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="flex items-center gap-2 bg-purple-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-purple-600/30 cursor-pointer hover:bg-purple-700/40 hover:border-purple-500/50 transition-all duration-200"
+              >
                 <TvIcon className="h-5 w-5 text-purple-400" />
                 <span className="font-semibold text-white">Anime Analysis</span>
-              </div>
-              <div className="flex items-center gap-2 bg-blue-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-600/30">
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('anime-reviews');
+                  document.getElementById('ani-dax-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="flex items-center gap-2 bg-blue-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-600/30 cursor-pointer hover:bg-blue-700/40 hover:border-blue-500/50 transition-all duration-200"
+              >
                 <StarIcon className="h-5 w-5 text-blue-400" />
                 <span className="font-semibold text-white">Reviews</span>
-              </div>
-              <div className="flex items-center gap-2 bg-pink-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-pink-600/30">
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('hottest-season');
+                  document.getElementById('ani-dax-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="flex items-center gap-2 bg-pink-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-pink-600/30 cursor-pointer hover:bg-pink-700/40 hover:border-pink-500/50 transition-all duration-200"
+              >
                 <FireIcon className="h-5 w-5 text-pink-400" />
                 <span className="font-semibold text-white">Seasonal Picks</span>
-              </div>
+              </button>
             </div>
           </motion.div>
         </section>
@@ -608,7 +626,7 @@ const AniDaxPage = () => {
         )}
 
         {/* Content Tabs (ORIGINAL STYLING PRESERVED) */}
-        <section className="py-16 px-4">
+        <section id="ani-dax-tabs" className="py-16 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               {tabs.map((tab) => (

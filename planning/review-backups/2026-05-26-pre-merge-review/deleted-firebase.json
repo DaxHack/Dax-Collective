@@ -1,0 +1,54 @@
+// ============================================================
+// REVIEW COPY — NO SECRETS PRESENT — safe to review
+// Source: dax-main/firebase.json
+// Deleted in commit: f5209aa25 ("Updated structure and components for dashboard integration")
+// ============================================================
+//
+// REVIEW NOTES:
+// - This is the dax-main workspace Firebase project config (hosting + emulators).
+// - The project root also has a firebase.json (different — for the backend/functions).
+// - This version pointed public build dir to "public" (not "build") — may be outdated.
+// - If you need Firebase Hosting from dax-main/build/, the public dir should be "build".
+// - Emulator ports are defined here — useful reference if you set up local emulators.
+// ============================================================
+
+{
+  "projects": {
+    "default": "dax-collective"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ],
+    "source": "functions"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "emulators": {
+    "auth":      { "port": 9099 },
+    "functions": { "port": 5001 },
+    "firestore": { "port": 8080 },
+    "hosting":   { "port": 5000 },
+    "storage":   { "port": 9199 },
+    "ui":        { "enabled": true }
+  }
+}

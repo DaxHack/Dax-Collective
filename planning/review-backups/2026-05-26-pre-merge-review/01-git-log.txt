@@ -1,0 +1,56 @@
+GIT LOG — captured 2026-05-26
+================================================
+
+LOCAL BRANCHES:
+  backup-before-full-manus    → d5a81d6d0  (ancestor of main — pre-Manus snapshot)
+  backup-before-secret-cleanup → 6d042fc0c (same as main — safety tag)
+* main                        → 6d042fc0c
+
+REMOTE BRANCHES:
+  origin/main                         → 6d042fc0c  (in sync with local main)
+  origin/clean-local-main-baseline    → d4bdd9b80  (SEPARATE history — Manus/Replit work)
+  origin/master                       → 5f853a74f  (SEPARATE history — early bootstrap)
+  origin/reconcile/foundation-from-local           (merged into clean-local-main-baseline)
+
+RECENT COMMITS (main):
+6d042fc0c (HEAD -> main, origin/main) "Committing new changes for review later"
+845431cef Add workflows for TikTok and Instagram publishing, and Time-Zone Travelers video generation
+f5209aa25 Updated structure and components for dashboard integration
+dd38eac5e chore: add ESLint config for functions
+0f3314fc7 chore: tidy up package.json, rename folders & update sources
+ca8191972 chore: rename dax-traveler to dax-the-traveler
+870c54f91 chore(dax-main): resolve package.json merge conflicts
+405c725d2 resolve merge conflicts: keep local changes
+d1caed295 feat: update gitignore files and package.json optimizations
+e8907ff90 chore: remove summary files & root lockfile, update .gitignore
+444d1f939 chore: remove lingering dax-main/package-lock.json
+f9ac2da32 chore: tighten .gitignore and untrack node_modules & secrets
+7fe0a3af5 chore: clean up functions/
+3f4d5b772 chore: tighten root .gitignore and untrack unwanted files
+b9f17609b chore: untrack deps & build artifacts
+d78cf74a1 chore: prepare public assets and PWA config  [⚠️ EXPOSED SECRETS IN THIS COMMIT]
+16e7ec2e2 About to add Auth for Dev
+8629991c4 About to add Auth for Dev
+7c966422e save: Current working state before adding refined components
+e72266223 save: Current working state before adding refined components
+
+COMMITS IN origin/clean-local-main-baseline NOT IN main (separate history):
+d4bdd9b80  Merge pull request #1 from DaxHack/reconcile/foundation-from-local
+0add392f0  Delete logo_subaru_concept.png
+948b9dccf  Add AuthContext for app-wide authentication state
+9e09f4cd3  Add brand-specific n8n workflow templates
+b7099b798  Add n8n docs and workflow import script
+cbbb80a38  Add Ani-Dax brand image assets
+c305ba563  Add BrandGallery component and styles
+696caaaec  Add analytics utility for navigation tracking
+7ebe4ca83  Add Dax the Traveler branded content assets
+054305f45  Add Dax Investor brand assets
+18c887afc  Add safe brand assets and docs
+1cdab4499  Harden Firebase credential handling
+7f6497551  Fix approved media hero layout
+834ebf859  Add approved media library foundation for Dax the Traveler
+  ... (+ more, ~20 total commits)
+
+NOTE: origin/clean-local-main-baseline has NO COMMON ANCESTOR with local main.
+These are two completely diverged git histories. Merging requires --allow-unrelated-histories
+and will cause conflicts across ~151 files.

@@ -80,16 +80,16 @@ const upload = multer({
   },
 });
 
-// --- Folder Mapping for Smart Routing (from your .env) ---
+// --- Folder Mapping for Smart Routing (from backend .env only) ---
+// Use backend-only DRIVE_FOLDER_* vars — never REACT_APP_* in server code.
 const FOLDER_MAPPING = {
-  "dax-the-traveler": process.env.REACT_APP_DRIVE_DAX_TRAVELER_PHOTOS,
-  "gods-vessel": process.env.REACT_APP_DRIVE_GODS_VESSEL_PHOTOS,
-  "ani-dax": process.env.REACT_APP_DRIVE_ANI_DAX_PHOTOS,
-  "timezone-travelers": process.env.REACT_APP_DRIVE_TIMEZONE_TRAVELERS_PHOTOS,
-  "dax-homepage": process.env.REACT_APP_DRIVE_DAX_HOMEPAGE_PHOTOS,
-  "dax-analytics": process.env.REACT_APP_DRIVE_DAX_ANALYTICS_IMAGES,
-  // Add any other categories you need, matching your frontend's logic
-  "collective": process.env.REACT_APP_DRIVE_DAX_HOMEPAGE_PHOTOS, // Default/fallback
+  "dax-the-traveler": process.env.DRIVE_FOLDER_TRAVEL,
+  "gods-vessel": process.env.DRIVE_FOLDER_FAITH,
+  "ani-dax": process.env.DRIVE_FOLDER_COLLECTIVE,
+  "timezone-travelers": process.env.DRIVE_FOLDER_TIMEZONE,
+  "dax-homepage": process.env.DRIVE_FOLDER_COLLECTIVE,
+  "dax-analytics": process.env.DRIVE_FOLDER_COLLECTIVE,
+  "collective": process.env.DRIVE_FOLDER_COLLECTIVE,
 };
 
 // --- Helper Functions ---

@@ -25,14 +25,13 @@ import {
 import BrandGallery from '../components/BrandGallery';
 import YouTubeIntegration from '../components/YouTubeIntegration';
 
-// Real Dax the Traveler photos (paths should be updated to match your project structure)
 const DAX_PHOTOS = {
-  profile: '/images/dax/profile.jpeg', // Main profile photo
-  profileFallback: '/home/ubuntu/upload/1714962873240.jpeg', // Fallback path for development
-  adventures: '/images/dax/adventures.jpg', // Collage of adventures
-  adventuresFallback: '/home/ubuntu/upload/FBAdventures.jpg', // Fallback path for development
-  logo: '/images/dax/logo.png', // Logo design
-  logoFallback: '/home/ubuntu/upload/Untitleddesign(1).png' // Fallback path for development
+  profile: '/images/brands/dax-the-traveler/hero/me smiling cuba.jpg',
+  profileFallback: '/images/brands/dax-the-traveler/hero/me smiling cuba.jpg',
+  adventures: '/images/brands/dax-the-traveler/hero/FB Adventures.jpg',
+  adventuresFallback: '/images/brands/dax-the-traveler/hero/FB Adventures.jpg',
+  logo: '/images/brands/dax-the-traveler/logos/dax_the_traveler_logo.png',
+  logoFallback: '/images/brands/dax-the-traveler/logos/dax_the_traveler_logo.png'
 };
 
 // Travel destinations with real photos
@@ -82,7 +81,7 @@ const TRAVEL_STATS = [
 const DaxTheTravelerPage = () => {
   // State management
   const [activeTab, setActiveTab] = useState('videos');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [videoData, setVideoData] = useState({
     featured: null,
@@ -517,23 +516,13 @@ VideoCard.displayName = 'VideoCard';
 
   // Profile image component with interactive effects
   const ProfileImage = () => (
-    <motion.div
-      ref={profileImageRef}
-      style={{
-        scale: profileScale,
-        rotate: profileRotate,
-        x: springX,
-        y: springY,
-        willChange: 'transform',
-        backfaceVisibility: 'hidden',
-        transform: 'translateZ(0)'
-      }}
+    <div
       className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl mx-auto lg:mx-0"
     >
       <img
         src={DAX_PHOTOS.profileFallback}
         alt="Dax the Traveler"
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover object-top"
         loading="lazy"
         decoding="async"
         onError={(e) => { e.target.src = 'https://via.placeholder.com/400x400?text=Dax'; }}
@@ -543,7 +532,7 @@ VideoCard.displayName = 'VideoCard';
         <p className="text-white font-bold text-lg">Dax</p>
         <p className="text-white/80 text-sm">The Traveler</p>
       </div>
-    </motion.div>
+    </div>
   );
 
   // Adventures collage component
@@ -552,7 +541,7 @@ VideoCard.displayName = 'VideoCard';
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.8, delay: 0.3 }}
-      className="relative rounded-xl overflow-hidden shadow-2xl border border-white/10"
+      className="relative rounded-xl overflow-hidden shadow-2xl border border-white/10 h-64 md:h-80"
       style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}
     >
       <img

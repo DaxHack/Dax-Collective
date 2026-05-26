@@ -1,0 +1,26 @@
+DIFF: .gitignore (root) — unstaged changes
+==========================================
+Summary: Cleaned up duplicate rules, reorganized into labeled sections,
+added missing patterns (.firebase/**/*.cache, .eslintcache, **/keys/).
+Removed duplicate node_modules blocks and stray n8n-custom rules.
+The new version is strictly better — safe to commit.
+
+--- a/.gitignore
++++ b/.gitignore
+@@ Summary of changes @@
+- Removed duplicate **/node_modules/ blocks
+- Removed /.dax-main/build/ and /.dax-backend/dist/ (wrong paths)
+- Added build/ (root) to catch root-level build outputs
+- Added .env.local, .env.development, .env.production, .env.test to ENV section
+- Added *.env pattern
+- Added !**/.env.example negation
+- Added dax-main/.env and dax-backend/.env explicit entries
+- Added credentials/ block with *firebase-adminsdk*.json, *service-account*.json, etc.
+- Added *.pem, *.key, /keys/, **/keys/ patterns
+- Replaced /.firebaserc /.firebase with .firebaserc .firebase/ (no leading slash)
+- Added firebase-debug.*.log and .firebase/**/*.cache
+- Added .eslintcache
+- Removed duplicate IDE/OS/Docker/n8n rules
+- Added /dax-backend-structure-summary.txt and /dax-main-structure-summary.txt
+
+VERDICT: Strictly improved. No regressions. Safe to commit.

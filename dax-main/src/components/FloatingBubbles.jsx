@@ -1,32 +1,34 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-const FloatingBubbles = () => {
-  // Generate optimized bubble data
-  const bubbles = Array.from({ length: 15 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 6 + 4, // 4-10px
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    delay: Math.random() * 5,
-    duration: 10 + Math.random() * 10, // 10-20s
-    opacity: 0.2 + Math.random() * 0.3, // 0.2-0.5
-  }))
+// Computed once at module load — stable across all renders so Framer Motion
+// never sees new animation configs and never restarts bubble animations.
+const BUBBLES = Array.from({ length: 15 }, (_, i) => ({
+  id: i,
+  size: Math.random() * 6 + 4,
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  delay: Math.random() * 5,
+  duration: 10 + Math.random() * 10,
+  opacity: 0.2 + Math.random() * 0.3,
+}))
 
-  const largeBubbles = Array.from({ length: 5 }, (_, i) => ({
-    id: i,
-    size: 20 + Math.random() * 20, // 20-40px
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    delay: Math.random() * 3,
-    duration: 15 + Math.random() * 10,
-    rotation: Math.random() * 360,
-  }))
+const LARGE_BUBBLES = Array.from({ length: 5 }, (_, i) => ({
+  id: i,
+  size: 20 + Math.random() * 20,
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  delay: Math.random() * 3,
+  duration: 15 + Math.random() * 10,
+  rotation: Math.random() * 360,
+}))
+
+const FloatingBubbles = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
       {/* Regular floating bubbles */}
-      {bubbles.map((bubble) => (
+      {BUBBLES.map((bubble) => (
         <motion.div
           key={bubble.id}
           className="absolute rounded-full"
@@ -58,7 +60,7 @@ const FloatingBubbles = () => {
       ))}
 
       {/* Large iridescent bubbles */}
-      {largeBubbles.map((bubble) => (
+      {LARGE_BUBBLES.map((bubble) => (
         <motion.div
           key={`large-${bubble.id}`}
           className="absolute rounded-full"

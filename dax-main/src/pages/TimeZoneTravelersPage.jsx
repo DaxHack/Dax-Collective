@@ -189,7 +189,7 @@ const TimeZoneTravelersPage = () => {
           <div 
             className="h-96 bg-cover bg-center bg-no-repeat flex items-center justify-center"
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('/api/placeholder/1920/600')`
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('/images/brands/timezone-travelers/hero/professional_travel_banner.png')`
             }}
           >
             <div className="text-center max-w-4xl px-4 relative z-10">
@@ -323,7 +323,7 @@ const TimeZoneTravelersPage = () => {
         )}
 
         {/* Content Tabs (ORIGINAL STYLING PRESERVED) */}
-        <section className="py-12 px-4">
+        <section id="tz-content" className="py-12 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-center mb-8 bg-gray-800/30 backdrop-blur-sm rounded-full p-2 border border-gray-700">
               {[
@@ -367,7 +367,13 @@ const TimeZoneTravelersPage = () => {
                     
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-400">{hack.saves} saves</span>
-                      <button className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                      <button
+                        onClick={() => {
+                          setActiveSection('hacks');
+                          document.getElementById('tz-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }}
+                        className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+                      >
                         Read Hack
                       </button>
                     </div>
@@ -406,7 +412,13 @@ const TimeZoneTravelersPage = () => {
                           ))}
                         </div>
                         
-                        <button className="bg-gradient-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                        <button
+                          onClick={() => {
+                            setActiveSection('itineraries');
+                            document.getElementById('tz-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }}
+                          className="bg-gradient-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300"
+                        >
                           Get Full Itinerary
                         </button>
                       </div>
@@ -446,7 +458,14 @@ const TimeZoneTravelersPage = () => {
                     </div>
                   </div>
                   
-                  <button className="mt-8 bg-gradient-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+                  <button
+                    onClick={() => window.open(
+                      `https://www.youtube.com/channel/${process.env.REACT_APP_YT_CHANNEL_ID_TIMEZONE_TRAVELERS || 'UCKan3hAUmcy0Q49d7MIXhdA'}`,
+                      '_blank',
+                      'noopener,noreferrer'
+                    )}
+                    className="mt-8 bg-gradient-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+                  >
                     Start Your Journey Today
                   </button>
                 </div>
