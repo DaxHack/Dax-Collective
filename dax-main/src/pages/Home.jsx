@@ -1,232 +1,324 @@
-// src/pages/Home.jsx
-// OPTIMIZED VERSION - Original styling preserved, improved functionality
-
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import Tilt from 'react-parallax-tilt';
+import { Compass, Sparkles, Globe2, Cross, ArrowRight, PlayCircle, Star, MoveRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import FloatingBubbles from '../components/FloatingBubbles';
-import StatsSection from '../components/StatsSection';
-import BrandCard from '../components/BrandCard';
-import BrandGallery from '../components/BrandGallery';
+
+const BUBBLE_COUNT = 30;
+
+const FloatingOrbs = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <div className="absolute inset-0 bg-[#02000a] mix-blend-multiply" />
+      {/* Background ambient gradients */}
+      <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-600/20 blur-[120px] opacity-60 animate-pulse" style={{ animationDuration: '8s' }} />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-fuchsia-600/20 blur-[150px] opacity-50 animate-pulse" style={{ animationDuration: '10s' }} />
+      <div className="absolute top-[40%] left-[60%] w-[40vw] h-[40vw] rounded-full bg-cyan-500/10 blur-[100px] opacity-40 animate-pulse" style={{ animationDuration: '12s' }} />
+      
+      {/* Orbs */}
+      {Array.from({ length: BUBBLE_COUNT }).map((_, i) => {
+        const size = Math.random() * 6 + 2;
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 100;
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * -20;
+        
+        return (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: size,
+              height: size,
+              left: `${startX}%`,
+              top: `${startY}%`,
+              boxShadow: `0 0 ${size * 2}px ${size / 2}px rgba(255,255,255,0.8), 0 0 ${size * 4}px rgba(255,255,255,0.4)`,
+              opacity: Math.random() * 0.5 + 0.1,
+            }}
+            animate={{
+              y: [0, -100, -200, -300],
+              x: [0, Math.random() * 50 - 25, Math.random() * 50 - 25, Math.random() * 50 - 25],
+              opacity: [0, Math.random() * 0.8 + 0.2, Math.random() * 0.8 + 0.2, 0],
+            }}
+            transition={{
+              duration,
+              delay,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 const brands = [
   {
     name: "Dax the Traveler",
-    description: "Epic personal adventures & chaos",
+    desc: "Cinematic solo travel and budget hacks.",
     link: "/dax-the-traveler",
-    icon: "Luggage",
-    gradient: "from-blue-400 via-cyan-400 to-green-400"
-  },
-  {
-    name: "Timezone Travelers",
-    description: "Interactive travel experiences & hacks",
-    link: "/timezone-travelers",
-    icon: "Globe",
-    gradient: "from-orange-500 via-red-500 to-orange-600"
+    icon: Compass,
+    color: "from-sky-400 to-blue-600",
+    shadow: "shadow-sky-500/50",
+    bg: "bg-sky-950/30",
+    border: "border-sky-500/30",
+    accent: "text-sky-400",
+    image: "/images/brands/dax-the-traveler/hero/me smiling cuba.jpg"
   },
   {
     name: "Ani-Dax",
-    description: "Anime bios, voiceovers, AI vids",
+    desc: "Deep-dive anime commentary and lore.",
     link: "/ani-dax",
-    icon: "Sparkles",
-    gradient: "from-purple-500 via-pink-500 to-purple-600"
+    icon: Sparkles,
+    color: "from-fuchsia-400 to-purple-600",
+    shadow: "shadow-fuchsia-500/50",
+    bg: "bg-fuchsia-950/30",
+    border: "border-fuchsia-500/30",
+    accent: "text-fuchsia-400",
+    image: "/images/brands/ani-dax/hero/ani-dax.jpg"
+  },
+  {
+    name: "Time-Zone Travelers",
+    desc: "Global itineraries & smarter adventures.",
+    link: "/timezone-travelers",
+    icon: Globe2,
+    color: "from-orange-400 to-coral-600",
+    shadow: "shadow-orange-500/50",
+    bg: "bg-orange-950/30",
+    border: "border-orange-500/30",
+    accent: "text-orange-400",
+    image: "/images/brands/timezone-travelers/hero/timezone-travelers.jpg"
   },
   {
     name: "God's Vessel",
-    description: "Faith-based fashion, content, and power",
+    desc: "Faith-forward apparel and study.",
     link: "/gods-vessel",
-    icon: "Cross",
-    gradient: "from-indigo-600 via-purple-600 to-indigo-700"
+    icon: Cross,
+    color: "from-amber-300 to-yellow-600",
+    shadow: "shadow-amber-500/50",
+    bg: "bg-amber-950/30",
+    border: "border-amber-500/30",
+    accent: "text-amber-400",
+    image: "/images/brands/gods-vessel/hero/gods-vessel.jpg"
   }
 ];
 
 export default function Home() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  
   return (
-    <>
+    <div ref={containerRef} className="relative min-h-screen bg-[#02000a] text-white selection:bg-indigo-500/30 font-sans overflow-hidden">
       <Helmet>
-        <title>The Dax Collective – Creative Community & Storytelling Hub</title>
-        <meta 
-          name="description" 
-          content="Explore The Dax Collective — a hub for inspiring stories in travel, anime, lifestyle, and faith, built to connect and uplift through creativity." 
-        />
-        <meta name="keywords" content="travel, anime, faith, lifestyle, community, content creation" />
-        <meta property="og:title" content="The Dax Collective – Creative Community & Storytelling Hub" />
-        <meta property="og:description" content="Multi-brand platform for storytelling, connection, and creative expression across anime, travel, and faith." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://daxcollective.com" />
+        <title>The Dax Collective | A Creator Universe</title>
+        <meta name="description" content="Step into the Dax Collective. A multi-brand universe spanning cinematic travel, anime analysis, global itineraries, and faith-forward design." />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        {/* Floating Bubbles Background */}
-        <FloatingBubbles />
+      <FloatingOrbs />
 
-        {/* Ambient gradient overlays */}
-        <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+      {/* Hero Section */}
+      <section className="relative min-h-[100dvh] flex flex-col justify-center items-center px-6 pt-20 z-10">
+        <motion.div 
+          style={{ y }}
+          className="max-w-5xl mx-auto text-center relative"
+        >
+          {/* Prismatic flare behind text */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 blur-[80px] -z-10 rounded-full" />
+          
           <motion.div
-            className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl"
-            animate={{
-              x: [0, 30, 0],
-              y: [0, -20, 0],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-3xl"
-            animate={{
-              x: [0, -25, 0],
-              y: [0, 15, 0],
-              scale: [1, 1.05, 1]
-            }}
-            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 5 }}
-          />
-        </div>
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
+          >
+            <Star className="w-4 h-4 text-indigo-400" />
+            <span className="text-sm font-medium tracking-wide uppercase text-indigo-100">Welcome to the Universe</span>
+          </motion.div>
 
-        {/* Main content */}
-        <main className="relative z-10">
-          {/* Hero Section */}
-          <section className="px-4 py-20 md:py-32">
-            <div className="max-w-4xl mx-auto text-center">
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight"
-              >
-                <span className="text-white">The </span>
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Dax Collective
-                </span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-                className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
-              >
-                Building a creative community across travel, anime, faith, and lifestyle — 
-                inspiring connection through storytelling, culture, and purpose-driven experiences.
-              </motion.p>
-
-              {/* Decorative element */}
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-                className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent max-w-md mx-auto mt-12"
-                aria-hidden="true"
+          <motion.h1 
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-6"
+          >
+            The Dax
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-400 to-pink-300 relative inline-block">
+              Collective
+              {/* Shimmer sweep */}
+              <motion.span 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -skew-x-12"
+                initial={{ x: '-100%' }}
+                animate={{ x: '200%' }}
+                transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 5, ease: "easeInOut" }}
+                style={{ mixBlendMode: 'overlay' }}
               />
-            </div>
-          </section>
+            </span>
+          </motion.h1>
 
-          {/* Stats Section */}
-          <StatsSection />
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="text-lg md:text-2xl text-indigo-100/70 max-w-2xl mx-auto font-light leading-relaxed mb-12"
+          >
+            Four distinct worlds. One unified vision. 
+            Journey through travel, anime, culture, and faith.
+          </motion.p>
 
-          {/* Brands Section */}
-          <section className="px-4 py-20" aria-labelledby="brands-heading">
-            <div className="max-w-6xl mx-auto">
-              <motion.h2
-                id="brands-heading"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="text-4xl md:text-5xl font-bold text-center mb-16 text-white"
-              >
-                Explore Our Brands
-              </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <button onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })} className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold text-lg overflow-hidden transition-transform hover:scale-105 active:scale-95">
+              <span className="relative z-10">Explore the Portals</span>
+              <MoveRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
+          </motion.div>
+        </motion.div>
+      </section>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {brands.map((brand, index) => (
-                  <BrandCard
-                    key={brand.name}
-                    brand={brand}
-                    index={index}
-                  />
-                ))}
+      {/* Featured World Spotlight: Ani-Dax */}
+      <section className="relative py-32 z-10 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-fuchsia-500/50 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+        
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-300 text-sm font-semibold mb-6">
+                <PlayCircle className="w-4 h-4" />
+                Featured World
               </div>
-            </div>
-          </section>
+              <h2 className="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-br from-white to-fuchsia-200">
+                Ani-Dax
+              </h2>
+              <p className="text-xl text-fuchsia-100/70 leading-relaxed mb-8">
+                Step into the depths of anime culture. Where storytelling meets critical analysis, exploring the psychological and thematic layers of your favorite series.
+              </p>
+              <Link to="/ani-dax" className="inline-flex items-center gap-2 text-fuchsia-400 font-bold hover:text-fuchsia-300 transition-colors group text-lg">
+                Enter Ani-Dax 
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </motion.div>
 
-          {/* OPTIMIZED BrandGallery Section */}
-          <section className="py-16 px-4">
-            <div className="max-w-7xl mx-auto">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="text-3xl font-bold text-white mb-6 text-center"
-              >
-                Dax Collective Gallery
-              </motion.h2>
-              
-              {/* OPTIMIZED: Use brand prop instead of folderId */}
-              <div className="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-                <BrandGallery 
-                  brand="dax-collective"
-                  category="homepage"
-                  maxImages={12}
-                  layout="grid"
-                  showControls={true}
-                  enableUpload={false}
-                  className="home-gallery"
-                />
-              </div>
-            </div>
-          </section>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, rotateY: 15 }}
+              whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="relative aspect-[4/5] md:aspect-video lg:aspect-[4/5] rounded-3xl overflow-hidden group border border-white/10"
+              style={{ perspective: '1000px' }}
+            >
+              <div className="absolute inset-0 bg-fuchsia-500/20 mix-blend-color z-10 group-hover:opacity-0 transition-opacity duration-700" />
+              <img 
+                src="/images/brands/ani-dax/hero/ani-dax.jpg" 
+                alt="Ani-Dax Featured" 
+                className="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#02000a] via-[#02000a]/40 to-transparent z-20" />
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-          {/* Call to Action Section */}
-          <section className="px-4 py-20" aria-labelledby="cta-heading">
-            <div className="max-w-4xl mx-auto text-center">
+      {/* The Portals (Gateway Cards) */}
+      <section className="relative py-32 z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">Choose Your Portal</h2>
+            <p className="text-xl text-indigo-200/60 max-w-2xl mx-auto">
+              Four distinct domains. Each crafted with intention, waiting to be explored.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {brands.map((brand, i) => (
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="relative"
+                key={brand.name}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
               >
-                {/* Background glow */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-xl -m-8"
-                  animate={{
-                    scale: [1, 1.02, 1],
-                    opacity: [0.5, 0.7, 0.5]
-                  }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  aria-hidden="true"
-                />
+                <Tilt
+                  tiltMaxAngleX={10}
+                  tiltMaxAngleY={10}
+                  perspective={1000}
+                  scale={1.02}
+                  transitionSpeed={2000}
+                  gyroscope={true}
+                  className="h-full"
+                >
+                  <Link to={brand.link} className={`block h-full relative group rounded-3xl overflow-hidden border ${brand.border} ${brand.bg} backdrop-blur-xl p-1`}>
+                    {/* Inner Glow on Hover */}
+                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${brand.color} mix-blend-overlay`} />
+                    
+                    <div className="relative h-full rounded-2xl overflow-hidden bg-[#050014] z-10 p-6 flex flex-col items-start border border-white/5 group-hover:border-white/20 transition-colors">
+                      {/* Background Image subtle reveal */}
+                      <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-700">
+                        {brand.image && <img src={brand.image} alt="" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700" />}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050014] via-[#050014]/80 to-[#050014]/20" />
+                      </div>
 
-                <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-3xl p-12 border border-gray-700/50">
-                  <h2
-                    id="cta-heading"
-                    className="text-3xl md:text-4xl font-bold text-white mb-6"
-                  >
-                    Ready to Join the Journey?
-                  </h2>
+                      <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${brand.color} p-0.5 mb-8 relative z-20 group-hover:scale-110 transition-transform duration-500 shadow-lg ${brand.shadow}`}>
+                        <div className="w-full h-full bg-[#050014] rounded-full flex items-center justify-center">
+                          <brand.icon className={`w-6 h-6 ${brand.accent}`} />
+                        </div>
+                      </div>
 
-                  <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Join our journey through stories that spark curiosity, celebrate identity, 
-                    and connect hearts across the globe.
-                  </p>
+                      <h3 className={`text-2xl font-bold mb-3 relative z-20 group-hover:${brand.accent} transition-colors`}>{brand.name}</h3>
+                      <p className="text-white/60 relative z-20 mb-8 flex-grow">{brand.desc}</p>
 
-                  <motion.button
-                    whileHover={{
-                      scale: 1.05,
-                      boxShadow: "0 20px 40px rgba(139, 92, 246, 0.3)"
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                    aria-label="Subscribe to get updates from The Dax Collective"
-                  >
-                    Subscribe to get Updates
-                  </motion.button>
-                </div>
+                      <div className="relative z-20 w-full flex items-center justify-between text-sm font-bold uppercase tracking-wider text-white/40 group-hover:text-white transition-colors">
+                        <span>Enter World</span>
+                        <ArrowRight className={`w-5 h-5 ${brand.accent} transform -translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300`} />
+                      </div>
+                    </div>
+                  </Link>
+                </Tilt>
               </motion.div>
-            </div>
-          </section>
-        </main>
-      </div>
-    </>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer CTA */}
+      <section className="relative py-32 z-10 border-t border-white/10 bg-gradient-to-b from-transparent to-indigo-950/20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-pink-500/30 blur-[100px] -z-10" />
+            <h2 className="text-4xl md:text-6xl font-bold mb-8">Ready to Connect?</h2>
+            <p className="text-xl text-indigo-100/70 mb-10 max-w-2xl mx-auto">
+              Join the collective. Stories that spark curiosity and celebrate identity across the globe.
+            </p>
+            <button className="px-10 py-5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full font-bold text-lg hover:shadow-[0_0_40px_rgba(99,102,241,0.5)] transition-all hover:scale-105 active:scale-95 text-white">
+              Subscribe to Updates
+            </button>
+          </motion.div>
+        </div>
+      </section>
+    </div>
   );
 }
-
