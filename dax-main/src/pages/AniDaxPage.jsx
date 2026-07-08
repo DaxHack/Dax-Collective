@@ -1,688 +1,319 @@
-// src/pages/AniDaxPage.jsx
-// OPTIMIZED VERSION - Original styling preserved, improved functionality
-
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import {
-  StarIcon,
-  HeartIcon,
-  PlayIcon,
-  PlusIcon,
-  TvIcon,
-  FireIcon,
-  SparklesIcon,
-  ChatBubbleLeftIcon,
-  PaperAirplaneIcon,
-  TrashIcon,
-  UserCircleIcon,
-  ShieldCheckIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon
-} from '@heroicons/react/24/outline';
-import {
-  StarIcon as StarSolid,
-  HeartIcon as HeartSolid
-} from '@heroicons/react/24/solid';
+import { ArrowRight, ChevronRight, Activity, Terminal, Zap } from 'lucide-react';
+import ApprovedMediaGallery from '../components/ApprovedMediaGallery';
+import Tilt from 'react-parallax-tilt';
 
-// Import BrandGallery component
-import BrandGallery from '../components/BrandGallery';
+// ─── PALETTE & STYLES ────────────────────────────────────────────────────────
+const THEME = {
+  blue: '#00D4FF',
+  violet: '#8B5CF6',
+  cyan: '#06B6D4',
+  magenta: '#E879F9',
+  bg: '#05050A',
+  bgLight: '#0A0A12',
+};
 
-// Import CommentsSection component
-import CommentsSection from '../components/CommentsSection';
+const scanlineStyle = {
+  backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.015) 2px, rgba(0,212,255,0.015) 4px)',
+};
 
-// Firebase imports
-import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth';
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-  addDoc,
-  serverTimestamp
-} from 'firebase/firestore';
-import { db } from '../config/firebase';
+const grainStyle = {
+  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")`,
+};
 
-const AniDaxPage = () => {
-  const [activeTab, setActiveTab] = useState('re-zero-glaze');
-  const [user, setUser] = useState(null);
-  const [authLoading, setAuthLoading] = useState(true);
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const TOPICS = [
+  { id: 'all', label: 'All Takes', color: THEME.blue },
+  { id: 'character', label: 'Character Deep-Dives', color: THEME.violet },
+  { id: 'arc', label: 'Arc Reviews', color: THEME.cyan },
+  { id: 'seasonal', label: 'Seasonal Takes', color: THEME.magenta },
+  { id: 'theory', label: 'Theory Board', color: THEME.blue },
+];
 
-  // OPTIMIZED STATE WITH CACHING
-  const [animeData, setAnimeData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [lastFetch, setLastFetch] = useState(null);
+const LATEST_TAKES = [
+  {
+    id: 1,
+    topic: 'Theory Board',
+    topicColor: THEME.blue,
+    headline: 'Return by Death Isn\'t a Power — It\'s a Psychological Sentence',
+    summary: 'The ability selects for high emotional capacity and low self-preservation. Subaru survives because he\'s built to absorb consequences others can\'t.',
+    asset: '/assets/approved-media/anidax/rezero-theory-research-notes.png',
+  },
+  {
+    id: 2,
+    topic: 'Arc Review',
+    topicColor: THEME.violet,
+    headline: 'Frieren\'s Silence Is the Argument, Not the Mood',
+    summary: 'The show is not about learning to care. It\'s about the gap between caring and being present. That distinction is what every arc is actually about.',
+    asset: '/assets/approved-media/anidax/character-files-editorial-workspace.png',
+  },
+  {
+    id: 3,
+    topic: 'Seasonal Takes',
+    topicColor: THEME.cyan,
+    headline: 'Dungeon Meshi Did What Isekai Forgot: Make the World Feel Lived-In',
+    summary: 'Studio Trigger didn\'t add flash. They added texture. Every background, every meal, every monster death communicates a world that existed before the camera arrived.',
+    asset: '/assets/approved-media/anidax/anime-collection-shelf-display.png',
+  },
+];
 
-  // VIDEO CAROUSEL STATE
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [animeVideoData, setAnimeVideoData] = useState([]);
+// ─── COMPONENTS ─────────────────────────────────────────────────────────────
+const GlitchText = ({ text, className }) => {
+  return (
+    <div className={`relative inline-block ${className}`}>
+      <span className="relative z-10">{text}</span>
+      <span className="absolute top-0 left-[2px] -z-10 opacity-70 text-cyan-500 animate-pulse mix-blend-screen">{text}</span>
+      <span className="absolute top-0 -left-[2px] -z-10 opacity-70 text-fuchsia-500 animate-pulse mix-blend-screen" style={{ animationDelay: '0.1s' }}>{text}</span>
+    </div>
+  );
+};
 
-  // CACHE DURATION: 5 minutes to limit API requests
-  const CACHE_DURATION = 5 * 60 * 1000;
-
-  // Initialize auth
-  useEffect(() => {
-    const auth = getAuth();
+const AbstractSilhouette = () => (
+  <div className="relative w-full h-[500px] flex items-end justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A12]">
+    <div className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity" style={{ backgroundImage: "url('/assets/approved-media/anidax/setup-anidax-recording-space.png')" }} />
+    <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-transparent to-transparent z-10" />
     
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setAuthLoading(false);
-      
-      // Auto sign-in anonymously if no user
-      if (!currentUser) {
-        signInAnonymously(auth).catch((error) => {
-          console.error('Anonymous auth failed:', error);
-        });
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  // OPTIMIZED DATA LOADING WITH CACHING
-  const loadAnimeData = useCallback(async (forceRefresh = false) => {
-    const now = Date.now();
-    const cachedData = localStorage.getItem('ani-dax-data');
-    const cachedTimestamp = localStorage.getItem('ani-dax-timestamp');
+    <motion.div 
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 0.2 }}
+      className="relative z-20 flex items-end gap-6 pb-0"
+    >
+      {/* Main Host Silhouette */}
+      <motion.div animate={{ y: [0, -4, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="flex flex-col items-center">
+        <div className="w-24 h-32 rounded-t-[3rem] bg-gradient-to-b from-[#00D4FF]/20 to-transparent border-t border-[#00D4FF]/40 backdrop-blur-sm" />
+      </motion.div>
+      {/* Secondary Element */}
+      <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }} className="flex flex-col items-center">
+        <div className="w-16 h-20 rounded-t-[2rem] bg-gradient-to-b from-[#8B5CF6]/20 to-transparent border-t border-[#8B5CF6]/40 backdrop-blur-sm" />
+      </motion.div>
+    </motion.div>
     
-    // Use cached data if available and not expired
-    if (!forceRefresh && cachedData && cachedTimestamp) {
-      const timeDiff = now - parseInt(cachedTimestamp);
-      if (timeDiff < CACHE_DURATION) {
-        const parsed = JSON.parse(cachedData);
-        setAnimeData(parsed.animeData);
-        setAnimeVideoData(parsed.videoData || []);
-        setLoading(false);
-        return;
-      }
-    }
+    <div className="absolute top-4 left-4 z-30 flex items-center gap-2 text-[10px] font-mono text-[#00D4FF]/70 tracking-widest uppercase">
+      <Activity size={12} className="animate-pulse" /> REC // STUDIO_01
+    </div>
+  </div>
+);
 
-    try {
-      setLoading(true);
-      
-      // SIMULATE ANIME DATA LOADING (replace with real API)
-      const mockAnimeData = getMockAnimeData();
-      setAnimeData(mockAnimeData);
-      setAnimeVideoData(mockAnimeData.videos);
-      
-      // CACHE THE DATA
-      const dataToCache = {
-        animeData: mockAnimeData,
-        videoData: mockAnimeData.videos
-      };
-      localStorage.setItem('ani-dax-data', JSON.stringify(dataToCache));
-      localStorage.setItem('ani-dax-timestamp', now.toString());
-      
-    } catch (err) {
-      setError(err.message);
-      const fallbackData = getMockAnimeData();
-      setAnimeData(fallbackData);
-      setAnimeVideoData(fallbackData.videos);
-    } finally {
-      setLoading(false);
-      setLastFetch(now);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadAnimeData();
-  }, [loadAnimeData]);
-
-  // MOCK ANIME DATA (OPTIMIZED)
-  const getMockAnimeData = useCallback(() => ({
-    reZeroContent: {
-      title: "Re:Zero is the Greatest Anime Ever Made",
-      sections: [
-        {
-          title: "Natsuki's Genius",
-          content: "Subaru's writing style is absolutely revolutionary. He doesn't just write a time-loop story, he creates a psychological masterpiece that explores trauma, growth, and what it means to love someone."
-        },
-        {
-          title: "Subaru: The Perfect Protagonist",
-          content: "Subaru Natsuki is hands down the best MC in anime. He's flawed, not perfect, and that's exactly why he's incredible. His character development is unmatched."
-        }
-      ]
-    },
-    hottestThisSeason: [
-      {
-        id: 1,
-        title: "Frieren's End",
-        rating: 10,
-        genre: ["Fantasy", "Drama"],
-        episodes: "28 episodes • Completed",
-        description: "How it handles time, loss, and the beauty of fleeting moments is incredible. Best anime of the year.",
-        status: "Watching",
-        imageUrl: "/api/placeholder/300/400"
-      },
-      {
-        id: 2,
-        title: "Dungeon Meshi",
-        rating: 9,
-        genre: ["Fantasy", "Comedy"],
-        episodes: "24 episodes • Ongoing",
-        description: "Studio Trigger absolutely killed it. The world-building and character dynamics are top-tier.",
-        status: "Completed",
-        imageUrl: "/api/placeholder/300/400"
-      },
-      {
-        id: 3,
-        title: "Solo Leveling",
-        rating: 8,
-        genre: ["Action", "Fantasy"],
-        episodes: "12 episodes • Ongoing",
-        description: "The animation quality is insane. A-1 Pictures really understood the assignment.",
-        status: "Watching",
-        imageUrl: "/api/placeholder/300/400"
-      }
-    ],
-    animeReviews: [
-      {
-        id: 1,
-        title: "Demon Slayer: Hashira Training Arc",
-        rating: 7,
-        review: "Visually stunning as always, but the pacing felt off. The training sequences were beautifully animated but lacked the emotional depth of previous arcs.",
-        pros: ["Incredible animation", "Great character moments", "Beautiful fight scenes"],
-        cons: ["Slow pacing", "Limited plot progression", "Felt like filler"],
-        imageUrl: "/api/placeholder/300/200"
-      },
-      {
-        id: 2,
-        title: "Jujutsu Kaisen Season 2",
-        rating: 9,
-        review: "MAPPA outdid themselves with the Shibuya Incident. The emotional weight, animation quality, and character development were all phenomenal.",
-        pros: ["Top-tier animation", "Emotional storytelling", "Character development"],
-        cons: ["Some pacing issues", "Cliffhanger ending"],
-        imageUrl: "/api/placeholder/300/200"
-      }
-    ],
-    trendingNow: [
-      { title: "Attack on Titan: Final Season", rank: 1, status: "Completed" },
-      { title: "Demon Slayer: Hashira Training", rank: 2, status: "Ongoing" },
-      { title: "My Hero Academia Season 7", rank: 3, status: "Ongoing" },
-      { title: "Jujutsu Kaisen Season 2", rank: 4, status: "Completed" },
-      { title: "Chainsaw Man", rank: 5, status: "Completed" }
-    ],
-    videos: [
-      { id: 1, title: "Re:Zero Analysis", thumbnail: "/api/placeholder/300/200", videoUrl: "https://youtube.com/watch?v=anime1", views: 15420, duration: "18:34" },
-      { id: 2, title: "Frieren Review", thumbnail: "/api/placeholder/300/200", videoUrl: "https://youtube.com/watch?v=anime2", views: 12567, duration: "12:22" },
-      { id: 3, title: "Solo Leveling Thoughts", thumbnail: "/api/placeholder/300/200", videoUrl: "https://youtube.com/watch?v=anime3", views: 9876, duration: "15:45" },
-      { id: 4, title: "Seasonal Picks", thumbnail: "/api/placeholder/300/200", videoUrl: "https://youtube.com/watch?v=anime4", views: 8234, duration: "20:12" }
-    ]
-  }), []);
-
-  // VIDEO CAROUSEL CONTROLS
-  const nextVideo = useCallback(() => {
-    setCurrentVideoIndex(prev => (prev + 1) % animeVideoData.length);
-  }, [animeVideoData.length]);
-
-  const prevVideo = useCallback(() => {
-    setCurrentVideoIndex(prev => (prev - 1 + animeVideoData.length) % animeVideoData.length);
-  }, [animeVideoData.length]);
-
-  const formatNumber = useCallback((num) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-    return num?.toString() || '0';
-  }, []);
-
-  const tabs = useMemo(() => [
-    { id: 're-zero-glaze', label: 'Re:Zero Glaze', icon: HeartIcon },
-    { id: 'hottest-season', label: 'Hottest This Season', icon: FireIcon },
-    { id: 'anime-reviews', label: 'Anime Reviews', icon: StarIcon },
-    { id: 'trending-now', label: 'Trending Now', icon: SparklesIcon }
-  ], []);
-
-  // LOADING STATE (PRESERVE ORIGINAL STYLING)
-  if (loading || authLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
-          <p className="text-white">Loading anime content...</p>
-          {lastFetch && (
-            <p className="text-sm text-purple-300 mt-2">
-              Last updated: {new Date(lastFetch).toLocaleTimeString()}
-            </p>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  const renderTabContent = () => {
-    if (!animeData) return null;
-
-    switch (activeTab) {
-      case 're-zero-glaze':
-        return (
-          <div className="space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 backdrop-blur-sm rounded-lg p-8"
-            >
-              <h2 className="text-3xl font-bold text-white mb-6">{animeData.reZeroContent.title}</h2>
-              
-              <div className="grid md:grid-cols-2 gap-8">
-                {animeData.reZeroContent.sections.map((section, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.2 }}
-                    className="space-y-4"
-                  >
-                    <h3 className="text-xl font-semibold text-purple-300">{section.title}</h3>
-                    <p className="text-gray-300 leading-relaxed">{section.content}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        );
-
-      case 'hottest-season':
-        return (
-          <div className="space-y-8">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {animeData.hottestThisSeason.map((anime, index) => (
-                <motion.div
-                  key={anime.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-gray-800/50 backdrop-blur-sm rounded-lg overflow-hidden hover:bg-gray-800/70 transition-all group"
-                >
-                  <div className="aspect-[3/4] overflow-hidden relative">
-                    <img
-                      src={anime.imageUrl}
-                      alt={anime.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-3 right-3 bg-black/70 rounded-full px-2 py-1 flex items-center">
-                      <StarSolid className="w-4 h-4 text-yellow-400 mr-1" />
-                      <span className="text-white text-sm font-medium">{anime.rating}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4">
-                    <h3 className="text-lg font-bold text-white mb-2">{anime.title}</h3>
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {anime.genre.map((g, i) => (
-                        <span key={i} className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded">
-                          {g}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="text-sm text-gray-400 mb-3">{anime.episodes}</p>
-                    <p className="text-gray-300 text-sm mb-4">{anime.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        anime.status === 'Watching' ? 'bg-green-500/20 text-green-300' :
-                        anime.status === 'Completed' ? 'bg-blue-500/20 text-blue-300' :
-                        'bg-gray-500/20 text-gray-300'
-                      }`}>
-                        {anime.status}
-                      </span>
-                      <button className="text-purple-400 hover:text-purple-300 transition-colors">
-                        <PlayIcon className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            
-            {/* COMMENTS SECTION FOR HOTTEST THIS SEASON */}
-            <CommentsSection 
-              sectionId="hottest-this-season" 
-              sectionTitle="Hottest This Season Comments" 
-            />
-          </div>
-        );
-
-      case 'anime-reviews':
-        return (
-          <div className="space-y-8">
-            {animeData.animeReviews.map((review, index) => (
-              <motion.div
-                key={review.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-gray-800/50 backdrop-blur-sm rounded-lg overflow-hidden"
-              >
-                <div className="md:flex">
-                  <div className="md:w-1/3">
-                    <img
-                      src={review.imageUrl}
-                      alt={review.title}
-                      className="w-full h-48 md:h-full object-cover"
-                    />
-                  </div>
-                  <div className="md:w-2/3 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-bold text-white">{review.title}</h3>
-                      <div className="flex items-center">
-                        <StarSolid className="w-5 h-5 text-yellow-400 mr-1" />
-                        <span className="text-white font-medium">{review.rating}/10</span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-gray-300 mb-4 leading-relaxed">{review.review}</p>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <h4 className="text-green-400 font-medium mb-2">Pros:</h4>
-                        <ul className="space-y-1">
-                          {review.pros.map((pro, i) => (
-                            <li key={i} className="text-sm text-gray-300 flex items-center">
-                              <span className="w-1 h-1 bg-green-400 rounded-full mr-2"></span>
-                              {pro}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="text-red-400 font-medium mb-2">Cons:</h4>
-                        <ul className="space-y-1">
-                          {review.cons.map((con, i) => (
-                            <li key={i} className="text-sm text-gray-300 flex items-center">
-                              <span className="w-1 h-1 bg-red-400 rounded-full mr-2"></span>
-                              {con}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            
-            {/* COMMENTS SECTION FOR ANIME REVIEWS */}
-            <CommentsSection 
-              sectionId="anime-reviews" 
-              sectionTitle="Anime Reviews Comments" 
-            />
-          </div>
-        );
-
-      case 'trending-now':
-        return (
-          <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6"
-            >
-              <h3 className="text-xl font-bold text-white mb-6">Top 5 Anime Trending Now</h3>
-              <div className="space-y-3">
-                {animeData.trendingNow.map((anime, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-2xl font-bold text-purple-400 mr-4 w-8">
-                        {anime.rank}
-                      </span>
-                      <span className="text-white font-medium">{anime.title}</span>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      anime.status === 'Ongoing' ? 'bg-green-500/20 text-green-300' :
-                      'bg-blue-500/20 text-blue-300'
-                    }`}>
-                      {anime.status}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
+// ─── MAIN PAGE ──────────────────────────────────────────────────────────────
+export default function AniDaxPage() {
+  const [activeTopic, setActiveTopic] = useState('all');
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll();
+  const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
     <>
       <Helmet>
-        <title>Ani-Dax - Anime Reviews & Character Analysis | Dax Collective</title>
-        <meta name="description" content="Deep dives into anime storytelling, character development, and why Re:Zero remains the greatest anime ever created." />
-        <meta name="keywords" content="anime reviews, character analysis, Re:Zero, seasonal picks, anime recommendations" />
+        <title>Ani-Dax — Anime Editorial & Commentary | Dax Collective</title>
+        <meta name="description" content="Original anime analysis, character deep-dives, and seasonal commentary." />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-        {/* Hero Section (ORIGINAL STYLING PRESERVED) */}
-        <section className="relative py-20 px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto"
-          >
-            <h1 className="text-6xl md:text-8xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
-                ANI-DAX
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8">
-              Anime Reviews • Character Analysis • Seasonal Picks
-            </p>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-              Deep dives into anime storytelling, character development, and why Re:Zero remains 
-              the greatest anime ever created.
-            </p>
-            
-            {error && (
-              <div className="bg-yellow-900/50 border border-yellow-600 text-yellow-300 px-4 py-3 rounded mb-4 max-w-md mx-auto">
-                <p className="text-sm">Using cached content. {error}</p>
-                <button 
-                  onClick={() => loadAnimeData(true)}
-                  className="text-yellow-200 underline text-sm mt-1"
-                >
-                  Refresh
-                </button>
-              </div>
-            )}
+      <div className="min-h-screen bg-[#05050A] text-white selection:bg-[#00D4FF]/30 relative overflow-hidden" style={scanlineStyle}>
+        <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.03]" style={grainStyle} />
 
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-              <button
-                onClick={() => {
-                  setActiveTab('re-zero-glaze');
-                  document.getElementById('ani-dax-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="flex items-center gap-2 bg-purple-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-purple-600/30 cursor-pointer hover:bg-purple-700/40 hover:border-purple-500/50 transition-all duration-200"
+        {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
+        <section ref={heroRef} className="relative min-h-[90vh] flex items-center pt-24 pb-12 px-6 lg:px-12">
+          {/* Ambient Background Glows */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <motion.div style={{ y: yBg }} className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#00D4FF]/5 blur-[120px]" />
+            <motion.div style={{ y: yBg }} className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#8B5CF6]/5 blur-[120px]" />
+          </div>
+
+          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
+            <motion.div style={{ opacity }} className="flex flex-col items-start">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
+                className="flex items-center gap-3 mb-8"
               >
-                <TvIcon className="h-5 w-5 text-purple-400" />
-                <span className="font-semibold text-white">Anime Analysis</span>
-              </button>
-              <button
-                onClick={() => {
-                  setActiveTab('anime-reviews');
-                  document.getElementById('ani-dax-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="flex items-center gap-2 bg-blue-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-600/30 cursor-pointer hover:bg-blue-700/40 hover:border-blue-500/50 transition-all duration-200"
+                <Terminal size={14} className="text-[#00D4FF]" />
+                <span className="font-mono text-xs uppercase tracking-[0.3em] text-[#00D4FF]">Editorial Broadcast</span>
+              </motion.div>
+              
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
+                className="text-6xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter mb-6"
               >
-                <StarIcon className="h-5 w-5 text-blue-400" />
-                <span className="font-semibold text-white">Reviews</span>
-              </button>
-              <button
-                onClick={() => {
-                  setActiveTab('hottest-season');
-                  document.getElementById('ani-dax-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="flex items-center gap-2 bg-pink-800/30 backdrop-blur-sm px-4 py-2 rounded-full border border-pink-600/30 cursor-pointer hover:bg-pink-700/40 hover:border-pink-500/50 transition-all duration-200"
+                ANIME.<br/>
+                <GlitchText text="DISSECTED." className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D4FF] via-[#8B5CF6] to-[#E879F9]" />
+              </motion.h1>
+
+              <motion.p 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.3 }}
+                className="text-lg lg:text-xl text-white/50 max-w-md font-light leading-relaxed mb-10"
               >
-                <FireIcon className="h-5 w-5 text-pink-400" />
-                <span className="font-semibold text-white">Seasonal Picks</span>
-              </button>
+                Opinionated commentary on character writing, arc construction, and storytelling. <span className="text-white/80">No filler. No fake metrics.</span>
+              </motion.p>
+
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
+                <a href="#featured" className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-full font-mono text-xs uppercase tracking-widest hover:bg-white/10 hover:border-[#00D4FF]/50 transition-all overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#00D4FF]/20 to-[#8B5CF6]/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="relative z-10">Read Featured Story</span>
+                  <ArrowRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform text-[#00D4FF]" />
+                </a>
+              </motion.div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative hidden lg:block"
+            >
+              <AbstractSilhouette />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── 2. TOPIC RAIL ────────────────────────────────────────────────── */}
+        <section className="sticky top-[60px] z-40 bg-[#05050A]/80 backdrop-blur-xl border-y border-white/5 py-4">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center gap-2 min-w-max">
+              {TOPICS.map((t) => {
+                const isActive = activeTopic === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => setActiveTopic(t.id)}
+                    className="relative px-5 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest transition-all duration-300"
+                    style={{
+                      color: isActive ? t.color : 'rgba(255,255,255,0.4)',
+                      backgroundColor: isActive ? `${t.color}15` : 'transparent',
+                      border: `1px solid ${isActive ? `${t.color}40` : 'rgba(255,255,255,0.05)'}`,
+                    }}
+                  >
+                    {t.label}
+                    {isActive && (
+                      <motion.div layoutId="topicGlow" className="absolute inset-0 rounded-full opacity-50 pointer-events-none" style={{ boxShadow: `0 0 15px ${t.color}` }} />
+                    )}
+                  </button>
+                );
+              })}
             </div>
+          </div>
+        </section>
+
+        {/* ── 3. FEATURED STORY ────────────────────────────────────────────── */}
+        <section id="featured" className="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <div className="flex items-center gap-4 mb-8">
+              <span className="w-12 h-px bg-gradient-to-r from-[#00D4FF] to-transparent" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#00D4FF]">Spotlight Piece</span>
+            </div>
+
+            <Tilt tiltMaxAngleX={3} tiltMaxAngleY={3} scale={1.01} transitionSpeed={2000} className="w-full">
+              <div className="relative rounded-3xl overflow-hidden bg-[#0A0A12] border border-white/10 group min-h-[500px] flex flex-col justify-end">
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-screen group-hover:opacity-30 transition-opacity duration-700"
+                  style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/assets/approved-media/anidax/rezero-theory-research-notes.png)` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-[#05050A]/80 to-transparent" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00D4FF]/10 blur-[100px] rounded-full pointer-events-none" />
+
+                <div className="relative z-10 p-8 lg:p-14 max-w-3xl">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-[#00D4FF]/30 bg-[#00D4FF]/10 text-[#00D4FF] font-mono text-[10px] uppercase tracking-widest mb-6">
+                    Theory Board // Re:Zero
+                  </div>
+                  <h2 className="text-3xl lg:text-5xl font-black leading-[1.1] tracking-tight mb-6">
+                    Why Return by Death Is the Most Psychologically Complex Ability in Contemporary Anime
+                  </h2>
+                  <p className="text-white/60 text-lg leading-relaxed mb-8 max-w-2xl font-light">
+                    It doesn't grant power — it sentences the bearer to live every consequence twice. The ability is designed around a specific psychological profile, and the narrative earns its reputation by understanding that difference.
+                  </p>
+                  <button className="flex items-center gap-2 text-[#00D4FF] font-mono text-xs uppercase tracking-widest hover:text-white transition-colors">
+                    Read Full Editorial <ChevronRight size={14} />
+                  </button>
+                </div>
+              </div>
+            </Tilt>
           </motion.div>
         </section>
 
-        {/* OPTIMIZED VIDEO CAROUSEL - 1 MAIN + 3 SMALLER HORIZONTAL */}
-        {animeVideoData.length > 0 && (
-          <section className="py-16 px-4">
-            <div className="max-w-7xl mx-auto">
-              <div className="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-                <h2 className="text-2xl font-bold text-white mb-6">Latest Anime Content</h2>
-                
-                <div className="grid lg:grid-cols-3 gap-6">
-                  {/* MAIN VIDEO */}
-                  <div className="lg:col-span-2">
-                    <div className="relative aspect-video bg-gray-900 rounded-lg overflow-hidden">
-                      <img 
-                        src={animeVideoData[currentVideoIndex]?.thumbnail} 
-                        alt={animeVideoData[currentVideoIndex]?.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                        <a 
-                          href={animeVideoData[currentVideoIndex]?.videoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-purple-600 bg-opacity-90 hover:bg-opacity-100 rounded-full p-4 transition-all duration-300 transform hover:scale-110"
-                        >
-                          <PlayIcon className="h-8 w-8 text-white" />
-                        </a>
-                      </div>
-                      <div className="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-sm">
-                        {animeVideoData[currentVideoIndex]?.duration}
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        {animeVideoData[currentVideoIndex]?.title}
-                      </h3>
-                      <div className="flex items-center gap-4 text-sm text-gray-400">
-                        <div className="flex items-center gap-1">
-                          <PlayIcon className="h-4 w-4" />
-                          <span>{formatNumber(animeVideoData[currentVideoIndex]?.views)} views</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 3 SMALLER VIDEOS VERTICAL STACK */}
-                  <div className="space-y-4">
-                    {animeVideoData.slice(1, 4).map((video, index) => (
-                      <div 
-                        key={video.id}
-                        className="flex gap-3 cursor-pointer hover:bg-gray-700/30 p-2 rounded-lg transition-colors"
-                        onClick={() => setCurrentVideoIndex(index + 1)}
-                      >
-                        <div className="relative w-24 h-16 bg-gray-900 rounded overflow-hidden flex-shrink-0">
-                          <img 
-                            src={video.thumbnail} 
-                            alt={video.title}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                            <PlayIcon className="h-4 w-4 text-white" />
-                          </div>
-                          <div className="absolute bottom-1 right-1 bg-black bg-opacity-70 text-white px-1 text-xs rounded">
-                            {video.duration}
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium text-white line-clamp-2 mb-1">
-                            {video.title}
-                          </h4>
-                          <p className="text-xs text-gray-400">
-                            {formatNumber(video.views)} views
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                    
-                    {/* NAVIGATION CONTROLS */}
-                    <div className="flex justify-center gap-2 pt-4">
-                      <button 
-                        onClick={prevVideo}
-                        className="p-2 bg-purple-600/30 hover:bg-purple-600/50 rounded-full transition-colors"
-                      >
-                        <ChevronLeftIcon className="h-4 w-4 text-purple-300" />
-                      </button>
-                      <button 
-                        onClick={nextVideo}
-                        className="p-2 bg-purple-600/30 hover:bg-purple-600/50 rounded-full transition-colors"
-                      >
-                        <ChevronRightIcon className="h-4 w-4 text-purple-300" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        {/* ── 4. LATEST TAKES ──────────────────────────────────────────────── */}
+        <section className="py-12 px-6 lg:px-12 max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-12">
+            <h3 className="text-2xl lg:text-3xl font-black tracking-tight">Latest Transmissions</h3>
+            <div className="hidden sm:flex items-center gap-2 font-mono text-[10px] uppercase text-white/30 tracking-widest">
+              <Zap size={12} className="text-[#E879F9]" /> Max 3 Entries
             </div>
-          </section>
-        )}
+          </div>
 
-        {/* Content Tabs (ORIGINAL STYLING PRESERVED) */}
-        <section id="ani-dax-tabs" className="py-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    activeTab === tab.id
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                      : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-700'
-                  }`}
-                >
-                  <tab.icon className="h-5 w-5" />
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Tab Content */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+          <div className="grid md:grid-cols-3 gap-6">
+            {LATEST_TAKES.map((take, i) => (
+              <motion.div 
+                key={take.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className="group relative"
               >
-                {renderTabContent()}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent rounded-2xl border border-white/5 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-md" />
+                <div className="relative h-full flex flex-col p-6 rounded-2xl bg-[#0A0A12] border border-white/[0.05] group-hover:border-white/15 transition-colors overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity rounded-bl-3xl mix-blend-screen" style={{ backgroundImage: `url('${take.asset}')` }} />
+                  
+                  <span className="self-start text-[9px] font-mono uppercase tracking-[0.2em] mb-4 px-2 py-1 rounded border" style={{ color: take.topicColor, borderColor: `${take.topicColor}40`, backgroundColor: `${take.topicColor}10` }}>
+                    {take.topic}
+                  </span>
+                  
+                  <h4 className="text-xl font-bold leading-snug mb-3">{take.headline}</h4>
+                  <p className="text-sm text-white/50 leading-relaxed flex-grow font-light mb-6">{take.summary}</p>
+                  
+                  <button className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors mt-auto" style={{ color: take.topicColor }}>
+                    Access File <ChevronRight size={12} />
+                  </button>
+                </div>
               </motion.div>
-            </AnimatePresence>
+            ))}
           </div>
         </section>
 
-        {/* BrandGallery Section (OPTIMIZED) */}
-        <section className="py-16 px-4">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">
-              Ani-Dax Gallery
-            </h2>
-            <div className="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-              <BrandGallery 
-                brand="ani-dax"
-                category="gallery"
-                maxImages={12}
-                layout="grid"
-                showControls={true}
-                enableUpload={false}
-                className="anime-gallery"
-              />
+        {/* ── 5. MEDIA ARCHIVE ─────────────────────────────────────────────── */}
+        <section className="py-24 px-6 lg:px-12 max-w-7xl mx-auto border-t border-white/[0.05]">
+           <div className="mb-10">
+             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8B5CF6] mb-2 block">Visual Context</span>
+             <h3 className="text-2xl font-black">Editorial Workspace Archives</h3>
+           </div>
+           <ApprovedMediaGallery brand="Ani-Dax" section="Behind the Commentary" />
+        </section>
+
+        {/* ── 6. IN DEVELOPMENT ────────────────────────────────────────────── */}
+        <section className="py-24 px-6 lg:px-12 max-w-7xl mx-auto mb-12">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative p-10 lg:p-16 rounded-3xl overflow-hidden border border-[#06B6D4]/20 bg-[#06B6D4]/[0.02]"
+          >
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJ0cmFuc3BhcmVudCI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJyZ2JhKDYsIDE4MiwgMjEyLCAwLjE1KSI+PC9yZWN0Pgo8L3N2Zz4=')] opacity-50" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#06B6D4]/10 blur-[80px] rounded-full" />
+            
+            <div className="relative z-10 max-w-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#06B6D4] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#06B6D4]"></span>
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#06B6D4]">Status: Building</span>
+              </div>
+              
+              <h2 className="text-3xl lg:text-4xl font-black tracking-tight mb-4">The Next Phase</h2>
+              <p className="text-white/60 leading-relaxed mb-8 max-w-lg font-light">
+                Co-host integration, dedicated community architecture, and long-form video essays are currently in active development. We deploy when ready, not to meet an artificial calendar.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                {['Video Editorial Infrastructure', 'Community Protocols', 'Co-Host Audio Setup'].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2 px-4 py-2 bg-black/40 border border-white/5 rounded-md font-mono text-[10px] uppercase tracking-wider text-white/50">
+                    <Terminal size={12} className="text-[#06B6D4]/50" /> {item}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </motion.div>
         </section>
       </div>
     </>
   );
-};
-
-export default AniDaxPage;
-
+}
