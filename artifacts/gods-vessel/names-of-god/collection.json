@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-09-13T07:29:08.492Z",
+  "status": "READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP",
+  "collection": "Names of God",
+  "brand": "God's Vessel",
+  "products": [
+    {
+      "slug": "yhwh-i-am",
+      "name": "YHWH",
+      "pronunciation": "Yah-weh, commonly represented as LORD in English Bibles",
+      "definition": "I AM; the covenant name of God.",
+      "scripture": "Exodus 3:14-15",
+      "garment": "Heavyweight black tee",
+      "ink": "Bone white ink with muted violet accent",
+      "targetPriceUsd": 32,
+      "estimatedBaseCostUsd": 14,
+      "estimatedMarginUsd": 18,
+      "estimatedMarginPct": 56.3
+    },
+    {
+      "slug": "elohim-creator",
+      "name": "Elohim",
+      "pronunciation": "El-oh-heem",
+      "definition": "God, the Creator and sovereign one.",
+      "scripture": "Genesis 1:1",
+      "garment": "Washed charcoal tee",
+      "ink": "Warm white ink",
+      "targetPriceUsd": 30,
+      "estimatedBaseCostUsd": 13,
+      "estimatedMarginUsd": 17,
+      "estimatedMarginPct": 56.7
+    },
+    {
+      "slug": "adonai-lord",
+      "name": "Adonai",
+      "pronunciation": "Ah-doh-nai",
+      "definition": "Lord and master; the one worthy of surrender.",
+      "scripture": "Psalm 8:1",
+      "garment": "Black hoodie",
+      "ink": "Bone white ink with deep indigo accent",
+      "targetPriceUsd": 56,
+      "estimatedBaseCostUsd": 28,
+      "estimatedMarginUsd": 28,
+      "estimatedMarginPct": 50
+    },
+    {
+      "slug": "el-shaddai-almighty",
+      "name": "El Shaddai",
+      "pronunciation": "El Shad-dai",
+      "definition": "God Almighty; the all-sufficient one.",
+      "scripture": "Genesis 17:1",
+      "garment": "Oversized cream tee",
+      "ink": "Black ink with violet accent",
+      "targetPriceUsd": 34,
+      "estimatedBaseCostUsd": 15,
+      "estimatedMarginUsd": 19,
+      "estimatedMarginPct": 55.9
+    },
+    {
+      "slug": "jireh-provider",
+      "name": "YHWH Yireh",
+      "pronunciation": "Yah-weh Yee-reh; often rendered Jehovah Jireh",
+      "definition": "The LORD will provide.",
+      "scripture": "Genesis 22:14",
+      "garment": "Vintage black crewneck",
+      "ink": "Bone white ink",
+      "targetPriceUsd": 52,
+      "estimatedBaseCostUsd": 25,
+      "estimatedMarginUsd": 27,
+      "estimatedMarginPct": 51.9
+    }
+  ],
+  "theologyNotes": [
+    "Pronunciations are approximations; final public copy should keep this clear.",
+    "YHWH is commonly rendered LORD in English Bibles.",
+    "Definitions are concise apparel copy, not exhaustive theological statements.",
+    "Final product listings should be reviewed by Daniel before publishing."
+  ],
+  "commercePath": {
+    "content": "Faith content and Names of God collection launch posts",
+    "cta": "Interest/setup CTA until storefront is configured",
+    "product": "Five draft apparel designs",
+    "purchase": "Blocked until Printify/Shopify setup and Daniel approval",
+    "conversionTracking": "gtag interest click event on God's Vessel page",
+    "revenueTracking": "Product metadata includes target price, estimated base cost, and margin"
+  }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="4500" height="5400" viewBox="0 0 4500 5400">
+  <rect width="4500" height="5400" fill="none"/>
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="2250" y="1120" fill="#1f1f28" font-size="132" letter-spacing="18" font-weight="700">NAMES OF GOD</text>
+    <line x1="1080" y1="1320" x2="3420" y2="1320" stroke="#111111" stroke-width="18"/>
+    <text x="2250" y="2130" fill="#111111" font-size="520" font-weight="900" letter-spacing="12">El Shaddai</text>
+    <text x="2250" y="2480" fill="#1f1f28" font-size="112" letter-spacing="10">EL SHAD-DAI</text>
+    <foreignObject x="850" y="2780" width="2800" height="760">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Arial, Helvetica, sans-serif; color: #111111; text-align: center; font-size: 168px; line-height: 1.18; font-weight: 700;">
+        God Almighty; the all-sufficient one.
+      </div>
+    </foreignObject>
+    <line x1="1420" y1="3770" x2="3080" y2="3770" stroke="#111111" stroke-width="10"/>
+    <text x="2250" y="4150" fill="#111111" font-size="150" font-weight="800" letter-spacing="8">GENESIS 17:1</text>
+    <text x="2250" y="4540" fill="#1f1f28" font-size="84" letter-spacing="16">GOD'S VESSEL</text>
+  </g>
+</svg>

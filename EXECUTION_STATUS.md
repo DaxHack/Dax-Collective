@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-13T03:05:13-04:00
+2026-09-13T03:29:42-04:00
 
 ## VERIFIED DONE
 
@@ -33,6 +33,19 @@
 - n8n workflow inventory script created and tested:
   - command: `npm run n8n:inventory`
   - output: `artifacts/n8n-inventory.json`
+- God's Vessel Sprint 2 first collection path created and tested:
+  - command: `npm run gods-vessel:collection`
+  - output: `artifacts/gods-vessel/names-of-god/`
+  - public preview assets: `dax-main/public/assets/gods-vessel/names-of-god/`
+  - five Names of God draft apparel designs generated as SVG
+  - product metadata includes target price, estimated base cost, and margin
+  - theology review notes and commerce readiness notes generated
+- God's Vessel page now describes actual current behavior:
+  - draft collection, not live products
+  - no on-site checkout
+  - no fake testimonials/follower/lives-transformed claims
+  - no unsupported "Shop Now" flow
+  - measurable direct gtag interest CTA when analytics is available
 
 ## CURRENTLY WORKING
 
@@ -50,6 +63,14 @@
   - non-public proof render
 - Ani-Dax producer can accept an approved narration file with `--audio-file`; this path is implemented but not tested with real narration because no approved voice file exists in the session.
 - n8n template inventory/parsing works and flags invalid JSON plus credential/publishing blockers.
+- God's Vessel Names of God collection generation works without external credentials:
+  - SVG draft designs
+  - collection JSON
+  - product metadata CSV
+  - theology review
+  - commerce readiness handoff
+  - website public asset copy
+- `/gods-vessel` renders the generated collection data and assets, with interest CTA links using direct gtag custom events where `window.gtag` exists.
 
 ## PARTIAL / UNTESTED
 
@@ -62,6 +83,13 @@
 - Comments code exists but is not public production functionality.
 - Footer email capture is intentionally disabled/unconnected.
 - `n8n/docs/README.md` is empty.
+- God's Vessel commerce is partial:
+  - no Printify product was created
+  - no Shopify checkout/storefront was configured
+  - no paid order/purchase path exists in this session
+  - generated prices and margins are planning estimates, not live sale terms
+  - theology and design copy require Daniel's approval before public product listings
+- God's Vessel quote feed component still depends on existing Google Sheets/service behavior and was not independently verified against live credentials in this sprint.
 
 ## BLOCKED - DANIEL
 
@@ -76,6 +104,8 @@
 - Approve final Ani-Dax visual style and any use of AI-generated assets.
 - Approve any public publishing to YouTube/TikTok/Instagram.
 - Complete any OAuth consent/MFA/account-owner credential repairs required by n8n or platform accounts.
+- Approve God's Vessel Names of God theology, visual style, garment choices, pricing, vendor setup, and any public product launch.
+- Complete Printify/Shopify account login, OAuth, payment/tax/shipping setup, or MFA if those are needed for commerce activation.
 
 ## BLOCKED - EXTERNAL PROVIDER
 
@@ -86,16 +116,17 @@
 ## NEXT EXACT ACTIONS
 
 1. Push the current branch updates to PR #3 and wait for Firebase PR workflow to pass again.
-2. Repair Ani-Dax n8n templates before importing/running:
+2. Commit and push Sprint 2 God's Vessel collection readiness changes to PR #3, then wait for Firebase PR workflow to pass again.
+3. Begin Sprint 3 Time-Zone Travelers by inspecting existing travel workflows and current page/runtime behavior before creating anything new.
+4. Repair Ani-Dax n8n templates before importing/running:
    - remove direct public upload from generation workflows
    - add approval gate
    - add QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-3. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
-4. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
-5. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
-6. Begin Sprint 2 God's Vessel only after Sprint 1 state is committed and PR updated, unless PR update is blocked by external tooling.
+5. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
+6. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
+7. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
 
 ## DO NOT REDO
 
@@ -104,6 +135,7 @@
 - Do not redesign the website.
 - Do not treat n8n template presence as working runtime.
 - Do not publish Ani-Dax publicly without Daniel approval.
+- Do not publish God's Vessel products or activate paid commerce without Daniel approval.
 - Do not use ripped/cropped/mirrored/sped-up anime clips as the production base.
 - Do not use Pexels results as "anime character" footage for final Ani-Dax content.
 
@@ -118,7 +150,8 @@
 - PR #3: https://github.com/DaxHack/Dax-Collective/pull/3
 - PR branch before these Sprint 1 additions: `codex/legal-oauth-pages-20260913`
 - Existing PR head before these additions: `15c4c889ad78cfb6d18fc6f8948afbb55bb88785`
-- These status/sample/inventory updates are local until committed and pushed.
+- Sprint 1 status/sample/inventory updates are pushed.
+- Sprint 2 God's Vessel updates are local until committed and pushed.
 
 ## DEPLOYMENT STATE
 
@@ -128,6 +161,7 @@
 - Previous PR preview for commit `15c4c889ad78cfb6d18fc6f8948afbb55bb88785` passed:
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
 - Current additional local work requires a new PR workflow run after push.
+- Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
 
 ## CREDENTIAL HEALTH WITHOUT SECRET VALUES
 
@@ -141,6 +175,11 @@
   - Pexels/Fal
   - Discord
   - YouTube OAuth
+- God's Vessel commerce credential/runtime references exist but are unverified:
+  - Printify
+  - Shopify
+  - payment/tax/shipping setup
+  - Google Sheets/service feed for quotes
 - No secret values were printed, copied, or committed by this session.
 
 ## N8N WORKFLOW STATE
@@ -158,7 +197,7 @@
 | Brand | State | Evidence |
 | --- | --- | --- |
 | Ani-Dax | PARTIAL, local production package works | `npm run anidax:sample`, proof render created |
-| God's Vessel | NOT STARTED in this marathon beyond inventory | templates exist, credentials unverified |
+| God's Vessel | PARTIAL, first collection draft path works | `npm run gods-vessel:collection`, `/gods-vessel` page repaired |
 | Time-Zone Travelers | NOT STARTED in this marathon beyond inventory | templates exist, credentials unverified |
 | Dax the Traveler | protected; social links corrected in PR | no public publishing attempted |
 | Dax Collective parent | legal/OAuth blocker implemented | PR #3 |
@@ -170,6 +209,9 @@
 | `npm run anidax:sample` | PASS; sample package and FFmpeg proof render created |
 | `node tools/anidax/produce-sample.mjs --audio-file ...` | NOT RUN; no approved narration file available |
 | `npm run n8n:inventory` | PASS; 30 templates parsed, one invalid JSON flagged |
+| `node --check tools/gods-vessel/produce-names-of-god.mjs` | PASS |
+| `npm run gods-vessel:collection` | PASS; five SVG draft designs, metadata, theology review, and commerce readiness generated |
+| `rg` unsupported God&apos;s Vessel claims sweep | PASS; removed prior fake store/testimonial/follower phrases from page |
 | `npm --prefix dax-main run build` | PASS with warnings |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
@@ -184,6 +226,13 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4`
 - `artifacts/anidax/sprint-1-sample/render/render-report.json`
 - `artifacts/n8n-inventory.json`
+- `artifacts/gods-vessel/names-of-god/collection.json`
+- `artifacts/gods-vessel/names-of-god/product-metadata.csv`
+- `artifacts/gods-vessel/names-of-god/theology-review.md`
+- `artifacts/gods-vessel/names-of-god/commerce-readiness.md`
+- `artifacts/gods-vessel/names-of-god/designs/*.svg`
+- `artifacts/gods-vessel/names-of-god/mockups/collection-board.svg`
+- `dax-main/public/assets/gods-vessel/names-of-god/*.svg`
 
 ## KNOWN BUGS
 
@@ -192,18 +241,23 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - Existing Ani-Dax workflow uses generic external visual search unsuitable for final anime character production.
 - Local TTS unavailable.
 - Frontend build warnings remain.
+- God's Vessel storefront/product creation is not connected to Printify or Shopify yet.
+- God's Vessel generated theology copy is concise draft apparel copy and still needs Daniel review before product publication.
 
 ## COST/RISK ISSUES
 
 - Local Sprint 1 proof run cost: $0.00.
 - External AI/TTS/image/video costs are not verified and must be tracked before production usage.
+- God's Vessel local Sprint 2 generation cost: $0.00.
+- God's Vessel price/margin numbers are estimates until vendor base costs, shipping, fees, taxes, and platform costs are verified.
 - Highest immediate risks:
   - accidental public publishing
   - wrong brand credential/channel publishing
   - copyrighted anime footage use
   - generic AI output that looks mass-produced
   - unbounded API cost if workflows are activated without limits
+  - public product launch before theology/vendor/price approval
 
 ## NEXT SPRINT
 
-Continue Sprint 1 repair until Ani-Dax can use an approved narration file or provider and render a reviewable final draft package. Then proceed to Sprint 2 God's Vessel.
+Commit and push Sprint 2. Then continue Sprint 3 Time-Zone Travelers by inspecting existing travel workflows, current page behavior, and monetization/affiliate claims before adding or repairing anything.
