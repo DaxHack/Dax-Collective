@@ -6,7 +6,7 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. Push the latest local Firebase hardening commit if it is not already pushed:
+3. If a documentation-only handoff commit is present locally, push it:
    https://github.com/DaxHack/Dax-Collective/pull/3
 4. Wait for Firebase PR workflow to pass after the latest push.
 5. Continue Sprint 3 Time-Zone Travelers by inspecting existing workflow/page/runtime state first.
@@ -60,6 +60,7 @@
   - calling `getAuth()` before default app init reproduces `app/no-app`
 - Firebase initialization is centralized in `dax-main/src/config/firebase.js`.
 - Public routes `/`, `/privacy`, `/terms`, and `/disclosure` rendered from the production build with no Firebase console errors while Firebase env was missing.
+- Firebase hardening commit `6d050e0885e9f779bf64658439d81354b85aaa69` reached PR #3 and its Firebase Hosting PR workflow succeeded in 2m 20s.
 
 ## What Not To Repeat
 
@@ -108,4 +109,4 @@
 
 ## Current Sprint
 
-Sprint 2 God's Vessel is PARTIAL but has a working first collection draft path, and its commit is pushed. Current atomic task is Firebase hardening for PR #3. Commit/push it if not already pushed, wait for PR checks, then begin Sprint 3 Time-Zone Travelers by inspecting existing workflow inventory and runtime claims before adding anything new.
+Sprint 2 God's Vessel is PARTIAL but has a working first collection draft path, and its commit is pushed. Firebase hardening is implemented and its code commit passed PR checks. If this handoff update is the latest local commit, push it and wait for the PR workflow once more, then begin Sprint 3 Time-Zone Travelers by inspecting existing workflow inventory and runtime claims before adding anything new.

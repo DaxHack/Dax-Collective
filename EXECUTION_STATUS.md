@@ -107,7 +107,7 @@
   - theology and design copy require Daniel's approval before public product listings
 - God's Vessel quote feed component still depends on existing Google Sheets/service behavior and was not independently verified against live credentials in this sprint.
 - Full Firebase Auth/admin behavior with real production config remains untested in this session because the seven GitHub config values were not available locally.
-- GitHub PR workflow result for the Firebase hardening commit is pending until that commit is pushed.
+- Full Firebase Auth/admin behavior on the deployed site still needs real Firebase client config values in GitHub Actions before it can be verified end to end.
 
 ## BLOCKED - DANIEL
 
@@ -141,19 +141,18 @@
 
 ## NEXT EXACT ACTIONS
 
-1. Commit and push the local Firebase hardening/status changes to PR #3.
-2. Wait for the Firebase PR workflow to pass on the new commit.
-3. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
-4. Begin Sprint 3 Time-Zone Travelers by inspecting existing travel workflows and current page/runtime behavior before creating anything new.
-5. Repair Ani-Dax n8n templates before importing/running:
+1. If this documentation update is pushed as a new PR head, wait for the Firebase PR workflow to pass again.
+2. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
+3. Begin Sprint 3 Time-Zone Travelers by inspecting existing travel workflows and current page/runtime behavior before creating anything new.
+4. Repair Ani-Dax n8n templates before importing/running:
    - remove direct public upload from generation workflows
    - add approval gate
    - add QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-6. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
-7. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
-8. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
+5. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
+6. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
+7. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
 
 ## DO NOT REDO
 
@@ -180,7 +179,8 @@
 - Existing PR head before these additions: `15c4c889ad78cfb6d18fc6f8948afbb55bb88785`
 - Sprint 1 status/sample/inventory updates are pushed.
 - Sprint 2 God's Vessel updates are pushed at `415ed5a47fc610e9a47275cda3c303e85fb3984e`.
-- Firebase hardening/status updates are local until committed and pushed.
+- Firebase hardening commit `6d050e0885e9f779bf64658439d81354b85aaa69` is pushed.
+- If a later documentation-only handoff commit appears after `6d050e0`, recheck the latest PR workflow before merge.
 
 ## DEPLOYMENT STATE
 
@@ -191,8 +191,10 @@
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
 - Current additional local work requires a new PR workflow run after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
-- Current remote PR head verified by `ls-remote`: `415ed5a47fc610e9a47275cda3c303e85fb3984e`.
+- Current remote PR head verified by `ls-remote`: `6d050e0885e9f779bf64658439d81354b85aaa69`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
+- PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
+- Firebase preview comment was updated for commit `6d050e0`.
 
 ## CREDENTIAL HEALTH WITHOUT SECRET VALUES
 
@@ -298,4 +300,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Commit and push the Firebase hardening commit, wait for PR checks, then continue Sprint 3 Time-Zone Travelers by inspecting existing travel workflows, current page behavior, and monetization/affiliate claims before adding or repairing anything.
+If this documentation update creates a new PR head, wait for checks once more. Then continue Sprint 3 Time-Zone Travelers by inspecting existing travel workflows, current page behavior, and monetization/affiliate claims before adding or repairing anything.
