@@ -12,6 +12,7 @@
 | Paid services | Approve any paid TTS/image/video/API/tool subscription before use. |
 | God's Vessel collection approval | Review and approve Names of God theology, design direction, garment choices, pricing, vendor, and public launch timing. |
 | God's Vessel commerce setup | Complete any Printify/Shopify login, OAuth, MFA, payment, tax, shipping, and store settings needed before products can be sold. |
+| Firebase client config in GitHub | Add or confirm `REACT_APP_FIREBASE_API_KEY`, `REACT_APP_FIREBASE_AUTH_DOMAIN`, `REACT_APP_FIREBASE_PROJECT_ID`, `REACT_APP_FIREBASE_STORAGE_BUCKET`, `REACT_APP_FIREBASE_MESSAGING_SENDER_ID`, `REACT_APP_FIREBASE_APP_ID`, and `REACT_APP_FIREBASE_MEASUREMENT_ID` as repository Secrets or Variables. |
 
 ## External Provider / Runtime Blockers
 
@@ -22,6 +23,7 @@
 | Invalid workflow JSON | `workflow_12_data_collection_agent.json.json` parse failure. | Repair or remove duplicate/broken export. |
 | Publishing credentials unverified | Publisher templates reference multiple platform credentials. | Verify non-secret credential health in n8n, do not expose values. |
 | Commerce credentials unverified | Repository references ecommerce automation paths, but Printify/Shopify runtime access was not verified. | Verify account connections and non-secret credential health before creating live products. |
+| Full Firebase Auth runtime unverified | Code is hardened and public routes render without config, but real auth/admin behavior needs the actual Firebase client config values in GitHub Actions. | Add config values, then verify PR/merge deploy and admin sign-in flow. |
 
 ## Not Blockers
 

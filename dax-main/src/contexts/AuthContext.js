@@ -1,6 +1,7 @@
 // dax-main/src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 
 const AuthContext = createContext({ 
   user: null, 
@@ -20,18 +21,26 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const auth = getAuth();
 
   useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return undefined;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });
 
     return unsubscribe;
-  }, [auth]);
+  }, []);
 
   const signInWithGoogle = async () => {
+    if (!auth) {
+      throw new Error('Firebase Auth is not configured for this build.');
+    }
+
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
@@ -43,6 +52,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signOutUser = async () => {
+    if (!auth) {
+      return;
+    }
+
     try {
       await signOut(auth);
     } catch (error) {

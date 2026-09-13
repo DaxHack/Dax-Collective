@@ -1,7 +1,7 @@
 // src/config/firebase.js
 // CLEAN VERSION - NO FIREBASE ANALYTICS
 
-import { initializeApp } from 'firebase/app'
+import { getApps, initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { getStorage } from 'firebase/storage'
@@ -16,10 +16,39 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || ""
 }
 
-export const firebaseApp = initializeApp(firebaseConfig)
-export const db = getFirestore(firebaseApp)
-export const auth = getAuth(firebaseApp)
-export const storage = getStorage(firebaseApp)
+const requiredFirebaseEnv = [
+  ['apiKey', 'REACT_APP_FIREBASE_API_KEY'],
+  ['authDomain', 'REACT_APP_FIREBASE_AUTH_DOMAIN'],
+  ['projectId', 'REACT_APP_FIREBASE_PROJECT_ID'],
+  ['storageBucket', 'REACT_APP_FIREBASE_STORAGE_BUCKET'],
+  ['messagingSenderId', 'REACT_APP_FIREBASE_MESSAGING_SENDER_ID'],
+  ['appId', 'REACT_APP_FIREBASE_APP_ID'],
+  ['measurementId', 'REACT_APP_FIREBASE_MEASUREMENT_ID']
+]
+
+export const missingFirebaseConfig = requiredFirebaseEnv
+  .filter(([configKey]) => !String(firebaseConfig[configKey] || '').trim())
+  .map(([, envKey]) => envKey)
+
+export const isFirebaseConfigured = missingFirebaseConfig.length === 0
+
+const createFirebaseApp = () => {
+  if (!isFirebaseConfigured) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.warn(
+        `Firebase client config is incomplete. Missing: ${missingFirebaseConfig.join(', ')}`
+      )
+    }
+    return null
+  }
+
+  return getApps().length > 0 ? getApps()[0] : initializeApp(firebaseConfig)
+}
+
+export const firebaseApp = createFirebaseApp()
+export const db = firebaseApp ? getFirestore(firebaseApp) : null
+export const auth = firebaseApp ? getAuth(firebaseApp) : null
+export const storage = firebaseApp ? getStorage(firebaseApp) : null
 
 // NO ANALYTICS - Using direct gtag in index.html instead
 export const analytics = null

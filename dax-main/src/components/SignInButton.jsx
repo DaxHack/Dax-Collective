@@ -1,12 +1,17 @@
 // src/components/SignInButton.jsx
 import React from 'react';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { UserIcon } from '@heroicons/react/24/outline';
+import { auth } from '../config/firebase';
 
 const SignInButton = ({ className = '', size = 'md', variant = 'primary' }) => {
   const handleSignIn = async () => {
+    if (!auth) {
+      console.warn('Sign-in is unavailable because Firebase Auth is not configured.');
+      return;
+    }
+
     try {
-      const auth = getAuth();
       const provider = new GoogleAuthProvider();
       
       // Add scopes for Google Drive access if needed
@@ -34,11 +39,14 @@ const SignInButton = ({ className = '', size = 'md', variant = 'primary' }) => {
   return (
     <button
       onClick={handleSignIn}
+      disabled={!auth}
+      title={!auth ? 'Sign-in unavailable until Firebase is configured' : undefined}
       className={`
         inline-flex items-center justify-center
         font-medium rounded-lg
         transition-colors duration-200
         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+        disabled:opacity-50 disabled:cursor-not-allowed
         ${sizeClasses[size]}
         ${variantClasses[variant]}
         ${className}

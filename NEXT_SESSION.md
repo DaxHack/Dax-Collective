@@ -6,7 +6,7 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. Push the latest local commit(s) to PR #3:
+3. Push the latest local Firebase hardening commit if it is not already pushed:
    https://github.com/DaxHack/Dax-Collective/pull/3
 4. Wait for Firebase PR workflow to pass after the latest push.
 5. Continue Sprint 3 Time-Zone Travelers by inspecting existing workflow/page/runtime state first.
@@ -35,6 +35,11 @@
 - God's Vessel sample output: `artifacts/gods-vessel/names-of-god/`
 - God's Vessel public assets: `dax-main/public/assets/gods-vessel/names-of-god/`
 - God's Vessel page data: `dax-main/src/data/godsVesselNamesOfGod.js`
+- Firebase config module: `dax-main/src/config/firebase.js`
+- Firebase auth context: `dax-main/src/contexts/AuthContext.js`
+- Firebase Hosting workflows:
+  - `.github/workflows/firebase-hosting-pull-request.yml`
+  - `.github/workflows/firebase-hosting-merge.yml`
 
 ## What Has Already Been Verified
 
@@ -49,6 +54,12 @@
 - `npm run gods-vessel:collection` generates five Names of God SVG designs, metadata, theology review, and commerce readiness notes.
 - `/gods-vessel` has been repaired to show the real draft state: no live products, no checkout, no fake testimonials, no fake follower/lives-transformed claims.
 - God's Vessel interest CTAs use direct gtag custom events when analytics exists.
+- Sprint 2 commit `415ed5a47fc610e9a47275cda3c303e85fb3984e` reached the remote PR branch.
+- Firebase root cause was verified as both missing build-time Firebase config risk and implicit default-app auth usage:
+  - empty initialized config can throw `auth/invalid-api-key`
+  - calling `getAuth()` before default app init reproduces `app/no-app`
+- Firebase initialization is centralized in `dax-main/src/config/firebase.js`.
+- Public routes `/`, `/privacy`, `/terms`, and `/disclosure` rendered from the production build with no Firebase console errors while Firebase env was missing.
 
 ## What Not To Repeat
 
@@ -60,6 +71,8 @@
 - Do not restore the old fake God's Vessel apparel/testimonial/follower claims.
 - Do not create new credentials unless credential repair/reuse is impossible and Daniel approves.
 - Do not base Ani-Dax on ripped anime clips.
+- Do not add a second Firebase `initializeApp()` call. Import `auth`, `db`, `storage`, or `firebaseApp` from `src/config/firebase.js`.
+- Do not redo the Sprint 2 God's Vessel collection unless the design/theology requirements change.
 
 ## What Requires Daniel
 
@@ -69,6 +82,14 @@
 - Voice/narration path approval.
 - God's Vessel theology/design/vendor/pricing approval.
 - Printify/Shopify account-owner login, OAuth, MFA, payment, tax, shipping, and launch approval.
+- Add or confirm these browser-safe GitHub repository Secrets or Variables for Firebase client config:
+  - `REACT_APP_FIREBASE_API_KEY`
+  - `REACT_APP_FIREBASE_AUTH_DOMAIN`
+  - `REACT_APP_FIREBASE_PROJECT_ID`
+  - `REACT_APP_FIREBASE_STORAGE_BUCKET`
+  - `REACT_APP_FIREBASE_MESSAGING_SENDER_ID`
+  - `REACT_APP_FIREBASE_APP_ID`
+  - `REACT_APP_FIREBASE_MEASUREMENT_ID`
 - Any paid service approval.
 - Any public publishing approval.
 
@@ -87,4 +108,4 @@
 
 ## Current Sprint
 
-Sprint 2 God's Vessel is PARTIAL but has a working first collection draft path. Commit/push the current Sprint 2 changes if they are not already pushed, wait for PR checks, then begin Sprint 3 Time-Zone Travelers by inspecting existing workflow inventory and runtime claims before adding anything new.
+Sprint 2 God's Vessel is PARTIAL but has a working first collection draft path, and its commit is pushed. Current atomic task is Firebase hardening for PR #3. Commit/push it if not already pushed, wait for PR checks, then begin Sprint 3 Time-Zone Travelers by inspecting existing workflow inventory and runtime claims before adding anything new.
