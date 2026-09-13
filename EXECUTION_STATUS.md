@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-13T18:57:28-04:00
+2026-09-13T19:00:33-04:00
 
 ## VERIFIED DONE
 
@@ -70,6 +70,7 @@
   - source-backed sample: Tokyo vs Seoul for first-time night-owl city explorers
   - official source notes included for GO TOKYO, Seoul Metropolitan Government, and Korea Tourism Organization
   - approval gate, publish payload, analytics record, cost record, and monetization path generated
+- Sprint 3 commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` was pushed to PR #3 and its Firebase Hosting PR workflow succeeded in 2m 4s.
 
 ## CURRENTLY WORKING
 
@@ -178,19 +179,17 @@
 ## NEXT EXACT ACTIONS
 
 1. If this documentation update is pushed as a new PR head, wait for the Firebase PR workflow to pass again.
-2. Commit and push Sprint 3 Time-Zone Travelers sample pipeline and status updates.
-3. Wait for Firebase PR workflow to pass on the Sprint 3 commit.
-4. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
-5. Begin Sprint 4 Dax the Traveler support automation by inventorying existing approved media/content, analytics hooks, and current page behavior. Do not fabricate Daniel travel experiences.
-6. Repair Ani-Dax n8n templates before importing/running:
+2. Begin Sprint 4 Dax the Traveler support automation by inventorying existing approved media/content, analytics hooks, and current page behavior. Do not fabricate Daniel travel experiences.
+3. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
+4. Repair Ani-Dax n8n templates before importing/running:
    - remove direct public upload from generation workflows
    - add approval gate
    - add QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-7. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
-8. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
-9. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
+5. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
+6. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
+7. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
 
 ## DO NOT REDO
 
@@ -221,7 +220,7 @@
 - Sprint 2 God's Vessel updates are pushed at `415ed5a47fc610e9a47275cda3c303e85fb3984e`.
 - Firebase hardening commit `6d050e0885e9f779bf64658439d81354b85aaa69` is pushed.
 - Handoff commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` is pushed and its PR workflow passed.
-- Sprint 3 Time-Zone Travelers sample changes are local until committed and pushed.
+- Sprint 3 Time-Zone Travelers commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` is pushed and its PR workflow passed.
 
 ## DEPLOYMENT STATE
 
@@ -230,13 +229,14 @@
 - Merge/live workflow: `.github/workflows/firebase-hosting-merge.yml`
 - Previous PR preview for commit `15c4c889ad78cfb6d18fc6f8948afbb55bb88785` passed:
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
-- Current additional local work requires a new PR workflow run after push.
+- Current additional local status update requires a new PR workflow run after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
-- Current remote PR head verified by `ls-remote`: `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b`.
+- Current remote PR head verified by `ls-remote`: `96a6148e85c8ff7f49ae72f84212c34a29ed4548`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
 - PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
 - Firebase preview comment was updated for commit `6d050e0`.
 - PR #3 showed 5 commits and the Firebase Hosting PR workflow for commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` succeeded in 2m 10s.
+- PR #3 showed 6 commits and the Firebase Hosting PR workflow for commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` succeeded in 2m 4s.
 
 ## CREDENTIAL HEALTH WITHOUT SECRET VALUES
 
@@ -359,4 +359,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Commit and push Sprint 3, wait for PR checks, then continue Sprint 4 Dax the Traveler support automation. Protect Daniel's face/voice/personal brand; inventory existing approved media and create support automation around his material only.
+Continue Sprint 4 Dax the Traveler support automation. Protect Daniel's face/voice/personal brand; inventory existing approved media and create support automation around his material only.

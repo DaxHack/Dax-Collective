@@ -6,7 +6,7 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. Commit and push the Sprint 3 Time-Zone Travelers sample pipeline if it is still local:
+3. If this status-only handoff update is local, push it:
    https://github.com/DaxHack/Dax-Collective/pull/3
 4. Wait for Firebase PR workflow to pass after the latest push.
 5. Continue Sprint 4 Dax the Traveler support automation by inventorying existing approved media/content, analytics hooks, current page behavior, and any safe local tooling opportunities.
@@ -73,6 +73,7 @@
 - Time-Zone Travelers sample uses official source notes and approved repository assets only.
 - Time-Zone Travelers sample has `publishAllowed: false` and is blocked pending Daniel approval.
 - Existing `n8n/templates/workflow_timezone_travelers_video_generator.json` is partial and not safe to run publicly as-is.
+- Sprint 3 Time-Zone Travelers commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` reached PR #3 and its Firebase Hosting PR workflow succeeded in 2m 4s.
 
 ## What Not To Repeat
 
@@ -128,4 +129,4 @@
 
 ## Current Sprint
 
-Sprint 3 Time-Zone Travelers is PARTIAL with a working local sample package and proof render. Commit/push it if still local, wait for PR checks, then begin Sprint 4 Dax the Traveler support automation.
+Sprint 3 Time-Zone Travelers is PARTIAL with a working local sample package and proof render, pushed to PR #3 with a passing Firebase PR workflow. If this handoff-only update is still local, push it and wait for checks; then begin Sprint 4 Dax the Traveler support automation.
