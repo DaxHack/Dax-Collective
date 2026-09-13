@@ -1,0 +1,43 @@
+{
+  "status": "AFFILIATE_READY_TRACKING_ONLY",
+  "noEnrollmentClaim": true,
+  "activeAffiliateProgramsVerified": [],
+  "paths": [
+    {
+      "path": "Official source links",
+      "status": "usable now",
+      "revenue": "none",
+      "reason": "Builds trust without affiliate enrollment."
+    },
+    {
+      "path": "Travel gear affiliate links",
+      "status": "future approval required",
+      "revenue": "unknown",
+      "reason": "Relevant to carry-on, transit, adapter, and bag recommendations after Daniel approves programs."
+    },
+    {
+      "path": "Activities/tours affiliate links",
+      "status": "future approval required",
+      "revenue": "unknown",
+      "reason": "Can fit destination decision guides after legitimate provider enrollment."
+    },
+    {
+      "path": "Digital city decision guides",
+      "status": "later product idea",
+      "revenue": "unknown",
+      "reason": "Low-cost owned offer once content proof exists."
+    }
+  ],
+  "trackedLinks": [
+    {
+      "label": "GO TOKYO IC cards",
+      "url": "https://www.gotokyo.org/en/plan/getting-around/ic-card/index.html?utm_source=time-zone-travelers&utm_medium=official_source&utm_campaign=tzt-2026-09-13-tokyo-seoul-night-owl",
+      "affiliate": false
+    },
+    {
+      "label": "Seoul public transportation",
+      "url": "https://english.seoul.go.kr/service/movement/public-transportation/?utm_source=time-zone-travelers&utm_medium=official_source&utm_campaign=tzt-2026-09-13-tokyo-seoul-night-owl",
+      "affiliate": false
+    }
+  ]
+}

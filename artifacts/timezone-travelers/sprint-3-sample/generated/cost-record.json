@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-09-13T22:57:08.957Z",
+  "localProofRunUsd": {
+    "llm": 0,
+    "imageGeneration": 0,
+    "videoGeneration": 0,
+    "tts": 0,
+    "music": 0,
+    "storage": 0,
+    "api": 0,
+    "other": 0,
+    "notes": "Local proof uses source notes, approved repo assets, deterministic SVG/ASS, and FFmpeg only."
+  },
+  "productionRisks": [
+    "Paid TTS/video/image generation not used.",
+    "No affiliate enrollment or purchase was performed.",
+    "Final publishing remains approval-gated."
+  ]
+}

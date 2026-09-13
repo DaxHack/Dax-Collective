@@ -6,11 +6,12 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. If a documentation-only handoff commit is present locally, push it:
+3. Commit and push the Sprint 3 Time-Zone Travelers sample pipeline if it is still local:
    https://github.com/DaxHack/Dax-Collective/pull/3
 4. Wait for Firebase PR workflow to pass after the latest push.
-5. Continue Sprint 3 Time-Zone Travelers by inspecting existing workflow/page/runtime state first.
-6. Continue Sprint 1 repair work opportunistically around:
+5. Continue Sprint 4 Dax the Traveler support automation by inventorying existing approved media/content, analytics hooks, current page behavior, and any safe local tooling opportunities.
+6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
+7. Continue Sprint 1 repair work opportunistically around:
    - approval gates
    - QC
    - cost tracking
@@ -35,6 +36,11 @@
 - God's Vessel sample output: `artifacts/gods-vessel/names-of-god/`
 - God's Vessel public assets: `dax-main/public/assets/gods-vessel/names-of-god/`
 - God's Vessel page data: `dax-main/src/data/godsVesselNamesOfGod.js`
+- Time-Zone Travelers sample generator: `tools/timezone-travelers/produce-sample.mjs`
+- Reusable Time-Zone Travelers invocation:
+  `npm run timezone:sample`
+- Time-Zone Travelers sample output: `artifacts/timezone-travelers/sprint-3-sample/`
+- Time-Zone Travelers proof render: `artifacts/timezone-travelers/sprint-3-sample/render/timezone-proof-render.mp4`
 - Firebase config module: `dax-main/src/config/firebase.js`
 - Firebase auth context: `dax-main/src/contexts/AuthContext.js`
 - Firebase Hosting workflows:
@@ -61,6 +67,12 @@
 - Firebase initialization is centralized in `dax-main/src/config/firebase.js`.
 - Public routes `/`, `/privacy`, `/terms`, and `/disclosure` rendered from the production build with no Firebase console errors while Firebase env was missing.
 - Firebase hardening commit `6d050e0885e9f779bf64658439d81354b85aaa69` reached PR #3 and its Firebase Hosting PR workflow succeeded in 2m 20s.
+- Firebase handoff commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` reached PR #3 and its Firebase Hosting PR workflow succeeded in 2m 10s.
+- `npm run timezone:sample` generated a Time-Zone Travelers approval package and silent FFmpeg proof render.
+- Sprint 3 sample content ID: `tzt-2026-09-13-tokyo-seoul-night-owl`.
+- Time-Zone Travelers sample uses official source notes and approved repository assets only.
+- Time-Zone Travelers sample has `publishAllowed: false` and is blocked pending Daniel approval.
+- Existing `n8n/templates/workflow_timezone_travelers_video_generator.json` is partial and not safe to run publicly as-is.
 
 ## What Not To Repeat
 
@@ -74,6 +86,9 @@
 - Do not base Ani-Dax on ripped anime clips.
 - Do not add a second Firebase `initializeApp()` call. Import `auth`, `db`, `storage`, or `firebaseApp` from `src/config/firebase.js`.
 - Do not redo the Sprint 2 God's Vessel collection unless the design/theology requirements change.
+- Do not redo the Sprint 3 Time-Zone Travelers sample unless the target concept changes.
+- Do not run the existing Time-Zone Travelers n8n workflow publicly as-is.
+- Do not fabricate Daniel travel experiences for Dax the Traveler.
 
 ## What Requires Daniel
 
@@ -83,6 +98,9 @@
 - Voice/narration path approval.
 - God's Vessel theology/design/vendor/pricing approval.
 - Printify/Shopify account-owner login, OAuth, MFA, payment, tax, shipping, and launch approval.
+- Time-Zone Travelers sample concept/script/public publishing approval.
+- Time-Zone Travelers final narration/TTS approval.
+- Travel affiliate enrollment, affiliate links, sponsorships, or paid provider approval.
 - Add or confirm these browser-safe GitHub repository Secrets or Variables for Firebase client config:
   - `REACT_APP_FIREBASE_API_KEY`
   - `REACT_APP_FIREBASE_AUTH_DOMAIN`
@@ -104,9 +122,10 @@
 - Create draft concepts and non-public sample assets.
 - Generate/update God's Vessel draft collection assets and metadata.
 - Repair Time-Zone Travelers workflows/pages/metadata where the behavior can be tested without publishing or paid enrollment.
+- Build Dax the Traveler support automation around existing approved material and analytics without altering public channels.
 - Run builds/tests.
 - Commit and update PRs.
 
 ## Current Sprint
 
-Sprint 2 God's Vessel is PARTIAL but has a working first collection draft path, and its commit is pushed. Firebase hardening is implemented and its code commit passed PR checks. If this handoff update is the latest local commit, push it and wait for the PR workflow once more, then begin Sprint 3 Time-Zone Travelers by inspecting existing workflow inventory and runtime claims before adding anything new.
+Sprint 3 Time-Zone Travelers is PARTIAL with a working local sample package and proof render. Commit/push it if still local, wait for PR checks, then begin Sprint 4 Dax the Traveler support automation.

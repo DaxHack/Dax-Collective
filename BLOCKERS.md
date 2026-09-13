@@ -13,6 +13,9 @@
 | God's Vessel collection approval | Review and approve Names of God theology, design direction, garment choices, pricing, vendor, and public launch timing. |
 | God's Vessel commerce setup | Complete any Printify/Shopify login, OAuth, MFA, payment, tax, shipping, and store settings needed before products can be sold. |
 | Firebase client config in GitHub | Add or confirm `REACT_APP_FIREBASE_API_KEY`, `REACT_APP_FIREBASE_AUTH_DOMAIN`, `REACT_APP_FIREBASE_PROJECT_ID`, `REACT_APP_FIREBASE_STORAGE_BUCKET`, `REACT_APP_FIREBASE_MESSAGING_SENDER_ID`, `REACT_APP_FIREBASE_APP_ID`, and `REACT_APP_FIREBASE_MEASUREMENT_ID` as repository Secrets or Variables. |
+| Time-Zone Travelers sample approval | Review the Tokyo vs Seoul night-owl decision guide sample package, approve/revise the script, and approve any public publishing target. |
+| Time-Zone Travelers voice | Provide or approve final narration/TTS before the sample can become a public video. |
+| Travel monetization | Approve any travel affiliate program enrollment, affiliate links, sponsorships, or paid provider use before monetized publishing. |
 
 ## External Provider / Runtime Blockers
 
@@ -24,6 +27,8 @@
 | Publishing credentials unverified | Publisher templates reference multiple platform credentials. | Verify non-secret credential health in n8n, do not expose values. |
 | Commerce credentials unverified | Repository references ecommerce automation paths, but Printify/Shopify runtime access was not verified. | Verify account connections and non-secret credential health before creating live products. |
 | Full Firebase Auth runtime unverified | Code is hardened and public routes render without config, but real auth/admin behavior needs the actual Firebase client config values in GitHub Actions. | Add config values, then verify PR/merge deploy and admin sign-in flow. |
+| Time-Zone Travelers n8n workflow not production-safe | Existing workflow lacks an explicit approval gate, credentials are unverified, and it contains unsupported Patreon/affiliate assumptions. | Repair and test in draft mode before any runtime execution or publishing. |
+| Time-Zone Travelers final audio missing | Sprint 3 proof render is silent by design. | Use Daniel-approved narration or approved TTS before public approval. |
 
 ## Not Blockers
 
@@ -31,3 +36,4 @@
 - Lack of public publishing: intentional until approval.
 - Lack of final Ani-Dax voice: local pipeline can still generate concept/QC/render proof and wait for approved audio.
 - God's Vessel having zero live products: intentional until theology, design, vendor, pricing, and storefront setup are approved.
+- Time-Zone Travelers not publishing yet: intentional until Daniel approves the content, account mapping, and any monetized links.

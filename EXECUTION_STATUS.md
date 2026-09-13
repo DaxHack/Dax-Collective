@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-13T18:31:02-04:00
+2026-09-13T18:57:28-04:00
 
 ## VERIFIED DONE
 
@@ -60,6 +60,16 @@
   - Firebase initialization now happens only in `dax-main/src/config/firebase.js`
   - public routes render even when Firebase client config is missing
   - both Firebase Hosting workflows now pass the seven Firebase client config values from GitHub Secrets or Variables
+- PR #3 Firebase Hosting PR workflow for handoff commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` succeeded in 2m 10s.
+- Time-Zone Travelers Sprint 3 sample pipeline created and tested:
+  - command: `npm run timezone:sample`
+  - output: `artifacts/timezone-travelers/sprint-3-sample/`
+  - proof render: `artifacts/timezone-travelers/sprint-3-sample/render/timezone-proof-render.mp4`
+  - render report: `artifacts/timezone-travelers/sprint-3-sample/render/render-report.json`
+  - content ID: `tzt-2026-09-13-tokyo-seoul-night-owl`
+  - source-backed sample: Tokyo vs Seoul for first-time night-owl city explorers
+  - official source notes included for GO TOKYO, Seoul Metropolitan Government, and Korea Tourism Organization
+  - approval gate, publish payload, analytics record, cost record, and monetization path generated
 
 ## CURRENTLY WORKING
 
@@ -87,6 +97,21 @@
 - `/gods-vessel` renders the generated collection data and assets, with interest CTA links using direct gtag custom events where `window.gtag` exists.
 - Public routes `/`, `/privacy`, `/terms`, and `/disclosure` render from the production build with missing Firebase env values and no Firebase `app/no-app` or `auth/invalid-api-key` console errors.
 - Firebase-dependent features degrade without crashing the public site when Firebase client config is missing.
+- Time-Zone Travelers local sample generation works without external credentials:
+  - researched concept
+  - source notes
+  - original angle
+  - script
+  - storyboard
+  - approved repo asset plan
+  - captions
+  - thumbnail SVG
+  - silent FFmpeg proof render
+  - QC
+  - approval/publish gate
+  - analytics tracking record
+  - cost record
+  - affiliate-ready, non-enrolled monetization path
 
 ## PARTIAL / UNTESTED
 
@@ -108,6 +133,14 @@
 - God's Vessel quote feed component still depends on existing Google Sheets/service behavior and was not independently verified against live credentials in this sprint.
 - Full Firebase Auth/admin behavior with real production config remains untested in this session because the seven GitHub config values were not available locally.
 - Full Firebase Auth/admin behavior on the deployed site still needs real Firebase client config values in GitHub Actions before it can be verified end to end.
+- Time-Zone Travelers n8n workflow is partial:
+  - `n8n/templates/workflow_timezone_travelers_video_generator.json` reads a sheet, fetches weather, generates script/voice/images/thumbnail/blog, runs FFmpeg, updates sheet, sends Discord, and suggests affiliates
+  - it is inactive in the repository export
+  - credentials are unverified
+  - it lacks an explicit Daniel approval gate
+  - it includes unsupported Patreon/affiliate assumptions
+  - it should not be run publicly as-is
+- Time-Zone Travelers final voice/narration is not ready; local render uses silent placeholder audio.
 
 ## BLOCKED - DANIEL
 
@@ -124,6 +157,9 @@
 - Complete any OAuth consent/MFA/account-owner credential repairs required by n8n or platform accounts.
 - Approve God's Vessel Names of God theology, visual style, garment choices, pricing, vendor setup, and any public product launch.
 - Complete Printify/Shopify account login, OAuth, payment/tax/shipping setup, or MFA if those are needed for commerce activation.
+- Approve Time-Zone Travelers sample concept/script and any public publishing.
+- Approve final Time-Zone Travelers voice/narration path.
+- Approve any travel affiliate enrollment, affiliate links, sponsorships, or paid provider use before public monetized publishing.
 - Add these browser-safe Firebase client config values to GitHub Actions as repository Secrets or Variables before relying on live Firebase Auth/admin behavior:
   - `REACT_APP_FIREBASE_API_KEY`
   - `REACT_APP_FIREBASE_AUTH_DOMAIN`
@@ -142,17 +178,19 @@
 ## NEXT EXACT ACTIONS
 
 1. If this documentation update is pushed as a new PR head, wait for the Firebase PR workflow to pass again.
-2. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
-3. Begin Sprint 3 Time-Zone Travelers by inspecting existing travel workflows and current page/runtime behavior before creating anything new.
-4. Repair Ani-Dax n8n templates before importing/running:
+2. Commit and push Sprint 3 Time-Zone Travelers sample pipeline and status updates.
+3. Wait for Firebase PR workflow to pass on the Sprint 3 commit.
+4. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
+5. Begin Sprint 4 Dax the Traveler support automation by inventorying existing approved media/content, analytics hooks, and current page behavior. Do not fabricate Daniel travel experiences.
+6. Repair Ani-Dax n8n templates before importing/running:
    - remove direct public upload from generation workflows
    - add approval gate
    - add QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-5. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
-6. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
-7. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
+7. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
+8. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
+9. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
 
 ## DO NOT REDO
 
@@ -165,6 +203,8 @@
 - Do not use ripped/cropped/mirrored/sped-up anime clips as the production base.
 - Do not use Pexels results as "anime character" footage for final Ani-Dax content.
 - Do not duplicate Firebase initialization in other files; use exports from `dax-main/src/config/firebase.js`.
+- Do not redo the Time-Zone Travelers sample package unless the target concept changes.
+- Do not run the existing Time-Zone Travelers n8n workflow publicly as-is.
 
 ## CURRENT GIT BRANCH / WORKTREE
 
@@ -180,7 +220,8 @@
 - Sprint 1 status/sample/inventory updates are pushed.
 - Sprint 2 God's Vessel updates are pushed at `415ed5a47fc610e9a47275cda3c303e85fb3984e`.
 - Firebase hardening commit `6d050e0885e9f779bf64658439d81354b85aaa69` is pushed.
-- If a later documentation-only handoff commit appears after `6d050e0`, recheck the latest PR workflow before merge.
+- Handoff commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` is pushed and its PR workflow passed.
+- Sprint 3 Time-Zone Travelers sample changes are local until committed and pushed.
 
 ## DEPLOYMENT STATE
 
@@ -191,10 +232,11 @@
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
 - Current additional local work requires a new PR workflow run after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
-- Current remote PR head verified by `ls-remote`: `6d050e0885e9f779bf64658439d81354b85aaa69`.
+- Current remote PR head verified by `ls-remote`: `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
 - PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
 - Firebase preview comment was updated for commit `6d050e0`.
+- PR #3 showed 5 commits and the Firebase Hosting PR workflow for commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` succeeded in 2m 10s.
 
 ## CREDENTIAL HEALTH WITHOUT SECRET VALUES
 
@@ -225,6 +267,7 @@
 - One broken template: `n8n/templates/workflow_12_data_collection_agent.json.json` invalid JSON.
 - Publishing workflows are blocked pending credentials and Daniel approval.
 - Ani-Dax generation workflows are partial and need approval/QC repair before runtime use.
+- Time-Zone Travelers generation workflow exists but is PARTIAL / WORKS WITH REPAIR. It is useful for the rough shape of a travel pipeline but needs source verification, approval gating, credential verification, and removal of unsupported Patreon/affiliate assumptions before runtime use.
 
 ## BRAND-BY-BRAND STATE
 
@@ -232,7 +275,7 @@
 | --- | --- | --- |
 | Ani-Dax | PARTIAL, local production package works | `npm run anidax:sample`, proof render created |
 | God's Vessel | PARTIAL, first collection draft path works | `npm run gods-vessel:collection`, `/gods-vessel` page repaired |
-| Time-Zone Travelers | NOT STARTED in this marathon beyond inventory | templates exist, credentials unverified |
+| Time-Zone Travelers | PARTIAL, local source-backed sample package works | `npm run timezone:sample`, proof render created |
 | Dax the Traveler | protected; social links corrected in PR | no public publishing attempted |
 | Dax Collective parent | legal/OAuth blocker implemented | PR #3 |
 
@@ -251,6 +294,8 @@
 | Firebase no-app reproduction | PASS; `getAuth()` without initialized app reproduces `app/no-app` |
 | `rg getAuth/getFirestore/getStorage/initializeApp` sweep | PASS; Firebase initialization calls are centralized in `src/config/firebase.js` |
 | Local production route smoke | PASS; `/`, `/privacy`, `/terms`, `/disclosure` rendered with no Firebase console errors |
+| `node --check tools/timezone-travelers/produce-sample.mjs` | PASS |
+| `npm run timezone:sample` | PASS; source-backed package and FFmpeg proof render created |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
@@ -271,6 +316,17 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `artifacts/gods-vessel/names-of-god/designs/*.svg`
 - `artifacts/gods-vessel/names-of-god/mockups/collection-board.svg`
 - `dax-main/public/assets/gods-vessel/names-of-god/*.svg`
+- `artifacts/timezone-travelers/sprint-3-sample/approval-package.md`
+- `artifacts/timezone-travelers/sprint-3-sample/generated/content-package.json`
+- `artifacts/timezone-travelers/sprint-3-sample/generated/captions.srt`
+- `artifacts/timezone-travelers/sprint-3-sample/generated/storyboard.svg`
+- `artifacts/timezone-travelers/sprint-3-sample/generated/publish-ready-payload.json`
+- `artifacts/timezone-travelers/sprint-3-sample/generated/analytics-record.json`
+- `artifacts/timezone-travelers/sprint-3-sample/generated/cost-record.json`
+- `artifacts/timezone-travelers/sprint-3-sample/generated/monetization-path.json`
+- `artifacts/timezone-travelers/sprint-3-sample/thumbnail/thumbnail.svg`
+- `artifacts/timezone-travelers/sprint-3-sample/render/timezone-proof-render.mp4`
+- `artifacts/timezone-travelers/sprint-3-sample/render/render-report.json`
 
 ## KNOWN BUGS
 
@@ -282,6 +338,8 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - God's Vessel storefront/product creation is not connected to Printify or Shopify yet.
 - God's Vessel generated theology copy is concise draft apparel copy and still needs Daniel review before product publication.
 - Full Firebase Auth/admin runtime cannot be verified until GitHub has real browser-safe Firebase client config values.
+- Time-Zone Travelers n8n workflow has no approval gate and includes unsupported Patreon/affiliate assumptions.
+- Time-Zone Travelers sample render uses silent placeholder audio.
 
 ## COST/RISK ISSUES
 
@@ -289,6 +347,7 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - External AI/TTS/image/video costs are not verified and must be tracked before production usage.
 - God's Vessel local Sprint 2 generation cost: $0.00.
 - Firebase hardening local cost: $0.00.
+- Time-Zone Travelers local Sprint 3 proof run cost: $0.00.
 - God's Vessel price/margin numbers are estimates until vendor base costs, shipping, fees, taxes, and platform costs are verified.
 - Highest immediate risks:
   - accidental public publishing
@@ -300,4 +359,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-If this documentation update creates a new PR head, wait for checks once more. Then continue Sprint 3 Time-Zone Travelers by inspecting existing travel workflows, current page behavior, and monetization/affiliate claims before adding or repairing anything.
+Commit and push Sprint 3, wait for PR checks, then continue Sprint 4 Dax the Traveler support automation. Protect Daniel's face/voice/personal brand; inventory existing approved media and create support automation around his material only.

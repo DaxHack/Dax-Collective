@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0A0F1A"/>
+      <stop offset="52%" stop-color="#172554"/>
+      <stop offset="100%" stop-color="#7C2D12"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <circle cx="390" cy="300" r="210" fill="#F97316" opacity="0.22"/>
+  <circle cx="1500" cy="790" r="270" fill="#14B8A6" opacity="0.18"/>
+  <path d="M220 700 C520 420 800 900 1120 600 S1590 480 1710 260" fill="none" stroke="#F59E0B" stroke-width="18" stroke-dasharray="34 28"/>
+  <text x="120" y="210" fill="#FCD34D" font-family="Arial" font-size="58" font-weight="900" letter-spacing="8">TIME-ZONE TRAVELERS</text>
+  <text x="120" y="500" fill="#FFFFFF" font-family="Arial" font-size="168" font-weight="900">TOKYO</text>
+  <text x="770" y="500" fill="#F97316" font-family="Arial" font-size="124" font-weight="900">OR</text>
+  <text x="1030" y="500" fill="#FFFFFF" font-family="Arial" font-size="168" font-weight="900">SEOUL?</text>
+  <text x="124" y="660" fill="#E5E7EB" font-family="Arial" font-size="62" font-weight="700">Night-owl first trip decision guide</text>
+  <text x="124" y="920" fill="#14B8A6" font-family="Arial" font-size="42" font-weight="700">Draft package - approval required</text>
+</svg>

@@ -12,6 +12,7 @@ The full machine-readable inventory is in `artifacts/n8n-inventory.json`.
 - Verified working runtime workflows: 0
 - Partial Ani-Dax generation templates: 2
 - Publisher templates: present but blocked until credentials and Daniel approval are verified
+- Time-Zone Travelers generation template: present but partial and not safe to run publicly as-is
 
 ## Sprint 1 Relevant Workflows
 
@@ -23,6 +24,15 @@ The full machine-readable inventory is in `artifacts/n8n-inventory.json`.
 | `n8n/templates/workflow_tiktok_instagram_publisher.json` | BLOCKED | Requires TikTok/Instagram credentials, file hosting/media URLs, platform approval. Do not run publicly. |
 | `n8n/templates/fixed_workflow_multi_format_video_creator.json` | UNTESTED | FFmpeg-oriented webhook template. Possible reuse target for render stage after queue/QC repair. |
 | `n8n/scripts/video_creation_scripts.py` | PARTIAL / UNTESTED | Has video-creation logic but assumes `/app` paths plus PIL/OpenCV dependencies. Not tested as usable in this Windows worktree. |
+
+## Sprint 3 Relevant Workflows
+
+| File | Classification | Integrations | Notes |
+| --- | --- | --- | --- |
+| `n8n/templates/workflow_timezone_travelers_video_generator.json` | PARTIAL / WORKS WITH REPAIR | Google Sheets, OpenWeather, AI text generation, ElevenLabs, Pexels, image generation, FFmpeg, Discord | Useful rough skeleton for a travel pipeline, but inactive in repo export, credentials are unverified, no explicit Daniel approval gate exists, time-sensitive claims need current source verification, and it includes unsupported Patreon/affiliate assumptions. Do not run publicly as-is. |
+| `n8n/templates/workflow_blog_auto_publisher.json` | BLOCKED / UNTESTED | Blog/social publishing, likely AI text, platform publishing | May be reusable only after brand mapping, approval gates, source checks, and monetization wording are repaired. Do not publish travel content through it yet. |
+| `n8n/templates/workflow_tiktok_instagram_publisher.json` | BLOCKED | TikTok, Instagram, media hosting/platform credentials | Cross-platform publisher candidate, but requires verified account mapping, Daniel approval, and a safe review queue before use. |
+| `n8n/templates/workflow_8_analytics_dashboard.json` | UNTESTED | Analytics/dashboard nodes | Possible analytics reuse candidate after platform credentials and tracking schema are verified. |
 
 ## Broken
 
@@ -49,6 +59,7 @@ Publishing templates must remain blocked until all are true:
 4. Add cost estimate fields before any external model/TTS call.
 5. Add publish gate requiring explicit approved status and brand account mapping.
 6. Only then wire YouTube/TikTok/Instagram publishing.
+7. Repair Time-Zone Travelers generation by adding source-verification fields, approval gates, honest affiliate state, and a safe publish queue before any runtime import/execution.
 
 ## Current Classifications
 
