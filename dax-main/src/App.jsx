@@ -12,6 +12,7 @@ import TimeZoneTravelersPage from './pages/TimeZoneTravelersPage'
 import GodsVesselPage from './pages/GodsVesselPage'
 import Dashboard from './pages/Dashboard'
 import DaxTheInvestorPage from './pages/DaxTheInvestorPage'
+import { DisclosurePage, PrivacyPage, TermsPage } from './pages/LegalPages'
 
 function App() {
   return (
@@ -39,6 +40,9 @@ function App() {
                 <Route path="/timezone-travelers" element={<TimeZoneTravelersPage />} />
                 <Route path="/gods-vessel" element={<GodsVesselPage />} />
                 <Route path="/automation" element={<Dashboard />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/disclosure" element={<DisclosurePage />} />
               </Routes>
             </main>
             <Footer />

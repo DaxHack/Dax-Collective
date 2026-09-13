@@ -21,7 +21,8 @@ const Footer = () => {
     ],
     legal: [
       { name: 'Privacy Policy', to: '/privacy' },
-      { name: 'Affiliate Disclosure', to: '/disclosure' },
+      { name: 'Terms of Service', to: '/terms' },
+      { name: 'Disclosure', to: '/disclosure' },
     ],
     social: daxCollectiveSocialLinks,
   };
@@ -92,21 +93,26 @@ const Footer = () => {
           <div>
             <h4 className="text-sm font-semibold mb-4 text-white uppercase tracking-wider">Stay Connected</h4>
             <p className="text-gray-400 mb-4 text-sm">
-              Get new posts and drops from all brands.
+              Email updates are not connected yet. Use the brand links for updates today.
             </p>
             <div className="flex">
               <input
                 type="email"
-                placeholder="Your email"
-                className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:border-blue-500 text-white placeholder-gray-500 text-sm"
+                placeholder="Email updates coming soon"
+                disabled
+                className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-white placeholder-gray-500 text-sm disabled:cursor-not-allowed disabled:opacity-70"
               />
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-r-lg font-semibold transition-colors duration-300 text-sm">
-                Go
+              <button
+                disabled
+                className="px-4 py-2 bg-gray-700 rounded-r-lg font-semibold text-gray-400 text-sm disabled:cursor-not-allowed"
+              >
+                Soon
               </button>
             </div>
             <p className="mt-2 text-xs text-gray-600">
-              No spam.{' '}
-              <Link to="/privacy" className="hover:text-gray-400">Privacy Policy.</Link>
+              See the{' '}
+              <Link to="/privacy" className="hover:text-gray-400">Privacy Policy</Link>
+              {' '}for current data practices.
             </p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { MapPinIcon, CameraIcon, PlayIcon, ArrowRightIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
@@ -446,9 +446,9 @@ function WorkWithDax() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#0EA5E9]/10 rounded-full blur-[120px] pointer-events-none" />
       
       <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
-        <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">Let's tell a real story.</h2>
+        <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">Let&apos;s tell a real story.</h2>
         <p className="text-xl text-white/70 mb-12 leading-relaxed">
-          I don't do polished hotel reviews or fake enthusiastic brand reads. If you have a destination, gear, or experience that needs an honest, cinematic eye — let's talk.
+          I don&apos;t do polished hotel reviews or fake enthusiastic brand reads. If you have a destination, gear, or experience that needs an honest, cinematic eye - let&apos;s talk.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -466,6 +466,20 @@ function WorkWithDax() {
           >
             <PlayIcon className="w-5 h-5" /> Watch the Films
           </a>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-white/50">
+          {daxTravelerSocialLinks.links.map((social) => (
+            <a
+              key={social.label}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#38BDF8] transition-colors"
+            >
+              {social.label}
+            </a>
+          ))}
         </div>
       </div>
     </section>
