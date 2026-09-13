@@ -1,0 +1,196 @@
+{
+  "generatedAt": "2026-09-13T07:12:34.793Z",
+  "concept": {
+    "brand": "Ani-Dax",
+    "format": "short",
+    "productionStatus": "READY_FOR_APPROVAL_PACKAGE",
+    "publishStatus": "BLOCKED_NEEDS_DANIEL_PUBLICATION_APPROVAL",
+    "topic": "Why Subaru's Return by Death is not a power fantasy",
+    "series": "Re:Zero - Starting Life in Another World",
+    "contentType": "character analysis",
+    "priorityFormat": "fictional/in-universe character interview plus analysis",
+    "originalAngle": "Frame the topic as a psychological interview transcript instead of a power ranking. The hook is that the ability or conflict only looks simple from outside the character pressure loop.",
+    "evidenceBoundaries": [
+      "No fabricated canon quotes.",
+      "No ripped, cropped, mirrored, or sped-up anime footage.",
+      "Use original narration, motion graphics, silhouette layouts, clocks, reset maps, and abstract character boards.",
+      "Final canon pass must verify claims against official episodes or licensed summaries before publishing."
+    ]
+  },
+  "opportunityScore": {
+    "originality": 86,
+    "viewerValue": 82,
+    "retentionPotential": 78,
+    "productionRisk": 34,
+    "copyrightRisk": 22,
+    "notes": "Strong first Sprint 1 sample because it can be produced without copyrighted clips and demonstrates the character-interview priority format."
+  },
+  "researchNotes": [
+    "Use only broad, stable canon premises in the draft unless sources are checked.",
+    "Avoid direct quotes unless verified from licensed subtitles or official source material.",
+    "Avoid pretending current trend data was fetched; no live analytics API was used in this run."
+  ],
+  "scriptSegments": [
+    {
+      "start": 0,
+      "end": 4,
+      "label": "Hook",
+      "text": "What if Return by Death is not Subaru's advantage? What if it is the story's harshest interrogation room?"
+    },
+    {
+      "start": 4,
+      "end": 10,
+      "label": "Angle",
+      "text": "Most power systems reward control. Return by Death removes control, then asks whether one person can carry memory, guilt, and consequence without becoming numb."
+    },
+    {
+      "start": 10,
+      "end": 16,
+      "label": "In-universe interview beat",
+      "text": "If Ani-Dax sat Subaru down after another reset, the first question would not be how many tries he gets. It would be: what did the last version of you lose?"
+    },
+    {
+      "start": 16,
+      "end": 23,
+      "label": "Viewer value",
+      "text": "That is why the mechanic works. It turns suspense into character study. Every reset can move the plot, but the real cost lands inside Subaru before it lands on the timeline."
+    },
+    {
+      "start": 23,
+      "end": 30,
+      "label": "Close",
+      "text": "Ani-Dax takeaway: the ability is not interesting because it beats death. It is interesting because it makes survival emotionally expensive."
+    }
+  ],
+  "storyboard": [
+    {
+      "time": "0-4s",
+      "visual": "Black field, cyan reset loop, single question card.",
+      "textOverlay": "Is this power, or punishment?",
+      "assetType": "Original motion graphic"
+    },
+    {
+      "time": "4-10s",
+      "visual": "Timeline fractures into three paths, only one path remains lit.",
+      "textOverlay": "Control is removed.",
+      "assetType": "Original vector/motion graphic"
+    },
+    {
+      "time": "10-16s",
+      "visual": "Interview table silhouette, empty second chair, recorder waveform.",
+      "textOverlay": "What did the last version lose?",
+      "assetType": "Original composition"
+    },
+    {
+      "time": "16-23s",
+      "visual": "Memory cards stack up behind the narrator frame.",
+      "textOverlay": "The plot resets. The burden does not.",
+      "assetType": "Original motion graphic"
+    },
+    {
+      "time": "23-30s",
+      "visual": "Ani-Dax title lockup, no upload CTA until approval.",
+      "textOverlay": "READY FOR DANIEL REVIEW",
+      "assetType": "Brand card"
+    }
+  ],
+  "assetPlan": [
+    "Abstract reset-loop motion graphic.",
+    "Interview table silhouette.",
+    "Timeline fracture cards.",
+    "Ani-Dax end card."
+  ],
+  "metadata": {
+    "title": "Subaru's Return by Death Is Not a power fantasy",
+    "description": "Ani-Dax character analysis draft. This video uses original narration and original motion-graphic support only. No anime clips, no fabricated quotes, and no public publishing until Daniel approves.",
+    "tags": [
+      "Ani-Dax",
+      "anime analysis",
+      "ReZero",
+      "Subaru Natsuki",
+      "character writing",
+      "anime theory"
+    ],
+    "thumbnail": "Original thumbnail concept: fractured cyan clock over a black-violet background, text: POWER OR PUNISHMENT?",
+    "aiDisclosureRecommendation": "Recommended if AI-generated/supporting visuals or AI-assisted copy are used in the final: disclose AI-assisted production in description or internal publication checklist."
+  },
+  "complianceReview": {
+    "copyright": "No anime footage, no copyrighted screenshots, no music selected.",
+    "aiDisclosure": "Recommended if AI-generated/supporting visuals or AI-assisted copy are used in the final: disclose AI-assisted production in description or internal publication checklist.",
+    "monetization": "No affiliate or product claims included.",
+    "approval": "Ready for Daniel to review concept/script package; not ready to publish."
+  },
+  "qc": [
+    [
+      "Originality",
+      "PASS",
+      "Angle is analysis/interview framing, not recap spam."
+    ],
+    [
+      "Copyright posture",
+      "PASS",
+      "Uses no anime clips or copied frames in the local package."
+    ],
+    [
+      "Canon/fact handling",
+      "PARTIAL",
+      "Stable high-level premise only; final claims need episode/source verification."
+    ],
+    [
+      "Visual quality",
+      "PARTIAL",
+      "FFmpeg proof render verifies pipeline shape; final visuals need art pass."
+    ],
+    [
+      "Narration quality",
+      "BLOCKED",
+      "No local voice installed; final requires Daniel voice, approved narrator, or configured TTS."
+    ],
+    [
+      "Captions",
+      "PASS",
+      "Draft SRT generated from timed script segments."
+    ],
+    [
+      "Metadata",
+      "PASS",
+      "Title/description/tags generated with no misleading canon quote claims."
+    ],
+    [
+      "Public publishing",
+      "BLOCKED",
+      "Requires Daniel approval and verified Ani-Dax account credential mapping."
+    ]
+  ],
+  "costEstimate": {
+    "generatedAt": "2026-09-13T07:12:34.793Z",
+    "localProofRunUsd": {
+      "llm": 0,
+      "image": 0,
+      "video": 0,
+      "tts": 0,
+      "musicSfx": 0,
+      "storage": 0,
+      "api": 0,
+      "other": 0,
+      "notes": "This local proof uses deterministic text assets and FFmpeg only."
+    },
+    "finalProductionExpectedCosts": [
+      {
+        "item": "LLM/script polish",
+        "status": "optional",
+        "estimateUsd": "TBD by provider/model"
+      },
+      {
+        "item": "Narration/TTS",
+        "status": "blocked",
+        "estimateUsd": "TBD; no local TTS voice or ElevenLabs/OpenAI TTS credential verified"
+      },
+      {
+        "item": "Image/video generation",
+        "status": "optional",
+        "estimateUsd": "TBD; prefer original reusable motion templates first"
+      }
+    ]
+  }
+}

@@ -7,6 +7,8 @@
     "dev": "concurrently \"npm --prefix dax-backend start\" \"npm --prefix dax-main start\"",
     "start": "npm run dev",
     "build": "npm --prefix dax-main run build",
+    "anidax:sample": "node tools/anidax/produce-sample.mjs",
+    "n8n:inventory": "node tools/n8n/inventory.mjs",
     "install:all": "npm install && npm --prefix dax-main install && npm --prefix dax-backend install && npm --prefix functions install",
     "clean": "rimraf node_modules dax-main/node_modules dax-backend/node_modules functions/node_modules",
     "deploy": "firebase deploy",

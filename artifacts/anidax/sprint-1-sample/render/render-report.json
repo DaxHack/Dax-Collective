@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-09-13T07:12:34.793Z",
+  "rendered": true,
+  "videoPath": "artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4",
+  "audioSource": "silent-placeholder",
+  "audioReadyForFinal": null,
+  "command": "ffmpeg -y -f lavfi -i color=c=0x060610:s=1080x1920:d=30:r=30 -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -vf ass=proof.ass -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest ani-dax-proof-render.mp4",
+  "status": 0,
+  "stderrTail": [
+    "[libx264 @ 000001d27cb588c0] frame I:4     Avg QP: 9.68  size: 56778",
+    "[libx264 @ 000001d27cb588c0] frame P:227   Avg QP:13.22  size:   513",
+    "[libx264 @ 000001d27cb588c0] frame B:669   Avg QP:13.68  size:    86",
+    "[libx264 @ 000001d27cb588c0] consecutive B-frames:  0.9%  0.0%  0.0% 99.1%",
+    "[libx264 @ 000001d27cb588c0] mb I  I16..4: 75.6% 12.0% 12.4%",
+    "[libx264 @ 000001d27cb588c0] mb P  I16..4:  0.0%  0.0%  0.1%  P16..4:  0.1%  0.0%  0.0%  0.0%  0.0%    skip:99.7%",
+    "[libx264 @ 000001d27cb588c0] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.2%  0.0%  0.0%  direct: 0.0%  skip:99.8%  L0:63.2% L1:36.8% BI: 0.0%",
+    "[libx264 @ 000001d27cb588c0] 8x8 transform intra:12.1% inter:15.9%",
+    "[libx264 @ 000001d27cb588c0] coded y,uvDC,uvAC intra: 10.7% 13.5% 11.1% inter: 0.0% 0.0% 0.0%",
+    "[libx264 @ 000001d27cb588c0] i16 v,h,dc,p: 97%  1%  1%  0%",
+    "[libx264 @ 000001d27cb588c0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 61%  6% 32%  0%  0%  0%  0%  0%  0%",
+    "[libx264 @ 000001d27cb588c0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 38% 22%  9%  4%  5%  7%  6%  6%  5%",
+    "[libx264 @ 000001d27cb588c0] i8c dc,h,v,p: 89%  7%  4%  1%",
+    "[libx264 @ 000001d27cb588c0] Weighted P-Frames: Y:0.0% UV:0.0%",
+    "[libx264 @ 000001d27cb588c0] ref P L0: 81.6%  6.9%  9.7%  1.8%",
+    "[libx264 @ 000001d27cb588c0] ref B L0: 45.1% 54.6%  0.3%",
+    "[libx264 @ 000001d27cb588c0] ref B L1: 99.8%  0.2%",
+    "[libx264 @ 000001d27cb588c0] kb/s:106.94",
+    "[aac @ 000001d27d0100c0] Qavg: 65536.000",
+    ""
+  ],
+  "ffprobe": {
+    "format": {
+      "duration": "30.000000",
+      "size": "443551"
+    }
+  }
+}
