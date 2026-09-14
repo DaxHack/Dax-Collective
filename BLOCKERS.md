@@ -35,6 +35,7 @@
 | Dax the Traveler n8n workflows not production-safe | Existing workflows are AI-first, credentials are unverified, and they include public upload or monetization assumptions. | Repair around existing Daniel media inventory, approval gates, and account mapping before runtime use. |
 | Dax the Traveler live analytics unavailable | Repository session did not have verified platform analytics. | Connect/read channel analytics only with correct account mapping and without exposing credentials. |
 | Dax the Traveler final audio missing | Sprint 4 support proof render is silent by design. | Use Daniel-approved narration or approved TTS before public approval. |
+| Live MCP/n8n action surface not implemented | Sprint 5 created a file-backed business-state CLI, not a live MCP server or n8n trigger surface. | Approve design and permissions before exposing workflow-triggering tools. |
 
 ## Not Blockers
 
@@ -44,3 +45,4 @@
 - God's Vessel having zero live products: intentional until theology, design, vendor, pricing, and storefront setup are approved.
 - Time-Zone Travelers not publishing yet: intentional until Daniel approves the content, account mapping, and any monetized links.
 - Dax the Traveler not publishing yet: intentional until Daniel approves the personal-brand draft, narration, account mapping, and any monetized links.
+- Business-state CLI not triggering workflows: intentional until approval and hardening for live actions.

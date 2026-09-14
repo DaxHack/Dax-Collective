@@ -1,0 +1,47 @@
+{
+  "permissionsVersion": 1,
+  "defaultPolicy": "Human approval is required for consequential public, paid, destructive, or credential-changing actions.",
+  "permissions": {
+    "read": {
+      "status": "allowed",
+      "notes": "Read non-secret repo state, generated artifacts, workflow inventory, docs, and public-safe media metadata."
+    },
+    "draft": {
+      "status": "allowed",
+      "notes": "Create non-public concepts, scripts, render proofs, product metadata, queues, and tracking records."
+    },
+    "workflow_edit": {
+      "status": "allowed_logged",
+      "notes": "Safe reversible workflow/template edits are allowed and must be documented."
+    },
+    "workflow_execute": {
+      "status": "draft_or_read_only_only",
+      "notes": "Do not execute workflows that publish, spend money, change credentials, or touch production data without Daniel approval."
+    },
+    "public_publish": {
+      "status": "approval_required",
+      "approver": "Daniel"
+    },
+    "delete": {
+      "status": "approval_required",
+      "approver": "Daniel"
+    },
+    "purchase": {
+      "status": "approval_required",
+      "approver": "Daniel"
+    },
+    "ad_spend": {
+      "status": "approval_required",
+      "approver": "Daniel"
+    },
+    "credential_change": {
+      "status": "human_controlled",
+      "approver": "Daniel"
+    }
+  },
+  "secretPolicy": [
+    "Never expose passwords, API keys, OAuth access tokens, refresh tokens, service-account secrets, payment credentials, or private authentication material.",
+    "Credential health may be documented without secret values.",
+    "Use existing credential stores; do not move secrets into source code."
+  ]
+}

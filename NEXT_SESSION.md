@@ -6,10 +6,10 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. If Sprint 4 Dax the Traveler work is still local, commit and push it:
+3. If Sprint 5 shared business-state work is still local, commit and push it:
    https://github.com/DaxHack/Dax-Collective/pull/3
 4. Wait for Firebase PR workflow to pass after the latest push.
-5. Continue Sprint 5 shared business operating state only if the local READY_FOR_REVIEW brand loops are accepted as sufficient initial working loops; otherwise keep hardening approval gates and n8n repairs first.
+5. Continue Sprint 6 company-wide production hardening.
 6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
 7. Continue Sprint 1 repair work opportunistically around:
    - approval gates
@@ -46,6 +46,16 @@
   `npm run dax-traveler:support`
 - Dax the Traveler support output: `artifacts/dax-the-traveler/sprint-4-support/`
 - Dax the Traveler proof render: `artifacts/dax-the-traveler/sprint-4-support/render/dax-traveler-proof-render.mp4`
+- Business state rules: `business-state/brand-rules.json`
+- Business state permissions: `business-state/permissions.json`
+- Business state builder: `tools/business-state/build-state.mjs`
+- Business state query CLI: `tools/business-state/query-state.mjs`
+- Business state output: `artifacts/business-state/current-state.json`
+- Business state summary: `BUSINESS_STATE.md`
+- Reusable business state commands:
+  `npm run business-state:build`
+  `npm run business-state:query -- summary`
+  `npm run business-state:query -- content-queue`
 - Firebase config module: `dax-main/src/config/firebase.js`
 - Firebase auth context: `dax-main/src/contexts/AuthContext.js`
 - Firebase Hosting workflows:
@@ -85,6 +95,10 @@
 - Dax the Traveler proof render uses four approved Dax media assets and silent placeholder audio.
 - Dax the Traveler package has `publishAllowed: false` and is blocked pending Daniel approval.
 - Dax the Traveler page copy was repaired to avoid unverified specific first-person anecdote claims.
+- Sprint 4 Dax the Traveler commit `5b686e062abfe2c050903b0ddf93526b70a93656` reached PR #3 and its Firebase Hosting PR workflow succeeded in 2m 5s.
+- `npm run business-state:build` generated a 4-brand, 4-queue-item state file.
+- Business-state query commands worked for summary, list-brands, content-queue, and credential-health.
+- Business-state credential health includes names/integration references only; no secret values are included.
 
 ## What Not To Repeat
 
@@ -104,6 +118,8 @@
 - Do not redo the Sprint 4 Dax the Traveler support package unless the target assets or angle changes.
 - Do not run Dax the Traveler n8n workflows publicly as-is.
 - Do not use AI to replace Daniel's face or voice without Daniel approval.
+- Do not rebuild the shared business-state layer from scratch; extend `business-state/*` and `tools/business-state/*`.
+- Do not treat the business-state CLI as approval to publish, purchase, delete, spend, or change credentials.
 
 ## What Requires Daniel
 
@@ -119,6 +135,7 @@
 - Dax the Traveler support package source asset/angle/public publishing approval.
 - Dax the Traveler final narration or alternate voice approval.
 - Dax the Traveler affiliate, sponsorship, product claim, or monetized CTA approval.
+- Approval is required before turning the file-backed business state into any live MCP/n8n workflow-triggering action surface.
 - Add or confirm these browser-safe GitHub repository Secrets or Variables for Firebase client config:
   - `REACT_APP_FIREBASE_API_KEY`
   - `REACT_APP_FIREBASE_AUTH_DOMAIN`
@@ -142,9 +159,10 @@
 - Repair Time-Zone Travelers workflows/pages/metadata where the behavior can be tested without publishing or paid enrollment.
 - Build Dax the Traveler support automation around existing approved material and analytics without altering public channels.
 - Build shared business-state files/tools that read current repo status and non-secret workflow health.
+- Harden company-wide production risks and produce/update a go-live matrix.
 - Run builds/tests.
 - Commit and update PRs.
 
 ## Current Sprint
 
-Sprint 4 Dax the Traveler is PARTIAL with a working local approved-media inventory, support package, content queue, tracking records, and proof render. Commit/push it if still local, wait for PR checks, then continue Sprint 5 shared business operating state or keep hardening brand pipelines if Sprint 5 is judged premature.
+Sprint 5 shared business state is PARTIAL but working as a file-backed CLI layer. Commit/push it if still local, wait for PR checks, then continue Sprint 6 company-wide production hardening.

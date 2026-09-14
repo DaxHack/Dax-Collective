@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-13T20:04:15-04:00
+2026-09-13T20:12:56-04:00
 
 ## VERIFIED DONE
 
@@ -82,6 +82,15 @@
   - one READY_FOR_DANIEL_REVIEW repurposing package generated
   - content queue, analytics record, revenue tracking record, and cost record generated
 - Dax the Traveler page copy was repaired to avoid unverified first-person anecdote claims; specific story beats are now Daniel-confirmation prompts.
+- Sprint 4 commit `5b686e062abfe2c050903b0ddf93526b70a93656` was pushed to PR #3 and its Firebase Hosting PR workflow succeeded in 2m 5s.
+- Sprint 5 shared business-state layer created and tested:
+  - brand rules: `business-state/brand-rules.json`
+  - permissions: `business-state/permissions.json`
+  - builder: `tools/business-state/build-state.mjs`
+  - query CLI: `tools/business-state/query-state.mjs`
+  - generated state: `artifacts/business-state/current-state.json`
+  - human-readable summary: `BUSINESS_STATE.md`
+  - commands: `npm run business-state:build`, `npm run business-state:query -- summary`
 
 ## CURRENTLY WORKING
 
@@ -136,6 +145,14 @@
   - analytics tracking record
   - revenue tracking record
   - cost record
+- Shared business-state generation works without external credentials:
+  - lists 4 brands
+  - reads brand rules
+  - reads current content queue
+  - reads workflow health from n8n inventory
+  - reports credential health without secret values
+  - reads cost records
+  - enforces public publishing as not allowed in generated state
 
 ## PARTIAL / UNTESTED
 
@@ -172,6 +189,8 @@
   - Daniel approval, real footage verification, and account mapping are not enforced enough for production
 - Dax the Traveler final voice/narration is not ready; local support render uses silent placeholder audio.
 - Live Dax the Traveler platform analytics and historical performance data were not available in this repository session; generated priority scores are opportunity estimates, not verified historical winners.
+- Sprint 5 is a file-backed/CLI shared-state layer, not a live MCP server process.
+- Shared state reads repository artifacts and n8n export inventory; it does not verify live n8n runtime health or execute workflows.
 
 ## BLOCKED - DANIEL
 
@@ -194,6 +213,7 @@
 - Approve Dax the Traveler source assets, repurposing angle, final narration, and any public publishing.
 - Provide or approve Dax the Traveler final narration. Do not use AI voice replacement without Daniel approval.
 - Approve any Dax the Traveler affiliate links, sponsorships, product claims, or monetized CTA before public use.
+- Approve any future live MCP/n8n action surface that can trigger workflows, publish content, spend money, delete data, or change credentials.
 - Add these browser-safe Firebase client config values to GitHub Actions as repository Secrets or Variables before relying on live Firebase Auth/admin behavior:
   - `REACT_APP_FIREBASE_API_KEY`
   - `REACT_APP_FIREBASE_AUTH_DOMAIN`
@@ -212,9 +232,14 @@
 ## NEXT EXACT ACTIONS
 
 1. If this documentation update is pushed as a new PR head, wait for the Firebase PR workflow to pass again.
-2. Commit and push Sprint 4 Dax the Traveler support automation and status updates.
-3. Wait for Firebase PR workflow to pass on the Sprint 4 commit.
-4. Begin Sprint 5 shared business operating state only if treating the local READY_FOR_REVIEW production loops as sufficient initial working loops; otherwise keep hardening the brand pipelines first.
+2. Commit and push Sprint 5 shared business-state layer and status updates.
+3. Wait for Firebase PR workflow to pass on the Sprint 5 commit.
+4. Begin Sprint 6 company-wide production hardening:
+   - inspect approval gates
+   - inspect simulated/fake revenue claims
+   - inspect cross-account publishing risk
+   - inspect n8n workflow safety
+   - create/update a go-live matrix
 5. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
 6. Repair Ani-Dax n8n templates before importing/running:
    - remove direct public upload from generation workflows
@@ -242,6 +267,8 @@
 - Do not redo the Dax the Traveler support package unless the target assets or repurposing angle changes.
 - Do not run the existing Dax the Traveler n8n workflows publicly as-is.
 - Do not replace Daniel's face or voice, and do not fabricate Dax the Traveler personal experiences.
+- Do not rebuild the shared business-state layer from scratch; extend `business-state/*` and `tools/business-state/*`.
+- Do not treat the business-state CLI as permission to publish, spend, delete, or change credentials.
 
 ## CURRENT GIT BRANCH / WORKTREE
 
@@ -261,6 +288,8 @@
 - Sprint 3 Time-Zone Travelers commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` is pushed and its PR workflow passed.
 - Handoff commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` is pushed and its PR workflow passed.
 - Sprint 4 Dax the Traveler support changes are local until committed and pushed.
+- Sprint 4 Dax the Traveler commit `5b686e062abfe2c050903b0ddf93526b70a93656` is pushed and its PR workflow passed.
+- Sprint 5 shared business-state changes are local until committed and pushed.
 
 ## DEPLOYMENT STATE
 
@@ -269,15 +298,16 @@
 - Merge/live workflow: `.github/workflows/firebase-hosting-merge.yml`
 - Previous PR preview for commit `15c4c889ad78cfb6d18fc6f8948afbb55bb88785` passed:
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
-- Current additional local Sprint 4 work requires a new PR workflow run after push.
+- Current additional local Sprint 5 work requires a new PR workflow run after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
-- Current remote PR head verified by `ls-remote`: `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb`.
+- Current remote PR head verified by `ls-remote`: `5b686e062abfe2c050903b0ddf93526b70a93656`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
 - PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
 - Firebase preview comment was updated for commit `6d050e0`.
 - PR #3 showed 5 commits and the Firebase Hosting PR workflow for commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` succeeded in 2m 10s.
 - PR #3 showed 6 commits and the Firebase Hosting PR workflow for commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` succeeded in 2m 4s.
 - PR #3 showed 7 commits and the Firebase Hosting PR workflow for commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` succeeded in 2m 12s.
+- PR #3 showed 8 commits and the Firebase Hosting PR workflow for commit `5b686e062abfe2c050903b0ddf93526b70a93656` succeeded in 2m 5s.
 
 ## CREDENTIAL HEALTH WITHOUT SECRET VALUES
 
@@ -310,6 +340,7 @@
 - Ani-Dax generation workflows are partial and need approval/QC repair before runtime use.
 - Time-Zone Travelers generation workflow exists but is PARTIAL / WORKS WITH REPAIR. It is useful for the rough shape of a travel pipeline but needs source verification, approval gating, credential verification, and removal of unsupported Patreon/affiliate assumptions before runtime use.
 - Dax the Traveler workflows exist but are PARTIAL / WORKS WITH REPAIR at best. They need Daniel approval gates, real-material checks, voice protection, credential verification, and removal of unsupported Patreon/affiliate claims before runtime use.
+- Shared business state now exists as file-backed CLI state generated from repo artifacts. It is not a live n8n/MCP runtime action surface.
 
 ## BRAND-BY-BRAND STATE
 
@@ -320,6 +351,7 @@
 | Time-Zone Travelers | PARTIAL, local source-backed sample package works | `npm run timezone:sample`, proof render created |
 | Dax the Traveler | PARTIAL, local support automation works | `npm run dax-traveler:support`, 14 approved assets inventoried, proof render created |
 | Dax Collective parent | legal/OAuth blocker implemented | PR #3 |
+| Shared business state | PARTIAL, file-backed CLI works | `npm run business-state:build`, query commands tested |
 
 ## TESTS RUN + RESULTS
 
@@ -341,6 +373,13 @@
 | `node --check tools/dax-traveler/produce-support-package.mjs` | PASS |
 | `npm run dax-traveler:support` | PASS; approved media inventory, support package, queue, tracking records, and FFmpeg proof render created |
 | `npm --prefix dax-main run build` after Dax page copy repair | PASS with existing warnings |
+| `node --check tools/business-state/build-state.mjs` | PASS |
+| `node --check tools/business-state/query-state.mjs` | PASS |
+| `npm run business-state:build` | PASS; generated 4-brand current state with 4 queue items and 30 workflow templates |
+| `npm run business-state:query -- summary` | PASS |
+| `npm run business-state:query -- list-brands` | PASS |
+| `npm run business-state:query -- content-queue` | PASS |
+| `npm run business-state:query -- credential-health` | PASS; no secret values printed |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
@@ -385,6 +424,10 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `artifacts/dax-the-traveler/sprint-4-support/thumbnail/thumbnail.svg`
 - `artifacts/dax-the-traveler/sprint-4-support/render/dax-traveler-proof-render.mp4`
 - `artifacts/dax-the-traveler/sprint-4-support/render/render-report.json`
+- `artifacts/business-state/current-state.json`
+- `BUSINESS_STATE.md`
+- `business-state/brand-rules.json`
+- `business-state/permissions.json`
 
 ## KNOWN BUGS
 
@@ -401,6 +444,8 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - Dax the Traveler n8n workflows use AI-first generation patterns and monetization/publishing assumptions that are unsafe for Daniel's personal brand until repaired.
 - Dax the Traveler support render uses silent placeholder audio.
 - Live Dax the Traveler analytics are not connected in this local repo run.
+- Shared business state is generated from repo artifacts and may become stale until `npm run business-state:build` is rerun.
+- Shared business state does not execute n8n workflows or verify live n8n credentials.
 
 ## COST/RISK ISSUES
 
@@ -410,6 +455,7 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - Firebase hardening local cost: $0.00.
 - Time-Zone Travelers local Sprint 3 proof run cost: $0.00.
 - Dax the Traveler local Sprint 4 support proof run cost: $0.00.
+- Sprint 5 shared business-state local run cost: $0.00.
 - God's Vessel price/margin numbers are estimates until vendor base costs, shipping, fees, taxes, and platform costs are verified.
 - Highest immediate risks:
   - accidental public publishing
@@ -421,4 +467,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Commit and push Sprint 4, wait for PR checks, then continue with Sprint 5 shared business operating state only if appropriate; otherwise keep hardening the brand pipelines and approval gates first.
+Commit and push Sprint 5, wait for PR checks, then continue Sprint 6 company-wide production hardening.
