@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-13T20:12:56-04:00
+2026-09-13T23:41:17-04:00
 
 ## VERIFIED DONE
 
@@ -91,6 +91,11 @@
   - generated state: `artifacts/business-state/current-state.json`
   - human-readable summary: `BUSINESS_STATE.md`
   - commands: `npm run business-state:build`, `npm run business-state:query -- summary`
+- Sprint 5 commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` was pushed to PR #3 and its Firebase Hosting PR workflow passed in 1m 41s.
+- Functional/legal contact email correction was implemented:
+  - `contact@daxcollective.com` was replaced with `daxdaniel2013@gmail.com` in legal page contact copy, shared Dax the Traveler social config, the Dax the Traveler mailto fallback, and the God's Vessel draft collection interest mailto.
+  - Source search now shows no remaining `contact@daxcollective.com` occurrences outside ignored build output.
+  - `npm --prefix dax-main run build` passes with existing warnings.
 
 ## CURRENTLY WORKING
 
@@ -231,25 +236,24 @@
 
 ## NEXT EXACT ACTIONS
 
-1. If this documentation update is pushed as a new PR head, wait for the Firebase PR workflow to pass again.
-2. Commit and push Sprint 5 shared business-state layer and status updates.
-3. Wait for Firebase PR workflow to pass on the Sprint 5 commit.
-4. Begin Sprint 6 company-wide production hardening:
+1. Commit and push the functional/legal contact email correction to PR #3.
+2. Wait for the Firebase PR workflow to pass on the contact-email correction commit.
+3. Begin Sprint 6 company-wide production hardening:
    - inspect approval gates
    - inspect simulated/fake revenue claims
    - inspect cross-account publishing risk
    - inspect n8n workflow safety
    - create/update a go-live matrix
-5. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
-6. Repair Ani-Dax n8n templates before importing/running:
+4. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
+5. Repair Ani-Dax n8n templates before importing/running:
    - remove direct public upload from generation workflows
    - add approval gate
    - add QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-7. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
-8. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
-9. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
+6. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
+7. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
+8. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
 
 ## DO NOT REDO
 
@@ -287,9 +291,9 @@
 - Handoff commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` is pushed and its PR workflow passed.
 - Sprint 3 Time-Zone Travelers commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` is pushed and its PR workflow passed.
 - Handoff commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` is pushed and its PR workflow passed.
-- Sprint 4 Dax the Traveler support changes are local until committed and pushed.
 - Sprint 4 Dax the Traveler commit `5b686e062abfe2c050903b0ddf93526b70a93656` is pushed and its PR workflow passed.
-- Sprint 5 shared business-state changes are local until committed and pushed.
+- Sprint 5 shared business-state commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` is pushed and its PR workflow passed.
+- Functional/legal contact email correction is ready to commit and push.
 
 ## DEPLOYMENT STATE
 
@@ -298,9 +302,10 @@
 - Merge/live workflow: `.github/workflows/firebase-hosting-merge.yml`
 - Previous PR preview for commit `15c4c889ad78cfb6d18fc6f8948afbb55bb88785` passed:
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
-- Current additional local Sprint 5 work requires a new PR workflow run after push.
+- Sprint 5 commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` was pushed and its Firebase Hosting PR workflow passed in 1m 41s.
+- Functional/legal contact email correction requires a new PR workflow run after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
-- Current remote PR head verified by `ls-remote`: `5b686e062abfe2c050903b0ddf93526b70a93656`.
+- Current remote PR head verified by `ls-remote`: `fa5263e12a73fc649c86f17d3ced9a7193466cec`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
 - PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
 - Firebase preview comment was updated for commit `6d050e0`.
@@ -380,6 +385,9 @@
 | `npm run business-state:query -- list-brands` | PASS |
 | `npm run business-state:query -- content-queue` | PASS |
 | `npm run business-state:query -- credential-health` | PASS; no secret values printed |
+| `rg contact@daxcollective.com/daxdaniel2013@gmail.com` | PASS; no remaining stale `contact@daxcollective.com` occurrences outside ignored build output |
+| `git diff --check` after contact-email correction | PASS; CRLF warnings only |
+| `npm --prefix dax-main run build` after contact-email correction | PASS with existing warnings |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
@@ -467,4 +475,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Commit and push Sprint 5, wait for PR checks, then continue Sprint 6 company-wide production hardening.
+Push and verify the contact-email correction, then continue Sprint 6 company-wide production hardening.

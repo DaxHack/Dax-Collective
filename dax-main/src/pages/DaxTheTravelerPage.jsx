@@ -453,7 +453,7 @@ function WorkWithDax() {
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <a 
-            href={`mailto:${daxTravelerSocialLinks?.email || 'contact@daxcollective.com'}`}
+            href={`mailto:${daxTravelerSocialLinks?.email || 'daxdaniel2013@gmail.com'}`}
             className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-colors focus:ring-4 focus:ring-white/50 focus:outline-none"
           >
             Start a Conversation

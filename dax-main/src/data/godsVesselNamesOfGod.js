@@ -67,4 +67,4 @@ export const namesOfGodCollection = [
 ];
 
 export const godsVesselInterestHref =
-  'mailto:contact@daxcollective.com?subject=God%27s%20Vessel%20Names%20of%20God%20Collection';
+  'mailto:daxdaniel2013@gmail.com?subject=God%27s%20Vessel%20Names%20of%20God%20Collection';

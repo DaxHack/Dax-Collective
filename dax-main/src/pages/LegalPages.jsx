@@ -37,8 +37,8 @@ const LegalShell = ({ title, description, children }) => (
 
         <div className="border-t border-white/10 pt-8 text-sm text-slate-400">
           Questions about these terms can be sent to{' '}
-          <a className="text-indigo-300 hover:text-indigo-200" href="mailto:contact@daxcollective.com">
-            contact@daxcollective.com
+          <a className="text-indigo-300 hover:text-indigo-200" href="mailto:daxdaniel2013@gmail.com">
+            daxdaniel2013@gmail.com
           </a>
           .
         </div>

@@ -6,7 +6,7 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. If Sprint 5 shared business-state work is still local, commit and push it:
+3. If the contact-email correction is still local, commit and push it:
    https://github.com/DaxHack/Dax-Collective/pull/3
 4. Wait for Firebase PR workflow to pass after the latest push.
 5. Continue Sprint 6 company-wide production hardening.
@@ -56,6 +56,11 @@
   `npm run business-state:build`
   `npm run business-state:query -- summary`
   `npm run business-state:query -- content-queue`
+- Contact/legal email correction files:
+  - `dax-main/src/pages/LegalPages.jsx`
+  - `dax-main/src/config/socialLinks.js`
+  - `dax-main/src/pages/DaxTheTravelerPage.jsx`
+  - `dax-main/src/data/godsVesselNamesOfGod.js`
 - Firebase config module: `dax-main/src/config/firebase.js`
 - Firebase auth context: `dax-main/src/contexts/AuthContext.js`
 - Firebase Hosting workflows:
@@ -99,6 +104,8 @@
 - `npm run business-state:build` generated a 4-brand, 4-queue-item state file.
 - Business-state query commands worked for summary, list-brands, content-queue, and credential-health.
 - Business-state credential health includes names/integration references only; no secret values are included.
+- Sprint 5 shared business-state commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` reached PR #3 and its Firebase Hosting PR workflow passed in 1m 41s.
+- Functional/legal contact email correction was made locally and `npm --prefix dax-main run build` passes with existing warnings.
 
 ## What Not To Repeat
 
@@ -165,4 +172,4 @@
 
 ## Current Sprint
 
-Sprint 5 shared business state is PARTIAL but working as a file-backed CLI layer. Commit/push it if still local, wait for PR checks, then continue Sprint 6 company-wide production hardening.
+Sprint 5 shared business state is PARTIAL but working as a file-backed CLI layer and is pushed. Finish pushing/verifying the contact-email correction if needed, then continue Sprint 6 company-wide production hardening.

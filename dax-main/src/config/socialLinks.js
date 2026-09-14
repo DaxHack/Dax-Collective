@@ -2,7 +2,7 @@
 // Central social link config for all Dax Collective brands.
 // Dax the Traveler — brand-specific page links
 export const daxTravelerSocialLinks = {
-  email: 'contact@daxcollective.com',
+  email: 'daxdaniel2013@gmail.com',
   youtube: 'https://www.youtube.com/@daxthetraveler',
   instagram: 'https://www.instagram.com/daxthetraveler',
   tiktok: 'https://www.tiktok.com/@daxthetraveler',
