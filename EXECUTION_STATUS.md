@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-13T23:41:17-04:00
+2026-09-14T00:58:30-04:00
 
 ## VERIFIED DONE
 
@@ -96,6 +96,16 @@
   - `contact@daxcollective.com` was replaced with `daxdaniel2013@gmail.com` in legal page contact copy, shared Dax the Traveler social config, the Dax the Traveler mailto fallback, and the God's Vessel draft collection interest mailto.
   - Source search now shows no remaining `contact@daxcollective.com` occurrences outside ignored build output.
   - `npm --prefix dax-main run build` passes with existing warnings.
+- Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` was pushed to PR #3 and its Firebase Hosting PR workflow passed on 2026-09-14.
+- Sprint 6 company-wide production hardening is implemented locally and ready for PR verification:
+  - backend `/api/post/:brand` now fails closed instead of returning fake publish success
+  - Firebase Functions publishing now requires explicit approval fields and does not mark content published unless a real platform publisher succeeds
+  - current platform publisher stubs throw not-implemented errors instead of fake success URLs
+  - frontend Content Manager, Revenue Tracker, and Workflow Status no longer show fake published posts, fake revenue, fake subscribers, or fake automation successes
+  - browser-side n8n webhook execution is disabled by default and the frontend no longer sends a browser-exposed n8n API key
+  - n8n YouTube upload templates default to `private`
+  - high-risk n8n template language was hardened away from unsupported public publishing, Patreon, affiliate, product, and revenue-projection claims
+  - `GO_LIVE_MATRIX.md` was added with system status, risk, blockers, and owner
 
 ## CURRENTLY WORKING
 
@@ -158,12 +168,16 @@
   - reports credential health without secret values
   - reads cost records
   - enforces public publishing as not allowed in generated state
+- Sprint 6 hardened operating state works locally:
+  - local dashboards represent review/approval queues and verified $0 revenue
+  - backend and Firebase Functions publishing paths fail closed without approval
+  - n8n repository templates remain inactive exports and default YouTube uploads to private where upload nodes exist
 
 ## PARTIAL / UNTESTED
 
 - Ani-Dax n8n workflows exist but are not verified as production-safe:
   - `n8n/templates/workflow_ani_dax_video_generator.json` is a partial generation template.
-  - `n8n/templates/ani_dax_specific_workflow.json` includes a direct YouTube upload path and needs approval/QC repair before use.
+  - `n8n/templates/ani_dax_specific_workflow.json` now uses private YouTube upload and approved status checks, but still needs runtime QC, credential verification, and source safety repair before use.
 - Google Sheets, DeepSeek/OpenAI, Pexels/Fal, ElevenLabs, Discord, TikTok, Instagram, Facebook, and YouTube credentials are referenced by workflows but not verified in this session.
 - Backend `dax-backend/server.js` has a health route and brand post stub, but posting is not implemented.
 - Frontend automation connector has placeholder/logging implementations for several automation actions.
@@ -183,13 +197,13 @@
   - `n8n/templates/workflow_timezone_travelers_video_generator.json` reads a sheet, fetches weather, generates script/voice/images/thumbnail/blog, runs FFmpeg, updates sheet, sends Discord, and suggests affiliates
   - it is inactive in the repository export
   - credentials are unverified
-  - it lacks an explicit Daniel approval gate
-  - it includes unsupported Patreon/affiliate assumptions
+  - prompts were hardened away from unsupported Patreon/affiliate claims
+  - it still lacks a verified runtime Daniel approval gate
   - it should not be run publicly as-is
 - Time-Zone Travelers final voice/narration is not ready; local render uses silent placeholder audio.
 - Dax the Traveler n8n workflows are partial and not safe to run publicly:
-  - `n8n/templates/dax_traveler_specific_workflow.json` includes direct public YouTube upload and unverified affiliate/Patreon wording
-  - `n8n/templates/workflow_15_dax_traveler_video_automatio  n.json` creates AI-first weekly concepts, generated Dax voice, stock footage, private upload, Patreon/affiliate claims, and Slack notification
+  - `n8n/templates/dax_traveler_specific_workflow.json` now uses private upload/review copy, but credentials and runtime approval enforcement are unverified
+  - `n8n/templates/workflow_15_dax_traveler_video_automatio  n.json` was hardened to protect Daniel source-material, voice, and monetized CTA approvals, but remains inactive/unverified
   - credentials are unverified
   - Daniel approval, real footage verification, and account mapping are not enforced enough for production
 - Dax the Traveler final voice/narration is not ready; local support render uses silent placeholder audio.
@@ -236,24 +250,18 @@
 
 ## NEXT EXACT ACTIONS
 
-1. Commit and push the functional/legal contact email correction to PR #3.
-2. Wait for the Firebase PR workflow to pass on the contact-email correction commit.
-3. Begin Sprint 6 company-wide production hardening:
-   - inspect approval gates
-   - inspect simulated/fake revenue claims
-   - inspect cross-account publishing risk
-   - inspect n8n workflow safety
-   - create/update a go-live matrix
-4. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
-5. Repair Ani-Dax n8n templates before importing/running:
-   - remove direct public upload from generation workflows
-   - add approval gate
-   - add QC gate
+1. Push the Sprint 6 hardening commit to PR #3 and verify the Firebase PR workflow.
+2. Continue Sprint 7 revenue readiness:
+   - use `GO_LIVE_MATRIX.md`, `BUSINESS_STATE.md`, and `BLOCKERS.md`
+   - map each brand from content -> audience -> offer -> CTA -> click/lead -> conversion -> revenue -> cost -> profit
+   - keep verified revenue at $0 unless real provider/store/platform data exists
+   - do not enroll in affiliates, launch products, publish public content, or spend money without Daniel approval
+3. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
+4. Repair Ani-Dax n8n templates before importing/running:
+   - add runtime approval/QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-6. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
-7. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
-8. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
+5. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
 
 ## DO NOT REDO
 
@@ -293,7 +301,8 @@
 - Handoff commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` is pushed and its PR workflow passed.
 - Sprint 4 Dax the Traveler commit `5b686e062abfe2c050903b0ddf93526b70a93656` is pushed and its PR workflow passed.
 - Sprint 5 shared business-state commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` is pushed and its PR workflow passed.
-- Functional/legal contact email correction is ready to commit and push.
+- Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` is pushed and its Firebase Hosting PR workflow passed.
+- Sprint 6 hardening changes are captured by this handoff commit; if not already on the PR branch, push them and verify the Firebase Hosting PR workflow.
 
 ## DEPLOYMENT STATE
 
@@ -303,7 +312,8 @@
 - Previous PR preview for commit `15c4c889ad78cfb6d18fc6f8948afbb55bb88785` passed:
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
 - Sprint 5 commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` was pushed and its Firebase Hosting PR workflow passed in 1m 41s.
-- Functional/legal contact email correction requires a new PR workflow run after push.
+- Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` reached PR #3 and its Firebase Hosting PR workflow passed.
+- Sprint 6 hardening commit requires a new PR workflow run after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
 - Current remote PR head verified by `ls-remote`: `fa5263e12a73fc649c86f17d3ced9a7193466cec`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
@@ -342,9 +352,9 @@
 - Count: 30 templates found.
 - One broken template: `n8n/templates/workflow_12_data_collection_agent.json.json` invalid JSON.
 - Publishing workflows are blocked pending credentials and Daniel approval.
-- Ani-Dax generation workflows are partial and need approval/QC repair before runtime use.
-- Time-Zone Travelers generation workflow exists but is PARTIAL / WORKS WITH REPAIR. It is useful for the rough shape of a travel pipeline but needs source verification, approval gating, credential verification, and removal of unsupported Patreon/affiliate assumptions before runtime use.
-- Dax the Traveler workflows exist but are PARTIAL / WORKS WITH REPAIR at best. They need Daniel approval gates, real-material checks, voice protection, credential verification, and removal of unsupported Patreon/affiliate claims before runtime use.
+- Ani-Dax generation workflows are partial and need runtime approval/QC repair before use. YouTube upload nodes are private where repaired.
+- Time-Zone Travelers generation workflow exists but is PARTIAL / WORKS WITH REPAIR. It is useful for the rough shape of a travel pipeline but needs source verification, runtime approval gating, and credential verification before use.
+- Dax the Traveler workflows exist but are PARTIAL / WORKS WITH REPAIR at best. They need Daniel approval gates, real-material checks, voice protection, credential verification, and account mapping before runtime use.
 - Shared business state now exists as file-backed CLI state generated from repo artifacts. It is not a live n8n/MCP runtime action surface.
 
 ## BRAND-BY-BRAND STATE
@@ -388,6 +398,15 @@
 | `rg contact@daxcollective.com/daxdaniel2013@gmail.com` | PASS; no remaining stale `contact@daxcollective.com` occurrences outside ignored build output |
 | `git diff --check` after contact-email correction | PASS; CRLF warnings only |
 | `npm --prefix dax-main run build` after contact-email correction | PASS with existing warnings |
+| `node --check functions/index.js` after Sprint 6 hardening | PASS |
+| `node --check dax-backend/server.js` after Sprint 6 hardening | PASS |
+| `node --check tools/n8n/inventory.mjs` after Sprint 6 hardening | PASS |
+| `npm run n8n:inventory` after Sprint 6 hardening | PASS; 30 templates parsed, one invalid JSON flagged, repaired templates inventoried |
+| `npm run business-state:build` after Sprint 6 hardening | PASS; generated 4-brand current state with 30 workflow templates |
+| `npm run business-state:query -- summary` after Sprint 6 hardening | PASS; publicPublishingAllowed is false |
+| `rg privacyStatus n8n/templates` after Sprint 6 hardening | PASS; YouTube upload templates use `private` |
+| `npm --prefix dax-main run build` after Sprint 6 hardening | PASS with existing warnings |
+| `git diff --check` after Sprint 6 hardening | PASS; CRLF warnings only |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
@@ -434,22 +453,23 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `artifacts/dax-the-traveler/sprint-4-support/render/render-report.json`
 - `artifacts/business-state/current-state.json`
 - `BUSINESS_STATE.md`
+- `GO_LIVE_MATRIX.md`
 - `business-state/brand-rules.json`
 - `business-state/permissions.json`
 
 ## KNOWN BUGS
 
 - `workflow_12_data_collection_agent.json.json` is invalid JSON.
-- Existing n8n Ani-Dax direct-upload workflow lacks an approval gate and QC gate.
+- Existing n8n Ani-Dax workflow still lacks verified runtime approval and QC gates.
 - Existing Ani-Dax workflow uses generic external visual search unsuitable for final anime character production.
 - Local TTS unavailable.
 - Frontend build warnings remain.
 - God's Vessel storefront/product creation is not connected to Printify or Shopify yet.
 - God's Vessel generated theology copy is concise draft apparel copy and still needs Daniel review before product publication.
 - Full Firebase Auth/admin runtime cannot be verified until GitHub has real browser-safe Firebase client config values.
-- Time-Zone Travelers n8n workflow has no approval gate and includes unsupported Patreon/affiliate assumptions.
+- Time-Zone Travelers n8n workflow has no verified runtime approval gate.
 - Time-Zone Travelers sample render uses silent placeholder audio.
-- Dax the Traveler n8n workflows use AI-first generation patterns and monetization/publishing assumptions that are unsafe for Daniel's personal brand until repaired.
+- Dax the Traveler n8n workflows still need runtime source-material checks, voice approval enforcement, and account mapping before use.
 - Dax the Traveler support render uses silent placeholder audio.
 - Live Dax the Traveler analytics are not connected in this local repo run.
 - Shared business state is generated from repo artifacts and may become stale until `npm run business-state:build` is rerun.
@@ -475,4 +495,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Push and verify the contact-email correction, then continue Sprint 6 company-wide production hardening.
+Push and verify Sprint 6 hardening, then continue Sprint 7 revenue readiness.

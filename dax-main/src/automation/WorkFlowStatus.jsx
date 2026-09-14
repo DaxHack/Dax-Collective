@@ -19,102 +19,96 @@ const WorkflowStatus = ({ workflows = [] }) => {
   const [selectedWorkflow, setSelectedWorkflow] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Mock workflow data for demonstration
+  // Repository inventory fallback. These are not live runtime workflows.
   const mockWorkflows = [
     {
-      id: '1',
-      name: 'Daily Content Generation',
-      description: 'Automatically generates content ideas and drafts for all brands',
-      status: 'active',
-      lastRun: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
-      nextRun: new Date(Date.now() + 22 * 60 * 60 * 1000), // 22 hours from now
-      successRate: 98.5,
-      totalRuns: 247,
-      avgDuration: 45, // seconds
-      triggers: ['schedule', 'webhook'],
-      actions: ['content-generation', 'firestore-save', 'notification'],
-      schedule: 'Daily at 6:00 AM',
-      enabled: true,
-      logs: [
-        { timestamp: new Date(Date.now() - 2 * 60 * 1000), status: 'success', message: 'Generated 5 content pieces successfully' },
-        { timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000), status: 'success', message: 'Generated 4 content pieces successfully' },
-        { timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000), status: 'warning', message: 'Generated 3 content pieces, 1 failed validation' }
-      ]
-    },
-    {
-      id: '2',
-      name: 'Social Media Posting',
-      description: 'Publishes approved content to social media platforms',
-      status: 'active',
-      lastRun: new Date(Date.now() - 60 * 60 * 1000), // 1 hour ago
-      nextRun: new Date(Date.now() + 3 * 60 * 60 * 1000), // 3 hours from now
-      successRate: 95.2,
-      totalRuns: 156,
-      avgDuration: 23,
-      triggers: ['schedule', 'content-approved'],
-      actions: ['social-post', 'analytics-track', 'notification'],
-      schedule: 'Every 4 hours',
-      enabled: true,
-      logs: [
-        { timestamp: new Date(Date.now() - 60 * 60 * 1000), status: 'success', message: 'Posted to 3 platforms successfully' },
-        { timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), status: 'success', message: 'Posted to 2 platforms successfully' },
-        { timestamp: new Date(Date.now() - 9 * 60 * 60 * 1000), status: 'error', message: 'Failed to post to Instagram - API rate limit' }
-      ]
-    },
-    {
-      id: '3',
-      name: 'Analytics Collection',
-      description: 'Collects performance data from all platforms',
+      id: 'ani-dax-local-package',
+      name: 'Ani-Dax Local Package Generator',
+      description: 'Local script creates a non-public approval package and proof render.',
       status: 'paused',
-      lastRun: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+      lastRun: null,
       nextRun: null,
-      successRate: 100,
-      totalRuns: 89,
-      avgDuration: 12,
-      triggers: ['schedule'],
-      actions: ['data-collection', 'firestore-update', 'report-generation'],
-      schedule: 'Every 6 hours',
+      successRate: 0,
+      totalRuns: 0,
+      avgDuration: 0,
+      triggers: ['manual'],
+      actions: ['draft-package', 'approval-required'],
+      schedule: 'Manual only',
       enabled: false,
       logs: [
-        { timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), status: 'success', message: 'Collected analytics from 5 platforms' },
-        { timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000), status: 'success', message: 'Collected analytics from 5 platforms' }
+        { timestamp: new Date('2026-09-13T00:00:00'), status: 'warning', message: 'Proof package exists; public publishing remains blocked pending Daniel approval.' }
       ]
     },
     {
-      id: '4',
-      name: 'Content Optimization',
-      description: 'Analyzes and optimizes content performance',
+      id: 'youtube-publisher',
+      name: 'YouTube Publisher Templates',
+      description: 'Repository exports exist, but account mapping, credentials, QC, and approval gates are not production-verified.',
       status: 'error',
-      lastRun: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
-      nextRun: new Date(Date.now() + 60 * 60 * 1000), // 1 hour from now
-      successRate: 87.3,
-      totalRuns: 67,
-      avgDuration: 78,
-      triggers: ['schedule', 'performance-threshold'],
-      actions: ['content-analysis', 'optimization-suggestions', 'notification'],
-      schedule: 'Daily at 2:00 PM',
-      enabled: true,
+      lastRun: null,
+      nextRun: null,
+      successRate: 0,
+      totalRuns: 0,
+      avgDuration: 0,
+      triggers: ['blocked'],
+      actions: ['credential-check', 'approval-gate-required'],
+      schedule: 'Disabled',
+      enabled: false,
       logs: [
-        { timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), status: 'error', message: 'Failed to connect to analytics API' },
-        { timestamp: new Date(Date.now() - 27 * 60 * 60 * 1000), status: 'success', message: 'Optimized 8 content pieces' }
+        { timestamp: new Date('2026-09-13T00:00:00'), status: 'error', message: 'Do not run publisher templates publicly as-is.' }
       ]
     },
     {
-      id: '5',
-      name: 'Email Newsletter',
-      description: 'Sends weekly newsletter with top content',
-      status: 'scheduled',
-      lastRun: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-      nextRun: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
-      successRate: 99.1,
-      totalRuns: 23,
-      avgDuration: 156,
-      triggers: ['schedule'],
-      actions: ['content-curation', 'email-send', 'analytics-track'],
-      schedule: 'Weekly on Sundays at 8:00 AM',
-      enabled: true,
+      id: 'analytics-dashboard',
+      name: 'Analytics Dashboard Templates',
+      description: 'Analytics templates parse from repo export, but live platform credentials and channel mapping are unverified.',
+      status: 'paused',
+      lastRun: null,
+      nextRun: null,
+      successRate: 0,
+      totalRuns: 0,
+      avgDuration: 0,
+      triggers: ['manual-review'],
+      actions: ['credential-health', 'non-secret-metrics'],
+      schedule: 'Disabled',
+      enabled: false,
       logs: [
-        { timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), status: 'success', message: 'Newsletter sent to 1,247 subscribers' }
+        { timestamp: new Date('2026-09-13T00:00:00'), status: 'warning', message: 'No live analytics collection was verified in this repository session.' }
+      ]
+    },
+    {
+      id: 'commerce-workflows',
+      name: "God's Vessel Commerce Path",
+      description: 'Draft product metadata and designs exist; Printify/Shopify runtime setup requires Daniel/vendor approval.',
+      status: 'error',
+      lastRun: null,
+      nextRun: null,
+      successRate: 0,
+      totalRuns: 0,
+      avgDuration: 0,
+      triggers: ['approval-required'],
+      actions: ['vendor-setup', 'storefront-setup', 'conversion-tracking'],
+      schedule: 'Disabled',
+      enabled: false,
+      logs: [
+        { timestamp: new Date('2026-09-13T00:00:00'), status: 'error', message: 'No live checkout, product sale, payment, tax, or shipping path verified.' }
+      ]
+    },
+    {
+      id: 'shared-business-state',
+      name: 'Shared Business State CLI',
+      description: 'File-backed state builder and query CLI work locally; it is not a live workflow trigger surface.',
+      status: 'paused',
+      lastRun: new Date('2026-09-14T00:14:09'),
+      nextRun: null,
+      successRate: 0,
+      totalRuns: 1,
+      avgDuration: 0,
+      triggers: ['manual'],
+      actions: ['read-state', 'query-queue', 'query-credential-health'],
+      schedule: 'Manual only',
+      enabled: false,
+      logs: [
+        { timestamp: new Date('2026-09-14T00:14:09'), status: 'warning', message: 'Business-state CLI reads state only; publishing, spending, deletion, and credential changes remain blocked.' }
       ]
     }
   ];

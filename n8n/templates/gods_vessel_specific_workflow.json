@@ -37,7 +37,7 @@
             {
               "id": "condition1",
               "leftValue": "={{ $json['Production Status'] }}",
-              "rightValue": "Ready",
+              "rightValue": "Approved",
               "operator": {
                 "type": "string",
                 "operation": "equals"
@@ -73,7 +73,7 @@
           "values": [
             {
               "role": "system",
-              "content": "You are a faithful Christian content creator for God's Vessel. Create inspiring, biblically-grounded scripts that strengthen faith and provide spiritual guidance. Focus on {{ $json['Story Category'] || 'faith building' }} content for {{ $json['Age Appropriateness'] || 'all ages' }}. Include the Bible reference {{ $json['Bible Reference'] || '' }}, emphasize the moral lesson: {{ $json['Moral Lesson'] || 'God\\'s love and faithfulness' }}, and connect to modern life. Return JSON: {\"script\": \"inspiring narration with biblical truth\", \"scenes\": [{\"timestamp\": \"0-15s\", \"visual_description\": \"biblical scene or modern application\", \"text_overlay\": \"key verse or truth\"}], \"tags\": [\"faith hashtags\"], \"title\": \"inspiring faith title\", \"description\": \"YouTube description with biblical encouragement\", \"merchandise_cta\": \"God\\'s Vessel apparel promotion\"}"
+              "content": "You are a faithful Christian content creator for God's Vessel. Create draft scripts that must still be reviewed for theological accuracy before publishing. Focus on {{ $json['Story Category'] || 'faith building' }} content for {{ $json['Age Appropriateness'] || 'all ages' }}. Include the Bible reference {{ $json['Bible Reference'] || '' }}, emphasize the moral lesson: {{ $json['Moral Lesson'] || 'God\\'s love and faithfulness' }}, and connect to modern life without unsupported product or sales claims. Return JSON: {\"script\": \"draft narration with biblical references\", \"scenes\": [{\"timestamp\": \"0-15s\", \"visual_description\": \"biblical scene or modern application\", \"text_overlay\": \"key verse or truth\"}], \"tags\": [\"faith hashtags\"], \"title\": \"inspiring faith title\", \"description\": \"YouTube description with biblical encouragement\", \"approval_notes\": \"theology and product claims Daniel must verify before publishing\"}"
             },
             {
               "role": "user",
@@ -216,10 +216,10 @@
         "resource": "video",
         "operation": "upload",
         "title": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).title }}",
-        "description": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).description }}\\n\\n📖 Bible Reference: {{ $json['Bible Reference'] }}\\n✝️ God's Vessel Apparel: {{ $json['Merchandise Tie-in'] }}\\n🙏 {{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).merchandise_cta }}\\n\\n#GodsVessel #Faith #BibleStory #ChristianContent",
+        "description": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).description }}\\n\\nBible Reference: {{ $json['Bible Reference'] }}\\nApproval notes: {{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).approval_notes }}\\n\\nDo not add product, affiliate, or sale claims until Daniel approves the theology and commerce path.\\n\\n#GodsVessel #Faith #BibleStory #ChristianContent",
         "tags": "={{ JSON.parse($('Generate Faith Script').first().json.choices[0].message.content).tags.join(',') }},GodsVessel,Faith,Christian,Bible",
         "categoryId": "22",
-        "privacyStatus": "public",
+        "privacyStatus": "private",
         "binaryData": true,
         "binaryPropertyName": "data"
       },

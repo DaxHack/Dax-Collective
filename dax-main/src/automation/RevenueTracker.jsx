@@ -1,236 +1,163 @@
 // src/automation/RevenueTracker.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-
 import {
-  PhotoIcon,
-  MagnifyingGlassIcon,
-  ArrowPathIcon,
-  ExclamationTriangleIcon,
-  CloudIcon,
-  FolderIcon,
-  PlusIcon,
-  CloudArrowUpIcon,
-  Cog6ToothIcon,
-  XMarkIcon,        
-  ArrowTrendingUpIcon,
-  CurrencyDollarIcon,
-  CalendarIcon,
   ChartBarIcon,
-  ArrowUpIcon,
-  ArrowDownIcon
+  CurrencyDollarIcon,
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
+const revenueState = {
+  verifiedRevenue: 0,
+  verifiedMonthlyRevenue: 0,
+  verifiedCosts: 0,
+  profitEstimate: 0,
+  target: 50000,
+};
+
+const brandReadiness = [
+  {
+    brand: 'Ani-Dax',
+    revenuePath: 'YouTube monetization later, sponsorships later, original merch later',
+    verifiedRevenue: 0,
+    status: 'Approval package ready; no public publishing or monetized links approved.',
+    nextAction: 'Approve content, narration, account mapping, and monetization links.',
+  },
+  {
+    brand: "God's Vessel",
+    revenuePath: 'Names of God apparel collection through future Printify/Shopify setup',
+    verifiedRevenue: 0,
+    status: 'Draft collection ready; no live checkout or product sale path verified.',
+    nextAction: 'Approve theology/design/vendor/pricing and configure storefront.',
+  },
+  {
+    brand: 'Time-Zone Travelers',
+    revenuePath: 'Future travel affiliates, activities/tours, travel products, guides',
+    verifiedRevenue: 0,
+    status: 'Sample package ready; no active affiliate enrollment claimed.',
+    nextAction: 'Approve sample, final source check, narration, and outbound attribution links.',
+  },
+  {
+    brand: 'Dax the Traveler',
+    revenuePath: 'Travel affiliates, gear, activity links, sponsorships, guides later',
+    verifiedRevenue: 0,
+    status: 'Support package ready; no personal-brand publishing or monetized CTA approved.',
+    nextAction: 'Approve Daniel footage use, narration, and any monetized links.',
+  },
+];
+
+const sourceRows = [
+  { source: 'YouTube ads', verified: 0, state: 'Not verified as currently earning' },
+  { source: 'Affiliates', verified: 0, state: 'No active enrollment/link approval verified' },
+  { source: 'Products', verified: 0, state: 'No live checkout or paid order path verified' },
+  { source: 'Sponsorships', verified: 0, state: 'No signed sponsorships verified' },
+  { source: 'Digital guides/courses', verified: 0, state: 'Future path only' },
+];
+
+const formatUsd = (amount) => `$${amount.toLocaleString()}`;
+
 const RevenueTracker = () => {
-  const [revenueData, setRevenueData] = useState({
-    total: 0,
-    monthly: 0,
-    daily: 0,
-    goal: 50000,
-    brands: {
-      'dax-traveler': { revenue: 0, growth: 0 },
-      'ani-dax': { revenue: 0, growth: 0 },
-      'timezone-travelers': { revenue: 0, growth: 0 },
-      'gods-vessel': { revenue: 0, growth: 0 }
-    },
-    sources: {
-      youtube: 0,
-      affiliates: 0,
-      sponsorships: 0,
-      products: 0,
-      courses: 0
-    }
-  });
-
-  const [timeframe, setTimeframe] = useState('monthly');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading revenue data
-    setTimeout(() => {
-      setRevenueData({
-        total: 2847,
-        monthly: 1250,
-        daily: 42,
-        goal: 50000,
-        brands: {
-          'dax-traveler': { revenue: 1200, growth: 15.2 },
-          'ani-dax': { revenue: 650, growth: 8.7 },
-          'timezone-travelers': { revenue: 800, growth: 22.1 },
-          'gods-vessel': { revenue: 197, growth: 5.3 }
-        },
-        sources: {
-          youtube: 1200,
-          affiliates: 850,
-          sponsorships: 500,
-          products: 200,
-          courses: 97
-        }
-      });
-      setLoading(false);
-    }, 1000);
-  }, []);
-
-  const progressToGoal = (revenueData.total / revenueData.goal) * 100;
-  const monthsToGoal = Math.ceil((revenueData.goal - revenueData.total) / (revenueData.monthly || 1));
-
-  const brandNames = {
-    'dax-traveler': 'Dax the Traveler',
-    'ani-dax': 'Ani-Dax',
-    'timezone-travelers': 'Timezone Travelers',
-    'gods-vessel': "God's Vessel"
-  };
-
-  const brandColors = {
-    'dax-traveler': 'from-blue-500 to-green-500',
-    'ani-dax': 'from-purple-500 to-pink-500',
-    'timezone-travelers': 'from-orange-500 to-red-500',
-    'gods-vessel': 'from-indigo-500 to-purple-500'
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
+  const progressToGoal = revenueState.target
+    ? (revenueState.verifiedRevenue / revenueState.target) * 100
+    : 0;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-white">Revenue Tracker</h2>
-        <div className="flex space-x-2">
-          {['daily', 'monthly', 'yearly'].map((period) => (
-            <button
-              key={period}
-              onClick={() => setTimeframe(period)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                timeframe === period
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
-            >
-              {period.charAt(0).toUpperCase() + period.slice(1)}
-            </button>
-          ))}
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-3xl font-bold text-white">Revenue Readiness</h2>
+          <p className="text-sm text-gray-400">
+            Verified revenue only. Draft opportunities are not counted as earnings.
+          </p>
+        </div>
+        <div className="rounded-lg border border-yellow-700 bg-yellow-950/40 px-4 py-3 text-sm text-yellow-200">
+          <ExclamationTriangleIcon className="mr-2 inline h-5 w-5" />
+          Public selling, affiliate links, and sponsorship claims require Daniel approval.
         </div>
       </div>
 
-      {/* Main Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl p-6 text-white"
+          className="rounded-xl bg-gradient-to-r from-green-700 to-emerald-700 p-6 text-white"
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-green-100 text-sm">Total Revenue</p>
-              <p className="text-3xl font-bold">${revenueData.total.toLocaleString()}</p>
-            </div>
-            <CurrencyDollarIcon className="w-8 h-8 text-green-200" />
-          </div>
+          <p className="text-sm text-green-100">Verified Revenue</p>
+          <p className="mt-2 text-3xl font-bold">{formatUsd(revenueState.verifiedRevenue)}</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl p-6 text-white"
+          className="rounded-xl bg-gradient-to-r from-blue-700 to-cyan-700 p-6 text-white"
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-blue-100 text-sm">Monthly Revenue</p>
-              <p className="text-3xl font-bold">${revenueData.monthly.toLocaleString()}</p>
-            </div>
-            <ChartBarIcon className="w-8 h-8 text-blue-200" />
-          </div>
+          <p className="text-sm text-blue-100">Verified Monthly Revenue</p>
+          <p className="mt-2 text-3xl font-bold">{formatUsd(revenueState.verifiedMonthlyRevenue)}</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-6 text-white"
+          className="rounded-xl bg-gradient-to-r from-purple-700 to-pink-700 p-6 text-white"
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-purple-100 text-sm">Daily Average</p>
-              <p className="text-3xl font-bold">${revenueData.daily}</p>
-            </div>
-            <CalendarIcon className="w-8 h-8 text-purple-200" />
-          </div>
+          <p className="text-sm text-purple-100">Verified Costs</p>
+          <p className="mt-2 text-3xl font-bold">{formatUsd(revenueState.verifiedCosts)}</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-r from-orange-600 to-red-600 rounded-xl p-6 text-white"
+          className="rounded-xl bg-gradient-to-r from-orange-700 to-red-700 p-6 text-white"
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-orange-100 text-sm">Months to $50K</p>
-              <p className="text-3xl font-bold">{monthsToGoal}</p>
-            </div>
-            <ArrowTrendingUpIcon className="w-8 h-8 text-orange-200" />
-          </div>
+          <p className="text-sm text-orange-100">Profit Estimate</p>
+          <p className="mt-2 text-3xl font-bold">{formatUsd(revenueState.profitEstimate)}</p>
         </motion.div>
       </div>
 
-      {/* Goal Progress */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-gray-800 rounded-xl p-6"
+        className="rounded-xl bg-gray-800 p-6"
       >
-        <div className="flex justify-between items-center mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-xl font-bold text-white">Progress to $50K Goal</h3>
           <span className="text-2xl font-bold text-green-400">{progressToGoal.toFixed(1)}%</span>
         </div>
-        <div className="w-full bg-gray-700 rounded-full h-4 mb-4">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${progressToGoal}%` }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="bg-gradient-to-r from-green-500 to-emerald-500 h-4 rounded-full"
-          />
+        <div className="mb-4 h-4 w-full rounded-full bg-gray-700">
+          <div className="h-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-500" style={{ width: `${progressToGoal}%` }} />
         </div>
         <p className="text-gray-400">
-          ${(revenueData.goal - revenueData.total).toLocaleString()} remaining to reach your goal
+          {formatUsd(revenueState.target - revenueState.verifiedRevenue)} remaining. This dashboard will stay at zero until revenue is actually tracked from approved channels.
         </p>
       </motion.div>
 
-      {/* Brand Performance */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gray-800 rounded-xl p-6"
+          className="rounded-xl bg-gray-800 p-6"
         >
-          <h3 className="text-xl font-bold text-white mb-4">Revenue by Brand</h3>
+          <h3 className="mb-4 flex items-center text-xl font-bold text-white">
+            <ChartBarIcon className="mr-2 h-5 w-5 text-blue-300" />
+            Brand Revenue Readiness
+          </h3>
           <div className="space-y-4">
-            {Object.entries(revenueData.brands).map(([brand, data]) => (
-              <div key={brand} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${brandColors[brand]}`} />
-                  <span className="text-white font-medium">{brandNames[brand]}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-white font-bold">${data.revenue}</span>
-                  <div className={`flex items-center ${data.growth >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {data.growth >= 0 ? (
-                      <ArrowUpIcon className="w-4 h-4" />
-                    ) : (
-                      <ArrowDownIcon className="w-4 h-4" />
-                    )}
-                    <span className="text-sm">{Math.abs(data.growth)}%</span>
+            {brandReadiness.map((brand) => (
+              <div key={brand.brand} className="rounded-lg border border-gray-700 bg-gray-900 p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-semibold text-white">{brand.brand}</p>
+                    <p className="mt-1 text-sm text-gray-400">{brand.revenuePath}</p>
                   </div>
+                  <span className="font-bold text-white">{formatUsd(brand.verifiedRevenue)}</span>
                 </div>
+                <p className="mt-3 text-sm text-yellow-200">{brand.status}</p>
+                <p className="mt-2 text-sm text-gray-300">{brand.nextAction}</p>
               </div>
             ))}
           </div>
@@ -240,46 +167,27 @@ const RevenueTracker = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-gray-800 rounded-xl p-6"
+          className="rounded-xl bg-gray-800 p-6"
         >
-          <h3 className="text-xl font-bold text-white mb-4">Revenue Sources</h3>
+          <h3 className="mb-4 flex items-center text-xl font-bold text-white">
+            <CurrencyDollarIcon className="mr-2 h-5 w-5 text-green-300" />
+            Revenue Sources
+          </h3>
           <div className="space-y-4">
-            {Object.entries(revenueData.sources).map(([source, amount]) => (
-              <div key={source} className="flex items-center justify-between">
-                <span className="text-gray-300 capitalize">{source}</span>
-                <span className="text-white font-bold">${amount}</span>
+            {sourceRows.map((source) => (
+              <div key={source.source} className="flex items-start justify-between gap-4 rounded-lg border border-gray-700 bg-gray-900 p-4">
+                <div>
+                  <p className="font-semibold text-white">{source.source}</p>
+                  <p className="mt-1 text-sm text-gray-400">{source.state}</p>
+                </div>
+                <span className="font-bold text-white">{formatUsd(source.verified)}</span>
               </div>
             ))}
           </div>
         </motion.div>
       </div>
-
-      {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="bg-gray-800 rounded-xl p-6"
-      >
-        <h3 className="text-xl font-bold text-white mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-            Add Revenue
-          </button>
-          <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
-            Export Data
-          </button>
-          <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
-            Set Goals
-          </button>
-          <button className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg transition-colors">
-            View Analytics
-          </button>
-        </div>
-      </motion.div>
     </div>
   );
 };
 
 export default RevenueTracker;
-

@@ -98,7 +98,7 @@
             },
             {
               "role": "user",
-              "content": "Create a detailed video script based on this prompt: {{$json['Script Prompt']}}\n\nTarget platform: {{$json['Target Platform']}}\nContent type: {{$json['Content Type']}}\nTarget length: {{$json['Output Type']}}\n\nMake it engaging, accurate to anime lore, and include natural CTAs for Patreon and affiliate links. Start with a strong hook in the first 3 seconds."
+              "content": "Create a detailed video script based on this prompt: {{$json['Script Prompt']}}\n\nTarget platform: {{$json['Target Platform']}}\nContent type: {{$json['Content Type']}}\nTarget length: {{$json['Output Type']}}\n\nMake it engaging and accurate to anime lore. Start with a strong hook in the first 3 seconds. Include only neutral subscribe/comment CTAs unless approved community, affiliate, sponsor, product, or membership links are explicitly provided in the reviewed input."
             }
           ]
         }

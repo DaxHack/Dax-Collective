@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T00:14:09.667Z",
+  "generatedAt": "2026-09-14T04:58:31.043Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -286,7 +286,7 @@
     }
   ],
   "workflowHealth": {
-    "generatedAt": "2026-09-13T07:04:42.444Z",
+    "generatedAt": "2026-09-14T04:58:18.148Z",
     "templateCount": 30,
     "activeTemplatesInExport": 0,
     "statusCounts": {
@@ -301,7 +301,7 @@
         "file": "ani_dax_specific_workflow.json",
         "name": "Ani-Dax - Anime Analysis Creator",
         "active": false,
-        "status": "WORKS WITH REPAIR - remove public upload path, add approval/QC",
+        "status": "WORKS WITH REPAIR - private draft upload only; add runtime approval/QC and credential checks",
         "integrations": [
           "n8n-nodes-base.googleSheets",
           "n8n-nodes-base.httpRequest",

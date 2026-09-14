@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13T07:04:42.444Z",
+  "generatedAt": "2026-09-14T04:58:18.148Z",
   "templateCount": 30,
   "rows": [
     {
@@ -22,7 +22,7 @@
         "OpenAI API",
         "YouTube OAuth2"
       ],
-      "status": "WORKS WITH REPAIR - remove public upload path, add approval/QC"
+      "status": "WORKS WITH REPAIR - private draft upload only; add runtime approval/QC and credential checks"
     },
     {
       "file": "dax_collective_master_orchestrator.json",

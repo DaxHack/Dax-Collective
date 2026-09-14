@@ -585,10 +585,12 @@ exports.n8nWebhook = functions.https.onRequest(async (req, res) => {
     
     await contentRef.update(updateData);
     
-    // If workflow completed successfully, update content status
+    // If workflow completed successfully, queue content for human approval.
     if (status === 'completed') {
       await contentRef.update({
-        status: 'ready_for_publishing',
+        status: 'ready_for_approval',
+        publishAllowed: false,
+        approvalRequired: true,
         readyAt: admin.firestore.FieldValue.serverTimestamp()
       });
     } else if (status === 'failed') {
@@ -625,9 +627,9 @@ exports.publishScheduledContent = functions.pubsub
     try {
       const now = admin.firestore.Timestamp.now();
       
-      // Query for content ready to publish
+      // Query only content that was explicitly approved for publishing.
       const readyContent = await db.collection('content')
-        .where('status', '==', 'scheduled')
+        .where('status', '==', 'approved_for_publishing')
         .where('publishAt', '<=', now)
         .limit(50) // Limit to prevent timeout
         .get();
@@ -636,7 +638,14 @@ exports.publishScheduledContent = functions.pubsub
       
       readyContent.forEach(doc => {
         const content = doc.data();
-        publishPromises.push(publishContent(doc.id, content));
+        const approvalCheck = validatePublishApproval(content);
+        if (approvalCheck.allowed) {
+          publishPromises.push(publishContent(doc.id, content));
+        } else {
+          publishPromises.push(Promise.reject(new Error(
+            `Content ${doc.id} blocked: ${approvalCheck.reason}`,
+          )));
+        }
       });
       
       const results = await Promise.allSettled(publishPromises);
@@ -694,6 +703,15 @@ exports.publishContent = functions.https.onRequest(async (req, res) => {
     }
     
     const content = contentDoc.data();
+    const approvalCheck = validatePublishApproval(content);
+    if (!approvalCheck.allowed) {
+      return res.status(403).json({
+        success: false,
+        error: approvalCheck.reason,
+        contentId
+      });
+    }
+
     const result = await publishContent(contentId, content);
     
     res.status(200).json({ 
@@ -828,6 +846,11 @@ async function publishContent(contentId, content) {
   console.log(`Publishing content: ${contentId} to platforms:`, content.platforms);
   
   try {
+    const approvalCheck = validatePublishApproval(content);
+    if (!approvalCheck.allowed) {
+      throw new Error(approvalCheck.reason);
+    }
+
     // Update status to publishing
     await db.collection('content').doc(contentId).update({
       status: 'publishing',
@@ -871,12 +894,17 @@ async function publishContent(contentId, content) {
       }
     }
     
+    const successfulPlatforms = platforms.filter(p => publishResults[p] && !publishResults[p].error);
+    if (successfulPlatforms.length === 0) {
+      throw new Error('No platform publisher completed successfully; content was not published.');
+    }
+
     // Update content with publish results
     await db.collection('content').doc(contentId).update({
       status: 'published',
       publishedAt: admin.firestore.FieldValue.serverTimestamp(),
       publishResults,
-      publishedPlatforms: platforms.filter(p => publishResults[p] && !publishResults[p].error)
+      publishedPlatforms: successfulPlatforms
     });
     
     // Create success notification
@@ -913,53 +941,53 @@ async function publishContent(contentId, content) {
 /**
  * ENHANCED: Platform-specific publishing functions
  */
+function validatePublishApproval(content = {}) {
+  if (content.publishAllowed !== true) {
+    return {allowed: false, reason: 'Publishing blocked: publishAllowed must be true.'};
+  }
+
+  const approval = content.approval || {};
+  if (approval.status !== 'approved' || !approval.approvedBy || !approval.approvedAt) {
+    return {
+      allowed: false,
+      reason: 'Publishing blocked: approval.status, approval.approvedBy, and approval.approvedAt are required.',
+    };
+  }
+
+  const platforms = content.platforms || [];
+  if (!Array.isArray(platforms) || platforms.length === 0) {
+    return {allowed: false, reason: 'Publishing blocked: no target platforms configured.'};
+  }
+
+  if (!content.brand) {
+    return {allowed: false, reason: 'Publishing blocked: brand is required for account mapping.'};
+  }
+
+  return {allowed: true};
+}
+
 async function publishToYouTube(content) {
-  // TODO: Implement YouTube API publishing
-  console.log('Publishing to YouTube:', content.title);
-  return { 
-    success: true, 
-    url: 'https://youtube.com/watch?v=example',
-    timestamp: new Date().toISOString()
-  };
+  console.log('Publishing to YouTube blocked; publisher not implemented:', content.title);
+  throw new Error('YouTube publisher is not implemented; no public YouTube upload was made.');
 }
 
 async function publishToInstagram(content) {
-  // TODO: Implement Instagram API publishing
-  console.log('Publishing to Instagram:', content.title);
-  return { 
-    success: true, 
-    url: 'https://instagram.com/p/example',
-    timestamp: new Date().toISOString()
-  };
+  console.log('Publishing to Instagram blocked; publisher not implemented:', content.title);
+  throw new Error('Instagram publisher is not implemented; no public Instagram post was made.');
 }
 
 async function publishToTikTok(content) {
-  // TODO: Implement TikTok API publishing
-  console.log('Publishing to TikTok:', content.title);
-  return { 
-    success: true, 
-    url: 'https://tiktok.com/@user/video/example',
-    timestamp: new Date().toISOString()
-  };
+  console.log('Publishing to TikTok blocked; publisher not implemented:', content.title);
+  throw new Error('TikTok publisher is not implemented; no public TikTok upload was made.');
 }
 
 async function publishToTwitter(content) {
-  // TODO: Implement Twitter API publishing
-  console.log('Publishing to Twitter:', content.title);
-  return { 
-    success: true, 
-    url: 'https://twitter.com/user/status/example',
-    timestamp: new Date().toISOString()
-  };
+  console.log('Publishing to Twitter blocked; publisher not implemented:', content.title);
+  throw new Error('Twitter/X publisher is not implemented; no public post was made.');
 }
 
 async function publishToFacebook(content) {
-  // TODO: Implement Facebook API publishing
-  console.log('Publishing to Facebook:', content.title);
-  return { 
-    success: true, 
-    url: 'https://facebook.com/post/example',
-    timestamp: new Date().toISOString()
-  };
+  console.log('Publishing to Facebook blocked; publisher not implemented:', content.title);
+  throw new Error('Facebook publisher is not implemented; no public Facebook post was made.');
 }
 

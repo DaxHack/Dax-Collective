@@ -364,7 +364,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_CHANNEL_ID}}",
-        "text": "📱 **MULTI-PLATFORM CONTENT PUBLISHED!**\n\n**Title:** {{$('Read Master Control').item.json['Video Title']}}\n**Brand:** {{$('Read Master Control').item.json['Brand']}}\n**Platforms:** TikTok + Instagram Reels\n**Viral Score:** {{$('Read Master Control').item.json['Viral Score']}}\n\n**TikTok:** {{$('Upload to TikTok').item.json.share_url || 'Published successfully'}}\n**Instagram:** {{$('Publish Instagram Reel').item.json.id || 'Published successfully'}}\n\n**Performance Tracking:**\n📊 Monitor engagement in first 2 hours\n🔥 Track viral potential indicators\n💰 Measure revenue impact\n📈 Analyze cross-platform performance\n\n*Short-form content is live and ready to go viral!* 🚀"
+        "text": "📱 **SHORT-FORM PUBLISHER RESULT NEEDS VERIFICATION**\n\n**Title:** {{$('Read Master Control').item.json['Video Title']}}\n**Brand:** {{$('Read Master Control').item.json['Brand']}}\n**Platforms:** TikTok + Instagram Reels\n**Viral Score:** {{$('Read Master Control').item.json['Viral Score']}}\n\n**TikTok result:** {{$('Upload to TikTok').item.json.share_url || 'No verified public URL returned'}}\n**Instagram result:** {{$('Publish Instagram Reel').item.json.id || 'No verified public ID returned'}}\n\n**Required next checks:**\n- Confirm Daniel approval exists for this item\n- Confirm correct brand account mapping\n- Verify platform response before marking live\n- Record analytics/revenue only after real data exists\n\nDo not treat this notification alone as proof of public publishing."
       },
       "id": "12",
       "name": "Multi-Platform Success Alert",

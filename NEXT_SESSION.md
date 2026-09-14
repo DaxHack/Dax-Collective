@@ -6,10 +6,9 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. If the contact-email correction is still local, commit and push it:
-   https://github.com/DaxHack/Dax-Collective/pull/3
-4. Wait for Firebase PR workflow to pass after the latest push.
-5. Continue Sprint 6 company-wide production hardening.
+3. Continue from the latest PR #3 head; the contact-email correction is pushed and its Firebase PR workflow passed.
+4. If the Sprint 6 hardening commit has not yet been pushed, push it to PR #3 and verify the Firebase PR workflow.
+5. Continue Sprint 7 revenue readiness after Sprint 6 is pushed/verified.
 6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
 7. Continue Sprint 1 repair work opportunistically around:
    - approval gates
@@ -105,7 +104,15 @@
 - Business-state query commands worked for summary, list-brands, content-queue, and credential-health.
 - Business-state credential health includes names/integration references only; no secret values are included.
 - Sprint 5 shared business-state commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` reached PR #3 and its Firebase Hosting PR workflow passed in 1m 41s.
-- Functional/legal contact email correction was made locally and `npm --prefix dax-main run build` passes with existing warnings.
+- Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` reached PR #3 and its Firebase Hosting PR workflow passed on 2026-09-14.
+- Sprint 6 local hardening work:
+  - backend/functions publishing paths fail closed unless explicit approval is present
+  - frontend automation dashboards no longer display fake published/revenue metrics
+  - browser-side n8n webhook execution is disabled by default and no frontend n8n API key is sent
+  - YouTube upload templates default to `private`
+  - high-risk n8n template copy was repaired away from unsupported public publishing/revenue/affiliate claims
+  - `npm --prefix dax-main run build` passes with existing warnings
+  - `node --check` passes for backend/functions/business-state/n8n tooling
 
 ## What Not To Repeat
 
@@ -172,4 +179,4 @@
 
 ## Current Sprint
 
-Sprint 5 shared business state is PARTIAL but working as a file-backed CLI layer and is pushed. Finish pushing/verifying the contact-email correction if needed, then continue Sprint 6 company-wide production hardening.
+Sprint 6 company hardening is the current atomic task captured by this handoff. If the PR branch already contains the Sprint 6 hardening commit, verify PR checks and continue Sprint 7 revenue readiness from `GO_LIVE_MATRIX.md`, `BUSINESS_STATE.md`, and `BLOCKERS.md`.

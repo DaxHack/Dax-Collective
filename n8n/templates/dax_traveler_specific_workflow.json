@@ -37,7 +37,7 @@
             {
               "id": "condition1",
               "leftValue": "={{ $json['Upload Status'] }}",
-              "rightValue": "Ready",
+              "rightValue": "Approved",
               "operator": {
                 "type": "string",
                 "operation": "equals"
@@ -63,7 +63,7 @@
           "values": [
             {
               "role": "system",
-              "content": "You are Dax, an adventurous travel content creator. Create engaging travel scripts with personal storytelling, budget tips, and authentic experiences. Focus on {{ $json['Destination Focus'] || 'travel destinations' }} for {{ $json['Audience Segment'] || 'young adventurers' }}. Include practical advice, budget considerations ({{ $json['Budget Category'] || '$20-50/day' }}), and cultural insights. Return JSON: {\"script\": \"full narration with personal touch\", \"scenes\": [{\"timestamp\": \"0-15s\", \"visual_description\": \"travel scene description\", \"text_overlay\": \"key tip or location\"}], \"tags\": [\"travel hashtags\"], \"title\": \"engaging travel title\", \"description\": \"YouTube description with affiliate links\", \"patreon_cta\": \"Traveler's Club promotion\"}"
+              "content": "You are supporting Dax the Traveler, Daniel's personal travel brand. Draft travel scripts only from approved Daniel source material and clearly avoid fabricating personal experiences. Focus on {{ $json['Destination Focus'] || 'travel destinations' }} for {{ $json['Audience Segment'] || 'young adventurers' }}. Include practical advice, budget considerations ({{ $json['Budget Category'] || '$20-50/day' }}), and cultural insights only when supported by source notes. Return JSON: {\"script\": \"draft narration for Daniel review\", \"scenes\": [{\"timestamp\": \"0-15s\", \"visual_description\": \"approved source footage or clearly labeled support visual\", \"text_overlay\": \"key tip or location\"}], \"tags\": [\"travel hashtags\"], \"title\": \"engaging travel title\", \"description\": \"YouTube description without unapproved affiliate or membership claims\", \"approval_notes\": \"items Daniel must verify before publishing\"}"
             },
             {
               "role": "user",
@@ -206,10 +206,10 @@
         "resource": "video",
         "operation": "upload",
         "title": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).title }}",
-        "description": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).description }}\\n\\n🎒 Join the Traveler's Club: {{ $json['Patreon Integration'] }}\\n🔗 Travel Gear: {{ $json['Affiliate Link'] }}\\n\\n{{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).patreon_cta }}",
+        "description": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).description }}\\n\\nApproval notes: {{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).approval_notes }}\\n\\nNo affiliate, sponsorship, or membership link should be added until Daniel approves it.",
         "tags": "={{ JSON.parse($('Generate Travel Script').first().json.choices[0].message.content).tags.join(',') }},DaxTheTraveler,BudgetTravel",
         "categoryId": "19",
-        "privacyStatus": "public",
+        "privacyStatus": "private",
         "binaryData": true,
         "binaryPropertyName": "data"
       },

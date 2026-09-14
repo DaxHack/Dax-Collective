@@ -19,6 +19,8 @@
 | Dax the Traveler support package approval | Review the Puerto Rico repurposing package, approve/revise the source assets and angle, and approve any public publishing target. |
 | Dax the Traveler voice protection | Provide Daniel narration or explicitly approve an alternate narrator/TTS. No AI voice replacement should be used without Daniel approval. |
 | Dax the Traveler monetization | Approve any affiliate links, sponsorships, product claims, or monetized CTA before public use. |
+| Automatic public publishing | Approve the specific content item, platform, channel/account mapping, and final metadata before any workflow can publish publicly. |
+| Live workflow-triggering MCP/business state | Approve permissions and action boundaries before the file-backed shared state is exposed as live workflow-triggering tools. |
 
 ## External Provider / Runtime Blockers
 
@@ -30,9 +32,10 @@
 | Publishing credentials unverified | Publisher templates reference multiple platform credentials. | Verify non-secret credential health in n8n, do not expose values. |
 | Commerce credentials unverified | Repository references ecommerce automation paths, but Printify/Shopify runtime access was not verified. | Verify account connections and non-secret credential health before creating live products. |
 | Full Firebase Auth runtime unverified | Code is hardened and public routes render without config, but real auth/admin behavior needs the actual Firebase client config values in GitHub Actions. | Add config values, then verify PR/merge deploy and admin sign-in flow. |
-| Time-Zone Travelers n8n workflow not production-safe | Existing workflow lacks an explicit approval gate, credentials are unverified, and it contains unsupported Patreon/affiliate assumptions. | Repair and test in draft mode before any runtime execution or publishing. |
+| Time-Zone Travelers n8n workflow not production-safe | Prompts were hardened, but the workflow still lacks an explicit runtime approval gate and credentials are unverified. | Repair and test in draft/private mode before any runtime execution or publishing. |
 | Time-Zone Travelers final audio missing | Sprint 3 proof render is silent by design. | Use Daniel-approved narration or approved TTS before public approval. |
-| Dax the Traveler n8n workflows not production-safe | Existing workflows are AI-first, credentials are unverified, and they include public upload or monetization assumptions. | Repair around existing Daniel media inventory, approval gates, and account mapping before runtime use. |
+| Dax the Traveler n8n workflows not production-safe | Prompts were hardened and uploads are private, but workflows still need Daniel source-material checks, final voice approval, credential verification, and account mapping. | Repair around existing Daniel media inventory, approval gates, and account mapping before runtime use. |
+| Live platform publishers not implemented safely | Backend/functions now fail closed instead of returning fake success; real platform upload code is still not verified. | Implement per-platform publishers only after approval, credentials, and account mapping are verified. |
 | Dax the Traveler live analytics unavailable | Repository session did not have verified platform analytics. | Connect/read channel analytics only with correct account mapping and without exposing credentials. |
 | Dax the Traveler final audio missing | Sprint 4 support proof render is silent by design. | Use Daniel-approved narration or approved TTS before public approval. |
 | Live MCP/n8n action surface not implemented | Sprint 5 created a file-backed business-state CLI, not a live MCP server or n8n trigger surface. | Approve design and permissions before exposing workflow-triggering tools. |
@@ -46,3 +49,4 @@
 - Time-Zone Travelers not publishing yet: intentional until Daniel approves the content, account mapping, and any monetized links.
 - Dax the Traveler not publishing yet: intentional until Daniel approves the personal-brand draft, narration, account mapping, and any monetized links.
 - Business-state CLI not triggering workflows: intentional until approval and hardening for live actions.
+- Public publishing fail-closed behavior: intentional until Daniel approves each content item and target account.

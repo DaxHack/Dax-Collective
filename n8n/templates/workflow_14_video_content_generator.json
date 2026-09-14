@@ -53,11 +53,11 @@
           "messages": [
             {
               "role": "system",
-              "message": "You are a professional scriptwriter specializing in {{ $env.CURRENT_BRAND }} content. Create engaging, conversational scripts that feel natural and authentic while incorporating revenue opportunities seamlessly."
+              "message": "You are a professional scriptwriter specializing in {{ $env.CURRENT_BRAND }} content. Create engaging, conversational scripts that feel natural and authentic. Treat monetization as optional review placeholders unless approved links or offers are explicitly provided."
             },
             {
               "role": "user",
-              "message": "Create a detailed video script based on this concept:\n\n{{ $json.video_concept }}\n\nScript requirements:\n- Natural, conversational tone\n- Strong hook in first 15 seconds\n- Clear structure with smooth transitions\n- Integrated CTAs for Patreon, affiliate products, merchandise\n- Engaging conclusion with subscribe reminder\n- Include [PAUSE], [EMPHASIS], [VISUAL CUE] markers\n- Target length: {{ $json.target_length }} minutes\n\nBrand voice: {{ $env.BRAND_VOICE }}"
+              "message": "Create a detailed video script based on this concept:\n\n{{ $json.video_concept }}\n\nScript requirements:\n- Natural, conversational tone\n- Strong hook in first 15 seconds\n- Clear structure with smooth transitions\n- Only approved CTAs; use neutral subscribe/comment prompts by default\n- Engaging conclusion with subscribe reminder\n- Include [PAUSE], [EMPHASIS], [VISUAL CUE] markers\n- Target length: {{ $json.target_length }} minutes\n\nBrand voice: {{ $env.BRAND_VOICE }}"
             }
           ]
         },
@@ -132,7 +132,7 @@
       "parameters": {
         "authentication": "oAuth2",
         "title": "{{ $json.video_title }}",
-        "description": "{{ $json.video_description }}\n\n🔔 Subscribe for more {{ $env.BRAND_CONTENT_TYPE }}!\n\n💰 Support on Patreon: {{ $env.PATREON_URL }}\n🛒 Shop merchandise: {{ $env.SHOP_URL }}\n\n{{ $json.affiliate_links }}\n\n#{{ $env.BRAND_HASHTAGS }}",
+        "description": "{{ $json.video_description }}\n\n🔔 Subscribe for more {{ $env.BRAND_CONTENT_TYPE }}!\n\nDaniel approval required before public release. Add membership, product, sponsor, or affiliate links only after the offer and tracking fields are approved.\n\n#{{ $env.BRAND_HASHTAGS }}",
         "tags": "{{ $json.video_tags }}",
         "categoryId": "{{ $env.YOUTUBE_CATEGORY }}",
         "privacyStatus": "private",

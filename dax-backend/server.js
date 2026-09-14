@@ -185,17 +185,43 @@ app.use("/api", uploadRoutes); // This will apply all routes from uploadApi.js u
 // If you ever need a public mount, you can also do:
 // app.use('/api/public', uploadRoutes);
 
-// Brand-aware posting endpoint (stub)
+// Brand-aware posting endpoint.
+// This is intentionally fail-closed until real platform publisher functions,
+// approval gates, and per-brand account mapping have been verified.
 app.post("/api/post/:brand", async (req, res) => {
   const ids = getAccountIds(req.params.brand);
-  if (Object.values(ids).some((v) => !v)) {
+  const missingPlatforms = Object.entries(ids)
+      .filter(([, value]) => !value)
+      .map(([platform]) => platform);
+
+  if (missingPlatforms.length > 0) {
     return res.status(400).json({
-      error: `Missing one of [tiktok,facebook,instagram,youtube] ID for "${req.params.brand}"`,
+      error: `Missing platform account mapping for "${req.params.brand}"`,
+      missingPlatforms,
     });
   }
+
+  const {approvalStatus, approvedBy, dryRun = true} = req.body || {};
+  if (approvalStatus !== "approved" || !approvedBy) {
+    return res.status(403).json({
+      error: "Publishing requires Daniel approval before any platform action.",
+      required: {
+        approvalStatus: "approved",
+        approvedBy: "Daniel or authorized owner",
+      },
+    });
+  }
+
   try {
-    // TODO: call your actual social-post functions here
-    return res.json({success: true, used: ids});
+    return res.status(501).json({
+      success: false,
+      status: "not_implemented",
+      message: "Platform posting is not implemented in dax-backend yet. No public post was made.",
+      dryRun,
+      accountMappingConfigured: Object.fromEntries(
+          Object.entries(ids).map(([platform, value]) => [platform, !!value]),
+      ),
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({error: err.message});

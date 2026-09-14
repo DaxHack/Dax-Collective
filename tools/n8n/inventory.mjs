@@ -52,7 +52,7 @@ function classify(file, workflow, nodeTypes, credentials) {
   if (/publisher/i.test(workflow.name || file)) return 'BLOCKED - publishing credentials and approval required';
   if (/ani.?dax/i.test(workflow.name || file)) {
     if (nodeTypes.includes('n8n-nodes-base.youTube')) {
-      return 'WORKS WITH REPAIR - remove public upload path, add approval/QC';
+      return 'WORKS WITH REPAIR - private draft upload only; add runtime approval/QC and credential checks';
     }
     return 'PARTIAL - generation template, needs credential verification and QC';
   }

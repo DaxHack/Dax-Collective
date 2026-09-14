@@ -114,7 +114,7 @@
             },
             {
               "role": "user",
-              "content": "Optimize this travel blog content for SEO:\n\n{{$json.data}}\n\nAdd:\n- SEO-optimized title and meta description\n- Strategic keyword placement\n- Internal linking suggestions\n- Call-to-action for Patreon Traveler's Club\n- Affiliate product recommendations\n- Social sharing optimization\n\nMaintain the authentic voice while maximizing search visibility."
+              "content": "Optimize this travel blog content for SEO:\n\n{{$json.data}}\n\nAdd:\n- SEO-optimized title and meta description\n- Strategic keyword placement\n- Internal linking suggestions\n- Daniel review notes for any time-sensitive claims\n- Optional monetization placeholders only when links are approved\n- Social sharing optimization\n\nMaintain the authentic voice while maximizing search visibility. Do not add Patreon, affiliate, sponsorship, or product claims unless approval fields explicitly provide them."
             }
           ]
         }
@@ -289,7 +289,7 @@
           "parameters": [
             {
               "name": "message",
-              "value": "🌍 New travel blog post is live!\n\n{{$('Publish Travel Blog').item.json.title}}\n\nDiscover survival tips, cultural insights, and travel hacks that could save your life on your next adventure.\n\n🎒 Join the Traveler's Club on Patreon for exclusive guides and insider tips!\n\n#travel #adventure #survival #backpacking"
+              "value": "🌍 Travel blog draft/update for review\n\n{{$('Publish Travel Blog').item.json.title}}\n\nUseful travel context and source-backed planning notes for Daniel review.\n\nNo Patreon, affiliate, sponsorship, or product CTA should be added until Daniel approves it.\n\n#travel #adventure #travelplanning #backpacking"
             },
             {
               "name": "link",
@@ -323,7 +323,7 @@
           "parameters": [
             {
               "name": "message",
-              "value": "✝️ New devotional blog post is live!\n\n{{$('Publish Faith Blog').item.json.title}}\n\nFind hope, encouragement, and practical faith application for your daily walk with God.\n\n🙏 Share this with someone who needs encouragement today!\n\n#faith #christian #devotional #hope #bible"
+              "value": "✝️ Devotional blog draft/update for review\n\n{{$('Publish Faith Blog').item.json.title}}\n\nFaith content requires scripture/theology review and Daniel approval before public use.\n\nNo product, donation, affiliate, or sale CTA should be added until Daniel approves it.\n\n#faith #christian #devotional #hope #bible"
             },
             {
               "name": "link",
@@ -428,7 +428,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_CHANNEL_ID}}",
-        "text": "📝 **BLOG CONTENT PUBLISHED!**\n\n**Travel Blog:** {{$('Publish Travel Blog').item.json.title || 'No travel content'}}\n**Faith Blog:** {{$('Publish Faith Blog').item.json.title || 'No faith content'}}\n\n**Published URLs:**\n🌍 Travel: {{$('Publish Travel Blog').item.json.URL || 'N/A'}}\n✝️ Faith: {{$('Publish Faith Blog').item.json.URL || 'N/A'}}\n\n**Social Media:**\n✅ Facebook posts shared\n✅ Twitter posts published\n✅ SEO optimized for search\n\n**Next Steps:**\n📊 Monitor blog traffic and engagement\n💰 Track affiliate link clicks\n🎯 Analyze conversion to Patreon\n📈 Optimize based on performance\n\n*Blog content is live and driving traffic!* 📈"
+        "text": "📝 **BLOG WORKFLOW OUTPUT NEEDS VERIFICATION**\n\n**Travel Blog:** {{$('Publish Travel Blog').item.json.title || 'No travel content'}}\n**Faith Blog:** {{$('Publish Faith Blog').item.json.title || 'No faith content'}}\n\n**Returned URLs:**\n🌍 Travel: {{$('Publish Travel Blog').item.json.URL || 'No verified URL returned'}}\n✝️ Faith: {{$('Publish Faith Blog').item.json.URL || 'No verified URL returned'}}\n\n**Required before marking live:**\n- Confirm publish target and public URL\n- Confirm Daniel approval and brand/account mapping\n- Add monetization links only after approval\n- Record analytics only after real traffic data exists\n\nThis workflow output is not proof of public publication by itself."
       },
       "id": "13",
       "name": "Blog Success Notification",
