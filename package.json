@@ -11,6 +11,7 @@
     "gods-vessel:collection": "node tools/gods-vessel/produce-names-of-god.mjs",
     "timezone:sample": "node tools/timezone-travelers/produce-sample.mjs",
     "dax-traveler:support": "node tools/dax-traveler/produce-support-package.mjs",
+    "revenue:readiness": "node tools/revenue-readiness/build-readiness.mjs",
     "business-state:build": "node tools/business-state/build-state.mjs",
     "business-state:query": "node tools/business-state/query-state.mjs",
     "n8n:inventory": "node tools/n8n/inventory.mjs",

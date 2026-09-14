@@ -16,7 +16,10 @@
       "name": "Daily Morning Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.1,
-      "position": [240, 300]
+      "position": [
+        240,
+        300
+      ]
     },
     {
       "parameters": {
@@ -34,7 +37,10 @@
       "name": "Read God's Vessel Sheet",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4,
-      "position": [460, 300],
+      "position": [
+        460,
+        300
+      ],
       "credentials": {
         "googleSheetsApi": {
           "id": "google_sheets_api",
@@ -69,7 +75,10 @@
       "name": "Filter Faith Content",
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2,
-      "position": [680, 300]
+      "position": [
+        680,
+        300
+      ]
     },
     {
       "parameters": {
@@ -117,7 +126,10 @@
       "name": "Generate Faith Script",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
-      "position": [900, 300]
+      "position": [
+        900,
+        300
+      ]
     },
     {
       "parameters": {
@@ -167,7 +179,10 @@
       "name": "Generate Peaceful Voice",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
-      "position": [1120, 300]
+      "position": [
+        1120,
+        300
+      ]
     },
     {
       "parameters": {
@@ -217,7 +232,10 @@
       "name": "Create Faith Video",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
-      "position": [1340, 300]
+      "position": [
+        1340,
+        300
+      ]
     },
     {
       "parameters": {
@@ -237,7 +255,10 @@
       "name": "Update Faith Sheet",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4,
-      "position": [1560, 300],
+      "position": [
+        1560,
+        300
+      ],
       "credentials": {
         "googleSheetsApi": {
           "id": "google_sheets_api",
@@ -254,7 +275,7 @@
           "parameters": [
             {
               "name": "content",
-              "value": "🙏 **God's Vessel Video Created!**\\n\\n**Title:** {{ $json.Video_Title }}\\n**Scripture:** {{ $json.Scripture_Reference }}\\n**Status:** Ready for upload\\n**Viral Score:** {{ $json.Viral_Score }}/100"
+              "value": "🙏 **God's Vessel draft generated for review**\n\n**Title:** {{ $json.Video_Title }}\n**Scripture:** {{ $json.Scripture_Reference }}\n**Status:** Theology/design/Daniel review required before upload or publication\n**Interest Score:** {{ $json.Viral_Score }}/100\n\nNo product, donation, affiliate, or public publishing claim is authorized by this notification."
             }
           ]
         },
@@ -264,7 +285,10 @@
       "name": "Faith Discord Notification",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
-      "position": [1780, 300]
+      "position": [
+        1780,
+        300
+      ]
     }
   ],
   "connections": {

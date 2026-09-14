@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-14T00:58:30-04:00
+2026-09-14T12:43:11-04:00
 
 ## VERIFIED DONE
 
@@ -107,6 +107,23 @@
   - high-risk n8n template language was hardened away from unsupported public publishing, Patreon, affiliate, product, and revenue-projection claims
   - `GO_LIVE_MATRIX.md` was added with system status, risk, blockers, and owner
 
+- Sprint 6 hardening commit `b2232be02082e07ff0c8f11c78162a493e23a4ca` is on the PR branch and was previously verified by the Firebase Hosting PR workflow.
+- Sprint 7 revenue readiness is implemented and locally verified:
+  - command: `npm run revenue:readiness`
+  - output: `REVENUE_READINESS.md`
+  - output: `artifacts/revenue-readiness/current-revenue-readiness.json`
+  - verified revenue/profit/ad spend remain `$0`
+  - no public publishing, product launch, affiliate enrollment, sponsor claim, or paid action is authorized
+- Sprint 7 frontend revenue widgets were made conservative:
+  - `AggressiveAccelerator`, `EmergencyMonetization`, and `GrowthAccelerator` now defer to verified revenue tracking instead of fake projections or acceleration claims
+- Sprint 7 n8n safety verification passed:
+  - all modified workflow exports parse as JSON
+  - modified workflow node counts are unchanged except approved safety renames
+  - YouTube publisher now requires `Approved` status, creates `Private Draft Created`, keeps uploads `private`, and disables automatic Twitter/Facebook cross-post nodes
+  - revenue/analytics/financial templates now use readiness/bookkeeping language and verified provider data only
+  - tax/payment alert nodes in the financial tracker export are disabled and require human/professional review
+
+
 ## CURRENTLY WORKING
 
 - Frontend builds with `npm --prefix dax-main run build`.
@@ -173,6 +190,13 @@
   - backend and Firebase Functions publishing paths fail closed without approval
   - n8n repository templates remain inactive exports and default YouTube uploads to private where upload nodes exist
 
+- Sprint 7 revenue-readiness generation works without external credentials:
+  - lists 4 brand paths
+  - keeps verified revenue/profit/ad spend at `$0`
+  - records first-dollar sequence and required measurement fields
+  - integrates into the file-backed business-state CLI via `npm run business-state:query -- revenue-readiness`
+
+
 ## PARTIAL / UNTESTED
 
 - Ani-Dax n8n workflows exist but are not verified as production-safe:
@@ -210,6 +234,11 @@
 - Live Dax the Traveler platform analytics and historical performance data were not available in this repository session; generated priority scores are opportunity estimates, not verified historical winners.
 - Sprint 5 is a file-backed/CLI shared-state layer, not a live MCP server process.
 - Shared state reads repository artifacts and n8n export inventory; it does not verify live n8n runtime health or execute workflows.
+
+- Sprint 7 revenue readiness is prepared for tracking, not earning:
+  - no live affiliate enrollment, storefront checkout, sponsor deal, membership, product sale, ad spend, or platform monetization is verified
+  - n8n workflow exports are safer draft templates, not verified live runtime workflows
+
 
 ## BLOCKED - DANIEL
 
@@ -250,18 +279,16 @@
 
 ## NEXT EXACT ACTIONS
 
-1. Push the Sprint 6 hardening commit to PR #3 and verify the Firebase PR workflow.
-2. Continue Sprint 7 revenue readiness:
-   - use `GO_LIVE_MATRIX.md`, `BUSINESS_STATE.md`, and `BLOCKERS.md`
-   - map each brand from content -> audience -> offer -> CTA -> click/lead -> conversion -> revenue -> cost -> profit
-   - keep verified revenue at $0 unless real provider/store/platform data exists
-   - do not enroll in affiliates, launch products, publish public content, or spend money without Daniel approval
-3. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
-4. Repair Ani-Dax n8n templates before importing/running:
+1. Commit and push the Sprint 7 revenue-readiness/handoff changes to PR #3, then verify the Firebase Hosting PR workflow for the new commit.
+2. Complete the smallest remaining link for one real brand workflow:
+   - for Ani-Dax, test the existing `--audio-file` render path with a non-public placeholder audio file or Daniel-approved narration
+   - if placeholder audio is used, keep it clearly non-public and do not present it as final narration
+3. When Daniel provides approved narration, rerun the Ani-Dax package with `--audio-file` and produce a final READY_FOR_APPROVAL package.
+4. Repair Ani-Dax n8n templates before importing/running live:
    - add runtime approval/QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-5. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
+5. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
 
 ## DO NOT REDO
 
@@ -367,6 +394,7 @@
 | Dax the Traveler | PARTIAL, local support automation works | `npm run dax-traveler:support`, 14 approved assets inventoried, proof render created |
 | Dax Collective parent | legal/OAuth blocker implemented | PR #3 |
 | Shared business state | PARTIAL, file-backed CLI works | `npm run business-state:build`, query commands tested |
+| Revenue readiness | PARTIAL, tracking-ready but not earning | `npm run revenue:readiness`, `npm run business-state:query -- revenue-readiness` |
 
 ## TESTS RUN + RESULTS
 
@@ -407,6 +435,17 @@
 | `rg privacyStatus n8n/templates` after Sprint 6 hardening | PASS; YouTube upload templates use `private` |
 | `npm --prefix dax-main run build` after Sprint 6 hardening | PASS with existing warnings |
 | `git diff --check` after Sprint 6 hardening | PASS; CRLF warnings only |
+| `node --check tools/revenue-readiness/build-readiness.mjs` | PASS |
+| modified n8n JSON parse check | PASS; 12 modified workflow exports parsed |
+| workflow logic assertions | PASS; YouTube publisher requires Approved, private draft status, private uploads, disabled cross-posts, no-tax-advice financial policy |
+| workflow structure assertions | PASS; modified workflow node counts unchanged; only approved safety renames/disables detected |
+| `npm run revenue:readiness` | PASS; 4 brand paths, verified revenue/profit `$0` |
+| `npm run n8n:inventory` after Sprint 7 hardening | PASS; 30 templates parsed, one known invalid JSON export flagged |
+| `npm run business-state:build` after Sprint 7 readiness | PASS; 4 brands, 4 queue items, 30 workflow templates |
+| `npm run business-state:query -- revenue-readiness` | PASS; publicPublishingAllowed false, purchaseOrEnrollmentAllowed false |
+| `npm run business-state:query -- summary` after Sprint 7 readiness | PASS; publicPublishingAllowed false |
+| `npm --prefix dax-main run build` after Sprint 7 readiness | PASS with existing warnings |
+| `git diff --check` after Sprint 7 readiness | PASS; CRLF warnings only |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
@@ -457,6 +496,10 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `business-state/brand-rules.json`
 - `business-state/permissions.json`
 
+- `REVENUE_READINESS.md`
+- `artifacts/revenue-readiness/current-revenue-readiness.json`
+
+
 ## KNOWN BUGS
 
 - `workflow_12_data_collection_agent.json.json` is invalid JSON.
@@ -495,4 +538,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Push and verify Sprint 6 hardening, then continue Sprint 7 revenue readiness.
+Complete the smallest missing Ani-Dax end-to-end link: test the existing `--audio-file` render path with a non-public placeholder or Daniel-approved narration, then update the Ani-Dax READY_FOR_APPROVAL package without public publishing.

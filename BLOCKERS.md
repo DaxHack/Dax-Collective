@@ -40,6 +40,12 @@
 | Dax the Traveler final audio missing | Sprint 4 support proof render is silent by design. | Use Daniel-approved narration or approved TTS before public approval. |
 | Live MCP/n8n action surface not implemented | Sprint 5 created a file-backed business-state CLI, not a live MCP server or n8n trigger surface. | Approve design and permissions before exposing workflow-triggering tools. |
 
+## Current Revenue Readiness
+
+- Revenue remains zero until verified provider/store/platform data exists.
+- First-dollar paths are prepared but blocked on Daniel approval and provider/store setup, especially God's Vessel commerce launch and approved monetized links for travel brands.
+- Financial tracker export is bookkeeping-only and does not authorize tax/payment action.
+
 ## Not Blockers
 
 - Frontend build warnings: build succeeds.

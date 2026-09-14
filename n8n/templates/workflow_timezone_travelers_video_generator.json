@@ -337,7 +337,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_CHANNEL_ID}}",
-        "text": "🌍 New Time-Zone Travelers content generated!\n\n**Title:** {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n**Location:** {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\n**Viral Score:** {{$('Read Timezone Travelers Sheet').item.json['Viral Score']}}\n**Platform:** {{$('Read Timezone Travelers Sheet').item.json['Target Platform']}}\n\n✅ Video created\n✅ Blog post generated\n✅ Ready for upload\n\nCurrent weather in {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C"
+        "text": "🌍 Time-Zone Travelers draft generated for review.\n\n**Title:** {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n**Location:** {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\n**Interest Score:** {{$('Read Timezone Travelers Sheet').item.json['Viral Score']}}\n**Platform:** {{$('Read Timezone Travelers Sheet').item.json['Target Platform']}}\n\n✅ Draft assets generated\n✅ Blog draft generated\n⏳ Daniel review required before upload or publication\n⏳ Time-sensitive claims require source verification before public use\n\nWeather API output captured for review: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C"
       },
       "id": "14",
       "name": "Travel Discord Notification",
@@ -378,7 +378,7 @@
         "options": {}
       },
       "id": "15",
-      "name": "Check High Revenue Potential",
+      "name": "Check Monetization Readiness Potential",
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2,
       "position": [
@@ -401,7 +401,7 @@
             },
             {
               "role": "user",
-              "content": "This travel content may have future revenue potential:\n\nTitle: {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nPlanning Element: {{$('Read Timezone Travelers Sheet').item.json['Survival Element']}}\n\nSuggest 5 legitimate monetization categories, the approval needed for each, and the click/conversion tracking fields required. Do not claim current enrollment, commission rates, or approved affiliate links unless the reviewed input provides them."
+              "content": "This travel content may have future monetization readiness potential:\n\nTitle: {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nPlanning Element: {{$('Read Timezone Travelers Sheet').item.json['Survival Element']}}\n\nSuggest 5 legitimate monetization categories, the approval needed for each, and the click/conversion tracking fields required. Do not claim current enrollment, commission rates, sale terms, sponsorships, or approved affiliate links unless the reviewed input provides them."
             }
           ]
         }
@@ -574,7 +574,7 @@
             "index": 0
           },
           {
-            "node": "Check High Revenue Potential",
+            "node": "Check Monetization Readiness Potential",
             "type": "main",
             "index": 0
           }
@@ -592,7 +592,7 @@
         ]
       ]
     },
-    "Check High Revenue Potential": {
+    "Check Monetization Readiness Potential": {
       "main": [
         [
           {
@@ -616,4 +616,3 @@
   "id": "timezone-travelers-video-generator",
   "tags": []
 }
-

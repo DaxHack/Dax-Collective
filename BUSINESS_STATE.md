@@ -1,6 +1,6 @@
 # Dax Business State
 
-Generated: 2026-09-14T04:58:31.043Z
+Generated: 2026-09-14T16:38:41.383Z
 
 This is a non-secret shared operating state for Codex, Claude, ChatGPT, and future agents. It is generated from repository files and local artifacts, not from private credential values.
 
@@ -38,9 +38,18 @@ This is a non-secret shared operating state for Codex, Claude, ChatGPT, and futu
 - Firebase PR preview service account: WORKING_FOR_PR_PREVIEW
 - Firebase browser config: NEEDS_DANIEL_GITHUB_SECRET_OR_VARIABLE_VALUES_FOR_FULL_AUTH_RUNTIME
 
+## Revenue Readiness
+
+- Status: REVENUE_READY_FOR_APPROVAL_NOT_EARNING
+- Verified revenue: $0
+- Verified profit: $0
+- Public publishing allowed: no
+- Purchase/enrollment allowed: no
+
 ## Tool Access
 
 - Build state: `npm run business-state:build`
+- Build revenue readiness: `npm run revenue:readiness`
 - Query brands: `npm run business-state:query -- list-brands`
 - Query queue: `npm run business-state:query -- content-queue`
 - Query workflow health: `npm run business-state:query -- workflow-health`

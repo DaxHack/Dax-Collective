@@ -7,8 +7,8 @@
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
 3. Continue from the latest PR #3 head; the contact-email correction is pushed and its Firebase PR workflow passed.
-4. If the Sprint 6 hardening commit has not yet been pushed, push it to PR #3 and verify the Firebase PR workflow.
-5. Continue Sprint 7 revenue readiness after Sprint 6 is pushed/verified.
+4. If the Sprint 7 revenue-readiness commit has not yet been pushed, push it to PR #3 and verify the Firebase Hosting PR workflow.
+5. Continue by completing the smallest Ani-Dax end-to-end missing link: test the `--audio-file` render path with non-public placeholder audio or Daniel-approved narration.
 6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
 7. Continue Sprint 1 repair work opportunistically around:
    - approval gates
@@ -66,6 +66,14 @@
   - `.github/workflows/firebase-hosting-pull-request.yml`
   - `.github/workflows/firebase-hosting-merge.yml`
 
+- Revenue readiness builder: `tools/revenue-readiness/build-readiness.mjs`
+- Revenue readiness output: `artifacts/revenue-readiness/current-revenue-readiness.json`
+- Revenue readiness summary: `REVENUE_READINESS.md`
+- Reusable revenue readiness command:
+  `npm run revenue:readiness`
+  `npm run business-state:query -- revenue-readiness`
+
+
 ## What Has Already Been Verified
 
 - Legal/OAuth pages/routes/footer/homepage disclosure exist on PR branch.
@@ -113,6 +121,15 @@
   - high-risk n8n template copy was repaired away from unsupported public publishing/revenue/affiliate claims
   - `npm --prefix dax-main run build` passes with existing warnings
   - `node --check` passes for backend/functions/business-state/n8n tooling
+
+- Sprint 7 revenue readiness was generated and verified locally:
+  - `npm run revenue:readiness` produced 4 brand paths with verified revenue/profit/ad spend at `$0`
+  - `npm run business-state:query -- revenue-readiness` reports public publishing and purchase/enrollment are not allowed
+  - frontend archived accelerator widgets no longer display fake revenue/projection claims
+  - modified n8n workflow exports parse and keep node counts intact
+  - generic YouTube publisher requires `Approved`, writes `Private Draft Created`, keeps YouTube uploads private, and disables Twitter/Facebook cross-post nodes
+  - financial tracker export is verified-bookkeeping-only and tax/payment alert nodes are disabled
+
 
 ## What Not To Repeat
 
@@ -179,4 +196,4 @@
 
 ## Current Sprint
 
-Sprint 6 company hardening is the current atomic task captured by this handoff. If the PR branch already contains the Sprint 6 hardening commit, verify PR checks and continue Sprint 7 revenue readiness from `GO_LIVE_MATRIX.md`, `BUSINESS_STATE.md`, and `BLOCKERS.md`.
+Sprint 7 revenue readiness is the current atomic commit. After it is pushed and the PR workflow passes, continue with the smallest missing end-to-end brand link: Ani-Dax approved-audio render path verification. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.

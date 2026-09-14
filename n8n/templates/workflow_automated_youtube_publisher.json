@@ -54,7 +54,7 @@
             {
               "id": "1",
               "leftValue": "={{$json['Upload Status']}}",
-              "rightValue": "Generated",
+              "rightValue": "Approved",
               "operator": {
                 "type": "string",
                 "operation": "equals"
@@ -277,7 +277,7 @@
           "values": [
             {
               "column": "Upload Status",
-              "fieldValue": "Published"
+              "fieldValue": "Private Draft Created"
             },
             {
               "column": "Performance Views",
@@ -289,7 +289,7 @@
             },
             {
               "column": "Next Action Required",
-              "fieldValue": "Monitor performance"
+              "fieldValue": "Daniel review required before public publishing"
             }
           ]
         }
@@ -312,7 +312,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_CHANNEL_ID}}",
-        "text": "🎬 **NEW VIDEO PUBLISHED!**\n\n**Brand:** {{$json['Brand']}}\n**Title:** {{$json['Video Title']}}\n**Platform:** YouTube\n**Viral Score:** {{$json['Viral Score']}}\n**Revenue Potential:** {{$json['Revenue Potential']}}\n\n**YouTube URL:** {{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}\n\n**Next Steps:**\n✅ Monitor performance in first 24 hours\n✅ Engage with early comments\n✅ Share on other social platforms\n✅ Track revenue metrics\n\n*Let's see this content reach its viral potential!* 🚀"
+        "text": "🎬 **PRIVATE YOUTUBE DRAFT CREATED - REVIEW REQUIRED**\n\n**Brand:** {{$json['Brand']}}\n**Title:** {{$json['Video Title']}}\n**Platform:** YouTube private/draft\n**Interest Score:** {{$json['Viral Score']}}\n**Revenue Readiness:** {{$json['Revenue Potential']}}\n\n**Private YouTube ID:** {{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}\n\n**Required before public release:**\n- Daniel approval recorded\n- Brand/account mapping verified\n- QC/copyright/source review complete\n- Monetized links approved and tracked\n\nThis notification does not verify public publication or revenue."
       },
       "id": "11",
       "name": "Success Notification",
@@ -380,7 +380,7 @@
           "parameters": [
             {
               "name": "text",
-              "value": "🔥 NEW VIDEO: {{$json['Video Title']}}\n\nThis {{$json['Content Type']}} will blow your mind! 🤯\n\n{{$json['Brand'] === 'Ani-Dax' ? '#anime #animetheory' : $json['Brand'] === 'Time-Zone Travelers' ? '#travel #adventure' : '#faith #christian'}}\n\nWatch now: [YouTube Link]\n\n{{$json['Tags/Hashtags']}}"
+              "value": "DRAFT ONLY - do not post automatically. Prepare platform copy after Daniel approval for: {{$json['Video Title']}}"
             }
           ]
         }
@@ -398,7 +398,8 @@
           "id": "9",
           "name": "Twitter API"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -410,11 +411,11 @@
           "parameters": [
             {
               "name": "message",
-              "value": "🎬 Just dropped a new {{$json['Content Type']}}!\n\n{{$json['Video Title']}}\n\n{{$json['Brand'] === 'Ani-Dax' ? 'Anime fans, this one is for you! 🎌' : $json['Brand'] === 'Time-Zone Travelers' ? 'Travelers, this could save your life! 🌍' : 'Faith family, this message is for you! ✝️'}}\n\nCheck it out and let me know what you think in the comments!\n\n{{$json['Tags/Hashtags']}}"
+              "value": "DRAFT ONLY - do not post automatically. Prepare platform copy after Daniel approval for: {{$json['Video Title']}}"
             },
             {
               "name": "link",
-              "value": "https://youtube.com/watch?v={{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}"
+              "value": ""
             }
           ]
         }
@@ -432,7 +433,8 @@
           "id": "10",
           "name": "Facebook API"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -458,7 +460,7 @@
         "options": {}
       },
       "id": "15",
-      "name": "Check High Revenue Content",
+      "name": "Check Revenue Readiness Content",
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2,
       "position": [
@@ -469,7 +471,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_REVENUE_CHANNEL_ID}}",
-        "text": "📋 **PRIVATE DRAFT READY FOR REVENUE REVIEW**\n\n**Title:** {{$json['Video Title']}}\n**Brand:** {{$json['Brand']}}\n**Revenue Potential:** {{$json['Revenue Potential']}}\n**Viral Score:** {{$json['Viral Score']}}\n\n**Required before monetized public release:**\n- Daniel content approval\n- Correct brand/account mapping verified\n- Affiliate, membership, sponsor, or product links approved\n- Revenue tracking fields configured\n\nNo public publishing or revenue claim has been verified by this notification."
+        "text": "📋 **PRIVATE DRAFT READY FOR REVENUE REVIEW**\n\n**Title:** {{$json['Video Title']}}\n**Brand:** {{$json['Brand']}}\n**Revenue Readiness:** {{$json['Revenue Potential']}}\n**Interest Score:** {{$json['Viral Score']}}\n\n**Required before monetized public release:**\n- Daniel content approval\n- Correct brand/account mapping verified\n- Affiliate, membership, sponsor, product, or donation links approved\n- Click/conversion/revenue tracking fields configured\n\nNo public publishing or revenue claim has been verified by this notification."
       },
       "id": "16",
       "name": "Revenue Alert",
@@ -612,7 +614,7 @@
             "index": 0
           },
           {
-            "node": "Check High Revenue Content",
+            "node": "Check Revenue Readiness Content",
             "type": "main",
             "index": 0
           }
@@ -635,7 +637,7 @@
         ]
       ]
     },
-    "Check High Revenue Content": {
+    "Check Revenue Readiness Content": {
       "main": [
         [
           {
@@ -659,4 +661,3 @@
   "id": "automated-youtube-publisher",
   "tags": []
 }
-

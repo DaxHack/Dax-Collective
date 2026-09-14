@@ -35,6 +35,9 @@ switch (command) {
   case 'costs':
     print(state.costs);
     break;
+  case 'revenue-readiness':
+    print(state.revenueReadiness);
+    break;
   case 'blockers':
     print(state.blockers);
     break;

@@ -11,9 +11,14 @@ The full machine-readable inventory is in `artifacts/n8n-inventory.json`.
 - Active templates: 0 in repository exports
 - Verified working runtime workflows: 0
 - Partial Ani-Dax generation templates: 2
-- Publisher templates: present, now default to private/review language where repaired, and remain blocked until credentials and Daniel approval are verified
+- Publisher templates: present, now default to private/review language where repaired, require approved status where repaired, and remain blocked until credentials and Daniel approval are verified
 - Time-Zone Travelers generation template: present but partial; prompts were hardened away from unsupported Patreon/affiliate claims, but it is still not safe to run publicly as-is
 - Public YouTube privacy status scan: repository templates now use `private`
+
+- Sprint 7 workflow safety assertions passed for modified exports: JSON parses, node counts preserved, intended safety renames/disables only
+- Generic YouTube publisher now requires `Approved`, writes `Private Draft Created`, keeps upload privacy `private`, and disables automatic Twitter/Facebook cross-post nodes
+- Revenue/analytics/financial templates now use readiness/bookkeeping language and verified provider data only; financial tax/payment alert nodes are disabled in the export
+
 
 ## Sprint 1 Relevant Workflows
 
@@ -21,7 +26,7 @@ The full machine-readable inventory is in `artifacts/n8n-inventory.json`.
 | --- | --- | --- |
 | `n8n/templates/workflow_ani_dax_video_generator.json` | PARTIAL | Reads Ani-Dax sheet, uses DeepSeek/OpenAI-style node, ElevenLabs, Pexels, FFmpeg, Discord. Needs credentials, QC, safer visual sourcing, approval gate. |
 | `n8n/templates/ani_dax_specific_workflow.json` | WORKS WITH REPAIR | Useful skeleton; YouTube upload is now private and approval status is required, but runtime QC, credential verification, and source safety still need repair before use. |
-| `n8n/templates/workflow_automated_youtube_publisher.json` | BLOCKED | Multi-brand YouTube publisher. Requires verified account mapping and Daniel approval before any public publishing. |
+| `n8n/templates/workflow_automated_youtube_publisher.json` | BLOCKED / SAFER PRIVATE-DRAFT TEMPLATE | Multi-brand YouTube publisher export now filters for `Approved`, creates private YouTube drafts, writes `Private Draft Created`, and has Twitter/Facebook cross-post nodes disabled. Requires verified account mapping, credentials, runtime test, and Daniel approval before any public publishing. |
 | `n8n/templates/workflow_tiktok_instagram_publisher.json` | BLOCKED | Requires TikTok/Instagram credentials, file hosting/media URLs, platform approval. Do not run publicly. |
 | `n8n/templates/fixed_workflow_multi_format_video_creator.json` | UNTESTED | FFmpeg-oriented webhook template. Possible reuse target for render stage after queue/QC repair. |
 | `n8n/scripts/video_creation_scripts.py` | PARTIAL / UNTESTED | Has video-creation logic but assumes `/app` paths plus PIL/OpenCV dependencies. Not tested as usable in this Windows worktree. |

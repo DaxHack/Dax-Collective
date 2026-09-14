@@ -473,7 +473,7 @@
             },
             {
               "role": "user",
-              "content": "Analyze these published blog posts for performance potential:\n\nTravel: {{$('Publish Travel Blog').item.json.title || 'None'}}\nFaith: {{$('Publish Faith Blog').item.json.title || 'None'}}\n\nPredict:\n1. Traffic potential (1-10)\n2. Engagement likelihood\n3. Revenue generation potential\n4. SEO ranking probability\n5. Social sharing potential\n\nSuggest immediate optimization actions for maximum performance."
+              "content": "Analyze these blog workflow outputs for review readiness:\n\nTravel: {{$('Publish Travel Blog').item.json.title || 'None'}}\nFaith: {{$('Publish Faith Blog').item.json.title || 'None'}}\n\nAssess:\n1. Source/claim review needs\n2. Engagement quality\n3. Monetization approval needs\n4. SEO improvement opportunities\n5. Social sharing fit\n\nSuggest conservative optimization actions. Do not predict revenue or treat workflow output as proof of public publication."
             }
           ]
         }

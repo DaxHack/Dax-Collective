@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T04:58:31.043Z",
+  "generatedAt": "2026-09-14T16:38:41.383Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -286,7 +286,7 @@
     }
   ],
   "workflowHealth": {
-    "generatedAt": "2026-09-14T04:58:18.148Z",
+    "generatedAt": "2026-09-14T16:38:17.909Z",
     "templateCount": 30,
     "activeTemplatesInExport": 0,
     "statusCounts": {
@@ -553,6 +553,62 @@
       "Travel Blog WordPress",
       "Twitter API",
       "YouTube OAuth2"
+    ]
+  },
+  "revenueReadiness": {
+    "generatedAt": "2026-09-14T16:38:17.514Z",
+    "status": "REVENUE_READY_FOR_APPROVAL_NOT_EARNING",
+    "verifiedRevenueUsd": 0,
+    "verifiedCostUsd": 0,
+    "verifiedProfitUsd": 0,
+    "adSpendUsd": 0,
+    "publicPublishingAllowed": false,
+    "purchaseOrEnrollmentAllowed": false,
+    "brandCount": 4,
+    "firstDollarSequence": [
+      {
+        "rank": 1,
+        "path": "God's Vessel approved apparel launch",
+        "why": "Closest direct offer once theology/design/vendor/storefront approvals are complete.",
+        "blockedByDaniel": true
+      },
+      {
+        "rank": 2,
+        "path": "Dax the Traveler approved support content to channel/profile CTA",
+        "why": "Uses an existing personal brand without inventing experiences; monetization comes later after approved links.",
+        "blockedByDaniel": true
+      },
+      {
+        "rank": 3,
+        "path": "Time-Zone Travelers official-source trust content then approved travel affiliates/guides",
+        "why": "Clear link attribution exists, but affiliate enrollment and offer approval are not done.",
+        "blockedByDaniel": true
+      },
+      {
+        "rank": 4,
+        "path": "Ani-Dax audience building, then merch/membership/sponsors",
+        "why": "Needs consistent content proof and channel eligibility before meaningful revenue.",
+        "blockedByDaniel": true
+      }
+    ],
+    "measurementFields": [
+      "brand",
+      "contentId",
+      "offerId",
+      "ctaType",
+      "destinationUrl",
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "clicks",
+      "leads",
+      "conversions",
+      "grossRevenueUsd",
+      "feesUsd",
+      "productionCostUsd",
+      "adSpendUsd",
+      "profitUsd",
+      "approvalStatus"
     ]
   },
   "costs": [

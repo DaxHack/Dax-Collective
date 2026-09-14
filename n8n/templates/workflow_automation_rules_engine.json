@@ -545,11 +545,11 @@
           "values": [
             {
               "role": "system",
-              "content": "You are a scaling strategist. When content performance reaches success thresholds, create aggressive scaling strategies to multiply revenue and reach."
+              "content": "You are a conservative operations reviewer. When tracked content appears to reach performance thresholds, create verification-first scaling notes that protect approvals, spend limits, and revenue accuracy."
             },
             {
               "role": "user",
-              "content": "SUCCESS THRESHOLD REACHED! {{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content have 1000+ views.\n\nSuccessful content:\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).map(item => `- ${item['Brand']}: ${item['Video Title']} (${item['Performance Views']} views)`).join('\\n')}}\n\nCreate an aggressive scaling strategy:\n1. Content multiplication tactics\n2. Revenue scaling opportunities\n3. Brand expansion strategies\n4. Automation scaling recommendations\n5. Investment priorities\n6. Team scaling needs\n\nThis is the moment to scale from thousands to tens of thousands in revenue!"
+              "content": "PERFORMANCE THRESHOLD REVIEW: {{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content are marked with 1000+ views in the sheet.\n\nCandidate content:\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).map(item => `- ${item['Brand']}: ${item['Video Title']} (${item['Performance Views']} views)`).join('\\n')}}\n\nCreate verification-first next steps:\n1. Direct platform analytics verification\n2. Daniel approval confirmation\n3. Brand/account mapping checks\n4. Quality and compliance review\n5. Cost and spend limit review\n6. Conservative follow-up recommendations\n\nDo not project revenue, authorize ad spend, or claim monetization success."
             }
           ]
         }

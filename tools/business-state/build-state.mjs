@@ -10,6 +10,7 @@ fs.mkdirSync(outDir, { recursive: true });
 const brandRules = readJson(path.join(root, 'business-state', 'brand-rules.json')) || { brands: [] };
 const permissions = readJson(path.join(root, 'business-state', 'permissions.json')) || {};
 const n8nInventory = readJson(path.join(root, 'artifacts', 'n8n-inventory.json')) || { rows: [] };
+const revenueReadiness = readJson(path.join(root, 'artifacts', 'revenue-readiness', 'current-revenue-readiness.json'));
 
 const queue = collectContentQueue();
 const state = {
@@ -32,6 +33,7 @@ const state = {
   contentQueue: queue,
   workflowHealth: summarizeWorkflowHealth(n8nInventory.rows || []),
   credentialHealth: summarizeCredentialHealth(n8nInventory.rows || []),
+  revenueReadiness: revenueReadiness ? summarizeRevenueReadiness(revenueReadiness) : null,
   costs: summarizeCosts(),
   blockers: summarizeBlockers(),
   actions: {
@@ -201,6 +203,22 @@ function summarizeCredentialHealth(rows) {
   };
 }
 
+function summarizeRevenueReadiness(readiness) {
+  return {
+    generatedAt: readiness.generatedAt,
+    status: readiness.status,
+    verifiedRevenueUsd: readiness.verifiedRevenueUsd,
+    verifiedCostUsd: readiness.verifiedCostUsd,
+    verifiedProfitUsd: readiness.verifiedProfitUsd,
+    adSpendUsd: readiness.adSpendUsd,
+    publicPublishingAllowed: readiness.publicPublishingAllowed,
+    purchaseOrEnrollmentAllowed: readiness.purchaseOrEnrollmentAllowed,
+    brandCount: readiness.brands?.length || 0,
+    firstDollarSequence: readiness.firstDollarSequence || [],
+    measurementFields: readiness.measurementSchema?.requiredFields || [],
+  };
+}
+
 function summarizeCosts() {
   const costFiles = [
     ['ani-dax', 'artifacts/anidax/sprint-1-sample/generated/cost-record.json'],
@@ -288,9 +306,18 @@ ${queueRows}
 - Firebase PR preview service account: ${state.credentialHealth.firebaseHostingServiceAccount}
 - Firebase browser config: ${state.credentialHealth.firebaseClientConfig}
 
+## Revenue Readiness
+
+- Status: ${state.revenueReadiness?.status || 'not generated'}
+- Verified revenue: $${state.revenueReadiness?.verifiedRevenueUsd || 0}
+- Verified profit: $${state.revenueReadiness?.verifiedProfitUsd || 0}
+- Public publishing allowed: ${state.revenueReadiness?.publicPublishingAllowed ? 'yes' : 'no'}
+- Purchase/enrollment allowed: ${state.revenueReadiness?.purchaseOrEnrollmentAllowed ? 'yes' : 'no'}
+
 ## Tool Access
 
 - Build state: \`npm run business-state:build\`
+- Build revenue readiness: \`npm run revenue:readiness\`
 - Query brands: \`npm run business-state:query -- list-brands\`
 - Query queue: \`npm run business-state:query -- content-queue\`
 - Query workflow health: \`npm run business-state:query -- workflow-health\`
