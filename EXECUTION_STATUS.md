@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-13T19:00:33-04:00
+2026-09-13T20:04:15-04:00
 
 ## VERIFIED DONE
 
@@ -71,6 +71,17 @@
   - official source notes included for GO TOKYO, Seoul Metropolitan Government, and Korea Tourism Organization
   - approval gate, publish payload, analytics record, cost record, and monetization path generated
 - Sprint 3 commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` was pushed to PR #3 and its Firebase Hosting PR workflow succeeded in 2m 4s.
+- Handoff commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` was pushed to PR #3 and its Firebase Hosting PR workflow succeeded in 2m 12s.
+- Dax the Traveler Sprint 4 support package created and tested:
+  - command: `npm run dax-traveler:support`
+  - output: `artifacts/dax-the-traveler/sprint-4-support/`
+  - proof render: `artifacts/dax-the-traveler/sprint-4-support/render/dax-traveler-proof-render.mp4`
+  - render report: `artifacts/dax-the-traveler/sprint-4-support/render/render-report.json`
+  - content ID: `dtt-2026-09-13-puerto-rico-repurpose`
+  - 14 approved public-safe Dax the Traveler assets inventoried
+  - one READY_FOR_DANIEL_REVIEW repurposing package generated
+  - content queue, analytics record, revenue tracking record, and cost record generated
+- Dax the Traveler page copy was repaired to avoid unverified first-person anecdote claims; specific story beats are now Daniel-confirmation prompts.
 
 ## CURRENTLY WORKING
 
@@ -113,6 +124,18 @@
   - analytics tracking record
   - cost record
   - affiliate-ready, non-enrolled monetization path
+- Dax the Traveler local support package generation works without external credentials:
+  - approved media inventory
+  - repurposing opportunity scoring
+  - draft support package
+  - content queue
+  - captions
+  - thumbnail SVG
+  - silent FFmpeg proof render using approved Dax media
+  - approval/publish gate
+  - analytics tracking record
+  - revenue tracking record
+  - cost record
 
 ## PARTIAL / UNTESTED
 
@@ -142,6 +165,13 @@
   - it includes unsupported Patreon/affiliate assumptions
   - it should not be run publicly as-is
 - Time-Zone Travelers final voice/narration is not ready; local render uses silent placeholder audio.
+- Dax the Traveler n8n workflows are partial and not safe to run publicly:
+  - `n8n/templates/dax_traveler_specific_workflow.json` includes direct public YouTube upload and unverified affiliate/Patreon wording
+  - `n8n/templates/workflow_15_dax_traveler_video_automatio  n.json` creates AI-first weekly concepts, generated Dax voice, stock footage, private upload, Patreon/affiliate claims, and Slack notification
+  - credentials are unverified
+  - Daniel approval, real footage verification, and account mapping are not enforced enough for production
+- Dax the Traveler final voice/narration is not ready; local support render uses silent placeholder audio.
+- Live Dax the Traveler platform analytics and historical performance data were not available in this repository session; generated priority scores are opportunity estimates, not verified historical winners.
 
 ## BLOCKED - DANIEL
 
@@ -161,6 +191,9 @@
 - Approve Time-Zone Travelers sample concept/script and any public publishing.
 - Approve final Time-Zone Travelers voice/narration path.
 - Approve any travel affiliate enrollment, affiliate links, sponsorships, or paid provider use before public monetized publishing.
+- Approve Dax the Traveler source assets, repurposing angle, final narration, and any public publishing.
+- Provide or approve Dax the Traveler final narration. Do not use AI voice replacement without Daniel approval.
+- Approve any Dax the Traveler affiliate links, sponsorships, product claims, or monetized CTA before public use.
 - Add these browser-safe Firebase client config values to GitHub Actions as repository Secrets or Variables before relying on live Firebase Auth/admin behavior:
   - `REACT_APP_FIREBASE_API_KEY`
   - `REACT_APP_FIREBASE_AUTH_DOMAIN`
@@ -179,17 +212,19 @@
 ## NEXT EXACT ACTIONS
 
 1. If this documentation update is pushed as a new PR head, wait for the Firebase PR workflow to pass again.
-2. Begin Sprint 4 Dax the Traveler support automation by inventorying existing approved media/content, analytics hooks, and current page behavior. Do not fabricate Daniel travel experiences.
-3. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
-4. Repair Ani-Dax n8n templates before importing/running:
+2. Commit and push Sprint 4 Dax the Traveler support automation and status updates.
+3. Wait for Firebase PR workflow to pass on the Sprint 4 commit.
+4. Begin Sprint 5 shared business operating state only if treating the local READY_FOR_REVIEW production loops as sufficient initial working loops; otherwise keep hardening the brand pipelines first.
+5. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site should still render without them, but Firebase Auth/admin behavior will be disabled or degraded.
+6. Repair Ani-Dax n8n templates before importing/running:
    - remove direct public upload from generation workflows
    - add approval gate
    - add QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-5. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
-6. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
-7. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
+7. Add a safe Ani-Dax queue schema for READY_FOR_APPROVAL packages.
+8. Add a local or n8n path that accepts an approved narration WAV/MP3 and renders a final draft video with captions.
+9. Test the implemented `--audio-file` render path once Daniel supplies approved narration.
 
 ## DO NOT REDO
 
@@ -204,6 +239,9 @@
 - Do not duplicate Firebase initialization in other files; use exports from `dax-main/src/config/firebase.js`.
 - Do not redo the Time-Zone Travelers sample package unless the target concept changes.
 - Do not run the existing Time-Zone Travelers n8n workflow publicly as-is.
+- Do not redo the Dax the Traveler support package unless the target assets or repurposing angle changes.
+- Do not run the existing Dax the Traveler n8n workflows publicly as-is.
+- Do not replace Daniel's face or voice, and do not fabricate Dax the Traveler personal experiences.
 
 ## CURRENT GIT BRANCH / WORKTREE
 
@@ -221,6 +259,8 @@
 - Firebase hardening commit `6d050e0885e9f779bf64658439d81354b85aaa69` is pushed.
 - Handoff commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` is pushed and its PR workflow passed.
 - Sprint 3 Time-Zone Travelers commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` is pushed and its PR workflow passed.
+- Handoff commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` is pushed and its PR workflow passed.
+- Sprint 4 Dax the Traveler support changes are local until committed and pushed.
 
 ## DEPLOYMENT STATE
 
@@ -229,14 +269,15 @@
 - Merge/live workflow: `.github/workflows/firebase-hosting-merge.yml`
 - Previous PR preview for commit `15c4c889ad78cfb6d18fc6f8948afbb55bb88785` passed:
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
-- Current additional local status update requires a new PR workflow run after push.
+- Current additional local Sprint 4 work requires a new PR workflow run after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
-- Current remote PR head verified by `ls-remote`: `96a6148e85c8ff7f49ae72f84212c34a29ed4548`.
+- Current remote PR head verified by `ls-remote`: `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
 - PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
 - Firebase preview comment was updated for commit `6d050e0`.
 - PR #3 showed 5 commits and the Firebase Hosting PR workflow for commit `c59b2ff6f5b573c0a56bec173fecb93de1b2a16b` succeeded in 2m 10s.
 - PR #3 showed 6 commits and the Firebase Hosting PR workflow for commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` succeeded in 2m 4s.
+- PR #3 showed 7 commits and the Firebase Hosting PR workflow for commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` succeeded in 2m 12s.
 
 ## CREDENTIAL HEALTH WITHOUT SECRET VALUES
 
@@ -268,6 +309,7 @@
 - Publishing workflows are blocked pending credentials and Daniel approval.
 - Ani-Dax generation workflows are partial and need approval/QC repair before runtime use.
 - Time-Zone Travelers generation workflow exists but is PARTIAL / WORKS WITH REPAIR. It is useful for the rough shape of a travel pipeline but needs source verification, approval gating, credential verification, and removal of unsupported Patreon/affiliate assumptions before runtime use.
+- Dax the Traveler workflows exist but are PARTIAL / WORKS WITH REPAIR at best. They need Daniel approval gates, real-material checks, voice protection, credential verification, and removal of unsupported Patreon/affiliate claims before runtime use.
 
 ## BRAND-BY-BRAND STATE
 
@@ -276,7 +318,7 @@
 | Ani-Dax | PARTIAL, local production package works | `npm run anidax:sample`, proof render created |
 | God's Vessel | PARTIAL, first collection draft path works | `npm run gods-vessel:collection`, `/gods-vessel` page repaired |
 | Time-Zone Travelers | PARTIAL, local source-backed sample package works | `npm run timezone:sample`, proof render created |
-| Dax the Traveler | protected; social links corrected in PR | no public publishing attempted |
+| Dax the Traveler | PARTIAL, local support automation works | `npm run dax-traveler:support`, 14 approved assets inventoried, proof render created |
 | Dax Collective parent | legal/OAuth blocker implemented | PR #3 |
 
 ## TESTS RUN + RESULTS
@@ -296,6 +338,9 @@
 | Local production route smoke | PASS; `/`, `/privacy`, `/terms`, `/disclosure` rendered with no Firebase console errors |
 | `node --check tools/timezone-travelers/produce-sample.mjs` | PASS |
 | `npm run timezone:sample` | PASS; source-backed package and FFmpeg proof render created |
+| `node --check tools/dax-traveler/produce-support-package.mjs` | PASS |
+| `npm run dax-traveler:support` | PASS; approved media inventory, support package, queue, tracking records, and FFmpeg proof render created |
+| `npm --prefix dax-main run build` after Dax page copy repair | PASS with existing warnings |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
@@ -327,6 +372,19 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `artifacts/timezone-travelers/sprint-3-sample/thumbnail/thumbnail.svg`
 - `artifacts/timezone-travelers/sprint-3-sample/render/timezone-proof-render.mp4`
 - `artifacts/timezone-travelers/sprint-3-sample/render/render-report.json`
+- `artifacts/dax-the-traveler/sprint-4-support/approval-package.md`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/content-inventory.json`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/repurposing-opportunities.json`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/support-package.json`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/content-queue.json`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/analytics-record.json`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/revenue-tracking-record.json`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/cost-record.json`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/captions.srt`
+- `artifacts/dax-the-traveler/sprint-4-support/generated/storyboard.svg`
+- `artifacts/dax-the-traveler/sprint-4-support/thumbnail/thumbnail.svg`
+- `artifacts/dax-the-traveler/sprint-4-support/render/dax-traveler-proof-render.mp4`
+- `artifacts/dax-the-traveler/sprint-4-support/render/render-report.json`
 
 ## KNOWN BUGS
 
@@ -340,6 +398,9 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - Full Firebase Auth/admin runtime cannot be verified until GitHub has real browser-safe Firebase client config values.
 - Time-Zone Travelers n8n workflow has no approval gate and includes unsupported Patreon/affiliate assumptions.
 - Time-Zone Travelers sample render uses silent placeholder audio.
+- Dax the Traveler n8n workflows use AI-first generation patterns and monetization/publishing assumptions that are unsafe for Daniel's personal brand until repaired.
+- Dax the Traveler support render uses silent placeholder audio.
+- Live Dax the Traveler analytics are not connected in this local repo run.
 
 ## COST/RISK ISSUES
 
@@ -348,6 +409,7 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - God's Vessel local Sprint 2 generation cost: $0.00.
 - Firebase hardening local cost: $0.00.
 - Time-Zone Travelers local Sprint 3 proof run cost: $0.00.
+- Dax the Traveler local Sprint 4 support proof run cost: $0.00.
 - God's Vessel price/margin numbers are estimates until vendor base costs, shipping, fees, taxes, and platform costs are verified.
 - Highest immediate risks:
   - accidental public publishing
@@ -359,4 +421,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Continue Sprint 4 Dax the Traveler support automation. Protect Daniel's face/voice/personal brand; inventory existing approved media and create support automation around his material only.
+Commit and push Sprint 4, wait for PR checks, then continue with Sprint 5 shared business operating state only if appropriate; otherwise keep hardening the brand pipelines and approval gates first.

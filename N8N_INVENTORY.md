@@ -34,6 +34,15 @@ The full machine-readable inventory is in `artifacts/n8n-inventory.json`.
 | `n8n/templates/workflow_tiktok_instagram_publisher.json` | BLOCKED | TikTok, Instagram, media hosting/platform credentials | Cross-platform publisher candidate, but requires verified account mapping, Daniel approval, and a safe review queue before use. |
 | `n8n/templates/workflow_8_analytics_dashboard.json` | UNTESTED | Analytics/dashboard nodes | Possible analytics reuse candidate after platform credentials and tracking schema are verified. |
 
+## Sprint 4 Relevant Workflows
+
+| File | Classification | Integrations | Notes |
+| --- | --- | --- | --- |
+| `n8n/templates/dax_traveler_specific_workflow.json` | PARTIAL / UNSAFE AS-IS | Google Sheets, OpenAI, Fal, ElevenLabs, YouTube | Reads a content sheet and can upload public YouTube videos. It lacks a strong Daniel approval gate, uses generated voice/visuals, and includes unverified affiliate/Patreon wording. Do not run publicly as-is. |
+| `n8n/templates/workflow_15_dax_traveler_video_automatio  n.json` | PARTIAL / WORKS WITH REPAIR | Cron, OpenAI, ElevenLabs, stock images, executeCommand, YouTube, Google Sheets, Slack | Useful high-level skeleton, but it is AI-first for a personal brand, assumes Patreon/affiliate paths, and must be repaired to inventory Daniel's existing material before generating/publishing. |
+| `n8n/templates/dax_collective_multi_brand_workflow.json` | BLOCKED / NEEDS REPAIR | Multi-brand AI generation and YouTube metadata | Includes Dax the Traveler defaults but creates generic AI content and public-oriented metadata. Needs account mapping, approval gates, and personal-brand safeguards. |
+| `n8n/templates/workflow_8_analytics_dashboard.json` | UNTESTED | Analytics/dashboard nodes | Possible reuse for Dax the Traveler historical performance once platform credentials and channel mapping are verified. |
+
 ## Broken
 
 - `n8n/templates/workflow_12_data_collection_agent.json.json`
@@ -60,6 +69,7 @@ Publishing templates must remain blocked until all are true:
 5. Add publish gate requiring explicit approved status and brand account mapping.
 6. Only then wire YouTube/TikTok/Instagram publishing.
 7. Repair Time-Zone Travelers generation by adding source-verification fields, approval gates, honest affiliate state, and a safe publish queue before any runtime import/execution.
+8. Repair Dax the Traveler automation around Daniel's existing media inventory first, then add draft queue, Daniel approval, final voice confirmation, and platform account mapping before any publishing.
 
 ## Current Classifications
 

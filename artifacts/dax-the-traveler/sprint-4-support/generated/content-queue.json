@@ -1,0 +1,18 @@
+[
+  {
+    "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+    "brand": "Dax the Traveler",
+    "title": "The Travel Moment Worth Saving",
+    "status": "READY_FOR_DANIEL_REVIEW",
+    "sourceAssetIds": [
+      "dtt-vlog-003",
+      "dtt-wander-001",
+      "dtt-jump-001",
+      "dtt-kit-002"
+    ],
+    "materialType": "ORIGINAL_DANIEL_MATERIAL_WITH_AI_GENERATED_SUPPORT",
+    "publishAllowed": false,
+    "nextOwner": "Daniel",
+    "nextAction": "Approve/revise selected assets and record final narration."
+  }
+]

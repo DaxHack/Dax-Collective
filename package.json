@@ -10,6 +10,7 @@
     "anidax:sample": "node tools/anidax/produce-sample.mjs",
     "gods-vessel:collection": "node tools/gods-vessel/produce-names-of-god.mjs",
     "timezone:sample": "node tools/timezone-travelers/produce-sample.mjs",
+    "dax-traveler:support": "node tools/dax-traveler/produce-support-package.mjs",
     "n8n:inventory": "node tools/n8n/inventory.mjs",
     "install:all": "npm install && npm --prefix dax-main install && npm --prefix dax-backend install && npm --prefix functions install",
     "clean": "rimraf node_modules dax-main/node_modules dax-backend/node_modules functions/node_modules",

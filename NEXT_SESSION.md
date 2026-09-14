@@ -6,10 +6,10 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. If this status-only handoff update is local, push it:
+3. If Sprint 4 Dax the Traveler work is still local, commit and push it:
    https://github.com/DaxHack/Dax-Collective/pull/3
 4. Wait for Firebase PR workflow to pass after the latest push.
-5. Continue Sprint 4 Dax the Traveler support automation by inventorying existing approved media/content, analytics hooks, current page behavior, and any safe local tooling opportunities.
+5. Continue Sprint 5 shared business operating state only if the local READY_FOR_REVIEW brand loops are accepted as sufficient initial working loops; otherwise keep hardening approval gates and n8n repairs first.
 6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
 7. Continue Sprint 1 repair work opportunistically around:
    - approval gates
@@ -41,6 +41,11 @@
   `npm run timezone:sample`
 - Time-Zone Travelers sample output: `artifacts/timezone-travelers/sprint-3-sample/`
 - Time-Zone Travelers proof render: `artifacts/timezone-travelers/sprint-3-sample/render/timezone-proof-render.mp4`
+- Dax the Traveler support generator: `tools/dax-traveler/produce-support-package.mjs`
+- Reusable Dax the Traveler invocation:
+  `npm run dax-traveler:support`
+- Dax the Traveler support output: `artifacts/dax-the-traveler/sprint-4-support/`
+- Dax the Traveler proof render: `artifacts/dax-the-traveler/sprint-4-support/render/dax-traveler-proof-render.mp4`
 - Firebase config module: `dax-main/src/config/firebase.js`
 - Firebase auth context: `dax-main/src/contexts/AuthContext.js`
 - Firebase Hosting workflows:
@@ -74,6 +79,12 @@
 - Time-Zone Travelers sample has `publishAllowed: false` and is blocked pending Daniel approval.
 - Existing `n8n/templates/workflow_timezone_travelers_video_generator.json` is partial and not safe to run publicly as-is.
 - Sprint 3 Time-Zone Travelers commit `96a6148e85c8ff7f49ae72f84212c34a29ed4548` reached PR #3 and its Firebase Hosting PR workflow succeeded in 2m 4s.
+- Handoff commit `e9dfa34ad3cb4bc2d9bf8ae7e6c03356e82b0fdb` reached PR #3 and its Firebase Hosting PR workflow succeeded in 2m 12s.
+- `npm run dax-traveler:support` inventoried 14 approved public-safe Dax the Traveler assets and generated a support package.
+- Sprint 4 Dax the Traveler content ID: `dtt-2026-09-13-puerto-rico-repurpose`.
+- Dax the Traveler proof render uses four approved Dax media assets and silent placeholder audio.
+- Dax the Traveler package has `publishAllowed: false` and is blocked pending Daniel approval.
+- Dax the Traveler page copy was repaired to avoid unverified specific first-person anecdote claims.
 
 ## What Not To Repeat
 
@@ -90,6 +101,9 @@
 - Do not redo the Sprint 3 Time-Zone Travelers sample unless the target concept changes.
 - Do not run the existing Time-Zone Travelers n8n workflow publicly as-is.
 - Do not fabricate Daniel travel experiences for Dax the Traveler.
+- Do not redo the Sprint 4 Dax the Traveler support package unless the target assets or angle changes.
+- Do not run Dax the Traveler n8n workflows publicly as-is.
+- Do not use AI to replace Daniel's face or voice without Daniel approval.
 
 ## What Requires Daniel
 
@@ -102,6 +116,9 @@
 - Time-Zone Travelers sample concept/script/public publishing approval.
 - Time-Zone Travelers final narration/TTS approval.
 - Travel affiliate enrollment, affiliate links, sponsorships, or paid provider approval.
+- Dax the Traveler support package source asset/angle/public publishing approval.
+- Dax the Traveler final narration or alternate voice approval.
+- Dax the Traveler affiliate, sponsorship, product claim, or monetized CTA approval.
 - Add or confirm these browser-safe GitHub repository Secrets or Variables for Firebase client config:
   - `REACT_APP_FIREBASE_API_KEY`
   - `REACT_APP_FIREBASE_AUTH_DOMAIN`
@@ -124,9 +141,10 @@
 - Generate/update God's Vessel draft collection assets and metadata.
 - Repair Time-Zone Travelers workflows/pages/metadata where the behavior can be tested without publishing or paid enrollment.
 - Build Dax the Traveler support automation around existing approved material and analytics without altering public channels.
+- Build shared business-state files/tools that read current repo status and non-secret workflow health.
 - Run builds/tests.
 - Commit and update PRs.
 
 ## Current Sprint
 
-Sprint 3 Time-Zone Travelers is PARTIAL with a working local sample package and proof render, pushed to PR #3 with a passing Firebase PR workflow. If this handoff-only update is still local, push it and wait for checks; then begin Sprint 4 Dax the Traveler support automation.
+Sprint 4 Dax the Traveler is PARTIAL with a working local approved-media inventory, support package, content queue, tracking records, and proof render. Commit/push it if still local, wait for PR checks, then continue Sprint 5 shared business operating state or keep hardening brand pipelines if Sprint 5 is judged premature.

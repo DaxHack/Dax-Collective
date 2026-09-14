@@ -35,7 +35,7 @@ const CHAPTERS = [
     title: 'Havana, Cuba',
     year: '2024',
     coords: '23.1330° N, 82.3830° W',
-    description: 'No tourist traps, no resorts. Just casas, classic cars, and the best mojito of my life.',
+    description: 'Approved Cuba frames: classic cars, street textures, food details, and arrival moments ready for Daniel to narrate.',
     photos: [
       `${BASE}/2024-cuba-havana-classic-car.png`,
       `${BASE}/2024-cuba-street-food-mofongo.png`,
@@ -48,7 +48,7 @@ const CHAPTERS = [
     title: 'Puerto Rico',
     year: '2024',
     coords: '18.2208° N, 66.5901° W',
-    description: 'Old San Juan, El Morro, and a zipline I almost said no to. Learning to slow down.',
+    description: 'Old San Juan, El Morro, zipline, beach, and airport moments from approved 2024 travel media.',
     photos: [
       `${BASE}/2024-puerto-rico-old-san-juan-street.png`,
       `${BASE}/2024-puerto-rico-condado-beach-morning.png`,
@@ -71,9 +71,9 @@ const CHAPTERS = [
 ];
 
 const PASSPORT_NOTES = [
-  { location: 'El Morro, San Juan', coords: '18.4710° N, 66.1235° W', date: 'Spring 2024', note: 'The wind off the Atlantic hits different here. Spent two hours just watching the kites.' },
-  { location: 'Havana Vieja', coords: '23.1368° N, 82.3533° W', date: 'Winter 2024', note: 'Met a guy named Carlos who fixed his 1957 Chevy with spare refrigerator parts.' },
-  { location: 'Toro Verde', coords: '18.2546° N, 66.3916° W', date: 'Spring 2024', note: 'Terrified of heights. Went anyway. The silence when you are airborne is absolute.' }
+  { location: 'El Morro, San Juan', coords: '18.4710° N, 66.1235° W', date: 'Spring 2024', note: 'Daniel prompt: record the real feeling behind this El Morro moment before turning it into a narrated Short.' },
+  { location: 'Havana Vieja', coords: '23.1368° N, 82.3533° W', date: 'Winter 2024', note: 'Daniel prompt: add the true context behind this Havana frame before publishing a first-person story.' },
+  { location: 'Toro Verde', coords: '18.2546° N, 66.3916° W', date: 'Spring 2024', note: 'Daniel prompt: confirm the real lesson from this zipline footage before it becomes a public travel beat.' }
 ];
 
 const MEMORIES = [
@@ -406,7 +406,7 @@ function PassportPieces() {
         <div className="text-center mb-16">
           <MapPinIcon className="w-8 h-8 text-[#F59E0B] mx-auto mb-4 opacity-80" />
           <h2 className="text-3xl font-bold text-white mb-2">Field Notes</h2>
-          <p className="text-white/50 font-mono text-xs tracking-widest uppercase">Raw thoughts from the road</p>
+          <p className="text-white/50 font-mono text-xs tracking-widest uppercase">Story prompts for Daniel to confirm</p>
         </div>
 
         <div className="space-y-12">
