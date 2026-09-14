@@ -7,7 +7,7 @@
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
 3. Continue from the latest PR #3 head; the contact-email correction is pushed and its Firebase PR workflow passed.
-4. If the Sprint 7 revenue-readiness commit has not yet been pushed, push it to PR #3 and verify the Firebase Hosting PR workflow.
+4. If Sprint 7 commit `147544b` has not yet been pushed, push it to PR #3 and verify the Firebase Hosting PR workflow.
 5. Continue by completing the smallest Ani-Dax end-to-end missing link: test the `--audio-file` render path with non-public placeholder audio or Daniel-approved narration.
 6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
 7. Continue Sprint 1 repair work opportunistically around:
@@ -122,7 +122,7 @@
   - `npm --prefix dax-main run build` passes with existing warnings
   - `node --check` passes for backend/functions/business-state/n8n tooling
 
-- Sprint 7 revenue readiness was generated and verified locally:
+- Sprint 7 revenue readiness commit `147544b` was generated and verified locally:
   - `npm run revenue:readiness` produced 4 brand paths with verified revenue/profit/ad spend at `$0`
   - `npm run business-state:query -- revenue-readiness` reports public publishing and purchase/enrollment are not allowed
   - frontend archived accelerator widgets no longer display fake revenue/projection claims
@@ -196,4 +196,4 @@
 
 ## Current Sprint
 
-Sprint 7 revenue readiness is the current atomic commit. After it is pushed and the PR workflow passes, continue with the smallest missing end-to-end brand link: Ani-Dax approved-audio render path verification. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.
+Sprint 7 revenue readiness commit `147544b` is the current atomic commit. After it is pushed and the PR workflow passes, continue with the smallest missing end-to-end brand link: Ani-Dax approved-audio render path verification. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.

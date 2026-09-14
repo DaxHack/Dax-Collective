@@ -108,7 +108,7 @@
   - `GO_LIVE_MATRIX.md` was added with system status, risk, blockers, and owner
 
 - Sprint 6 hardening commit `b2232be02082e07ff0c8f11c78162a493e23a4ca` is on the PR branch and was previously verified by the Firebase Hosting PR workflow.
-- Sprint 7 revenue readiness is implemented and locally verified:
+- Sprint 7 revenue readiness commit `147544b` is implemented and locally verified:
   - command: `npm run revenue:readiness`
   - output: `REVENUE_READINESS.md`
   - output: `artifacts/revenue-readiness/current-revenue-readiness.json`
@@ -279,7 +279,7 @@
 
 ## NEXT EXACT ACTIONS
 
-1. Commit and push the Sprint 7 revenue-readiness/handoff changes to PR #3, then verify the Firebase Hosting PR workflow for the new commit.
+1. Push Sprint 7 revenue-readiness commit `147544b` to PR #3, then verify the Firebase Hosting PR workflow for the new commit.
 2. Complete the smallest remaining link for one real brand workflow:
    - for Ani-Dax, test the existing `--audio-file` render path with a non-public placeholder audio file or Daniel-approved narration
    - if placeholder audio is used, keep it clearly non-public and do not present it as final narration
@@ -329,7 +329,8 @@
 - Sprint 4 Dax the Traveler commit `5b686e062abfe2c050903b0ddf93526b70a93656` is pushed and its PR workflow passed.
 - Sprint 5 shared business-state commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` is pushed and its PR workflow passed.
 - Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` is pushed and its Firebase Hosting PR workflow passed.
-- Sprint 6 hardening changes are captured by this handoff commit; if not already on the PR branch, push them and verify the Firebase Hosting PR workflow.
+- Sprint 6 hardening commit `b2232be02082e07ff0c8f11c78162a493e23a4ca` is pushed and its Firebase Hosting PR workflow passed.
+- Sprint 7 revenue readiness commit `147544b` is local at the time of this doc update; push it to PR #3 and verify the Firebase Hosting PR workflow.
 
 ## DEPLOYMENT STATE
 
@@ -340,7 +341,8 @@
   - https://dax-collective--pr3-codex-legal-oauth-pa-27fd2stk.web.app
 - Sprint 5 commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` was pushed and its Firebase Hosting PR workflow passed in 1m 41s.
 - Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` reached PR #3 and its Firebase Hosting PR workflow passed.
-- Sprint 6 hardening commit requires a new PR workflow run after push.
+- Sprint 6 hardening commit `b2232be02082e07ff0c8f11c78162a493e23a4ca` reached PR #3 and its Firebase Hosting PR workflow passed.
+- Sprint 7 revenue readiness commit `147544b` requires PR workflow verification after push.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
 - Current remote PR head verified by `ls-remote`: `fa5263e12a73fc649c86f17d3ced9a7193466cec`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
