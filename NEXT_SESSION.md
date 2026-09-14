@@ -6,9 +6,9 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. Continue from the latest PR #3 head; the contact-email correction is pushed and its Firebase PR workflow passed.
-4. If Sprint 7 commit `147544b` has not yet been pushed, push it to PR #3 and verify the Firebase Hosting PR workflow.
-5. Continue by completing the smallest Ani-Dax end-to-end missing link: test the `--audio-file` render path with non-public placeholder audio or Daniel-approved narration.
+3. Continue from the latest PR #3 head; the contact-email correction, Sprint 7 readiness work, and resumed verification handoff are pushed or should be verified against the PR head before more work.
+4. Do not redo the Ani-Dax `--audio-file` placeholder smoke test; it passed with non-public placeholder audio and the throwaway output was removed.
+5. Continue the smallest real missing Ani-Dax link: obtain Daniel-approved narration/TTS/narrator approval, then rerun the Ani-Dax package with `--audio-file` for a final READY_FOR_APPROVAL package.
 6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
 7. Continue Sprint 1 repair work opportunistically around:
    - approval gates
@@ -84,6 +84,7 @@
 - `npm --prefix dax-main run build` passes with warnings.
 - FFmpeg is installed and usable.
 - Local Windows TTS is not usable in this environment.
+- `node tools/anidax/produce-sample.mjs --audio-file ...` passed with non-public placeholder audio; `audioReadyForFinal: true` was verified and temporary smoke-test files were removed.
 - `npm run gods-vessel:collection` generates five Names of God SVG designs, metadata, theology review, and commerce readiness notes.
 - `/gods-vessel` has been repaired to show the real draft state: no live products, no checkout, no fake testimonials, no fake follower/lives-transformed claims.
 - God's Vessel interest CTAs use direct gtag custom events when analytics exists.
@@ -122,13 +123,14 @@
   - `npm --prefix dax-main run build` passes with existing warnings
   - `node --check` passes for backend/functions/business-state/n8n tooling
 
-- Sprint 7 revenue readiness commit `147544b` was generated and verified locally:
+- Sprint 7 revenue readiness commit `147544b` was pushed and verified:
   - `npm run revenue:readiness` produced 4 brand paths with verified revenue/profit/ad spend at `$0`
   - `npm run business-state:query -- revenue-readiness` reports public publishing and purchase/enrollment are not allowed
   - frontend archived accelerator widgets no longer display fake revenue/projection claims
   - modified n8n workflow exports parse and keep node counts intact
   - generic YouTube publisher requires `Approved`, writes `Private Draft Created`, keeps YouTube uploads private, and disables Twitter/Facebook cross-post nodes
   - financial tracker export is verified-bookkeeping-only and tax/payment alert nodes are disabled
+  - handoff/status commit `dabc2db60d25d77d5b86806ff35eea4981add475` reached PR #3 and Firebase Hosting PR workflow run `34870778496` succeeded
 
 
 ## What Not To Repeat
@@ -196,4 +198,4 @@
 
 ## Current Sprint
 
-Sprint 7 revenue readiness commit `147544b` is the current atomic commit. After it is pushed and the PR workflow passes, continue with the smallest missing end-to-end brand link: Ani-Dax approved-audio render path verification. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.
+Sprint 7 revenue readiness and Ani-Dax placeholder audio-path verification are complete. The next smallest brand link is Daniel-approved narration/TTS for Ani-Dax, then regenerating the READY_FOR_APPROVAL package with a real approved audio file. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.

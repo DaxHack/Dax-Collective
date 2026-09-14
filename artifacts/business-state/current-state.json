@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T16:38:41.383Z",
+  "generatedAt": "2026-09-14T16:57:46.526Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -286,7 +286,7 @@
     }
   ],
   "workflowHealth": {
-    "generatedAt": "2026-09-14T16:38:17.909Z",
+    "generatedAt": "2026-09-14T16:57:36.930Z",
     "templateCount": 30,
     "activeTemplatesInExport": 0,
     "statusCounts": {
@@ -556,7 +556,7 @@
     ]
   },
   "revenueReadiness": {
-    "generatedAt": "2026-09-14T16:38:17.514Z",
+    "generatedAt": "2026-09-14T16:57:41.774Z",
     "status": "REVENUE_READY_FOR_APPROVAL_NOT_EARNING",
     "verifiedRevenueUsd": 0,
     "verifiedCostUsd": 0,

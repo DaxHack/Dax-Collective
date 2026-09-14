@@ -1,6 +1,6 @@
 # Revenue Readiness
 
-Generated: 2026-09-14T16:38:17.514Z
+Generated: 2026-09-14T16:57:41.774Z
 
 Verified revenue: $0
 Verified cost: $0

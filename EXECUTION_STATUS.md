@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-14T12:43:11-04:00
+2026-09-14T12:59:59-04:00
 
 ## VERIFIED DONE
 
@@ -279,16 +279,14 @@
 
 ## NEXT EXACT ACTIONS
 
-1. Push Sprint 7 revenue-readiness commit `147544b` to PR #3, then verify the Firebase Hosting PR workflow for the new commit.
-2. Complete the smallest remaining link for one real brand workflow:
-   - for Ani-Dax, test the existing `--audio-file` render path with a non-public placeholder audio file or Daniel-approved narration
-   - if placeholder audio is used, keep it clearly non-public and do not present it as final narration
-3. When Daniel provides approved narration, rerun the Ani-Dax package with `--audio-file` and produce a final READY_FOR_APPROVAL package.
-4. Repair Ani-Dax n8n templates before importing/running live:
+1. Push this verification/handoff update to PR #3 and verify the Firebase Hosting PR workflow for the new head.
+2. When Daniel provides approved narration or approves a TTS/narrator path, rerun the Ani-Dax package with `--audio-file` and produce a final READY_FOR_APPROVAL package.
+3. Repair Ani-Dax n8n templates before importing/running live:
    - add runtime approval/QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-5. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
+4. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
+5. After Daniel approval, merge/deploy PR #3; do not merge without explicit approval because it can deploy live changes.
 
 ## DO NOT REDO
 
@@ -330,7 +328,9 @@
 - Sprint 5 shared business-state commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` is pushed and its PR workflow passed.
 - Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` is pushed and its Firebase Hosting PR workflow passed.
 - Sprint 6 hardening commit `b2232be02082e07ff0c8f11c78162a493e23a4ca` is pushed and its Firebase Hosting PR workflow passed.
-- Sprint 7 revenue readiness commit `147544b` is local at the time of this doc update; push it to PR #3 and verify the Firebase Hosting PR workflow.
+- Sprint 7 revenue readiness commit `147544b` is pushed.
+- Sprint 7 handoff/status commit `dabc2db60d25d77d5b86806ff35eea4981add475` is pushed and its Firebase Hosting PR workflow passed.
+- This verification update records the resumed post-compaction checks and should be pushed to the same PR branch.
 
 ## DEPLOYMENT STATE
 
@@ -342,9 +342,10 @@
 - Sprint 5 commit `fa5263e12a73fc649c86f17d3ced9a7193466cec` was pushed and its Firebase Hosting PR workflow passed in 1m 41s.
 - Functional/legal contact email correction commit `8ae2dc62312669d4ecb5cc0e867d5982f6b36367` reached PR #3 and its Firebase Hosting PR workflow passed.
 - Sprint 6 hardening commit `b2232be02082e07ff0c8f11c78162a493e23a4ca` reached PR #3 and its Firebase Hosting PR workflow passed.
-- Sprint 7 revenue readiness commit `147544b` requires PR workflow verification after push.
+- Sprint 7 revenue readiness commit `147544b` reached PR #3.
+- Sprint 7 handoff/status commit `dabc2db60d25d77d5b86806ff35eea4981add475` reached PR #3 and Firebase Hosting PR workflow run `34870778496` succeeded.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
-- Current remote PR head verified by `ls-remote`: `fa5263e12a73fc649c86f17d3ced9a7193466cec`.
+- Current verified pushed PR head before this verification update: `dabc2db60d25d77d5b86806ff35eea4981add475`.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
 - PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
 - Firebase preview comment was updated for commit `6d050e0`.
@@ -403,7 +404,7 @@
 | Command | Result |
 | --- | --- |
 | `npm run anidax:sample` | PASS; sample package and FFmpeg proof render created |
-| `node tools/anidax/produce-sample.mjs --audio-file ...` | NOT RUN; no approved narration file available |
+| `node tools/anidax/produce-sample.mjs --audio-file ...` | PASS with non-public placeholder audio; `audioReadyForFinal: true` path verified, throwaway output removed |
 | `npm run n8n:inventory` | PASS; 30 templates parsed, one invalid JSON flagged |
 | `node --check tools/gods-vessel/produce-names-of-god.mjs` | PASS |
 | `npm run gods-vessel:collection` | PASS; five SVG draft designs, metadata, theology review, and commerce readiness generated |
@@ -448,6 +449,14 @@
 | `npm run business-state:query -- summary` after Sprint 7 readiness | PASS; publicPublishingAllowed false |
 | `npm --prefix dax-main run build` after Sprint 7 readiness | PASS with existing warnings |
 | `git diff --check` after Sprint 7 readiness | PASS; CRLF warnings only |
+| Resumed worktree inspection | PASS; branch clean before smoke test, no uncommitted interrupted edits, 114 committed files changed vs `origin/main` |
+| Resumed modified n8n assertion pass | PASS; 20 modified n8n exports parse, YouTube publisher is approved/private-draft only, Twitter/Facebook cross-post nodes disabled, revenue targets remain zero, financial alert nodes disabled |
+| `npm run n8n:inventory` after resumed verification | PASS; 30 templates parsed, one known invalid JSON export flagged |
+| `npm run revenue:readiness` after resumed verification | PASS; 4 brand paths, verified revenue/profit/ad spend `$0` |
+| `npm run business-state:build` after resumed verification | PASS; 4 brands, 4 queue items, 30 workflow templates |
+| `npm run business-state:query -- summary` after resumed verification | PASS; publicPublishingAllowed false |
+| `npm run business-state:query -- revenue-readiness` after resumed verification | PASS; publicPublishingAllowed false, purchaseOrEnrollmentAllowed false |
+| `npm --prefix dax-main run build` after resumed verification | PASS with existing warnings |
 | Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
