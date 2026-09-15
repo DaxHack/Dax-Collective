@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-15T13:37:01-04:00
+2026-09-15T13:45:05-04:00
 
 ## VERIFIED DONE
 
@@ -62,6 +62,7 @@
   - `publicPublishingAllowed` remains `false`
   - `purchaseEnabled` remains `false`
   - Claude/Canva production artwork masters remain pending before vendor publication
+- God's Vessel listing handoff commit `d85cd42271e3ebc319f86e90432b0b8905564c1d` was pushed to PR #3 and its Firebase Hosting PR workflow run `35002481942` succeeded.
 - God's Vessel page now describes actual current behavior:
   - draft collection, not live products
   - no on-site checkout
@@ -355,6 +356,7 @@
 - Sprint 6 hardening commit `b2232be02082e07ff0c8f11c78162a493e23a4ca` is pushed and its Firebase Hosting PR workflow passed.
 - Sprint 7 revenue readiness commit `147544b` is pushed.
 - Sprint 7 handoff/status commit `dabc2db60d25d77d5b86806ff35eea4981add475` is pushed and its Firebase Hosting PR workflow passed.
+- God's Vessel listing handoff commit `d85cd42271e3ebc319f86e90432b0b8905564c1d` is pushed and its Firebase Hosting PR workflow run `35002481942` passed.
 - This verification update records the resumed post-compaction checks and should be pushed to the same PR branch.
 
 ## DEPLOYMENT STATE
@@ -371,6 +373,7 @@
 - Sprint 7 handoff/status commit `dabc2db60d25d77d5b86806ff35eea4981add475` reached PR #3 and Firebase Hosting PR workflow run `34870778496` succeeded.
 - Latest pushed PR workflow for commit `0f42eb082bac9691a6a40edf255c3d3cd326e1f2` passed before the Sprint 2 local changes.
 - Current verified pushed PR head before this verification update: `dabc2db60d25d77d5b86806ff35eea4981add475`.
+- God's Vessel listing handoff commit `d85cd42271e3ebc319f86e90432b0b8905564c1d` reached PR #3 and Firebase Hosting PR workflow run `35002481942` succeeded.
 - Firebase workflow files now reference the seven `REACT_APP_FIREBASE_*` values via `${{ secrets.NAME || vars.NAME }}`.
 - PR #3 showed 4 commits and the Firebase Hosting PR workflow for commit `6d050e0885e9f779bf64658439d81354b85aaa69` succeeded in 2m 20s.
 - Firebase preview comment was updated for commit `6d050e0`.

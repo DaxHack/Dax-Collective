@@ -6,7 +6,7 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. Continue from the latest PR #3 head; the contact-email correction, Sprint 7 readiness work, Ani-Dax review package, and God's Vessel listing handoff are pushed or should be verified against the PR head before more work.
+3. Continue from the latest PR #3 head; the contact-email correction, Sprint 7 readiness work, Ani-Dax review package, and God's Vessel listing handoff are pushed. God's Vessel listing handoff commit `d85cd42271e3ebc319f86e90432b0b8905564c1d` passed Firebase Hosting PR workflow run `35002481942`.
 4. Do not redo the Ani-Dax `--audio-file` placeholder smoke test; it passed and the throwaway output was removed.
 5. Do not redo the Ani-Dax draft narration/render proof unless Daniel requests a script/voice change. The current package is ready for Daniel review, not public publishing.
 6. If Daniel approves or replaces the narration, rerun the Ani-Dax package with `--audio-file path/to/final.wav --audio-approval-status approved-final`.
