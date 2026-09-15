@@ -10,8 +10,8 @@
 | Ani-Dax final voice/public use approval | Review the local draft narration package and either approve it for final use, provide replacement narration, or approve a narrator/TTS provider. |
 | OAuth/MFA | Complete any account-owner consent, MFA, CAPTCHA, or OAuth repair needed in Google/YouTube/n8n/platform accounts. |
 | Paid services | Approve any paid TTS/image/video/API/tool subscription before use. |
-| God's Vessel collection approval | Review and approve Names of God theology, design direction, garment choices, pricing, vendor, and public launch timing. |
-| God's Vessel commerce setup | Complete any Printify/Shopify login, OAuth, MFA, payment, tax, shipping, and store settings needed before products can be sold. |
+| God's Vessel collection/listing approval | Review and approve Names of God theology, final Canva artwork masters, product copy, garment choices, pricing, vendor, and public launch timing. |
+| God's Vessel commerce setup | Use the prepared draft listing handoff only after approval, then complete any Printify/Shopify login, OAuth, MFA, payment, tax, shipping, and store settings needed before products can be sold. |
 | Firebase client config in GitHub | Add or confirm `REACT_APP_FIREBASE_API_KEY`, `REACT_APP_FIREBASE_AUTH_DOMAIN`, `REACT_APP_FIREBASE_PROJECT_ID`, `REACT_APP_FIREBASE_STORAGE_BUCKET`, `REACT_APP_FIREBASE_MESSAGING_SENDER_ID`, `REACT_APP_FIREBASE_APP_ID`, and `REACT_APP_FIREBASE_MEASUREMENT_ID` as repository Secrets or Variables. |
 | Time-Zone Travelers sample approval | Review the Tokyo vs Seoul night-owl decision guide sample package, approve/revise the script, and approve any public publishing target. |
 | Time-Zone Travelers voice | Provide or approve final narration/TTS before the sample can become a public video. |
@@ -44,6 +44,7 @@
 
 - Revenue remains zero until verified provider/store/platform data exists.
 - First-dollar paths are prepared but blocked on Daniel approval and provider/store setup, especially God's Vessel commerce launch and approved monetized links for travel brands.
+- God's Vessel now has draft storefront listing JSON, Shopify draft CSV, Printify handoff CSV, approval checklist, and zeroed sales ledger; these are not live products and do not enable checkout.
 - Financial tracker export is bookkeeping-only and does not authorize tax/payment action.
 
 ## Not Blockers
@@ -51,7 +52,7 @@
 - Frontend build warnings: build succeeds.
 - Lack of public publishing: intentional until approval.
 - Lack of final Ani-Dax voice approval: local pipeline now generates draft review narration and a 30s render, but public use still waits for Daniel approval or replacement audio.
-- God's Vessel having zero live products: intentional until theology, design, vendor, pricing, and storefront setup are approved.
+- God's Vessel having zero live products: intentional until theology, final Canva artwork masters, design, vendor, pricing, and storefront setup are approved.
 - Time-Zone Travelers not publishing yet: intentional until Daniel approves the content, account mapping, and any monetized links.
 - Dax the Traveler not publishing yet: intentional until Daniel approves the personal-brand draft, narration, account mapping, and any monetized links.
 - Business-state CLI not triggering workflows: intentional until approval and hardening for live actions.

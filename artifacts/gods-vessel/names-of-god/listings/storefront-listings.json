@@ -1,0 +1,177 @@
+{
+  "generatedAt": "2026-09-15T17:28:59.446Z",
+  "collectionId": "gods-vessel-names-of-god",
+  "brand": "God's Vessel",
+  "status": "LISTINGS_PREPARED_NOT_PUBLISHED",
+  "publicPublishingAllowed": false,
+  "purchaseEnabled": false,
+  "noPaidActionTaken": true,
+  "note": "Prepared around existing draft collection data. Replace draft SVG references with Claude/Canva production masters before vendor publication.",
+  "listings": [
+    {
+      "offerId": "gods-vessel-names-of-god-yhwh-i-am",
+      "sku": "GV-NOG-01",
+      "slug": "yhwh-i-am",
+      "title": "God's Vessel YHWH Heavyweight black tee",
+      "description": "YHWH from the Names of God collection. Dictionary-style faith apparel featuring \"I AM; the covenant name of God.\" with reference to Exodus 3:14-15. Draft listing copy requires Daniel theology, design, vendor, and storefront approval before publication.",
+      "tags": [
+        "faith apparel",
+        "names of god",
+        "christian streetwear",
+        "dictionary style",
+        "yhwh"
+      ],
+      "targetPriceUsd": 32,
+      "estimatedBaseCostUsd": 14,
+      "estimatedGrossMarginUsd": 18,
+      "estimatedGrossMarginPct": 56.3,
+      "artworkDraftPath": "artifacts/gods-vessel/names-of-god/designs/yhwh-i-am.svg",
+      "canvaProductionMasterPath": "pending/canva/gods-vessel/names-of-god/yhwh-i-am",
+      "artworkMasterStatus": "PENDING_CLAUDE_CANVA_MASTER_EXPORT",
+      "publicListingStatus": "DRAFT_NOT_PUBLISHED",
+      "purchaseEnabled": false,
+      "publishAllowed": false,
+      "trackingUrl": "https://daxcollective.com/gods-vessel?utm_source=dax_collective&utm_medium=site&utm_campaign=names_of_god_launch&utm_content=yhwh-i-am",
+      "requiredBeforePublish": [
+        "Daniel theology approval",
+        "Daniel product copy approval",
+        "Claude/Canva production master export attached",
+        "Printify product configured",
+        "Shopify/storefront checkout configured",
+        "Test order/payment/tax/shipping approved by Daniel"
+      ]
+    },
+    {
+      "offerId": "gods-vessel-names-of-god-elohim-creator",
+      "sku": "GV-NOG-02",
+      "slug": "elohim-creator",
+      "title": "God's Vessel Elohim Washed charcoal tee",
+      "description": "Elohim from the Names of God collection. Dictionary-style faith apparel featuring \"God, the Creator and sovereign one.\" with reference to Genesis 1:1. Draft listing copy requires Daniel theology, design, vendor, and storefront approval before publication.",
+      "tags": [
+        "faith apparel",
+        "names of god",
+        "christian streetwear",
+        "dictionary style",
+        "elohim"
+      ],
+      "targetPriceUsd": 30,
+      "estimatedBaseCostUsd": 13,
+      "estimatedGrossMarginUsd": 17,
+      "estimatedGrossMarginPct": 56.7,
+      "artworkDraftPath": "artifacts/gods-vessel/names-of-god/designs/elohim-creator.svg",
+      "canvaProductionMasterPath": "pending/canva/gods-vessel/names-of-god/elohim-creator",
+      "artworkMasterStatus": "PENDING_CLAUDE_CANVA_MASTER_EXPORT",
+      "publicListingStatus": "DRAFT_NOT_PUBLISHED",
+      "purchaseEnabled": false,
+      "publishAllowed": false,
+      "trackingUrl": "https://daxcollective.com/gods-vessel?utm_source=dax_collective&utm_medium=site&utm_campaign=names_of_god_launch&utm_content=elohim-creator",
+      "requiredBeforePublish": [
+        "Daniel theology approval",
+        "Daniel product copy approval",
+        "Claude/Canva production master export attached",
+        "Printify product configured",
+        "Shopify/storefront checkout configured",
+        "Test order/payment/tax/shipping approved by Daniel"
+      ]
+    },
+    {
+      "offerId": "gods-vessel-names-of-god-adonai-lord",
+      "sku": "GV-NOG-03",
+      "slug": "adonai-lord",
+      "title": "God's Vessel Adonai Black hoodie",
+      "description": "Adonai from the Names of God collection. Dictionary-style faith apparel featuring \"Lord and master; the one worthy of surrender.\" with reference to Psalm 8:1. Draft listing copy requires Daniel theology, design, vendor, and storefront approval before publication.",
+      "tags": [
+        "faith apparel",
+        "names of god",
+        "christian streetwear",
+        "dictionary style",
+        "adonai"
+      ],
+      "targetPriceUsd": 56,
+      "estimatedBaseCostUsd": 28,
+      "estimatedGrossMarginUsd": 28,
+      "estimatedGrossMarginPct": 50,
+      "artworkDraftPath": "artifacts/gods-vessel/names-of-god/designs/adonai-lord.svg",
+      "canvaProductionMasterPath": "pending/canva/gods-vessel/names-of-god/adonai-lord",
+      "artworkMasterStatus": "PENDING_CLAUDE_CANVA_MASTER_EXPORT",
+      "publicListingStatus": "DRAFT_NOT_PUBLISHED",
+      "purchaseEnabled": false,
+      "publishAllowed": false,
+      "trackingUrl": "https://daxcollective.com/gods-vessel?utm_source=dax_collective&utm_medium=site&utm_campaign=names_of_god_launch&utm_content=adonai-lord",
+      "requiredBeforePublish": [
+        "Daniel theology approval",
+        "Daniel product copy approval",
+        "Claude/Canva production master export attached",
+        "Printify product configured",
+        "Shopify/storefront checkout configured",
+        "Test order/payment/tax/shipping approved by Daniel"
+      ]
+    },
+    {
+      "offerId": "gods-vessel-names-of-god-el-shaddai-almighty",
+      "sku": "GV-NOG-04",
+      "slug": "el-shaddai-almighty",
+      "title": "God's Vessel El Shaddai Oversized cream tee",
+      "description": "El Shaddai from the Names of God collection. Dictionary-style faith apparel featuring \"God Almighty; the all-sufficient one.\" with reference to Genesis 17:1. Draft listing copy requires Daniel theology, design, vendor, and storefront approval before publication.",
+      "tags": [
+        "faith apparel",
+        "names of god",
+        "christian streetwear",
+        "dictionary style",
+        "el shaddai"
+      ],
+      "targetPriceUsd": 34,
+      "estimatedBaseCostUsd": 15,
+      "estimatedGrossMarginUsd": 19,
+      "estimatedGrossMarginPct": 55.9,
+      "artworkDraftPath": "artifacts/gods-vessel/names-of-god/designs/el-shaddai-almighty.svg",
+      "canvaProductionMasterPath": "pending/canva/gods-vessel/names-of-god/el-shaddai-almighty",
+      "artworkMasterStatus": "PENDING_CLAUDE_CANVA_MASTER_EXPORT",
+      "publicListingStatus": "DRAFT_NOT_PUBLISHED",
+      "purchaseEnabled": false,
+      "publishAllowed": false,
+      "trackingUrl": "https://daxcollective.com/gods-vessel?utm_source=dax_collective&utm_medium=site&utm_campaign=names_of_god_launch&utm_content=el-shaddai-almighty",
+      "requiredBeforePublish": [
+        "Daniel theology approval",
+        "Daniel product copy approval",
+        "Claude/Canva production master export attached",
+        "Printify product configured",
+        "Shopify/storefront checkout configured",
+        "Test order/payment/tax/shipping approved by Daniel"
+      ]
+    },
+    {
+      "offerId": "gods-vessel-names-of-god-jireh-provider",
+      "sku": "GV-NOG-05",
+      "slug": "jireh-provider",
+      "title": "God's Vessel YHWH Yireh Vintage black crewneck",
+      "description": "YHWH Yireh from the Names of God collection. Dictionary-style faith apparel featuring \"The LORD will provide.\" with reference to Genesis 22:14. Draft listing copy requires Daniel theology, design, vendor, and storefront approval before publication.",
+      "tags": [
+        "faith apparel",
+        "names of god",
+        "christian streetwear",
+        "dictionary style",
+        "yhwh yireh"
+      ],
+      "targetPriceUsd": 52,
+      "estimatedBaseCostUsd": 25,
+      "estimatedGrossMarginUsd": 27,
+      "estimatedGrossMarginPct": 51.9,
+      "artworkDraftPath": "artifacts/gods-vessel/names-of-god/designs/jireh-provider.svg",
+      "canvaProductionMasterPath": "pending/canva/gods-vessel/names-of-god/jireh-provider",
+      "artworkMasterStatus": "PENDING_CLAUDE_CANVA_MASTER_EXPORT",
+      "publicListingStatus": "DRAFT_NOT_PUBLISHED",
+      "purchaseEnabled": false,
+      "publishAllowed": false,
+      "trackingUrl": "https://daxcollective.com/gods-vessel?utm_source=dax_collective&utm_medium=site&utm_campaign=names_of_god_launch&utm_content=jireh-provider",
+      "requiredBeforePublish": [
+        "Daniel theology approval",
+        "Daniel product copy approval",
+        "Claude/Canva production master export attached",
+        "Printify product configured",
+        "Shopify/storefront checkout configured",
+        "Test order/payment/tax/shipping approved by Daniel"
+      ]
+    }
+  ]
+}

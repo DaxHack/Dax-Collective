@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-15T13:15:59-04:00
+2026-09-15T13:37:01-04:00
 
 ## VERIFIED DONE
 
@@ -52,6 +52,16 @@
   - five Names of God draft apparel designs generated as SVG
   - product metadata includes target price, estimated base cost, and margin
   - theology review notes and commerce readiness notes generated
+- God's Vessel commerce/listing handoff package is now prepared without duplicating Claude's Canva artwork:
+  - storefront draft listings: `artifacts/gods-vessel/names-of-god/listings/storefront-listings.json`
+  - Shopify draft import aid: `artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv`
+  - Printify handoff aid: `artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv`
+  - zeroed sales/profit ledger: `artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv`
+  - approval checklist: `artifacts/gods-vessel/names-of-god/listings/approval-checklist.md`
+  - prepared listing count: 5
+  - `publicPublishingAllowed` remains `false`
+  - `purchaseEnabled` remains `false`
+  - Claude/Canva production artwork masters remain pending before vendor publication
 - God's Vessel page now describes actual current behavior:
   - draft collection, not live products
   - no on-site checkout
@@ -291,14 +301,14 @@
 
 ## NEXT EXACT ACTIONS
 
-1. Push the Ani-Dax draft-narration review-package update to PR #3 and verify the Firebase Hosting PR workflow for the new head.
-2. Daniel should review the Ani-Dax package at `artifacts/anidax/sprint-1-sample/approval-package.md`, especially script, draft voice, visual style, and canon posture.
-3. If Daniel approves or replaces the narration, rerun the Ani-Dax package with `--audio-file` and `--audio-approval-status approved-final`.
-4. Repair Ani-Dax n8n templates before importing/running live:
+1. Daniel should review the Ani-Dax package at `artifacts/anidax/sprint-1-sample/approval-package.md`, especially script, draft voice, visual style, and canon posture.
+2. If Daniel approves or replaces the narration, rerun the Ani-Dax package with `--audio-file` and `--audio-approval-status approved-final`.
+3. Daniel/Claude should provide or approve final God's Vessel Canva production masters, then Daniel should approve theology, product copy, garment/vendor, pricing, taxes, shipping, and launch timing.
+4. After approval and account-owner login, use the prepared God's Vessel listing files in `artifacts/gods-vessel/names-of-god/listings/` to configure Printify/Shopify drafts; do not publish or enable checkout before human storefront review.
+5. Repair Ani-Dax n8n templates before importing/running live:
    - add runtime approval/QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-5. Continue the fastest revenue path that does not duplicate Claude's Canva work: God&apos;s Vessel offer/listing/storefront readiness around approved production artwork, then tracking/CTA/analytics.
 6. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
 7. After Daniel approval, merge/deploy PR #3; do not merge without explicit approval because it can deploy live changes.
 
@@ -310,6 +320,7 @@
 - Do not treat n8n template presence as working runtime.
 - Do not publish Ani-Dax publicly without Daniel approval.
 - Do not publish God's Vessel products or activate paid commerce without Daniel approval.
+- Do not treat God's Vessel draft listing/import files as live products or a live checkout.
 - Do not use ripped/cropped/mirrored/sped-up anime clips as the production base.
 - Do not use Pexels results as "anime character" footage for final Ani-Dax content.
 - Do not duplicate Firebase initialization in other files; use exports from `dax-main/src/config/firebase.js`.
@@ -406,7 +417,7 @@
 | Brand | State | Evidence |
 | --- | --- | --- |
 | Ani-Dax | READY FOR DANIEL REVIEW, local end-to-end review package works | draft narration WAV, 30s FFmpeg render, captions, thumbnail, publish payload, analytics/cost records |
-| God's Vessel | PARTIAL, first collection draft path works | `npm run gods-vessel:collection`, `/gods-vessel` page repaired |
+| God's Vessel | PARTIAL, first collection and draft listing handoff path work | `npm run gods-vessel:collection`, `/gods-vessel` page repaired, listing JSON/Shopify CSV/Printify CSV/sales ledger generated with publish and purchase disabled |
 | Time-Zone Travelers | PARTIAL, local source-backed sample package works | `npm run timezone:sample`, proof render created |
 | Dax the Traveler | PARTIAL, local support automation works | `npm run dax-traveler:support`, 14 approved assets inventoried, proof render created |
 | Dax Collective parent | legal/OAuth blocker implemented | PR #3 |
@@ -426,7 +437,7 @@
 | `npm --prefix dax-main run build` after Ani-Dax review-package update | PASS with existing warnings |
 | `npm run n8n:inventory` | PASS; 30 templates parsed, one invalid JSON flagged |
 | `node --check tools/gods-vessel/produce-names-of-god.mjs` | PASS |
-| `npm run gods-vessel:collection` | PASS; five SVG draft designs, metadata, theology review, and commerce readiness generated |
+| `npm run gods-vessel:collection` | PASS; five SVG draft designs, metadata, theology review, commerce readiness, storefront listings, Shopify draft CSV, Printify handoff CSV, approval checklist, and zeroed sales ledger generated |
 | `rg` unsupported God&apos;s Vessel claims sweep | PASS; removed prior fake store/testimonial/follower phrases from page |
 | `npm --prefix dax-main run build` | PASS with warnings |
 | Firebase empty-config reproduction | PASS; explicit initialized empty config reaches `auth/invalid-api-key` |
@@ -458,6 +469,11 @@
 | `npm --prefix dax-main run build` after Sprint 6 hardening | PASS with existing warnings |
 | `git diff --check` after Sprint 6 hardening | PASS; CRLF warnings only |
 | `node --check tools/revenue-readiness/build-readiness.mjs` | PASS |
+| `node --check tools/business-state/build-state.mjs` after God's Vessel listing handoff | PASS |
+| God's Vessel listing assertion | PASS; 5 draft listings, `publicPublishingAllowed: false`, `purchaseEnabled: false`, zeroed tracking ledger |
+| `npm run revenue:readiness` after God's Vessel listing handoff | PASS; 4 brand paths, God's Vessel listing package included, verified revenue/profit `$0` |
+| `npm run business-state:build` after God's Vessel listing handoff | PASS; content queue includes God's Vessel commerce artifacts and still blocks publishing/purchase |
+| `npm run business-state:query -- content-queue` after God's Vessel listing handoff | PASS; God's Vessel queue item includes five prepared listing artifacts, `publicPublishingAllowed: false`, and `purchaseEnabled: false` |
 | modified n8n JSON parse check | PASS; 12 modified workflow exports parsed |
 | workflow logic assertions | PASS; YouTube publisher requires Approved, private draft status, private uploads, disabled cross-posts, no-tax-advice financial policy |
 | workflow structure assertions | PASS; modified workflow node counts unchanged; only approved safety renames/disables detected |
@@ -500,6 +516,11 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `artifacts/gods-vessel/names-of-god/product-metadata.csv`
 - `artifacts/gods-vessel/names-of-god/theology-review.md`
 - `artifacts/gods-vessel/names-of-god/commerce-readiness.md`
+- `artifacts/gods-vessel/names-of-god/listings/storefront-listings.json`
+- `artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv`
+- `artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv`
+- `artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv`
+- `artifacts/gods-vessel/names-of-god/listings/approval-checklist.md`
 - `artifacts/gods-vessel/names-of-god/designs/*.svg`
 - `artifacts/gods-vessel/names-of-god/mockups/collection-board.svg`
 - `dax-main/public/assets/gods-vessel/names-of-god/*.svg`
@@ -544,8 +565,9 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - Existing Ani-Dax workflow uses generic external visual search unsuitable for final anime character production.
 - Ani-Dax draft narration is generated for review only; Daniel must approve or replace it before any public use.
 - Frontend build warnings remain.
-- God's Vessel storefront/product creation is not connected to Printify or Shopify yet.
+- God's Vessel storefront/product creation is prepared as draft handoff files but is not connected to Printify or Shopify yet.
 - God's Vessel generated theology copy is concise draft apparel copy and still needs Daniel review before product publication.
+- God's Vessel draft listing copy and import files still require Daniel review and final Claude/Canva artwork masters before provider setup.
 - Full Firebase Auth/admin runtime cannot be verified until GitHub has real browser-safe Firebase client config values.
 - Time-Zone Travelers n8n workflow has no verified runtime approval gate.
 - Time-Zone Travelers sample render uses silent placeholder audio.
@@ -565,6 +587,7 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - Dax the Traveler local Sprint 4 support proof run cost: $0.00.
 - Sprint 5 shared business-state local run cost: $0.00.
 - God's Vessel price/margin numbers are estimates until vendor base costs, shipping, fees, taxes, and platform costs are verified.
+- God's Vessel listing handoff generated locally at $0.00, with clicks/leads/orders/revenue/profit initialized to zero.
 - Highest immediate risks:
   - accidental public publishing
   - wrong brand credential/channel publishing
@@ -575,4 +598,4 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 
 ## NEXT SPRINT
 
-Complete the smallest missing Ani-Dax end-to-end link: test the existing `--audio-file` render path with a non-public placeholder or Daniel-approved narration, then update the Ani-Dax READY_FOR_APPROVAL package without public publishing.
+Continue the fastest safe revenue path: use Daniel-approved Ani-Dax voice or approved replacement audio when available, and use the prepared God's Vessel listing handoff only after Daniel/Claude provide final Canva production masters and Daniel approves theology/product/vendor/storefront setup. If those remain blocked, prioritize low-risk distribution and measurement improvements around existing READY_FOR_DANIEL_REVIEW packages without public publishing.

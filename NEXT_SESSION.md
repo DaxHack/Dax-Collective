@@ -6,11 +6,11 @@
    `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
-3. Continue from the latest PR #3 head; the contact-email correction, Sprint 7 readiness work, and resumed verification handoff are pushed or should be verified against the PR head before more work.
+3. Continue from the latest PR #3 head; the contact-email correction, Sprint 7 readiness work, Ani-Dax review package, and God's Vessel listing handoff are pushed or should be verified against the PR head before more work.
 4. Do not redo the Ani-Dax `--audio-file` placeholder smoke test; it passed and the throwaway output was removed.
 5. Do not redo the Ani-Dax draft narration/render proof unless Daniel requests a script/voice change. The current package is ready for Daniel review, not public publishing.
 6. If Daniel approves or replaces the narration, rerun the Ani-Dax package with `--audio-file path/to/final.wav --audio-approval-status approved-final`.
-7. Next highest-value autonomous work is God&apos;s Vessel offer/listing/storefront readiness around Claude&apos;s Canva artwork masters. Do not create competing production artwork.
+7. God's Vessel offer/listing/storefront handoff is prepared around Claude's Canva artwork masters. Do not create competing production artwork; wait for final Canva masters and Daniel/vendor approval before live product setup.
 8. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
 9. Continue Sprint 1 repair work opportunistically around:
    - approval gates
@@ -42,6 +42,12 @@
 - Reusable God's Vessel invocation:
   `npm run gods-vessel:collection`
 - God's Vessel sample output: `artifacts/gods-vessel/names-of-god/`
+- God's Vessel listing handoff:
+  `artifacts/gods-vessel/names-of-god/listings/storefront-listings.json`
+  `artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv`
+  `artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv`
+  `artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv`
+  `artifacts/gods-vessel/names-of-god/listings/approval-checklist.md`
 - God's Vessel public assets: `dax-main/public/assets/gods-vessel/names-of-god/`
 - God's Vessel page data: `dax-main/src/data/godsVesselNamesOfGod.js`
 - Time-Zone Travelers sample generator: `tools/timezone-travelers/produce-sample.mjs`
@@ -97,6 +103,7 @@
 - Current Ani-Dax review package has draft narration attached, 30.000s render duration, captions, thumbnail, publish payload, analytics record, cost record, and monetization path.
 - Current Ani-Dax package remains `publishAllowed: false`, `youtubePrivacyStatus: private`, `automaticCrossPostingAllowed: false`, and `audioReadyForFinal: false`.
 - `npm run gods-vessel:collection` generates five Names of God SVG designs, metadata, theology review, and commerce readiness notes.
+- `npm run gods-vessel:collection` also generates a five-offer draft listing handoff with storefront JSON, Shopify draft CSV, Printify handoff CSV, approval checklist, and zeroed sales ledger; publish and purchase flags remain false.
 - `/gods-vessel` has been repaired to show the real draft state: no live products, no checkout, no fake testimonials, no fake follower/lives-transformed claims.
 - God's Vessel interest CTAs use direct gtag custom events when analytics exists.
 - Sprint 2 commit `415ed5a47fc610e9a47275cda3c303e85fb3984e` reached the remote PR branch.
@@ -151,6 +158,7 @@
 - Do not assume n8n templates are live working workflows.
 - Do not run public publisher workflows.
 - Do not create live God's Vessel products or claim live commerce without Daniel/vendor approval.
+- Do not treat God's Vessel listing CSV/JSON artifacts as live products, active checkout, or proof of store connection.
 - Do not restore the old fake God's Vessel apparel/testimonial/follower claims.
 - Do not create new credentials unless credential repair/reuse is impossible and Daniel approves.
 - Do not base Ani-Dax on ripped anime clips.
@@ -171,7 +179,7 @@
 - Legal copy approval.
 - OAuth/MFA/account-owner consent.
 - Voice/narration path approval.
-- God's Vessel theology/design/vendor/pricing approval.
+- God's Vessel theology/final Canva artwork/product copy/design/vendor/pricing approval.
 - Printify/Shopify account-owner login, OAuth, MFA, payment, tax, shipping, and launch approval.
 - Time-Zone Travelers sample concept/script/public publishing approval.
 - Time-Zone Travelers final narration/TTS approval.
@@ -199,7 +207,7 @@
 - Add queue schemas and sample data.
 - Build deterministic motion-graphic templates.
 - Create draft concepts and non-public sample assets.
-- Generate/update God's Vessel draft collection assets and metadata.
+- Regenerate God's Vessel draft collection/listing handoff only if product requirements change or Claude/Daniel provide final approved artwork paths.
 - Repair Time-Zone Travelers workflows/pages/metadata where the behavior can be tested without publishing or paid enrollment.
 - Build Dax the Traveler support automation around existing approved material and analytics without altering public channels.
 - Build shared business-state files/tools that read current repo status and non-secret workflow health.
@@ -209,4 +217,4 @@
 
 ## Current Sprint
 
-Ani-Dax now has a complete local READY_FOR_DANIEL_REVIEW package with draft narration, render, captions, thumbnail, publish payload, analytics/cost records, and monetization path. The next revenue-critical path is Daniel review/approval for Ani-Dax plus God&apos;s Vessel offer/listing/storefront readiness around Claude&apos;s Canva production artwork. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.
+Ani-Dax now has a complete local READY_FOR_DANIEL_REVIEW package with draft narration, render, captions, thumbnail, publish payload, analytics/cost records, and monetization path. God's Vessel now has a draft listing/storefront handoff package but still needs final Canva artwork masters, Daniel approval, and Printify/Shopify setup before sale. The next revenue-critical path is Daniel review/approval for Ani-Dax plus Daniel/Claude/provider completion of the God's Vessel commerce gate; if those remain blocked, improve distribution and measurement around existing READY_FOR_DANIEL_REVIEW packages without public publishing.

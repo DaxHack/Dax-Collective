@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T17:17:19.245Z",
+  "generatedAt": "2026-09-15T17:36:36.715Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -129,13 +129,26 @@
           "brandId": "gods-vessel",
           "brand": "God's Vessel",
           "contentId": "gods-vessel-names-of-god",
-          "title": "Names of God collection",
+          "title": "Names of God",
           "status": "READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP",
           "publishAllowed": false,
           "owner": "Daniel",
-          "nextAction": "Approve theology, product choices, pricing, vendor setup, and storefront path.",
+          "nextAction": "Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path.",
           "artifactPath": "artifacts/gods-vessel/names-of-god/",
-          "materialSeparation": "Draft product/design assets, not live commerce."
+          "materialSeparation": "Draft product/design/listing assets only; no live commerce, checkout, purchase, or public product publishing.",
+          "commerceArtifacts": {
+            "listingStatus": "LISTINGS_PREPARED_NOT_PUBLISHED",
+            "preparedListingCount": 5,
+            "publicPublishingAllowed": false,
+            "purchaseEnabled": false,
+            "listingPackage": {
+              "storefrontListingsJson": "artifacts/gods-vessel/names-of-god/listings/storefront-listings.json",
+              "shopifyDraftCsv": "artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv",
+              "printifyHandoffCsv": "artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv",
+              "salesTrackingLedgerCsv": "artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv",
+              "approvalChecklist": "artifacts/gods-vessel/names-of-god/listings/approval-checklist.md"
+            }
+          }
         }
       ],
       "currentState": {
@@ -252,13 +265,26 @@
       "brandId": "gods-vessel",
       "brand": "God's Vessel",
       "contentId": "gods-vessel-names-of-god",
-      "title": "Names of God collection",
+      "title": "Names of God",
       "status": "READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP",
       "publishAllowed": false,
       "owner": "Daniel",
-      "nextAction": "Approve theology, product choices, pricing, vendor setup, and storefront path.",
+      "nextAction": "Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path.",
       "artifactPath": "artifacts/gods-vessel/names-of-god/",
-      "materialSeparation": "Draft product/design assets, not live commerce."
+      "materialSeparation": "Draft product/design/listing assets only; no live commerce, checkout, purchase, or public product publishing.",
+      "commerceArtifacts": {
+        "listingStatus": "LISTINGS_PREPARED_NOT_PUBLISHED",
+        "preparedListingCount": 5,
+        "publicPublishingAllowed": false,
+        "purchaseEnabled": false,
+        "listingPackage": {
+          "storefrontListingsJson": "artifacts/gods-vessel/names-of-god/listings/storefront-listings.json",
+          "shopifyDraftCsv": "artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv",
+          "printifyHandoffCsv": "artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv",
+          "salesTrackingLedgerCsv": "artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv",
+          "approvalChecklist": "artifacts/gods-vessel/names-of-god/listings/approval-checklist.md"
+        }
+      }
     },
     {
       "brandId": "time-zone-travelers",
@@ -556,7 +582,7 @@
     ]
   },
   "revenueReadiness": {
-    "generatedAt": "2026-09-14T16:57:41.774Z",
+    "generatedAt": "2026-09-15T17:33:10.134Z",
     "status": "REVENUE_READY_FOR_APPROVAL_NOT_EARNING",
     "verifiedRevenueUsd": 0,
     "verifiedCostUsd": 0,

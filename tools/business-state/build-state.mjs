@@ -97,6 +97,7 @@ function collectContentQueue() {
 
   const godsVessel = readJson(path.join(root, 'artifacts', 'gods-vessel', 'names-of-god', 'collection.json'));
   if (godsVessel) {
+    const godsListings = readJson(path.join(root, 'artifacts', 'gods-vessel', 'names-of-god', 'listings', 'storefront-listings.json'));
     items.push({
       brandId: 'gods-vessel',
       brand: "God's Vessel",
@@ -105,9 +106,22 @@ function collectContentQueue() {
       status: godsVessel.status || 'READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP',
       publishAllowed: false,
       owner: 'Daniel',
-      nextAction: 'Approve theology, product choices, pricing, vendor setup, and storefront path.',
+      nextAction: godsListings
+        ? 'Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path.'
+        : 'Approve theology, product choices, pricing, vendor setup, and storefront path.',
       artifactPath: 'artifacts/gods-vessel/names-of-god/',
-      materialSeparation: 'Draft product/design assets, not live commerce.',
+      materialSeparation: godsListings
+        ? 'Draft product/design/listing assets only; no live commerce, checkout, purchase, or public product publishing.'
+        : 'Draft product/design assets, not live commerce.',
+      commerceArtifacts: godsListings
+        ? {
+            listingStatus: godsListings.status,
+            preparedListingCount: godsListings.listings?.length || 0,
+            publicPublishingAllowed: Boolean(godsListings.publicPublishingAllowed),
+            purchaseEnabled: Boolean(godsListings.purchaseEnabled),
+            listingPackage: godsVessel.listingPackage || {},
+          }
+        : null,
     });
   }
 

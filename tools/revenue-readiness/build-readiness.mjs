@@ -9,6 +9,7 @@ fs.mkdirSync(outDir, { recursive: true });
 
 const aniDaxPackage = readJson('artifacts/anidax/sprint-1-sample/generated/content-package.json');
 const godsCollection = readJson('artifacts/gods-vessel/names-of-god/collection.json');
+const godsListings = readJson('artifacts/gods-vessel/names-of-god/listings/storefront-listings.json');
 const timeZoneCost = readJson('artifacts/timezone-travelers/sprint-3-sample/generated/cost-record.json');
 const timeZoneMonetization = readJson('artifacts/timezone-travelers/sprint-3-sample/generated/monetization-path.json');
 const daxCost = readJson('artifacts/dax-the-traveler/sprint-4-support/generated/cost-record.json');
@@ -58,6 +59,15 @@ const readiness = {
       cost: 0,
       profit: 0,
       productEconomics: godsSummary,
+      listingPackage: godsListings
+        ? {
+            status: godsListings.status,
+            preparedListingCount: godsListings.listings?.length || 0,
+            publicPublishingAllowed: Boolean(godsListings.publicPublishingAllowed),
+            purchaseEnabled: Boolean(godsListings.purchaseEnabled),
+            artifacts: godsCollection?.listingPackage || {},
+          }
+        : null,
       currentStatus: godsCollection?.status || 'READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP',
       blockers: [
         'Daniel theology and design approval',
