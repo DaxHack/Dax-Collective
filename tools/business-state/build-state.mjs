@@ -13,6 +13,7 @@ const n8nInventory = readJson(path.join(root, 'artifacts', 'n8n-inventory.json')
 const revenueReadiness = readJson(path.join(root, 'artifacts', 'revenue-readiness', 'current-revenue-readiness.json'));
 
 const queue = collectContentQueue();
+const approvalDecisions = readJson(path.join(root, 'business-state', 'approval-decisions.json'));
 const state = {
   generatedAt: now,
   stateVersion: 1,
@@ -31,6 +32,13 @@ const state = {
     currentState: summarizeBrandState(brand.id, queue),
   })),
   contentQueue: queue,
+  approvalDecisions: approvalDecisions ? {
+    source: 'business-state/approval-decisions.json',
+    generatedAt: approvalDecisions.generatedAt,
+    pending: approvalDecisions.decisions.filter((row) => row.decisionStatus === 'PENDING_DANIEL_REVIEW').length,
+    decisions: approvalDecisions.decisions.map(({ contentId, decisionStatus, reviewFingerprint }) => ({ contentId, decisionStatus, reviewFingerprint })),
+    executionAuthorized: false,
+  } : null,
   workflowHealth: summarizeWorkflowHealth(n8nInventory.rows || []),
   credentialHealth: summarizeCredentialHealth(n8nInventory.rows || []),
   revenueReadiness: revenueReadiness ? summarizeRevenueReadiness(revenueReadiness) : null,

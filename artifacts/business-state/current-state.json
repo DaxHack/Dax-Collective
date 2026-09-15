@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T17:50:20.171Z",
+  "generatedAt": "2026-09-15T22:54:01.059Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -311,6 +311,34 @@
       "materialSeparation": "ORIGINAL_DANIEL_MATERIAL_WITH_AI_GENERATED_SUPPORT"
     }
   ],
+  "approvalDecisions": {
+    "source": "business-state/approval-decisions.json",
+    "generatedAt": "2026-09-15T22:53:08.628Z",
+    "pending": 4,
+    "decisions": [
+      {
+        "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "f3f7aff12cab57fe5892225c3454767e9787263473045b7b86bbb26172058f1f"
+      },
+      {
+        "contentId": "gods-vessel-names-of-god",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "2be90f7bdb3d476bec8fb702656d9eb237df1097a56fb1de42ad652e4439ae8c"
+      },
+      {
+        "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "56c46c6209d443f9267dacf5fae022d55b53c08dc4b06ee98d193283af4be4db"
+      },
+      {
+        "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "01591c6529df88ec29571d8d0d40339066e460efd9c5b4d5870194d60cfe6bb8"
+      }
+    ],
+    "executionAuthorized": false
+  },
   "workflowHealth": {
     "generatedAt": "2026-09-14T16:57:36.930Z",
     "templateCount": 30,

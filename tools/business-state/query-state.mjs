@@ -23,6 +23,9 @@ switch (command) {
   case 'content-queue':
     print(state.contentQueue);
     break;
+  case 'approval-decisions':
+    print(state.approvalDecisions);
+    break;
   case 'workflow-health':
     print(state.workflowHealth);
     break;

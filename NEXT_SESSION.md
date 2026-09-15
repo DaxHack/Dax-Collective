@@ -1,5 +1,13 @@
 # Next Session Handoff
 
+## Latest Continuation: 2026-09-15
+
+Finish/continue from PR #3 branch `codex/legal-oauth-pages-20260913` in the Temp worktree below, not the dirty main checkout. Approval decision ledger is implemented in `tools/ops/build-approval-decisions.mjs`; regenerate with `npm run approval:decisions`, then `npm run business-state:build`. Read via `npm run business-state:query -- approval-decisions`.
+
+All four real decisions remain pending. Regression test: `node --test tools/ops/approval-decisions.test.mjs`. Approval changes are human input; do not mark any real item approved. Changed review artifacts invalidate decisions. This ledger does not execute publishers.
+
+Next technical priority: measured cost/revenue attribution and repeatable Ani-Dax execution using existing producers/state; no new design/commerce assets. Claude owns Canva, Printify and commercial preparation. Keep unavailable metrics unknown; no synthetic revenue counted as business evidence.
+
 ## What To Do Next
 
 1. Continue from worktree:

@@ -1,5 +1,16 @@
 # The Dax Collective Execution Status
 
+## Continuation 2026-09-15: Approval Decisions
+
+- VERIFIED DONE: recovered all six interrupted files in the existing PR worktree at `f909991`; unrelated main-checkout changes preserved.
+- `npm run approval:decisions` now persists four pending decisions. Review-artifact SHA-256 fingerprints invalidate prior decisions when material changes; unknown statuses and duplicate IDs fail before writes. Private next-step eligibility requires Daniel attribution, a timestamp, an explicit step, and present artifacts.
+- Tests: `node --test tools/ops/approval-decisions.test.mjs` passed persistence, incomplete-evidence, changed-material, invalid-status and closed-action checks. Real ledger regeneration passed with four pending items.
+- Business-state query `approval-decisions` reports decisions without execution authority. No runtime n8n execution or provider measurement has been verified by this change.
+- IN PROGRESS: finishing this decision-ledger slice on `codex/legal-oauth-pages-20260913`, PR #3. Prior head `f909991` has successful Firebase preview evidence; new commit CI must be checked after push.
+- BLOCKED - DANIEL: final Ani-Dax narration/content approval remains outstanding; all publishing, spend, checkout and credential gates remain closed.
+- NEXT: connect measured content costs/revenue to existing business state; use real imported observations, distinguish unknown from zero, and test duplicate/retry behavior. Claude owns Canva/Printify/commerce work.
+- DO NOT REDO: prior 30-second Ani-Dax review render or completed website audits. Current proof is reviewable, not finally approved.
+
 ## LAST VERIFIED DATE/TIME
 
 2026-09-15T13:50:50-04:00

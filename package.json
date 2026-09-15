@@ -13,6 +13,7 @@
     "dax-traveler:support": "node tools/dax-traveler/produce-support-package.mjs",
     "revenue:readiness": "node tools/revenue-readiness/build-readiness.mjs",
     "approval:queue": "node tools/ops/build-approval-queue.mjs",
+    "approval:decisions": "node tools/ops/build-approval-decisions.mjs",
     "business-state:build": "node tools/business-state/build-state.mjs",
     "business-state:query": "node tools/business-state/query-state.mjs",
     "n8n:inventory": "node tools/n8n/inventory.mjs",

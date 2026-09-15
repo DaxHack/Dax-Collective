@@ -1,5 +1,9 @@
 # Blockers
 
+## Continuation 2026-09-15
+
+Approval decisions are now persisted in `business-state/approval-decisions.json`; four items await Daniel review. The decision ledger is locally tested and does not authorize public publishing or product launch. Ani-Dax narration is draft review audio, not final-approved. Claude owns God's Vessel design/Canva/Printify/browser commerce work; technical work must not duplicate it. Live provider measurement remains unconnected; sample zero values are not evidence of observed revenue/performance.
+
 ## Daniel Required
 
 | Blocker | Exact Human Action |
