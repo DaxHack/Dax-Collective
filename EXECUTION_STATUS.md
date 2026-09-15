@@ -1,5 +1,15 @@
 # The Dax Collective Execution Status
 
+## Latest Verified Checkpoint 2026-09-15
+
+- VERIFIED DONE: timed narration/caption repair pushed as `7ab55f6fa87b378036b85d9a8a780bcc87db778c` to PR #3 on `codex/legal-oauth-pages-20260913`.
+- Runnable operating command: `npm run ops:review`. Actual full run passed all seven existing tool steps: media verification, state indexing, measured attribution, state refresh, approval queue, decision persistence, final state refresh. Two orchestration tests passed, including stopping immediately on validation failure.
+- Report: `artifacts/approval-queue/last-review-refresh.json`. No provider calls, public publishing, purchases or approval changes. Four pending decisions; zero real provider observations.
+- Frame inspected at 15 seconds: complete subtitle text fits without overlap. This is still a text-based proof, not final visual production. Audio duration/stream checks pass; listening/editorial reviews remain open.
+- IN PROGRESS / NEXT: obtain Daniel feedback on draft voice/content and complete canon/source verification and final visual treatment. Keep current candidate `artifacts/anidax/timed-review/`; use its measured segment timings. Then connect verified provider/account exports to the existing measurement importer. Claude owns all God's Vessel design/commerce work.
+- BLOCKED - DANIEL: final voice/content, public approval, target account ownership and any paid production choices. No merger to main or live publication authorized.
+- DO NOT REDO: prior render proof or website audit. Old sections below are historical; this current checkpoint supersedes earlier sample-path references.
+
 ## Current Checkpoint 2026-09-15: Timed Ani-Dax Review
 
 - VERIFIED DONE: interrupted change set recovered; actual dirty state was two untracked verifier artifacts, not twelve files. Existing pushed head was `29dba8c94d17744c4119348e9a821a911e1d6f72`.

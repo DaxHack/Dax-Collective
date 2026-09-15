@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T23:06:44.895Z",
-  "sourceStateGeneratedAt": "2026-09-15T23:06:42.553Z",
+  "generatedAt": "2026-09-15T23:07:47.266Z",
+  "sourceStateGeneratedAt": "2026-09-15T23:07:47.199Z",
   "status": "READY_ITEMS_REQUIRE_HUMAN_APPROVAL",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -13,7 +13,7 @@
       "brand": "Ani-Dax",
       "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
       "title": "Subaru's Return by Death Is Not a Power Fantasy",
-      "status": "READY_FOR_APPROVAL_PACKAGE",
+      "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
       "publishAllowed": false,
       "purchaseEnabled": false,
       "owner": "Daniel",

@@ -90,13 +90,15 @@ function collectContentQueue() {
 
   const aniDaxRoot = 'artifacts/anidax/timed-review/';
   const aniDax = readJson(path.join(root, aniDaxRoot, 'generated', 'content-package.json'));
+  const aniDaxValidation = readJson(path.join(root, aniDaxRoot, 'generated', 'review-validation.json'));
   if (aniDax) {
     items.push({
       brandId: 'ani-dax',
       brand: 'Ani-Dax',
       contentId: aniDax.metadata?.contentId || 'anidax-sprint-1-sample',
       title: aniDax.metadata?.title || aniDax.concept?.topic || 'Ani-Dax Sprint 1 sample',
-      status: aniDax.concept?.productionStatus || 'READY_FOR_APPROVAL_PACKAGE',
+      status: aniDaxValidation?.status || 'AWAITING_TECHNICAL_VALIDATION',
+      openQc: aniDaxValidation?.reviewRequired || [],
       publishAllowed: false,
       owner: 'Daniel',
       nextAction: 'Approve concept/script and final voice/visual style before publishing.',

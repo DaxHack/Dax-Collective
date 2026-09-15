@@ -1,8 +1,8 @@
 # Dax Collective Approval Queue
 
-Generated: 2026-09-15T23:06:44.895Z
+Generated: 2026-09-15T23:07:47.266Z
 
-Source business state: 2026-09-15T23:06:42.553Z
+Source business state: 2026-09-15T23:07:47.199Z
 
 This queue prepares review decisions only. It does not publish, spend, change credentials, enable checkout, or create products.
 
@@ -16,7 +16,7 @@ Credential changes allowed: no
 
 | # | Brand | Item | Status | Publish Allowed | Purchase Enabled | Owner | Next Action |
 | ---: | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Ani-Dax | Subaru's Return by Death Is Not a Power Fantasy | READY_FOR_APPROVAL_PACKAGE | no | no | Daniel | Approve concept/script and final voice/visual style before publishing. |
+| 1 | Ani-Dax | Subaru's Return by Death Is Not a Power Fantasy | READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC | no | no | Daniel | Approve concept/script and final voice/visual style before publishing. |
 | 2 | God's Vessel | Names of God | READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP | no | no | Daniel | Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path. |
 | 3 | Time-Zone Travelers | Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers? | READY_FOR_DANIEL_REVIEW | no | no | Daniel | Approve concept/script, final source check, narration, account mapping, and links. |
 | 4 | Dax the Traveler | The Travel Moment Worth Saving | READY_FOR_DANIEL_REVIEW | no | no | Daniel | Approve/revise selected assets and record final narration. |
@@ -25,7 +25,7 @@ Credential changes allowed: no
 
 Content ID: `anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy`
 
-Status: READY_FOR_APPROVAL_PACKAGE
+Status: READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC
 
 Publish allowed: no
 

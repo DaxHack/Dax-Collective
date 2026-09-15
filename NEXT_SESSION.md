@@ -1,5 +1,11 @@
 # Next Session Handoff
 
+## Current Operating Command
+
+`npm run ops:review` is implemented and exercised successfully. It serializes existing media validation, state, measurements, approval queue and decision tools; stops on failure and writes `artifacts/approval-queue/last-review-refresh.json`. Two targeted orchestration tests passed. Use this command after approved input changes rather than manually repeating seven commands. It does not regenerate voice/render, contact providers or publish.
+
+Timed-render commit `7ab55f6fa87b378036b85d9a8a780bcc87db778c` is pushed to PR #3. Next work is editorial/source QC and Daniel voice/content review, then verified account/provider measurement input. Actual business remains pre-launch: four pending decisions, no measured revenue, no live publishers verified. Do not claim the text-based proof is final visual production.
+
 ## Resume Here: Timed Review Checkpoint
 
 Current Ani-Dax candidate is `artifacts/anidax/timed-review/approval-package.md`. Original `sprint-1-sample` is preserved history. Run `npm run anidax:verify` for actual ffprobe/caption/gate validation. New 35.933333s render contains 35.931066s narration and five segment-timed cues. Voice remains draft; canon/visual/final listening reviews are open. Three targeted verifier tests passed. Producer accepts `--narration-report artifacts/anidax/timed-review/audio/draft-narration-report.json` with `--audio-file` for reproducible captions; report is bound to audio SHA-256 and exact script. Do not revert to the older fixed caption timings.

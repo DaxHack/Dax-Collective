@@ -15,6 +15,7 @@
     "revenue:readiness": "node tools/revenue-readiness/build-readiness.mjs",
     "revenue:measurements": "node tools/revenue-readiness/measurements.mjs",
     "approval:queue": "node tools/ops/build-approval-queue.mjs",
+    "ops:review": "node tools/ops/refresh-review.mjs",
     "approval:decisions": "node tools/ops/build-approval-decisions.mjs",
     "business-state:build": "node tools/business-state/build-state.mjs",
     "business-state:query": "node tools/business-state/query-state.mjs",
