@@ -43,6 +43,7 @@ const state = {
   credentialHealth: summarizeCredentialHealth(n8nInventory.rows || []),
   revenueReadiness: revenueReadiness ? summarizeRevenueReadiness(revenueReadiness) : null,
   costs: summarizeCosts(),
+  measurements: readJson(path.join(root, 'artifacts/revenue-readiness/measurements.json')),
   blockers: summarizeBlockers(),
   actions: {
     canListBrands: true,

@@ -1,5 +1,9 @@
 # Blockers
 
+## Measurement Input
+
+The local revenue/cost/analytics importer is runnable and tested. Automatic collection remains blocked on verified provider export access and brand/account mapping. Supply non-secret aggregate observations per `tools/revenue-readiness/MEASUREMENTS.md`; no raw customer data or credentials. Empty ledger values are unknown, not measured zero. The referenced Perplexity operating report was not found in this PR worktree's planning inventory; existing code and user requirements guide continuation until its location is known.
+
 ## Continuation 2026-09-15
 
 Approval decisions are now persisted in `business-state/approval-decisions.json`; four items await Daniel review. The decision ledger is locally tested and does not authorize public publishing or product launch. Ani-Dax narration is draft review audio, not final-approved. Claude owns God's Vessel design/Canva/Printify/browser commerce work; technical work must not duplicate it. Live provider measurement remains unconnected; sample zero values are not evidence of observed revenue/performance.

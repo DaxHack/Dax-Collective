@@ -1,5 +1,16 @@
 # The Dax Collective Execution Status
 
+## Continuation 2026-09-15: Measured Attribution
+
+- VERIFIED DONE: approval ledger commit `607d51a7b1b86f490d29c5c7533fd9efde12e6c7` pushed to existing PR #3. Local Git push works.
+- Runnable: `npm run revenue:measurements -- --import path/to/export.json` accepts traceable aggregate observations for known brand/content IDs. Provider/event IDs deduplicate retries; conflicting IDs, invalid money, unknown fields and brand mismatches fail before persistence.
+- Revenue, refunds, categorized costs and latest cumulative analytics snapshots feed `npm run business-state:query -- measurements` after `npm run business-state:build`. Recorded contribution is separate from total profit; missing data stays null. No provider connection or financial completeness is claimed.
+- Tests: six Node tests passed across approval decisions and measurements, including actual isolated importer persistence/retry/failure cases. Real ledger is empty; all four content items report no measured data. Synthetic test revenue never entered business state.
+- IN PROGRESS: next link is repeatable Ani-Dax package verification/orchestration using the existing producer. Prepared analytics schemas are not live collection.
+- BLOCKED - DANIEL / PROVIDER: final narration/content review and verified provider exports/account mapping. Claude retains all God's Vessel commercial/artwork tasks.
+- NEXT: use `tools/revenue-readiness/MEASUREMENTS.md` for import contract. Preserve stable provider event IDs and source references. No purchases or provider calls made; local incremental API spend $0.
+- DO NOT REDO: prior proof production, legal audit, or design work. Perplexity report was not located in the PR worktree's planning files; do not invent report requirements.
+
 ## Continuation 2026-09-15: Approval Decisions
 
 - VERIFIED DONE: recovered all six interrupted files in the existing PR worktree at `f909991`; unrelated main-checkout changes preserved.

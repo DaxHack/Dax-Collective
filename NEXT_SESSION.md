@@ -1,5 +1,9 @@
 # Next Session Handoff
 
+## Latest Technical Milestone
+
+Approval decisions are pushed as `607d51a7b1b86f490d29c5c7533fd9efde12e6c7`. Measurements now have a runnable local importer in `tools/revenue-readiness/measurements.mjs`, format in `MEASUREMENTS.md` beside it. Run `npm run revenue:measurements`, then `npm run business-state:build`; query `measurements`. Six regression tests pass with `node --test tools/revenue-readiness/measurements.test.mjs tools/ops/approval-decisions.test.mjs`. No real provider observations exist, so no profitability/learning claim is supported. Next: repeatable Ani-Dax package verification and orchestration, preserving the current reviewed-input proof and all approval gates.
+
 ## Latest Continuation: 2026-09-15
 
 Finish/continue from PR #3 branch `codex/legal-oauth-pages-20260913` in the Temp worktree below, not the dirty main checkout. Approval decision ledger is implemented in `tools/ops/build-approval-decisions.mjs`; regenerate with `npm run approval:decisions`, then `npm run business-state:build`. Read via `npm run business-state:query -- approval-decisions`.
