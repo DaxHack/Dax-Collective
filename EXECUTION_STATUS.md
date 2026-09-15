@@ -2,6 +2,10 @@
 
 ## Latest Verified Checkpoint 2026-09-15
 
+- Remote checkpoints: `7ab55f6fa87b378036b85d9a8a780bcc87db778c` (timed render) and `734e8abec9be027b2baef81c0a69de2fd203a8a8` (operating refresh) both pushed. Firebase build/preview run `35034205660` for `7ab55f6` succeeded. Run `35034333185` for `734e8ab` was still in progress at this handoff write; verify its final result before merge. No local frontend rebuild was repeated for these tooling-only changes.
+- Worktree: `C:\Users\Daniel Rollins\AppData\Local\Temp\dax-collective-legal-oauth-20260913`; branch `codex/legal-oauth-pages-20260913`; PR https://github.com/DaxHack/Dax-Collective/pull/3 remains unmerged. Worktree was clean after both implementation pushes. Main checkout's unrelated changes remain preserved.
+- Session reserve: usage was 71% consumed; checkpointing before starting further implementation. Next worker should verify latest PR CI, then work on canon/source evidence and final visual treatment for the timed draft, not another infrastructure sweep.
+
 - VERIFIED DONE: timed narration/caption repair pushed as `7ab55f6fa87b378036b85d9a8a780bcc87db778c` to PR #3 on `codex/legal-oauth-pages-20260913`.
 - Runnable operating command: `npm run ops:review`. Actual full run passed all seven existing tool steps: media verification, state indexing, measured attribution, state refresh, approval queue, decision persistence, final state refresh. Two orchestration tests passed, including stopping immediately on validation failure.
 - Report: `artifacts/approval-queue/last-review-refresh.json`. No provider calls, public publishing, purchases or approval changes. Four pending decisions; zero real provider observations.

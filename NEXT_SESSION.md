@@ -2,6 +2,8 @@
 
 ## Current Operating Command
 
+Last implementation commit: `734e8abec9be027b2baef81c0a69de2fd203a8a8`, pushed to PR #3. Prior timed-render commit `7ab55f6` passed Firebase build/preview run `35034205660`; latest implementation run `35034333185` was pending at handoff write. Verify final CI state, then continue editorial/source and visual production work. No public approval has been granted. Working branch is `codex/legal-oauth-pages-20260913` in the Temp worktree, not main.
+
 `npm run ops:review` is implemented and exercised successfully. It serializes existing media validation, state, measurements, approval queue and decision tools; stops on failure and writes `artifacts/approval-queue/last-review-refresh.json`. Two targeted orchestration tests passed. Use this command after approved input changes rather than manually repeating seven commands. It does not regenerate voice/render, contact providers or publish.
 
 Timed-render commit `7ab55f6fa87b378036b85d9a8a780bcc87db778c` is pushed to PR #3. Next work is editorial/source QC and Daniel voice/content review, then verified account/provider measurement input. Actual business remains pre-launch: four pending decisions, no measured revenue, no live publishers verified. Do not claim the text-based proof is final visual production.
