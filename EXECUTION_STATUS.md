@@ -1,5 +1,16 @@
 # The Dax Collective Execution Status
 
+## Current Checkpoint 2026-09-15: Timed Ani-Dax Review
+
+- VERIFIED DONE: interrupted change set recovered; actual dirty state was two untracked verifier artifacts, not twelve files. Existing pushed head was `29dba8c94d17744c4119348e9a821a911e1d6f72`.
+- Fixed concrete narration/subtitle mismatch using the existing SAPI narrator's new `-SegmentTimings` option and producer `--narration-report`. Hash/text checks bind timings to supplied audio/script. Fixed burned-in captions dropping words after four lines. Producer now exits unsuccessfully when rendering fails.
+- New review output: `artifacts/anidax/timed-review/`, same stable content ID as original proof. Actual ffprobe: video 35.933333s, narration 35.931066s, five cues, no cutoff. Original 30s proof preserved.
+- `node --test tools/anidax/verify-review.test.mjs`: 3 passed. Real `node tools/anidax/verify-review.mjs artifacts/anidax/timed-review`: technicalPass true; public false, YouTube private, cross-post false. Open QC remains narration listening/final approval, canon/source verification and visual art pass.
+- SAPI required normal Windows context outside sandbox; per-process script invocation used, no persistent machine policy/account changes. No paid APIs; incremental API cost $0.
+- Review queue/business state now reference the timed draft. Current status is READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC, not publication-ready or final-approved. Claude's commercial/design work untouched.
+- NEXT: one-command local review/state refresh around existing tools, followed by source/quality work; live publishing and provider collection still unverified. Prior approval-ledger commit `607d51a` Firebase run `35033208361` succeeded.
+- DO NOT REDO: legal audit, initial proof, commerce artwork. Final voice/public approval remains Daniel's decision.
+
 ## Continuation 2026-09-15: Measured Attribution
 
 - VERIFIED DONE: approval ledger commit `607d51a7b1b86f490d29c5c7533fd9efde12e6c7` pushed to existing PR #3. Local Git push works.

@@ -88,7 +88,8 @@ function writeJson(file, value) {
 function collectContentQueue() {
   const items = [];
 
-  const aniDax = readJson(path.join(root, 'artifacts', 'anidax', 'sprint-1-sample', 'generated', 'content-package.json'));
+  const aniDaxRoot = 'artifacts/anidax/timed-review/';
+  const aniDax = readJson(path.join(root, aniDaxRoot, 'generated', 'content-package.json'));
   if (aniDax) {
     items.push({
       brandId: 'ani-dax',
@@ -99,7 +100,7 @@ function collectContentQueue() {
       publishAllowed: false,
       owner: 'Daniel',
       nextAction: 'Approve concept/script and final voice/visual style before publishing.',
-      artifactPath: 'artifacts/anidax/sprint-1-sample/',
+      artifactPath: aniDaxRoot,
       materialSeparation: 'AI-assisted support package; no public publishing.',
     });
   }

@@ -73,10 +73,7 @@ function reviewArtifactsFor(item) {
 
   if (item.brandId === 'ani-dax') {
     artifacts.push(
-      'artifacts/anidax/sprint-1-sample/approval-package.md',
-      'artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4',
-      'artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav',
-      'artifacts/anidax/sprint-1-sample/generated/publish-ready-payload.json',
+      ...['approval-package.md', 'render/ani-dax-proof-render.mp4', 'audio/draft-review-narration.wav', 'generated/publish-ready-payload.json', 'generated/content-package.json', 'generated/captions.srt', 'generated/review-validation.json'].map((file) => `${item.artifactPath}${file}`),
     );
     humanApprovalNeeded.push('script/canon posture', 'draft narration or replacement voice', 'visual style', 'platform/account target');
   } else if (item.brandId === 'gods-vessel') {

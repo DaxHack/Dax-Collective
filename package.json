@@ -8,6 +8,7 @@
     "start": "npm run dev",
     "build": "npm --prefix dax-main run build",
     "anidax:sample": "node tools/anidax/produce-sample.mjs",
+    "anidax:verify": "node tools/anidax/verify-review.mjs artifacts/anidax/timed-review",
     "gods-vessel:collection": "node tools/gods-vessel/produce-names-of-god.mjs",
     "timezone:sample": "node tools/timezone-travelers/produce-sample.mjs",
     "dax-traveler:support": "node tools/dax-traveler/produce-support-package.mjs",

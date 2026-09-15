@@ -1,5 +1,9 @@
 # Blockers
 
+## Timed Ani-Dax Draft
+
+The late final subtitle defect is repaired in `artifacts/anidax/timed-review/`; five cues follow measured SAPI segment boundaries. Final narration/listening approval, canon/source verification and visual quality review remain open. Public publishing is false, YouTube private, cross-posting false. Local technical proof does not certify editorial quality or establish live publishing/analytics connections.
+
 ## Measurement Input
 
 The local revenue/cost/analytics importer is runnable and tested. Automatic collection remains blocked on verified provider export access and brand/account mapping. Supply non-secret aggregate observations per `tools/revenue-readiness/MEASUREMENTS.md`; no raw customer data or credentials. Empty ledger values are unknown, not measured zero. The referenced Perplexity operating report was not found in this PR worktree's planning inventory; existing code and user requirements guide continuation until its location is known.

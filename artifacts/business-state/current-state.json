@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T22:56:25.946Z",
+  "generatedAt": "2026-09-15T23:06:47.765Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -90,7 +90,7 @@
           "publishAllowed": false,
           "owner": "Daniel",
           "nextAction": "Approve concept/script and final voice/visual style before publishing.",
-          "artifactPath": "artifacts/anidax/sprint-1-sample/",
+          "artifactPath": "artifacts/anidax/timed-review/",
           "materialSeparation": "AI-assisted support package; no public publishing."
         }
       ],
@@ -258,7 +258,7 @@
       "publishAllowed": false,
       "owner": "Daniel",
       "nextAction": "Approve concept/script and final voice/visual style before publishing.",
-      "artifactPath": "artifacts/anidax/sprint-1-sample/",
+      "artifactPath": "artifacts/anidax/timed-review/",
       "materialSeparation": "AI-assisted support package; no public publishing."
     },
     {
@@ -313,13 +313,13 @@
   ],
   "approvalDecisions": {
     "source": "business-state/approval-decisions.json",
-    "generatedAt": "2026-09-15T22:53:08.628Z",
+    "generatedAt": "2026-09-15T23:06:47.007Z",
     "pending": 4,
     "decisions": [
       {
         "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
         "decisionStatus": "PENDING_DANIEL_REVIEW",
-        "reviewFingerprint": "f3f7aff12cab57fe5892225c3454767e9787263473045b7b86bbb26172058f1f"
+        "reviewFingerprint": "d1f7a123500c74f7f541e78bb2b8046f8089405cec16e134fdff988cfc2a9d0c"
       },
       {
         "contentId": "gods-vessel-names-of-god",

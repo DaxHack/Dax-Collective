@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const root = process.cwd();
 const cli = parseArgs(process.argv.slice(2));
@@ -51,6 +52,18 @@ const concept = {
 };
 
 const scriptSegments = buildScriptSegments(topic, series);
+if (cli.narrationReport) {
+  const narration = JSON.parse(fs.readFileSync(path.resolve(root, cli.narrationReport), 'utf8'));
+  if (!hasSuppliedAudio || narration.audioSha256 !== createHash('sha256').update(fs.readFileSync(suppliedAudioFile)).digest('hex')) throw new Error('Narration report does not match supplied audio');
+  if (narration.segmentTimings?.length !== scriptSegments.length) throw new Error('Narration timing count differs from script');
+  let previousEnd = 0;
+  for (const [index, segment] of scriptSegments.entries()) {
+    const timing = narration.segmentTimings[index];
+    if (timing.text !== segment.text || !Number.isFinite(timing.start) || !Number.isFinite(timing.end) || timing.start < previousEnd || timing.end <= timing.start) throw new Error('Narration timing/text mismatch');
+    Object.assign(segment, { start: timing.start, end: timing.end });
+    previousEnd = timing.end;
+  }
+}
 
 const storyboard = [
   {
@@ -175,6 +188,12 @@ const analyticsRecord = {
   aiApiCost: 0,
   profitEstimate: 0,
 };
+
+if (cli.narrationReport) {
+  storyboard.forEach((scene, index) => {
+    scene.time = `${scriptSegments[index].start}-${scriptSegments[index].end}s`;
+  });
+}
 
 const publishReadyPayload = {
   contentId,
@@ -426,7 +445,7 @@ function wrapAss(text, max = 34) {
     }
   }
   if (line) lines.push(line);
-  return lines.slice(0, 4).join('\\N');
+  return lines.join('\\N');
 }
 
 function buildSrt() {
@@ -443,6 +462,7 @@ function buildSrt() {
 }
 
 function buildAss() {
+  const overlayEnd = assTimestamp(Math.max(30, ...scriptSegments.map((segment) => segment.end)));
   const lines = [
     '[Script Info]',
     'ScriptType: v4.00+',
@@ -457,8 +477,8 @@ function buildAss() {
     '',
     '[Events]',
     'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
-    `Dialogue: 0,0:00:00.00,0:00:30.00,Title,,0,0,0,,ANI-DAX // REVIEW PROOF`,
-    `Dialogue: 0,0:00:00.00,0:00:30.00,Footer,,0,0,0,,Non-public FFmpeg proof render. ${hasSuppliedAudio ? (audioReadyForFinal ? 'Final-approved narration supplied.' : 'Draft narration supplied for Daniel review.') : 'Narration and final art blocked pending approved voice/assets.'}`,
+    `Dialogue: 0,0:00:00.00,${overlayEnd},Title,,0,0,0,,ANI-DAX // REVIEW PROOF`,
+    `Dialogue: 0,0:00:00.00,${overlayEnd},Footer,,0,0,0,,Non-public FFmpeg proof render. ${hasSuppliedAudio ? (audioReadyForFinal ? 'Final-approved narration supplied.' : 'Draft narration supplied for Daniel review.') : 'Narration and final art blocked pending approved voice/assets.'}`,
   ];
 
   for (const segment of scriptSegments) {
@@ -716,8 +736,9 @@ const renderReport = renderProof();
 fs.writeFileSync(path.join(outRoot, 'approval-package.md'), buildApprovalMarkdown(renderReport));
 
 console.log(JSON.stringify({
-  ok: true,
+  ok: renderReport.rendered,
   output: path.relative(root, outRoot).replace(/\\/g, '/'),
   rendered: renderReport.rendered,
   videoPath: renderReport.videoPath,
 }, null, 2));
+if (!renderReport.rendered) process.exitCode = 1;

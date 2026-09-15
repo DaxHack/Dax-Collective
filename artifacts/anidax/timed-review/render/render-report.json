@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-09-15T23:05:46.213Z",
+  "rendered": true,
+  "videoPath": "artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4",
+  "audioSource": "artifacts/anidax/timed-review/audio/draft-review-narration.wav",
+  "audioSourceLabel": "Local Windows SAPI segment-timed draft narration",
+  "audioApprovalStatus": "draft-review-audio",
+  "audioReadyForReview": true,
+  "audioReadyForFinal": false,
+  "suppliedAudioDurationSeconds": 35.931066,
+  "renderDurationSeconds": 35.931066,
+  "command": "ffmpeg -y -f lavfi -i color=c=0x060610:s=1080x1920:d=35.931:r=30 -i C:\\Users\\Daniel Rollins\\AppData\\Local\\Temp\\dax-collective-legal-oauth-20260913\\artifacts\\anidax\\timed-review\\audio\\draft-review-narration.wav -vf ass=proof.ass -c:v libx264 -pix_fmt yuv420p -c:a aac -t 35.931 ani-dax-proof-render.mp4",
+  "status": 0,
+  "stderrTail": [
+    "[libx264 @ 0000027c6e39fc40] frame I:5     Avg QP: 9.82  size: 58918",
+    "[libx264 @ 0000027c6e39fc40] frame P:272   Avg QP:13.07  size:   522",
+    "[libx264 @ 0000027c6e39fc40] frame B:801   Avg QP:13.72  size:    79",
+    "[libx264 @ 0000027c6e39fc40] consecutive B-frames:  0.9%  0.0%  0.0% 99.1%",
+    "[libx264 @ 0000027c6e39fc40] mb I  I16..4: 77.6%  9.0% 13.4%",
+    "[libx264 @ 0000027c6e39fc40] mb P  I16..4:  0.0%  0.0%  0.1%  P16..4:  0.1%  0.0%  0.0%  0.0%  0.0%    skip:99.7%",
+    "[libx264 @ 0000027c6e39fc40] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.1%  0.0%  0.0%  direct: 0.0%  skip:99.9%  L0:56.5% L1:43.5% BI: 0.0%",
+    "[libx264 @ 0000027c6e39fc40] 8x8 transform intra:9.7% inter:15.1%",
+    "[libx264 @ 0000027c6e39fc40] coded y,uvDC,uvAC intra: 11.3% 14.6% 12.1% inter: 0.0% 0.0% 0.0%",
+    "[libx264 @ 0000027c6e39fc40] i16 v,h,dc,p: 98%  1%  1%  0%",
+    "[libx264 @ 0000027c6e39fc40] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 52%  9% 39%  0%  0%  0%  0%  0%  0%",
+    "[libx264 @ 0000027c6e39fc40] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 39% 21%  9%  4%  5%  6%  5%  5%  5%",
+    "[libx264 @ 0000027c6e39fc40] i8c dc,h,v,p: 88%  7%  4%  1%",
+    "[libx264 @ 0000027c6e39fc40] Weighted P-Frames: Y:0.0% UV:0.0%",
+    "[libx264 @ 0000027c6e39fc40] ref P L0: 81.4%  6.8% 10.1%  1.7%",
+    "[libx264 @ 0000027c6e39fc40] ref B L0: 44.7% 55.0%  0.3%",
+    "[libx264 @ 0000027c6e39fc40] ref B L1: 99.5%  0.5%",
+    "[libx264 @ 0000027c6e39fc40] kb/s:111.35",
+    "[aac @ 0000027c6e3b00c0] Qavg: 12447.537",
+    ""
+  ],
+  "ffprobe": {
+    "format": {
+      "duration": "35.933333",
+      "size": "854607"
+    }
+  }
+}

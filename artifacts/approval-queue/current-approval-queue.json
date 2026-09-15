@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T17:56:57.709Z",
-  "sourceStateGeneratedAt": "2026-09-15T17:50:20.171Z",
+  "generatedAt": "2026-09-15T23:06:44.895Z",
+  "sourceStateGeneratedAt": "2026-09-15T23:06:42.553Z",
   "status": "READY_ITEMS_REQUIRE_HUMAN_APPROVAL",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -18,13 +18,16 @@
       "purchaseEnabled": false,
       "owner": "Daniel",
       "nextAction": "Approve concept/script and final voice/visual style before publishing.",
-      "artifactPath": "artifacts/anidax/sprint-1-sample/",
+      "artifactPath": "artifacts/anidax/timed-review/",
       "materialSeparation": "AI-assisted support package; no public publishing.",
       "reviewArtifacts": [
-        "artifacts/anidax/sprint-1-sample/approval-package.md",
-        "artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4",
-        "artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav",
-        "artifacts/anidax/sprint-1-sample/generated/publish-ready-payload.json"
+        "artifacts/anidax/timed-review/approval-package.md",
+        "artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4",
+        "artifacts/anidax/timed-review/audio/draft-review-narration.wav",
+        "artifacts/anidax/timed-review/generated/publish-ready-payload.json",
+        "artifacts/anidax/timed-review/generated/content-package.json",
+        "artifacts/anidax/timed-review/generated/captions.srt",
+        "artifacts/anidax/timed-review/generated/review-validation.json"
       ],
       "humanApprovalNeeded": [
         "script/canon posture",

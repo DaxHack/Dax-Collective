@@ -1,0 +1,23 @@
+{
+  "status": "AUDIENCE_BUILDING_FIRST_REVENUE_LATER",
+  "noActiveAffiliateEnrollmentClaim": true,
+  "activeAffiliateProgramsVerified": [],
+  "nearTermPaths": [
+    {
+      "path": "YouTube audience growth",
+      "status": "later",
+      "requirement": "Consistent approved publishing and platform eligibility."
+    },
+    {
+      "path": "Original Ani-Dax merch/memberships",
+      "status": "later",
+      "requirement": "Daniel-approved offer and storefront/provider setup."
+    },
+    {
+      "path": "Sponsors/affiliate offers",
+      "status": "later",
+      "requirement": "Legitimate approved partner, audience fit, and disclosure."
+    }
+  ],
+  "currentCta": "Subscribe/follow only after Daniel approves public publishing."
+}

@@ -1,5 +1,11 @@
 # Next Session Handoff
 
+## Resume Here: Timed Review Checkpoint
+
+Current Ani-Dax candidate is `artifacts/anidax/timed-review/approval-package.md`. Original `sprint-1-sample` is preserved history. Run `npm run anidax:verify` for actual ffprobe/caption/gate validation. New 35.933333s render contains 35.931066s narration and five segment-timed cues. Voice remains draft; canon/visual/final listening reviews are open. Three targeted verifier tests passed. Producer accepts `--narration-report artifacts/anidax/timed-review/audio/draft-narration-report.json` with `--audio-file` for reproducible captions; report is bound to audio SHA-256 and exact script. Do not revert to the older fixed caption timings.
+
+Next useful dependency: serialize existing verifier, measurement builder, business state, review queue and decisions into one local operating refresh; then address remaining editorial/source QC. No public workflow execution. Claude retains Canva/Printify/commerce ownership.
+
 ## Latest Technical Milestone
 
 Approval decisions are pushed as `607d51a7b1b86f490d29c5c7533fd9efde12e6c7`. Measurements now have a runnable local importer in `tools/revenue-readiness/measurements.mjs`, format in `MEASUREMENTS.md` beside it. Run `npm run revenue:measurements`, then `npm run business-state:build`; query `measurements`. Six regression tests pass with `node --test tools/revenue-readiness/measurements.test.mjs tools/ops/approval-decisions.test.mjs`. No real provider observations exist, so no profitability/learning claim is supported. Next: repeatable Ani-Dax package verification and orchestration, preserving the current reviewed-input proof and all approval gates.

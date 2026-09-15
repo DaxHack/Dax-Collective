@@ -1,8 +1,8 @@
 # Dax Collective Approval Queue
 
-Generated: 2026-09-15T17:56:57.709Z
+Generated: 2026-09-15T23:06:44.895Z
 
-Source business state: 2026-09-15T17:50:20.171Z
+Source business state: 2026-09-15T23:06:42.553Z
 
 This queue prepares review decisions only. It does not publish, spend, change credentials, enable checkout, or create products.
 
@@ -41,10 +41,13 @@ Blocked actions:
 - public publishing
 
 Review artifacts:
-- `artifacts/anidax/sprint-1-sample/approval-package.md`
-- `artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4`
-- `artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav`
-- `artifacts/anidax/sprint-1-sample/generated/publish-ready-payload.json`
+- `artifacts/anidax/timed-review/approval-package.md`
+- `artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4`
+- `artifacts/anidax/timed-review/audio/draft-review-narration.wav`
+- `artifacts/anidax/timed-review/generated/publish-ready-payload.json`
+- `artifacts/anidax/timed-review/generated/content-package.json`
+- `artifacts/anidax/timed-review/generated/captions.srt`
+- `artifacts/anidax/timed-review/generated/review-validation.json`
 
 ## 2. God's Vessel: Names of God
 
