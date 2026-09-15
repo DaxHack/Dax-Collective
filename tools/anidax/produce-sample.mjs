@@ -8,14 +8,27 @@ const cli = parseArgs(process.argv.slice(2));
 const outRoot = path.join(root, cli.out || path.join('artifacts', 'anidax', 'sprint-1-sample'));
 const generatedDir = path.join(outRoot, 'generated');
 const renderDir = path.join(outRoot, 'render');
+const thumbnailDir = path.join(outRoot, 'thumbnail');
 
-fs.mkdirSync(generatedDir, { recursive: true });
-fs.mkdirSync(renderDir, { recursive: true });
+for (const dir of [outRoot, generatedDir, renderDir, thumbnailDir]) {
+  fs.mkdirSync(dir, { recursive: true });
+}
 
 const now = new Date().toISOString();
 const topic = cli.topic || "Why Subaru's Return by Death is not a power fantasy";
 const series = cli.series || 'Re:Zero - Starting Life in Another World';
-const approvedAudioFile = cli.audioFile ? path.resolve(root, cli.audioFile) : null;
+const suppliedAudioFile = cli.audioFile ? path.resolve(root, cli.audioFile) : null;
+const hasSuppliedAudio = Boolean(suppliedAudioFile && fs.existsSync(suppliedAudioFile));
+const audioApprovalStatus = String(
+  cli.audioApprovalStatus || (hasSuppliedAudio ? 'draft-review-audio' : 'missing'),
+).toLowerCase();
+const audioSourceLabel =
+  cli.audioSourceLabel || (hasSuppliedAudio ? 'Supplied review audio file' : 'No narration audio supplied');
+const audioReadyForFinal =
+  hasSuppliedAudio && ['approved-final', 'daniel-approved', 'final-approved'].includes(audioApprovalStatus);
+const audioReadyForReview = hasSuppliedAudio;
+const contentId =
+  cli.contentId || `anidax-${new Date(now).toISOString().slice(0, 10)}-${slugify(topic).slice(0, 64)}`;
 
 const concept = {
   brand: 'Ani-Dax',
@@ -73,6 +86,7 @@ const storyboard = [
 ];
 
 const metadata = {
+  contentId,
   title: cli.title || titleFromTopic(topic),
   description:
     "Ani-Dax character analysis draft. This video uses original narration and original motion-graphic support only. No anime clips, no fabricated quotes, and no public publishing until Daniel approves.",
@@ -94,7 +108,9 @@ const costEstimate = {
     storage: 0,
     api: 0,
     other: 0,
-    notes: 'This local proof uses deterministic text assets and FFmpeg only.',
+    notes: hasSuppliedAudio
+      ? 'This local proof uses deterministic text assets, supplied local/review audio, and FFmpeg only.'
+      : 'This local proof uses deterministic text assets and FFmpeg only.',
   },
   finalProductionExpectedCosts: [
     {
@@ -104,8 +120,10 @@ const costEstimate = {
     },
     {
       item: 'Narration/TTS',
-      status: 'blocked',
-      estimateUsd: 'TBD; no local TTS voice or ElevenLabs/OpenAI TTS credential verified',
+      status: hasSuppliedAudio ? 'draft/review audio supplied' : 'blocked',
+      estimateUsd: hasSuppliedAudio
+        ? '0 for this local review run; final narration cost depends on Daniel-approved voice path'
+        : 'TBD; requires Daniel voice, approved narrator, local TTS approval, or configured TTS',
     },
     {
       item: 'Image/video generation',
@@ -120,11 +138,89 @@ const qc = [
   ['Copyright posture', 'PASS', 'Uses no anime clips or copied frames in the local package.'],
   ['Canon/fact handling', 'PARTIAL', 'Stable high-level premise only; final claims need episode/source verification.'],
   ['Visual quality', 'PARTIAL', 'FFmpeg proof render verifies pipeline shape; final visuals need art pass.'],
-  ['Narration quality', 'BLOCKED', 'No local voice installed; final requires Daniel voice, approved narrator, or configured TTS.'],
+  [
+    'Narration quality',
+    audioReadyForFinal ? 'PASS' : audioReadyForReview ? 'REVIEW_REQUIRED' : 'BLOCKED',
+    audioReadyForFinal
+      ? 'Final-approved narration audio was supplied.'
+      : audioReadyForReview
+        ? 'Draft review audio was supplied and rendered; Daniel must approve or replace the voice before public publishing.'
+        : 'No narration audio supplied; final requires Daniel voice, approved narrator, approved local TTS, or configured TTS.',
+  ],
   ['Captions', 'PASS', 'Draft SRT generated from timed script segments.'],
   ['Metadata', 'PASS', 'Title/description/tags generated with no misleading canon quote claims.'],
   ['Public publishing', 'BLOCKED', 'Requires Daniel approval and verified Ani-Dax account credential mapping.'],
 ];
+
+const analyticsRecord = {
+  brand: 'Ani-Dax',
+  contentId,
+  concept: topic,
+  format: concept.format,
+  platform: 'pending approval',
+  publishDate: null,
+  views: 0,
+  impressions: 0,
+  ctr: 0,
+  watchTime: 0,
+  retention: 0,
+  likes: 0,
+  comments: 0,
+  shares: 0,
+  subscribersGained: 0,
+  clicks: 0,
+  conversions: 0,
+  revenue: 0,
+  productionCost: 0,
+  aiApiCost: 0,
+  profitEstimate: 0,
+};
+
+const publishReadyPayload = {
+  contentId,
+  brand: 'Ani-Dax',
+  approvalStatus: audioReadyForFinal ? 'READY_FOR_DANIEL_REVIEW' : 'READY_FOR_DANIEL_REVIEW_VOICE_NOT_FINAL',
+  publishAllowed: false,
+  youtubePrivacyStatus: 'private',
+  automaticCrossPostingAllowed: false,
+  requiredBeforePublishing: [
+    'Daniel approves concept/script.',
+    'Daniel approves final narration/voice.',
+    'Final canon/source check is completed for any specific claims.',
+    'Final visual style/art pass is approved.',
+    'Ani-Dax platform account mapping and credentials are verified.',
+    'Daniel approves the specific public publishing target and metadata.',
+  ],
+  suggestedPlatforms: ['YouTube Shorts private draft', 'TikTok/Instagram drafts only after Daniel approval'],
+  title: metadata.title,
+  description: metadata.description,
+  tags: metadata.tags,
+  thumbnail: 'thumbnail/thumbnail.svg',
+};
+
+const monetizationPath = {
+  status: 'AUDIENCE_BUILDING_FIRST_REVENUE_LATER',
+  noActiveAffiliateEnrollmentClaim: true,
+  activeAffiliateProgramsVerified: [],
+  nearTermPaths: [
+    {
+      path: 'YouTube audience growth',
+      status: 'later',
+      requirement: 'Consistent approved publishing and platform eligibility.',
+    },
+    {
+      path: 'Original Ani-Dax merch/memberships',
+      status: 'later',
+      requirement: 'Daniel-approved offer and storefront/provider setup.',
+    },
+    {
+      path: 'Sponsors/affiliate offers',
+      status: 'later',
+      requirement: 'Legitimate approved partner, audience fit, and disclosure.',
+    },
+  ],
+  currentCta: 'Subscribe/follow only after Daniel approves public publishing.',
+};
 
 const contentPackage = {
   generatedAt: now,
@@ -152,6 +248,14 @@ const contentPackage = {
     'Ani-Dax end card.',
   ],
   metadata,
+  audio: {
+    supplied: hasSuppliedAudio,
+    source: hasSuppliedAudio ? path.relative(root, suppliedAudioFile).replace(/\\/g, '/') : null,
+    sourceLabel: audioSourceLabel,
+    approvalStatus: audioApprovalStatus,
+    readyForReview: audioReadyForReview,
+    readyForFinal: audioReadyForFinal,
+  },
   complianceReview: {
     copyright: 'No anime footage, no copyrighted screenshots, no music selected.',
     aiDisclosure: metadata.aiDisclosureRecommendation,
@@ -159,6 +263,9 @@ const contentPackage = {
     approval: 'Ready for Daniel to review concept/script package; not ready to publish.',
   },
   qc,
+  analyticsRecord,
+  publishReadyPayload,
+  monetizationPath,
   costEstimate,
 };
 
@@ -184,12 +291,24 @@ function parseArgs(args) {
 }
 
 function titleFromTopic(value) {
+  if (/subaru/i.test(value) && /return by death/i.test(value) && /power fantasy/i.test(value)) {
+    return "Subaru's Return by Death Is Not a Power Fantasy";
+  }
+
   return value
     .replace(/^why\s+/i, '')
     .replace(/\bis not\b/i, 'Is Not')
+    .replace(/\bpower fantasy\b/i, 'Power Fantasy')
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/[.?!]+$/, '');
+}
+
+function slugify(value) {
+  return String(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function buildScriptSegments(topicValue, seriesValue) {
@@ -339,7 +458,7 @@ function buildAss() {
     '[Events]',
     'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
     `Dialogue: 0,0:00:00.00,0:00:30.00,Title,,0,0,0,,ANI-DAX // REVIEW PROOF`,
-    `Dialogue: 0,0:00:00.00,0:00:30.00,Footer,,0,0,0,,Non-public FFmpeg proof render. ${approvedAudioFile ? 'Approved narration file supplied.' : 'Narration and final art blocked pending approved voice/assets.'}`,
+    `Dialogue: 0,0:00:00.00,0:00:30.00,Footer,,0,0,0,,Non-public FFmpeg proof render. ${hasSuppliedAudio ? (audioReadyForFinal ? 'Final-approved narration supplied.' : 'Draft narration supplied for Daniel review.') : 'Narration and final art blocked pending approved voice/assets.'}`,
   ];
 
   for (const segment of scriptSegments) {
@@ -359,6 +478,10 @@ function buildApprovalMarkdown(renderReport) {
     .map((segment) => `**${segment.label} (${segment.start}-${segment.end}s)**\n${segment.text}`)
     .join('\n\n');
 
+  const audioLine = hasSuppliedAudio
+    ? `${audioReadyForFinal ? 'FINAL APPROVED' : 'DRAFT REVIEW'} - ${audioSourceLabel} (${path.relative(root, suppliedAudioFile).replace(/\\/g, '/')})`
+    : 'BLOCKED - no narration file supplied';
+
   return `# Ani-Dax Sprint 1 Approval Package
 
 Generated: ${now}
@@ -368,7 +491,10 @@ Generated: ${now}
 - Production package: ${concept.productionStatus}
 - Public publishing: ${concept.publishStatus}
 - Render proof: ${renderReport.rendered ? 'CREATED' : 'NOT CREATED'}
-- Audio/narration: BLOCKED - no local TTS voice installed and no external TTS credential verified
+- Audio/narration: ${audioLine}
+- Publish allowed: false
+- YouTube status if exported: private draft only
+- Automatic cross-posting: disabled
 
 ## Concept
 
@@ -393,6 +519,13 @@ ${storyboardRows}
 - Thumbnail: ${metadata.thumbnail}
 - AI disclosure: ${metadata.aiDisclosureRecommendation}
 
+## Publish Payload
+
+- Content ID: ${contentId}
+- Approval status: ${publishReadyPayload.approvalStatus}
+- YouTube privacy: ${publishReadyPayload.youtubePrivacyStatus}
+- Cross-posting: disabled until Daniel approves a specific content item and platform/account map
+
 ## QC
 
 | Gate | Status | Evidence |
@@ -407,12 +540,46 @@ Local proof run cost: $0.00. It used deterministic text assets and local FFmpeg 
 
 - content package: \`generated/content-package.json\`
 - captions: \`generated/captions.srt\`
+- publish payload: \`generated/publish-ready-payload.json\`
+- analytics record: \`generated/analytics-record.json\`
+- cost record: \`generated/cost-record.json\`
+- thumbnail: \`thumbnail/thumbnail.svg\`
 - render proof: \`${renderReport.videoPath || 'not created'}\`
 - render report: \`render/render-report.json\`
 
 ## Human Approval Required
 
 Daniel must approve final concept/script, final voice path, final visual style, and any public publishing.
+`;
+}
+
+function buildThumbnailSvg() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#05050A"/>
+      <stop offset="55%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#2E1065"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <circle cx="980" cy="210" r="155" fill="none" stroke="#00D4FF" stroke-width="9" opacity="0.75" filter="url(#glow)"/>
+  <path d="M980 62 L980 210 L1070 248" stroke="#A78BFA" stroke-width="10" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M150 520 C320 370 400 615 565 465 S850 420 1035 555" stroke="#00D4FF" stroke-width="8" fill="none" opacity="0.55"/>
+  <rect x="72" y="70" width="590" height="86" rx="10" fill="#00D4FF" opacity="0.16"/>
+  <text x="92" y="128" fill="#00D4FF" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="900">ANI-DAX ANALYSIS</text>
+  <text x="82" y="300" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="900">POWER</text>
+  <text x="82" y="400" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="900">OR</text>
+  <text x="82" y="500" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="900">PUNISHMENT?</text>
+  <text x="84" y="585" fill="#C4B5FD" font-family="Arial, Helvetica, sans-serif" font-size="36">Return by Death as character pressure</text>
+</svg>
 `;
 }
 
@@ -447,22 +614,35 @@ function buildStoryboardSvg() {
 `;
 }
 
+function probeDurationSeconds(file) {
+  const ffprobe = spawnSync(
+    'ffprobe',
+    ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', file],
+    { encoding: 'utf8' },
+  );
+
+  if (ffprobe.status !== 0) return null;
+  const duration = Number.parseFloat(ffprobe.stdout);
+  return Number.isFinite(duration) ? duration : null;
+}
+
 function renderProof() {
   const assPath = path.join(renderDir, 'proof.ass');
   fs.writeFileSync(assPath, buildAss());
 
   const videoPath = path.join(renderDir, 'ani-dax-proof-render.mp4');
-  const hasApprovedAudio = approvedAudioFile && fs.existsSync(approvedAudioFile);
+  const suppliedAudioDuration = hasSuppliedAudio ? probeDurationSeconds(suppliedAudioFile) : null;
+  const renderDuration = Math.max(30, suppliedAudioDuration || 0);
   const args = [
     '-y',
     '-f',
     'lavfi',
     '-i',
-    'color=c=0x060610:s=1080x1920:d=30:r=30',
+    `color=c=0x060610:s=1080x1920:d=${renderDuration.toFixed(3)}:r=30`,
   ];
 
-  if (hasApprovedAudio) {
-    args.push('-i', approvedAudioFile);
+  if (hasSuppliedAudio) {
+    args.push('-i', suppliedAudioFile);
   } else {
     args.push(
     '-f',
@@ -481,7 +661,8 @@ function renderProof() {
     'yuv420p',
     '-c:a',
     'aac',
-    '-shortest',
+    '-t',
+    renderDuration.toFixed(3),
     'ani-dax-proof-render.mp4',
   );
 
@@ -495,10 +676,15 @@ function renderProof() {
     generatedAt: now,
     rendered: ffmpeg.status === 0 && fs.existsSync(videoPath),
     videoPath: path.relative(root, videoPath).replace(/\\/g, '/'),
-    audioSource: hasApprovedAudio
-      ? path.relative(root, approvedAudioFile).replace(/\\/g, '/')
+    audioSource: hasSuppliedAudio
+      ? path.relative(root, suppliedAudioFile).replace(/\\/g, '/')
       : 'silent-placeholder',
-    audioReadyForFinal: hasApprovedAudio,
+    audioSourceLabel,
+    audioApprovalStatus,
+    audioReadyForReview,
+    audioReadyForFinal,
+    suppliedAudioDurationSeconds: suppliedAudioDuration,
+    renderDurationSeconds: renderDuration,
     command: `ffmpeg ${args.join(' ')}`,
     status: ffmpeg.status,
     stderrTail: (ffmpeg.stderr || '').split(/\r?\n/).slice(-20),
@@ -518,8 +704,13 @@ function renderProof() {
 }
 
 writeJson(path.join(generatedDir, 'content-package.json'), contentPackage);
+writeJson(path.join(generatedDir, 'publish-ready-payload.json'), publishReadyPayload);
+writeJson(path.join(generatedDir, 'analytics-record.json'), analyticsRecord);
+writeJson(path.join(generatedDir, 'cost-record.json'), costEstimate);
+writeJson(path.join(generatedDir, 'monetization-path.json'), monetizationPath);
 fs.writeFileSync(path.join(generatedDir, 'captions.srt'), buildSrt());
 fs.writeFileSync(path.join(generatedDir, 'storyboard.svg'), buildStoryboardSvg());
+fs.writeFileSync(path.join(thumbnailDir, 'thumbnail.svg'), buildThumbnailSvg());
 
 const renderReport = renderProof();
 fs.writeFileSync(path.join(outRoot, 'approval-package.md'), buildApprovalMarkdown(renderReport));

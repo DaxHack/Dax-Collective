@@ -7,10 +7,12 @@
 2. Confirm branch:
    `codex/legal-oauth-pages-20260913`
 3. Continue from the latest PR #3 head; the contact-email correction, Sprint 7 readiness work, and resumed verification handoff are pushed or should be verified against the PR head before more work.
-4. Do not redo the Ani-Dax `--audio-file` placeholder smoke test; it passed with non-public placeholder audio and the throwaway output was removed.
-5. Continue the smallest real missing Ani-Dax link: obtain Daniel-approved narration/TTS/narrator approval, then rerun the Ani-Dax package with `--audio-file` for a final READY_FOR_APPROVAL package.
-6. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
-7. Continue Sprint 1 repair work opportunistically around:
+4. Do not redo the Ani-Dax `--audio-file` placeholder smoke test; it passed and the throwaway output was removed.
+5. Do not redo the Ani-Dax draft narration/render proof unless Daniel requests a script/voice change. The current package is ready for Daniel review, not public publishing.
+6. If Daniel approves or replaces the narration, rerun the Ani-Dax package with `--audio-file path/to/final.wav --audio-approval-status approved-final`.
+7. Next highest-value autonomous work is God&apos;s Vessel offer/listing/storefront readiness around Claude&apos;s Canva artwork masters. Do not create competing production artwork.
+8. Protect Daniel's personal brand: do not fabricate travel experiences, replace his face/voice, bulk-edit history, or publish without approval.
+9. Continue Sprint 1 repair work opportunistically around:
    - approval gates
    - QC
    - cost tracking
@@ -29,6 +31,13 @@
   `node tools/anidax/produce-sample.mjs --topic "..." --series "..." --audio-file path/to/approved.wav`
 - n8n inventory generator: `tools/n8n/inventory.mjs`
 - Ani-Dax sample output: `artifacts/anidax/sprint-1-sample/`
+- Ani-Dax current review package: `artifacts/anidax/sprint-1-sample/approval-package.md`
+- Ani-Dax draft narration: `artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav`
+- Ani-Dax publish payload: `artifacts/anidax/sprint-1-sample/generated/publish-ready-payload.json`
+- Ani-Dax analytics/cost records:
+  `artifacts/anidax/sprint-1-sample/generated/analytics-record.json`
+  `artifacts/anidax/sprint-1-sample/generated/cost-record.json`
+- Ani-Dax thumbnail asset: `artifacts/anidax/sprint-1-sample/thumbnail/thumbnail.svg`
 - God's Vessel collection generator: `tools/gods-vessel/produce-names-of-god.mjs`
 - Reusable God's Vessel invocation:
   `npm run gods-vessel:collection`
@@ -83,8 +92,10 @@
 - `npm run n8n:inventory` parsed templates and flagged one invalid JSON export.
 - `npm --prefix dax-main run build` passes with warnings.
 - FFmpeg is installed and usable.
-- Local Windows TTS is not usable in this environment.
-- `node tools/anidax/produce-sample.mjs --audio-file ...` passed with non-public placeholder audio; `audioReadyForFinal: true` was verified and temporary smoke-test files were removed.
+- Local Windows SAPI draft narration works outside the sandbox for non-public review audio.
+- `node tools/anidax/produce-sample.mjs --audio-file ...` passed with non-public audio and now distinguishes review audio from final-approved audio.
+- Current Ani-Dax review package has draft narration attached, 30.000s render duration, captions, thumbnail, publish payload, analytics record, cost record, and monetization path.
+- Current Ani-Dax package remains `publishAllowed: false`, `youtubePrivacyStatus: private`, `automaticCrossPostingAllowed: false`, and `audioReadyForFinal: false`.
 - `npm run gods-vessel:collection` generates five Names of God SVG designs, metadata, theology review, and commerce readiness notes.
 - `/gods-vessel` has been repaired to show the real draft state: no live products, no checkout, no fake testimonials, no fake follower/lives-transformed claims.
 - God's Vessel interest CTAs use direct gtag custom events when analytics exists.
@@ -198,4 +209,4 @@
 
 ## Current Sprint
 
-Sprint 7 revenue readiness and Ani-Dax placeholder audio-path verification are complete. The next smallest brand link is Daniel-approved narration/TTS for Ani-Dax, then regenerating the READY_FOR_APPROVAL package with a real approved audio file. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.
+Ani-Dax now has a complete local READY_FOR_DANIEL_REVIEW package with draft narration, render, captions, thumbnail, publish payload, analytics/cost records, and monetization path. The next revenue-critical path is Daniel review/approval for Ani-Dax plus God&apos;s Vessel offer/listing/storefront readiness around Claude&apos;s Canva production artwork. Do not start generalized infrastructure cleanup unless verification identifies a concrete problem.

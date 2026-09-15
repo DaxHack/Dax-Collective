@@ -7,7 +7,7 @@
 | PR #3 not merged | Review and merge https://github.com/DaxHack/Dax-Collective/pull/3 when ready. |
 | Public legal copy | Approve Privacy, Terms, Disclosure, and OAuth wording as public-facing business/legal copy. |
 | Public publishing | Approve each content item before YouTube/TikTok/Instagram publishing. |
-| Ani-Dax voice | Provide Daniel narration, approve a narrator, or authorize/configure a TTS provider. |
+| Ani-Dax final voice/public use approval | Review the local draft narration package and either approve it for final use, provide replacement narration, or approve a narrator/TTS provider. |
 | OAuth/MFA | Complete any account-owner consent, MFA, CAPTCHA, or OAuth repair needed in Google/YouTube/n8n/platform accounts. |
 | Paid services | Approve any paid TTS/image/video/API/tool subscription before use. |
 | God's Vessel collection approval | Review and approve Names of God theology, design direction, garment choices, pricing, vendor, and public launch timing. |
@@ -26,7 +26,7 @@
 
 | Blocker | Evidence | Next Action |
 | --- | --- | --- |
-| Local TTS unavailable | Windows SAPI test failed: no installed voice available. | Use approved external TTS or human audio file. |
+| Local TTS sandbox limitation | Windows SAPI narration generation works outside the sandbox and produced review audio, but it is not approved for public publishing. | Daniel must approve or replace the draft voice before public use. |
 | n8n runtime not verified | Repository contains JSON templates but no connected runtime evidence. | Inspect n8n instance/credentials when available. |
 | Invalid workflow JSON | `workflow_12_data_collection_agent.json.json` parse failure. | Repair or remove duplicate/broken export. |
 | Publishing credentials unverified | Publisher templates reference multiple platform credentials. | Verify non-secret credential health in n8n, do not expose values. |
@@ -50,7 +50,7 @@
 
 - Frontend build warnings: build succeeds.
 - Lack of public publishing: intentional until approval.
-- Lack of final Ani-Dax voice: local pipeline can still generate concept/QC/render proof and wait for approved audio.
+- Lack of final Ani-Dax voice approval: local pipeline now generates draft review narration and a 30s render, but public use still waits for Daniel approval or replacement audio.
 - God's Vessel having zero live products: intentional until theology, design, vendor, pricing, and storefront setup are approved.
 - Time-Zone Travelers not publishing yet: intentional until Daniel approves the content, account mapping, and any monetized links.
 - Dax the Traveler not publishing yet: intentional until Daniel approves the personal-brand draft, narration, account mapping, and any monetized links.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13T07:12:34.793Z",
+  "generatedAt": "2026-09-14T17:35:27.061Z",
   "concept": {
     "brand": "Ani-Dax",
     "format": "short",
@@ -101,7 +101,8 @@
     "Ani-Dax end card."
   ],
   "metadata": {
-    "title": "Subaru's Return by Death Is Not a power fantasy",
+    "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+    "title": "Subaru's Return by Death Is Not a Power Fantasy",
     "description": "Ani-Dax character analysis draft. This video uses original narration and original motion-graphic support only. No anime clips, no fabricated quotes, and no public publishing until Daniel approves.",
     "tags": [
       "Ani-Dax",
@@ -113,6 +114,14 @@
     ],
     "thumbnail": "Original thumbnail concept: fractured cyan clock over a black-violet background, text: POWER OR PUNISHMENT?",
     "aiDisclosureRecommendation": "Recommended if AI-generated/supporting visuals or AI-assisted copy are used in the final: disclose AI-assisted production in description or internal publication checklist."
+  },
+  "audio": {
+    "supplied": true,
+    "source": "artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav",
+    "sourceLabel": "Local Windows SAPI draft narration (Microsoft David Desktop)",
+    "approvalStatus": "draft-review-audio",
+    "readyForReview": true,
+    "readyForFinal": false
   },
   "complianceReview": {
     "copyright": "No anime footage, no copyrighted screenshots, no music selected.",
@@ -143,8 +152,8 @@
     ],
     [
       "Narration quality",
-      "BLOCKED",
-      "No local voice installed; final requires Daniel voice, approved narrator, or configured TTS."
+      "REVIEW_REQUIRED",
+      "Draft review audio was supplied and rendered; Daniel must approve or replace the voice before public publishing."
     ],
     [
       "Captions",
@@ -162,8 +171,85 @@
       "Requires Daniel approval and verified Ani-Dax account credential mapping."
     ]
   ],
+  "analyticsRecord": {
+    "brand": "Ani-Dax",
+    "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+    "concept": "Why Subaru's Return by Death is not a power fantasy",
+    "format": "short",
+    "platform": "pending approval",
+    "publishDate": null,
+    "views": 0,
+    "impressions": 0,
+    "ctr": 0,
+    "watchTime": 0,
+    "retention": 0,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "subscribersGained": 0,
+    "clicks": 0,
+    "conversions": 0,
+    "revenue": 0,
+    "productionCost": 0,
+    "aiApiCost": 0,
+    "profitEstimate": 0
+  },
+  "publishReadyPayload": {
+    "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+    "brand": "Ani-Dax",
+    "approvalStatus": "READY_FOR_DANIEL_REVIEW_VOICE_NOT_FINAL",
+    "publishAllowed": false,
+    "youtubePrivacyStatus": "private",
+    "automaticCrossPostingAllowed": false,
+    "requiredBeforePublishing": [
+      "Daniel approves concept/script.",
+      "Daniel approves final narration/voice.",
+      "Final canon/source check is completed for any specific claims.",
+      "Final visual style/art pass is approved.",
+      "Ani-Dax platform account mapping and credentials are verified.",
+      "Daniel approves the specific public publishing target and metadata."
+    ],
+    "suggestedPlatforms": [
+      "YouTube Shorts private draft",
+      "TikTok/Instagram drafts only after Daniel approval"
+    ],
+    "title": "Subaru's Return by Death Is Not a Power Fantasy",
+    "description": "Ani-Dax character analysis draft. This video uses original narration and original motion-graphic support only. No anime clips, no fabricated quotes, and no public publishing until Daniel approves.",
+    "tags": [
+      "Ani-Dax",
+      "anime analysis",
+      "ReZero",
+      "Subaru Natsuki",
+      "character writing",
+      "anime theory"
+    ],
+    "thumbnail": "thumbnail/thumbnail.svg"
+  },
+  "monetizationPath": {
+    "status": "AUDIENCE_BUILDING_FIRST_REVENUE_LATER",
+    "noActiveAffiliateEnrollmentClaim": true,
+    "activeAffiliateProgramsVerified": [],
+    "nearTermPaths": [
+      {
+        "path": "YouTube audience growth",
+        "status": "later",
+        "requirement": "Consistent approved publishing and platform eligibility."
+      },
+      {
+        "path": "Original Ani-Dax merch/memberships",
+        "status": "later",
+        "requirement": "Daniel-approved offer and storefront/provider setup."
+      },
+      {
+        "path": "Sponsors/affiliate offers",
+        "status": "later",
+        "requirement": "Legitimate approved partner, audience fit, and disclosure."
+      }
+    ],
+    "currentCta": "Subscribe/follow only after Daniel approves public publishing."
+  },
   "costEstimate": {
-    "generatedAt": "2026-09-13T07:12:34.793Z",
+    "generatedAt": "2026-09-14T17:35:27.061Z",
     "localProofRunUsd": {
       "llm": 0,
       "image": 0,
@@ -173,7 +259,7 @@
       "storage": 0,
       "api": 0,
       "other": 0,
-      "notes": "This local proof uses deterministic text assets and FFmpeg only."
+      "notes": "This local proof uses deterministic text assets, supplied local/review audio, and FFmpeg only."
     },
     "finalProductionExpectedCosts": [
       {
@@ -183,8 +269,8 @@
       },
       {
         "item": "Narration/TTS",
-        "status": "blocked",
-        "estimateUsd": "TBD; no local TTS voice or ElevenLabs/OpenAI TTS credential verified"
+        "status": "draft/review audio supplied",
+        "estimateUsd": "0 for this local review run; final narration cost depends on Daniel-approved voice path"
       },
       {
         "item": "Image/video generation",

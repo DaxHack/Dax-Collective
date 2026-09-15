@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-14T12:59:59-04:00
+2026-09-15T13:15:59-04:00
 
 ## VERIFIED DONE
 
@@ -30,6 +30,18 @@
   - output: `artifacts/anidax/sprint-1-sample/`
   - proof render: `artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4`
   - render report: `artifacts/anidax/sprint-1-sample/render/render-report.json`
+- Ani-Dax end-to-end human-review package is now proven with draft narration:
+  - content ID: `anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy`
+  - local draft narration: `artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav`
+  - draft narration report: `artifacts/anidax/sprint-1-sample/audio/draft-narration-report.json`
+  - render proof: `artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4`
+  - render duration: 30.000 seconds
+  - draft narration duration: 23.191882 seconds
+  - audio is ready for Daniel review but not finally approved
+  - `publishAllowed` remains `false`
+  - YouTube output remains private draft only
+  - automatic cross-posting remains disabled
+  - local run cost remains `$0`
 - n8n workflow inventory script created and tested:
   - command: `npm run n8n:inventory`
   - output: `artifacts/n8n-inventory.json`
@@ -279,14 +291,16 @@
 
 ## NEXT EXACT ACTIONS
 
-1. Push this verification/handoff update to PR #3 and verify the Firebase Hosting PR workflow for the new head.
-2. When Daniel provides approved narration or approves a TTS/narrator path, rerun the Ani-Dax package with `--audio-file` and produce a final READY_FOR_APPROVAL package.
-3. Repair Ani-Dax n8n templates before importing/running live:
+1. Push the Ani-Dax draft-narration review-package update to PR #3 and verify the Firebase Hosting PR workflow for the new head.
+2. Daniel should review the Ani-Dax package at `artifacts/anidax/sprint-1-sample/approval-package.md`, especially script, draft voice, visual style, and canon posture.
+3. If Daniel approves or replaces the narration, rerun the Ani-Dax package with `--audio-file` and `--audio-approval-status approved-final`.
+4. Repair Ani-Dax n8n templates before importing/running live:
    - add runtime approval/QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-4. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
-5. After Daniel approval, merge/deploy PR #3; do not merge without explicit approval because it can deploy live changes.
+5. Continue the fastest revenue path that does not duplicate Claude's Canva work: God&apos;s Vessel offer/listing/storefront readiness around approved production artwork, then tracking/CTA/analytics.
+6. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
+7. After Daniel approval, merge/deploy PR #3; do not merge without explicit approval because it can deploy live changes.
 
 ## DO NOT REDO
 
@@ -391,7 +405,7 @@
 
 | Brand | State | Evidence |
 | --- | --- | --- |
-| Ani-Dax | PARTIAL, local production package works | `npm run anidax:sample`, proof render created |
+| Ani-Dax | READY FOR DANIEL REVIEW, local end-to-end review package works | draft narration WAV, 30s FFmpeg render, captions, thumbnail, publish payload, analytics/cost records |
 | God's Vessel | PARTIAL, first collection draft path works | `npm run gods-vessel:collection`, `/gods-vessel` page repaired |
 | Time-Zone Travelers | PARTIAL, local source-backed sample package works | `npm run timezone:sample`, proof render created |
 | Dax the Traveler | PARTIAL, local support automation works | `npm run dax-traveler:support`, 14 approved assets inventoried, proof render created |
@@ -404,7 +418,12 @@
 | Command | Result |
 | --- | --- |
 | `npm run anidax:sample` | PASS; sample package and FFmpeg proof render created |
-| `node tools/anidax/produce-sample.mjs --audio-file ...` | PASS with non-public placeholder audio; `audioReadyForFinal: true` path verified, throwaway output removed |
+| `node tools/anidax/produce-sample.mjs --audio-file ...` | PASS with non-public placeholder audio; review audio path verified without setting final approval |
+| `powershell -NoProfile -ExecutionPolicy Bypass -File tools/anidax/create-local-narration.ps1 ... -Rate 7` | PASS outside sandbox; created local Windows SAPI draft review narration WAV |
+| `ffprobe artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav` | PASS; 23.191882 seconds |
+| `ffprobe artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4` | PASS; 30.000000 seconds |
+| Ani-Dax package assertion script | PASS; 7 JSON artifacts parse, render is 30s, `audioReadyForReview` true, `audioReadyForFinal` false, `publishAllowed` false, YouTube private, cross-posting false |
+| `npm --prefix dax-main run build` after Ani-Dax review-package update | PASS with existing warnings |
 | `npm run n8n:inventory` | PASS; 30 templates parsed, one invalid JSON flagged |
 | `node --check tools/gods-vessel/produce-names-of-god.mjs` | PASS |
 | `npm run gods-vessel:collection` | PASS; five SVG draft designs, metadata, theology review, and commerce readiness generated |
@@ -457,18 +476,25 @@
 | `npm run business-state:query -- summary` after resumed verification | PASS; publicPublishingAllowed false |
 | `npm run business-state:query -- revenue-readiness` after resumed verification | PASS; publicPublishingAllowed false, purchaseOrEnrollmentAllowed false |
 | `npm --prefix dax-main run build` after resumed verification | PASS with existing warnings |
-| Local Windows SAPI TTS test | BLOCKED; no voice installed or available |
+| Local Windows SAPI TTS draft narration | PASS outside sandbox; usable for non-public review audio, not approved for public publishing without Daniel approval |
 
 Build warnings are existing lint warnings in unrelated files, plus existing AniDaxPage warnings. They did not block the production build.
 
 ## SAMPLE OUTPUTS CREATED
 
 - `artifacts/anidax/sprint-1-sample/approval-package.md`
+- `artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav`
+- `artifacts/anidax/sprint-1-sample/audio/draft-narration-report.json`
 - `artifacts/anidax/sprint-1-sample/generated/content-package.json`
 - `artifacts/anidax/sprint-1-sample/generated/captions.srt`
 - `artifacts/anidax/sprint-1-sample/generated/storyboard.svg`
+- `artifacts/anidax/sprint-1-sample/generated/publish-ready-payload.json`
+- `artifacts/anidax/sprint-1-sample/generated/analytics-record.json`
+- `artifacts/anidax/sprint-1-sample/generated/cost-record.json`
+- `artifacts/anidax/sprint-1-sample/generated/monetization-path.json`
 - `artifacts/anidax/sprint-1-sample/render/ani-dax-proof-render.mp4`
 - `artifacts/anidax/sprint-1-sample/render/render-report.json`
+- `artifacts/anidax/sprint-1-sample/thumbnail/thumbnail.svg`
 - `artifacts/n8n-inventory.json`
 - `artifacts/gods-vessel/names-of-god/collection.json`
 - `artifacts/gods-vessel/names-of-god/product-metadata.csv`
@@ -516,7 +542,7 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `workflow_12_data_collection_agent.json.json` is invalid JSON.
 - Existing n8n Ani-Dax workflow still lacks verified runtime approval and QC gates.
 - Existing Ani-Dax workflow uses generic external visual search unsuitable for final anime character production.
-- Local TTS unavailable.
+- Ani-Dax draft narration is generated for review only; Daniel must approve or replace it before any public use.
 - Frontend build warnings remain.
 - God's Vessel storefront/product creation is not connected to Printify or Shopify yet.
 - God's Vessel generated theology copy is concise draft apparel copy and still needs Daniel review before product publication.

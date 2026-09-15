@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T16:57:46.526Z",
+  "generatedAt": "2026-09-15T17:17:19.245Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -84,8 +84,8 @@
         {
           "brandId": "ani-dax",
           "brand": "Ani-Dax",
-          "contentId": "anidax-sprint-1-sample",
-          "title": "Subaru's Return by Death Is Not a power fantasy",
+          "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+          "title": "Subaru's Return by Death Is Not a Power Fantasy",
           "status": "READY_FOR_APPROVAL_PACKAGE",
           "publishAllowed": false,
           "owner": "Daniel",
@@ -239,8 +239,8 @@
     {
       "brandId": "ani-dax",
       "brand": "Ani-Dax",
-      "contentId": "anidax-sprint-1-sample",
-      "title": "Subaru's Return by Death Is Not a power fantasy",
+      "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+      "title": "Subaru's Return by Death Is Not a Power Fantasy",
       "status": "READY_FOR_APPROVAL_PACKAGE",
       "publishAllowed": false,
       "owner": "Daniel",
@@ -615,7 +615,17 @@
     {
       "brandId": "ani-dax",
       "artifactPath": "artifacts/anidax/sprint-1-sample/generated/cost-record.json",
-      "localProofRunUsd": null
+      "localProofRunUsd": {
+        "llm": 0,
+        "image": 0,
+        "video": 0,
+        "tts": 0,
+        "musicSfx": 0,
+        "storage": 0,
+        "api": 0,
+        "other": 0,
+        "notes": "This local proof uses deterministic text assets, supplied local/review audio, and FFmpeg only."
+      }
     },
     {
       "brandId": "time-zone-travelers",
