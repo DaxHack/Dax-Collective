@@ -1,0 +1,663 @@
+{
+  "generatedAt": "2026-09-14T16:57:36.930Z",
+  "templateCount": 30,
+  "rows": [
+    {
+      "file": "ani_dax_specific_workflow.json",
+      "name": "Ani-Dax - Anime Analysis Creator",
+      "active": false,
+      "nodes": 6,
+      "triggers": [],
+      "nodeTypes": [
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.youTube"
+      ],
+      "credentials": [
+        "ElevenLabs API",
+        "Fal.AI API",
+        "Google Sheets OAuth2",
+        "OpenAI API",
+        "YouTube OAuth2"
+      ],
+      "status": "WORKS WITH REPAIR - private draft upload only; add runtime approval/QC and credential checks"
+    },
+    {
+      "file": "dax_collective_master_orchestrator.json",
+      "name": "Dax Collective Master Orchestrator - CLEAN",
+      "active": false,
+      "nodes": 13,
+      "triggers": [
+        "Trigger Dax Traveler",
+        "Trigger God's Vessel",
+        "Trigger Ani-Dax",
+        "Trigger Time-Zone Travelers"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.cron",
+        "n8n-nodes-base.executeWorkflow",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.if"
+      ],
+      "credentials": [
+        "SELECT_YOUR_CREDENTIAL"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "dax_collective_multi_brand_workflow.json",
+      "name": "Dax Collective Master Automation - Optimized v2.0",
+      "active": false,
+      "nodes": 16,
+      "triggers": [
+        "Schedule Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "Dax Main GSheets OAuth2",
+        "DeepSeek API",
+        "ElevenLabs API",
+        "Pexels API",
+        "YouTube OAuth2"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "dax_traveler_specific_workflow.json",
+      "name": "Dax the Traveler - Travel Content Creator",
+      "active": false,
+      "nodes": 6,
+      "triggers": [],
+      "nodeTypes": [
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.youTube"
+      ],
+      "credentials": [
+        "ElevenLabs API",
+        "Fal.AI API",
+        "Google Sheets OAuth2",
+        "OpenAI API",
+        "YouTube OAuth2"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "fixed_workflow_multi_format_video_creator.json",
+      "name": "Multi-Format Video Creator with FFmpeg",
+      "active": false,
+      "nodes": 12,
+      "triggers": [
+        "Webhook Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.webhook"
+      ],
+      "credentials": [
+        "Google Sheets API"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "gods_vessel_specific_workflow.json",
+      "name": "God's Vessel - Faith Content Creator",
+      "active": false,
+      "nodes": 8,
+      "triggers": [],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.youTube"
+      ],
+      "credentials": [
+        "ElevenLabs API",
+        "Fal.AI API",
+        "Google Sheets OAuth2",
+        "OpenAI API",
+        "YouTube OAuth2"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "workflow_10_ai_content_strategist.json",
+      "name": "AI Content Strategist Agent",
+      "active": false,
+      "nodes": 12,
+      "triggers": [
+        "Daily Content Strategy at 8 AM"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.merge",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_11_cross_brand_synergy.json",
+      "name": "Cross-Brand Synergy & Recommendation Agent",
+      "active": false,
+      "nodes": 12,
+      "triggers": [
+        "Daily Synergy Analysis at 10 AM"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.merge",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_12_data_collection_agent.json.json",
+      "name": "",
+      "active": false,
+      "nodes": 0,
+      "triggers": [],
+      "nodeTypes": [],
+      "credentials": [],
+      "status": "BROKEN - invalid JSON: Unexpected end of JSON input"
+    },
+    {
+      "file": "workflow_14_video_content_generator.json",
+      "name": "Video Content Generator",
+      "active": false,
+      "nodes": 10,
+      "triggers": [
+        "Daily Video Generation Trigger"
+      ],
+      "nodeTypes": [
+        "@n8n/n8n-nodes-langchain.openAi",
+        "n8n-nodes-base.cron",
+        "n8n-nodes-base.elevenLabs",
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.slack",
+        "n8n-nodes-base.unsplash",
+        "n8n-nodes-base.youtube"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_15_dax_traveler_video_automatio  n.json",
+      "name": "Dax the Traveler Video Automation",
+      "active": false,
+      "nodes": 11,
+      "triggers": [],
+      "nodeTypes": [
+        "@n8n/n8n-nodes-langchain.openAi",
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.cron",
+        "n8n-nodes-base.elevenLabs",
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.slack",
+        "n8n-nodes-base.unsplash",
+        "n8n-nodes-base.youtube"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_16_gods_vessel_video_automati  on.json",
+      "name": "God's Vessel Faith Video Automation",
+      "active": false,
+      "nodes": 12,
+      "triggers": [
+        "Daily Faith Content Trigger"
+      ],
+      "nodeTypes": [
+        "@n8n/n8n-nodes-langchain.openAi",
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.cron",
+        "n8n-nodes-base.elevenLabs",
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.slack",
+        "n8n-nodes-base.unsplash",
+        "n8n-nodes-base.youtube"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_1_secrets_vault_agent.json",
+      "name": "Secrets Vault & Rotation Agent",
+      "active": false,
+      "nodes": 8,
+      "triggers": [
+        "Daily Security Check"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_2_global_error_handler.json",
+      "name": "Global Error Handler & Retry Supervisor",
+      "active": false,
+      "nodes": 7,
+      "triggers": [
+        "Error Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.errorTrigger",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.wait"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_3_youtube_sentinel.json",
+      "name": "YouTube Sentinel Agent",
+      "active": false,
+      "nodes": 13,
+      "triggers": [
+        "Monitor Every 15 Minutes",
+        "Trigger Content Generation"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_4_multiformat_content_generator .json",
+      "name": "Multiformat Content Generator",
+      "active": false,
+      "nodes": 10,
+      "triggers": [
+        "Content Generation Webhook"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches",
+        "n8n-nodes-base.webhook"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_5_publication_scheduler.json",
+      "name": "Publication Scheduler & Optimizer",
+      "active": false,
+      "nodes": 8,
+      "triggers": [
+        "Check Every 30 Minutes"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_6_revenue_optimizer.json",
+      "name": "Revenue Optimization Agent",
+      "active": false,
+      "nodes": 12,
+      "triggers": [
+        "Analyze Revenue Every 6 Hours"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.merge",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_7_ecommerce_automation.json",
+      "name": "E-commerce Automation Agent",
+      "active": false,
+      "nodes": 12,
+      "triggers": [
+        "Monitor E-commerce Every 4 Hours"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.merge",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_8_analytics_dashboard.json",
+      "name": "Analytics Dashboard Agent",
+      "active": false,
+      "nodes": 14,
+      "triggers": [
+        "Collect Analytics Every 2 Hours"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.merge",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_9_financial_tracker.json",
+      "name": "Financial Tracking & Tax Agent",
+      "active": false,
+      "nodes": 16,
+      "triggers": [
+        "Daily Financial Check at 6 AM"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.code",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.if",
+        "n8n-nodes-base.merge",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.set",
+        "n8n-nodes-base.splitInBatches"
+      ],
+      "credentials": [],
+      "status": "UNTESTED - structure parses, runtime not verified"
+    },
+    {
+      "file": "workflow_ani_dax_video_generator.json",
+      "name": "Ani-Dax Video Generator",
+      "active": false,
+      "nodes": 13,
+      "triggers": [
+        "Schedule Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.elevenLabs",
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.pexels",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "DeepSeek API",
+        "Discord Bot",
+        "ElevenLabs API",
+        "Google Sheets account",
+        "Pexels API"
+      ],
+      "status": "PARTIAL - generation template, needs credential verification and QC"
+    },
+    {
+      "file": "workflow_asset_management_system.json",
+      "name": "Asset Management System",
+      "active": false,
+      "nodes": 16,
+      "triggers": [
+        "Asset Sync Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleDrive",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "DeepSeek API",
+        "Discord Bot",
+        "Google Drive API",
+        "Google Sheets account"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "workflow_automated_youtube_publisher.json",
+      "name": "Automated YouTube Publisher",
+      "active": false,
+      "nodes": 16,
+      "triggers": [
+        "Check for Ready Content"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.youTube"
+      ],
+      "credentials": [
+        "Ani-Dax YouTube",
+        "Discord Bot",
+        "Facebook API",
+        "God's Vessel YouTube",
+        "Google Sheets account",
+        "Time-Zone Travelers YouTube",
+        "Twitter API"
+      ],
+      "status": "BLOCKED - publishing credentials and approval required"
+    },
+    {
+      "file": "workflow_automation_rules_engine.json",
+      "name": "Automation Rules Engine",
+      "active": false,
+      "nodes": 16,
+      "triggers": [
+        "Rules Engine Trigger",
+        "Trigger Auto-Publish Workflow",
+        "Trigger Sticker Generation"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "DeepSeek API",
+        "Discord Bot",
+        "Google Sheets account"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "workflow_blog_auto_publisher.json",
+      "name": "Blog Auto Publisher",
+      "active": false,
+      "nodes": 15,
+      "triggers": [
+        "Check Blog Content"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.readFile",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "DeepSeek API",
+        "Discord Bot",
+        "Facebook API",
+        "Faith Blog WordPress",
+        "Travel Blog WordPress",
+        "Twitter API"
+      ],
+      "status": "BLOCKED - publishing credentials and approval required"
+    },
+    {
+      "file": "workflow_gods_vessel_video_generator.json",
+      "name": "God's Vessel Video Generator - FIXED",
+      "active": false,
+      "nodes": 8,
+      "triggers": [
+        "Daily Morning Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "Google Sheets API"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "workflow_master_control_dashboard.json",
+      "name": "Master Control Dashboard",
+      "active": false,
+      "nodes": 15,
+      "triggers": [
+        "Dashboard Update Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "DeepSeek API",
+        "Discord Bot",
+        "Google Sheets account"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    },
+    {
+      "file": "workflow_tiktok_instagram_publisher.json",
+      "name": "TikTok Instagram Publisher",
+      "active": false,
+      "nodes": 15,
+      "triggers": [
+        "Check Short Form Content"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.scheduleTrigger"
+      ],
+      "credentials": [
+        "DeepSeek API",
+        "Discord Bot",
+        "Google Sheets account",
+        "Instagram API",
+        "TikTok API"
+      ],
+      "status": "BLOCKED - publishing credentials and approval required"
+    },
+    {
+      "file": "workflow_timezone_travelers_video_generator.json",
+      "name": "Time-Zone Travelers Video Generator",
+      "active": false,
+      "nodes": 16,
+      "triggers": [
+        "Schedule Trigger"
+      ],
+      "nodeTypes": [
+        "n8n-nodes-base.discord",
+        "n8n-nodes-base.elevenLabs",
+        "n8n-nodes-base.executeCommand",
+        "n8n-nodes-base.filter",
+        "n8n-nodes-base.googleSheets",
+        "n8n-nodes-base.httpRequest",
+        "n8n-nodes-base.openAi",
+        "n8n-nodes-base.pexels",
+        "n8n-nodes-base.scheduleTrigger",
+        "n8n-nodes-base.writeFile"
+      ],
+      "credentials": [
+        "DeepSeek API",
+        "Discord Bot",
+        "ElevenLabs API",
+        "Google Sheets account",
+        "Pexels API"
+      ],
+      "status": "UNTESTED - needs credential verification"
+    }
+  ]
+}

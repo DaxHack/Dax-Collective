@@ -1,0 +1,183 @@
+{
+  "generatedAt": "2026-09-15T17:33:10.134Z",
+  "status": "REVENUE_READY_FOR_APPROVAL_NOT_EARNING",
+  "verifiedRevenueUsd": 0,
+  "verifiedCostUsd": 0,
+  "verifiedProfitUsd": 0,
+  "adSpendUsd": 0,
+  "publicPublishingAllowed": false,
+  "purchaseOrEnrollmentAllowed": false,
+  "brands": [
+    {
+      "brand": "Ani-Dax",
+      "content": "AI-assisted anime analysis/interview Shorts and later long-form commentary.",
+      "audience": "Anime viewers who want character-driven analysis, lore framing, and theories without clip-rip spam.",
+      "offer": "Near term: subscription/community CTA after approval. Later: original merchandise, memberships, sponsorships, YouTube monetization when eligible.",
+      "cta": "Comment/subscribe CTA only until Daniel approves a specific monetized offer.",
+      "clickOrLead": "Track YouTube/video description clicks and site clicks with UTM fields after public approval.",
+      "conversion": "No conversion path is live. Future conversions depend on approved merch/membership/sponsor/product links.",
+      "revenue": 0,
+      "cost": 0,
+      "profit": 0,
+      "currentStatus": "READY_FOR_APPROVAL_PACKAGE",
+      "blockers": [
+        "Daniel content approval",
+        "Approved narration/final visual style",
+        "Verified platform account mapping",
+        "Approved monetized link or offer"
+      ],
+      "nextAutonomousAction": "Prepare UTM/link schema for approved Ani-Dax public descriptions without inserting monetized links."
+    },
+    {
+      "brand": "God's Vessel",
+      "content": "Faith content leading to the Names of God dictionary-style apparel collection.",
+      "audience": "Faith-based apparel buyers who want wearable, scripture-rooted design.",
+      "offer": "Five draft Names of God apparel products pending Daniel theology/design/vendor/storefront approval.",
+      "cta": "Interest CTA only until Printify/Shopify purchase path is approved and configured.",
+      "clickOrLead": "Direct gtag interest click event on the God's Vessel page.",
+      "conversion": "Blocked until storefront, checkout, tax/shipping, vendor, and launch approval are complete.",
+      "revenue": 0,
+      "cost": 0,
+      "profit": 0,
+      "productEconomics": {
+        "productCount": 5,
+        "verifiedLiveProducts": 0,
+        "averageTargetPriceUsd": 40.8,
+        "averageEstimatedBaseCostUsd": 19,
+        "averageEstimatedMarginUsd": 21.8,
+        "note": "Planning economics only. Vendor costs, shipping, taxes, platform fees, and checkout are not verified live."
+      },
+      "listingPackage": {
+        "status": "LISTINGS_PREPARED_NOT_PUBLISHED",
+        "preparedListingCount": 5,
+        "publicPublishingAllowed": false,
+        "purchaseEnabled": false,
+        "artifacts": {
+          "storefrontListingsJson": "artifacts/gods-vessel/names-of-god/listings/storefront-listings.json",
+          "shopifyDraftCsv": "artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv",
+          "printifyHandoffCsv": "artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv",
+          "salesTrackingLedgerCsv": "artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv",
+          "approvalChecklist": "artifacts/gods-vessel/names-of-god/listings/approval-checklist.md"
+        }
+      },
+      "currentStatus": "READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP",
+      "blockers": [
+        "Daniel theology and design approval",
+        "Printify/Shopify login/OAuth/payment/tax/shipping setup",
+        "Approved product listings and public launch timing"
+      ],
+      "nextAutonomousAction": "Do not duplicate Canva design work; prepare listing/tracking fields around the approved collection once Daniel/Claude provide final assets."
+    },
+    {
+      "brand": "Time-Zone Travelers",
+      "content": "Source-backed destination comparison and decision-guide media.",
+      "audience": "Travel planners who want distinctive, practical comparison rather than generic destination lists.",
+      "offer": "Near term: official-source trust links and future approved travel affiliate/product/guide paths.",
+      "cta": "Save/share/subscribe CTA and official source links only until Daniel approves monetized links.",
+      "clickOrLead": "UTM-tagged official-source links already exist in the sample package.",
+      "conversion": "No affiliate enrollment or paid guide path is live; conversions are future/blocked.",
+      "revenue": 0,
+      "cost": 0,
+      "profit": 0,
+      "currentStatus": "AFFILIATE_READY_TRACKING_ONLY",
+      "trackedLinks": [
+        {
+          "label": "GO TOKYO IC cards",
+          "url": "https://www.gotokyo.org/en/plan/getting-around/ic-card/index.html?utm_source=time-zone-travelers&utm_medium=official_source&utm_campaign=tzt-2026-09-13-tokyo-seoul-night-owl",
+          "affiliate": false
+        },
+        {
+          "label": "Seoul public transportation",
+          "url": "https://english.seoul.go.kr/service/movement/public-transportation/?utm_source=time-zone-travelers&utm_medium=official_source&utm_campaign=tzt-2026-09-13-tokyo-seoul-night-owl",
+          "affiliate": false
+        }
+      ],
+      "blockers": [
+        "Daniel content/narration approval",
+        "Final source check for time-sensitive claims",
+        "Approved affiliate/program enrollment before monetized links"
+      ],
+      "nextAutonomousAction": "Reuse the existing UTM pattern for future official-source or approved affiliate links."
+    },
+    {
+      "brand": "Dax the Traveler",
+      "content": "Repurposed Daniel travel material with AI-assisted support only.",
+      "audience": "Existing Dax the Traveler viewers and travel followers who trust Daniel as the face/voice.",
+      "offer": "Near term: traffic back to Daniel channels. Later: approved gear/activity affiliates, sponsorships, guides.",
+      "cta": "Profile/channel CTA only until Daniel approves monetized links or public publishing.",
+      "clickOrLead": "UTM-tagged YouTube and Instagram profile links exist in the support package.",
+      "conversion": "No monetized conversion path is live; personal-brand approval remains required.",
+      "revenue": 0,
+      "cost": 0,
+      "profit": 0,
+      "currentStatus": "TRACKING_READY_NO_ACTIVE_MONETIZED_LINKS",
+      "trackedLinks": [
+        {
+          "label": "Dax the Traveler YouTube",
+          "url": "https://www.youtube.com/@daxthetraveler?utm_source=dax-the-traveler&utm_medium=profile_link&utm_campaign=dtt-2026-09-13-puerto-rico-repurpose",
+          "affiliate": false
+        },
+        {
+          "label": "Dax the Traveler Instagram",
+          "url": "https://www.instagram.com/daxthetraveler?utm_source=dax-the-traveler&utm_medium=profile_link&utm_campaign=dtt-2026-09-13-puerto-rico-repurpose",
+          "affiliate": false
+        }
+      ],
+      "blockers": [
+        "Daniel asset/angle approval",
+        "Daniel narration or approved narrator",
+        "Verified platform account mapping",
+        "Approved affiliate/sponsor/product CTA"
+      ],
+      "nextAutonomousAction": "Inventory more approved Daniel footage/analytics when available; do not fabricate experiences."
+    }
+  ],
+  "firstDollarSequence": [
+    {
+      "rank": 1,
+      "path": "God's Vessel approved apparel launch",
+      "why": "Closest direct offer once theology/design/vendor/storefront approvals are complete.",
+      "blockedByDaniel": true
+    },
+    {
+      "rank": 2,
+      "path": "Dax the Traveler approved support content to channel/profile CTA",
+      "why": "Uses an existing personal brand without inventing experiences; monetization comes later after approved links.",
+      "blockedByDaniel": true
+    },
+    {
+      "rank": 3,
+      "path": "Time-Zone Travelers official-source trust content then approved travel affiliates/guides",
+      "why": "Clear link attribution exists, but affiliate enrollment and offer approval are not done.",
+      "blockedByDaniel": true
+    },
+    {
+      "rank": 4,
+      "path": "Ani-Dax audience building, then merch/membership/sponsors",
+      "why": "Needs consistent content proof and channel eligibility before meaningful revenue.",
+      "blockedByDaniel": true
+    }
+  ],
+  "measurementSchema": {
+    "requiredFields": [
+      "brand",
+      "contentId",
+      "offerId",
+      "ctaType",
+      "destinationUrl",
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "clicks",
+      "leads",
+      "conversions",
+      "grossRevenueUsd",
+      "feesUsd",
+      "productionCostUsd",
+      "adSpendUsd",
+      "profitUsd",
+      "approvalStatus"
+    ],
+    "rule": "Record zero until provider/store/platform data verifies a nonzero value."
+  }
+}

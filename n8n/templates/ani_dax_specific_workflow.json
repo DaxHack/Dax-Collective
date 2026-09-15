@@ -37,7 +37,7 @@
             {
               "id": "condition1",
               "leftValue": "={{ $json['Production Status'] }}",
-              "rightValue": "Ready",
+              "rightValue": "Approved",
               "operator": {
                 "type": "string",
                 "operation": "equals"
@@ -218,7 +218,7 @@
         "description": "={{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).description }}\\n\\n🔥 Anime Series: {{ $json['Anime Series'] }}\\n⚡ Power Level: {{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).power_ranking || 'Over 9000!' }}\\n🎌 #AniDax #AnimeAnalysis #{{ $json['Anime Series'].replace(/\\s+/g, '') }}",
         "tags": "={{ JSON.parse($('Generate Anime Script').first().json.choices[0].message.content).tags.join(',') }},AniDax,Anime,Analysis,{{ $json['Anime Series'] }}",
         "categoryId": "24",
-        "privacyStatus": "public",
+        "privacyStatus": "private",
         "binaryData": true,
         "binaryPropertyName": "data"
       },

@@ -1,0 +1,25 @@
+{
+  "brand": "Dax the Traveler",
+  "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+  "status": "TRACKING_READY_NO_ACTIVE_MONETIZED_LINKS",
+  "adSpendUsd": 0,
+  "activeAffiliateProgramsVerified": [],
+  "links": [
+    {
+      "label": "Dax the Traveler YouTube",
+      "url": "https://www.youtube.com/@daxthetraveler?utm_source=dax-the-traveler&utm_medium=profile_link&utm_campaign=dtt-2026-09-13-puerto-rico-repurpose",
+      "affiliate": false
+    },
+    {
+      "label": "Dax the Traveler Instagram",
+      "url": "https://www.instagram.com/daxthetraveler?utm_source=dax-the-traveler&utm_medium=profile_link&utm_campaign=dtt-2026-09-13-puerto-rico-repurpose",
+      "affiliate": false
+    }
+  ],
+  "futureMonetizationPaths": [
+    "Legitimate travel gear affiliate links after approval/enrollment.",
+    "Activities/tours links after approval/enrollment and destination relevance review.",
+    "Sponsorships after Daniel approves brand fit.",
+    "Digital travel guides after audience proof."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
+  "brand": "Time-Zone Travelers",
+  "approvalStatus": "READY_FOR_DANIEL_REVIEW",
+  "publishAllowed": false,
+  "requiredBeforePublishing": [
+    "Daniel approves concept/script.",
+    "Final source check is completed for any updated time-sensitive claims.",
+    "Final voice/narration is approved.",
+    "Platform account mapping is verified.",
+    "Affiliate links, if used, are legitimate and approved."
+  ],
+  "suggestedPlatforms": [
+    "YouTube Shorts",
+    "Instagram Reels",
+    "TikTok",
+    "YouTube long-form expansion later"
+  ],
+  "title": "Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers?",
+  "description": "Draft Time-Zone Travelers comparison guide. Built from official transit/tourism sources, approved repository assets, and original commentary. No personal experience is claimed and no public publishing is allowed until Daniel approves.",
+  "tags": [
+    "Time-Zone Travelers",
+    "Tokyo travel",
+    "Seoul travel",
+    "city comparison",
+    "travel planning",
+    "first time in Asia",
+    "night travel"
+  ]
+}

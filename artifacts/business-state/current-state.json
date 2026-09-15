@@ -1,0 +1,861 @@
+{
+  "generatedAt": "2026-09-15T23:07:47.409Z",
+  "stateVersion": 1,
+  "sourceOfTruth": {
+    "repository": "DaxHack/Dax-Collective",
+    "branch": "codex/legal-oauth-pages-20260913",
+    "statusFile": "EXECUTION_STATUS.md",
+    "blockersFile": "BLOCKERS.md",
+    "n8nInventoryFile": "N8N_INVENTORY.md",
+    "nextSessionFile": "NEXT_SESSION.md"
+  },
+  "permissions": {
+    "permissionsVersion": 1,
+    "defaultPolicy": "Human approval is required for consequential public, paid, destructive, or credential-changing actions.",
+    "permissions": {
+      "read": {
+        "status": "allowed",
+        "notes": "Read non-secret repo state, generated artifacts, workflow inventory, docs, and public-safe media metadata."
+      },
+      "draft": {
+        "status": "allowed",
+        "notes": "Create non-public concepts, scripts, render proofs, product metadata, queues, and tracking records."
+      },
+      "workflow_edit": {
+        "status": "allowed_logged",
+        "notes": "Safe reversible workflow/template edits are allowed and must be documented."
+      },
+      "workflow_execute": {
+        "status": "draft_or_read_only_only",
+        "notes": "Do not execute workflows that publish, spend money, change credentials, or touch production data without Daniel approval."
+      },
+      "public_publish": {
+        "status": "approval_required",
+        "approver": "Daniel"
+      },
+      "delete": {
+        "status": "approval_required",
+        "approver": "Daniel"
+      },
+      "purchase": {
+        "status": "approval_required",
+        "approver": "Daniel"
+      },
+      "ad_spend": {
+        "status": "approval_required",
+        "approver": "Daniel"
+      },
+      "credential_change": {
+        "status": "human_controlled",
+        "approver": "Daniel"
+      }
+    },
+    "secretPolicy": [
+      "Never expose passwords, API keys, OAuth access tokens, refresh tokens, service-account secrets, payment credentials, or private authentication material.",
+      "Credential health may be documented without secret values.",
+      "Use existing credential stores; do not move secrets into source code."
+    ]
+  },
+  "brands": [
+    {
+      "id": "ani-dax",
+      "name": "Ani-Dax",
+      "type": "AI-assisted anime/media operation",
+      "primaryGoal": "Create high-quality anime commentary and character-interview packages that reach READY_FOR_APPROVAL before public publishing.",
+      "rules": [
+        "Do not use ripped, cropped, mirrored, or sped-up anime clips as the production base.",
+        "Prefer original narration, original compositions, motion graphics, generated supporting visuals, user-created assets, and licensed or public-domain material.",
+        "Reject fabricated canon quotes and unsupported lore claims.",
+        "Public publishing requires Daniel approval and verified brand account mapping."
+      ],
+      "currentApprovedActions": [
+        "read state",
+        "create drafts",
+        "create non-public proof renders",
+        "update queue/status files"
+      ],
+      "approvalRequiredFor": [
+        "public publishing",
+        "paid tools",
+        "copyright-sensitive assets",
+        "brand account credential changes"
+      ],
+      "currentQueue": [
+        {
+          "brandId": "ani-dax",
+          "brand": "Ani-Dax",
+          "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+          "title": "Subaru's Return by Death Is Not a Power Fantasy",
+          "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+          "openQc": [
+            "Narration is draft audio; Daniel must approve or replace it",
+            "Caption speech alignment needs listening review; media duration is not alignment proof",
+            "Canon/fact handling: Stable high-level premise only; final claims need episode/source verification.",
+            "Visual quality: FFmpeg proof render verifies pipeline shape; final visuals need art pass.",
+            "Narration quality: Draft review audio was supplied and rendered; Daniel must approve or replace the voice before public publishing.",
+            "Public publishing: Requires Daniel approval and verified Ani-Dax account credential mapping."
+          ],
+          "publishAllowed": false,
+          "owner": "Daniel",
+          "nextAction": "Approve concept/script and final voice/visual style before publishing.",
+          "artifactPath": "artifacts/anidax/timed-review/",
+          "materialSeparation": "AI-assisted support package; no public publishing."
+        }
+      ],
+      "currentState": {
+        "queueItems": 1,
+        "readyForReview": 1,
+        "publishBlockedItems": 1,
+        "publicPublishingAllowed": false
+      }
+    },
+    {
+      "id": "gods-vessel",
+      "name": "God's Vessel",
+      "type": "Faith-content and commerce brand",
+      "primaryGoal": "Prepare a small coherent Names of God collection with theology, design, product, and conversion tracking ready for Daniel/vendor approval.",
+      "rules": [
+        "Do not publish theological claims or product listings without Daniel approval.",
+        "Do not claim live commerce, live checkout, testimonials, or sales unless verified.",
+        "No paid orders, purchases, or vendor activation without Daniel approval.",
+        "Track base cost, sale price, platform fees, margin, and profit estimates separately from verified live commerce."
+      ],
+      "currentApprovedActions": [
+        "read state",
+        "create draft assets",
+        "create product metadata",
+        "prepare non-public commerce handoff"
+      ],
+      "approvalRequiredFor": [
+        "Printify/Shopify setup",
+        "public product launch",
+        "pricing approval",
+        "payment/tax/shipping setup"
+      ],
+      "currentQueue": [
+        {
+          "brandId": "gods-vessel",
+          "brand": "God's Vessel",
+          "contentId": "gods-vessel-names-of-god",
+          "title": "Names of God",
+          "status": "READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP",
+          "publishAllowed": false,
+          "owner": "Daniel",
+          "nextAction": "Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path.",
+          "artifactPath": "artifacts/gods-vessel/names-of-god/",
+          "materialSeparation": "Draft product/design/listing assets only; no live commerce, checkout, purchase, or public product publishing.",
+          "commerceArtifacts": {
+            "listingStatus": "LISTINGS_PREPARED_NOT_PUBLISHED",
+            "preparedListingCount": 5,
+            "publicPublishingAllowed": false,
+            "purchaseEnabled": false,
+            "listingPackage": {
+              "storefrontListingsJson": "artifacts/gods-vessel/names-of-god/listings/storefront-listings.json",
+              "shopifyDraftCsv": "artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv",
+              "printifyHandoffCsv": "artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv",
+              "salesTrackingLedgerCsv": "artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv",
+              "approvalChecklist": "artifacts/gods-vessel/names-of-god/listings/approval-checklist.md"
+            }
+          }
+        }
+      ],
+      "currentState": {
+        "queueItems": 1,
+        "readyForReview": 1,
+        "publishBlockedItems": 1,
+        "publicPublishingAllowed": false
+      }
+    },
+    {
+      "id": "time-zone-travelers",
+      "name": "Time-Zone Travelers",
+      "type": "Travel discovery/media brand",
+      "primaryGoal": "Create source-backed travel decision content without generic top-10 spam or fabricated personal experience.",
+      "rules": [
+        "Time-sensitive claims require current source verification before publication.",
+        "Do not fabricate Daniel travel experience.",
+        "Do not claim active affiliate enrollment unless verified.",
+        "Public publishing requires Daniel approval and verified platform account mapping."
+      ],
+      "currentApprovedActions": [
+        "read state",
+        "create source-backed drafts",
+        "create non-public proof renders",
+        "prepare affiliate-ready tracking without enrollment claims"
+      ],
+      "approvalRequiredFor": [
+        "public publishing",
+        "affiliate enrollment",
+        "paid providers",
+        "sponsorship claims"
+      ],
+      "currentQueue": [
+        {
+          "brandId": "time-zone-travelers",
+          "brand": "Time-Zone Travelers",
+          "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
+          "title": "Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers?",
+          "status": "READY_FOR_DANIEL_REVIEW",
+          "publishAllowed": false,
+          "owner": "Daniel",
+          "nextAction": "Approve concept/script, final source check, narration, account mapping, and links.",
+          "artifactPath": "artifacts/timezone-travelers/sprint-3-sample/",
+          "materialSeparation": "Source-backed draft with approved repo assets and no active affiliate claim."
+        }
+      ],
+      "currentState": {
+        "queueItems": 1,
+        "readyForReview": 1,
+        "publishBlockedItems": 1,
+        "publicPublishingAllowed": false
+      }
+    },
+    {
+      "id": "dax-the-traveler",
+      "name": "Dax the Traveler",
+      "type": "Daniel's personal travel brand",
+      "primaryGoal": "Support Daniel by inventorying and repurposing his existing approved material without replacing his face, voice, or lived experience.",
+      "rules": [
+        "Do not replace Daniel's face or voice.",
+        "Do not fabricate where Daniel went, what Daniel did, or what Daniel personally felt.",
+        "Separate original Daniel material, AI-generated support, and third-party material.",
+        "Public publishing requires Daniel approval, final narration approval, and verified platform account mapping."
+      ],
+      "currentApprovedActions": [
+        "read state",
+        "inventory approved media",
+        "recommend repurposing",
+        "create draft packages and non-public proof renders"
+      ],
+      "approvalRequiredFor": [
+        "public publishing",
+        "voice replacement",
+        "affiliate links",
+        "sponsorships",
+        "bulk historical edits"
+      ],
+      "currentQueue": [
+        {
+          "brandId": "dax-the-traveler",
+          "brand": "Dax the Traveler",
+          "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+          "title": "The Travel Moment Worth Saving",
+          "status": "READY_FOR_DANIEL_REVIEW",
+          "publishAllowed": false,
+          "owner": "Daniel",
+          "nextAction": "Approve/revise selected assets and record final narration.",
+          "artifactPath": "artifacts/dax-the-traveler/sprint-4-support/",
+          "materialSeparation": "ORIGINAL_DANIEL_MATERIAL_WITH_AI_GENERATED_SUPPORT"
+        }
+      ],
+      "currentState": {
+        "queueItems": 1,
+        "readyForReview": 1,
+        "publishBlockedItems": 1,
+        "publicPublishingAllowed": false
+      }
+    }
+  ],
+  "contentQueue": [
+    {
+      "brandId": "ani-dax",
+      "brand": "Ani-Dax",
+      "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+      "title": "Subaru's Return by Death Is Not a Power Fantasy",
+      "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+      "openQc": [
+        "Narration is draft audio; Daniel must approve or replace it",
+        "Caption speech alignment needs listening review; media duration is not alignment proof",
+        "Canon/fact handling: Stable high-level premise only; final claims need episode/source verification.",
+        "Visual quality: FFmpeg proof render verifies pipeline shape; final visuals need art pass.",
+        "Narration quality: Draft review audio was supplied and rendered; Daniel must approve or replace the voice before public publishing.",
+        "Public publishing: Requires Daniel approval and verified Ani-Dax account credential mapping."
+      ],
+      "publishAllowed": false,
+      "owner": "Daniel",
+      "nextAction": "Approve concept/script and final voice/visual style before publishing.",
+      "artifactPath": "artifacts/anidax/timed-review/",
+      "materialSeparation": "AI-assisted support package; no public publishing."
+    },
+    {
+      "brandId": "gods-vessel",
+      "brand": "God's Vessel",
+      "contentId": "gods-vessel-names-of-god",
+      "title": "Names of God",
+      "status": "READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP",
+      "publishAllowed": false,
+      "owner": "Daniel",
+      "nextAction": "Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path.",
+      "artifactPath": "artifacts/gods-vessel/names-of-god/",
+      "materialSeparation": "Draft product/design/listing assets only; no live commerce, checkout, purchase, or public product publishing.",
+      "commerceArtifacts": {
+        "listingStatus": "LISTINGS_PREPARED_NOT_PUBLISHED",
+        "preparedListingCount": 5,
+        "publicPublishingAllowed": false,
+        "purchaseEnabled": false,
+        "listingPackage": {
+          "storefrontListingsJson": "artifacts/gods-vessel/names-of-god/listings/storefront-listings.json",
+          "shopifyDraftCsv": "artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv",
+          "printifyHandoffCsv": "artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv",
+          "salesTrackingLedgerCsv": "artifacts/gods-vessel/names-of-god/listings/sales-tracking-ledger.csv",
+          "approvalChecklist": "artifacts/gods-vessel/names-of-god/listings/approval-checklist.md"
+        }
+      }
+    },
+    {
+      "brandId": "time-zone-travelers",
+      "brand": "Time-Zone Travelers",
+      "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
+      "title": "Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers?",
+      "status": "READY_FOR_DANIEL_REVIEW",
+      "publishAllowed": false,
+      "owner": "Daniel",
+      "nextAction": "Approve concept/script, final source check, narration, account mapping, and links.",
+      "artifactPath": "artifacts/timezone-travelers/sprint-3-sample/",
+      "materialSeparation": "Source-backed draft with approved repo assets and no active affiliate claim."
+    },
+    {
+      "brandId": "dax-the-traveler",
+      "brand": "Dax the Traveler",
+      "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+      "title": "The Travel Moment Worth Saving",
+      "status": "READY_FOR_DANIEL_REVIEW",
+      "publishAllowed": false,
+      "owner": "Daniel",
+      "nextAction": "Approve/revise selected assets and record final narration.",
+      "artifactPath": "artifacts/dax-the-traveler/sprint-4-support/",
+      "materialSeparation": "ORIGINAL_DANIEL_MATERIAL_WITH_AI_GENERATED_SUPPORT"
+    }
+  ],
+  "approvalDecisions": {
+    "source": "business-state/approval-decisions.json",
+    "generatedAt": "2026-09-15T23:07:47.333Z",
+    "pending": 4,
+    "decisions": [
+      {
+        "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "7326dd0da581bb9b57c5580438c9729f57a168f1c58d3dfaecde345f4908fe4f"
+      },
+      {
+        "contentId": "gods-vessel-names-of-god",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "2be90f7bdb3d476bec8fb702656d9eb237df1097a56fb1de42ad652e4439ae8c"
+      },
+      {
+        "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "56c46c6209d443f9267dacf5fae022d55b53c08dc4b06ee98d193283af4be4db"
+      },
+      {
+        "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "01591c6529df88ec29571d8d0d40339066e460efd9c5b4d5870194d60cfe6bb8"
+      }
+    ],
+    "executionAuthorized": false
+  },
+  "workflowHealth": {
+    "generatedAt": "2026-09-14T16:57:36.930Z",
+    "templateCount": 30,
+    "activeTemplatesInExport": 0,
+    "statusCounts": {
+      "WORKS WITH REPAIR": 1,
+      "UNTESTED": 24,
+      "BROKEN": 1,
+      "PARTIAL": 1,
+      "BLOCKED": 3
+    },
+    "relevantWorkflows": [
+      {
+        "file": "ani_dax_specific_workflow.json",
+        "name": "Ani-Dax - Anime Analysis Creator",
+        "active": false,
+        "status": "WORKS WITH REPAIR - private draft upload only; add runtime approval/QC and credential checks",
+        "integrations": [
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.if",
+          "n8n-nodes-base.openAi",
+          "n8n-nodes-base.youTube"
+        ],
+        "credentialReferenceCount": 5
+      },
+      {
+        "file": "dax_traveler_specific_workflow.json",
+        "name": "Dax the Traveler - Travel Content Creator",
+        "active": false,
+        "status": "UNTESTED - needs credential verification",
+        "integrations": [
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.if",
+          "n8n-nodes-base.openAi",
+          "n8n-nodes-base.youTube"
+        ],
+        "credentialReferenceCount": 5
+      },
+      {
+        "file": "gods_vessel_specific_workflow.json",
+        "name": "God's Vessel - Faith Content Creator",
+        "active": false,
+        "status": "UNTESTED - needs credential verification",
+        "integrations": [
+          "n8n-nodes-base.code",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.if",
+          "n8n-nodes-base.openAi",
+          "n8n-nodes-base.youTube"
+        ],
+        "credentialReferenceCount": 5
+      },
+      {
+        "file": "workflow_15_dax_traveler_video_automatio  n.json",
+        "name": "Dax the Traveler Video Automation",
+        "active": false,
+        "status": "UNTESTED - structure parses, runtime not verified",
+        "integrations": [
+          "@n8n/n8n-nodes-langchain.openAi",
+          "n8n-nodes-base.code",
+          "n8n-nodes-base.cron",
+          "n8n-nodes-base.elevenLabs",
+          "n8n-nodes-base.executeCommand",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.slack",
+          "n8n-nodes-base.unsplash",
+          "n8n-nodes-base.youtube"
+        ],
+        "credentialReferenceCount": 0
+      },
+      {
+        "file": "workflow_16_gods_vessel_video_automati  on.json",
+        "name": "God's Vessel Faith Video Automation",
+        "active": false,
+        "status": "UNTESTED - structure parses, runtime not verified",
+        "integrations": [
+          "@n8n/n8n-nodes-langchain.openAi",
+          "n8n-nodes-base.code",
+          "n8n-nodes-base.cron",
+          "n8n-nodes-base.elevenLabs",
+          "n8n-nodes-base.executeCommand",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.slack",
+          "n8n-nodes-base.unsplash",
+          "n8n-nodes-base.youtube"
+        ],
+        "credentialReferenceCount": 0
+      },
+      {
+        "file": "workflow_3_youtube_sentinel.json",
+        "name": "YouTube Sentinel Agent",
+        "active": false,
+        "status": "UNTESTED - structure parses, runtime not verified",
+        "integrations": [
+          "n8n-nodes-base.code",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.if",
+          "n8n-nodes-base.scheduleTrigger",
+          "n8n-nodes-base.set",
+          "n8n-nodes-base.splitInBatches"
+        ],
+        "credentialReferenceCount": 0
+      },
+      {
+        "file": "workflow_6_revenue_optimizer.json",
+        "name": "Revenue Optimization Agent",
+        "active": false,
+        "status": "UNTESTED - structure parses, runtime not verified",
+        "integrations": [
+          "n8n-nodes-base.code",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.if",
+          "n8n-nodes-base.merge",
+          "n8n-nodes-base.scheduleTrigger",
+          "n8n-nodes-base.set",
+          "n8n-nodes-base.splitInBatches"
+        ],
+        "credentialReferenceCount": 0
+      },
+      {
+        "file": "workflow_8_analytics_dashboard.json",
+        "name": "Analytics Dashboard Agent",
+        "active": false,
+        "status": "UNTESTED - structure parses, runtime not verified",
+        "integrations": [
+          "n8n-nodes-base.code",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.if",
+          "n8n-nodes-base.merge",
+          "n8n-nodes-base.scheduleTrigger",
+          "n8n-nodes-base.set",
+          "n8n-nodes-base.splitInBatches"
+        ],
+        "credentialReferenceCount": 0
+      },
+      {
+        "file": "workflow_ani_dax_video_generator.json",
+        "name": "Ani-Dax Video Generator",
+        "active": false,
+        "status": "PARTIAL - generation template, needs credential verification and QC",
+        "integrations": [
+          "n8n-nodes-base.discord",
+          "n8n-nodes-base.elevenLabs",
+          "n8n-nodes-base.executeCommand",
+          "n8n-nodes-base.filter",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.openAi",
+          "n8n-nodes-base.pexels",
+          "n8n-nodes-base.scheduleTrigger"
+        ],
+        "credentialReferenceCount": 5
+      },
+      {
+        "file": "workflow_automated_youtube_publisher.json",
+        "name": "Automated YouTube Publisher",
+        "active": false,
+        "status": "BLOCKED - publishing credentials and approval required",
+        "integrations": [
+          "n8n-nodes-base.discord",
+          "n8n-nodes-base.filter",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.scheduleTrigger",
+          "n8n-nodes-base.youTube"
+        ],
+        "credentialReferenceCount": 7
+      },
+      {
+        "file": "workflow_blog_auto_publisher.json",
+        "name": "Blog Auto Publisher",
+        "active": false,
+        "status": "BLOCKED - publishing credentials and approval required",
+        "integrations": [
+          "n8n-nodes-base.discord",
+          "n8n-nodes-base.executeCommand",
+          "n8n-nodes-base.filter",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.openAi",
+          "n8n-nodes-base.readFile",
+          "n8n-nodes-base.scheduleTrigger"
+        ],
+        "credentialReferenceCount": 6
+      },
+      {
+        "file": "workflow_gods_vessel_video_generator.json",
+        "name": "God's Vessel Video Generator - FIXED",
+        "active": false,
+        "status": "UNTESTED - needs credential verification",
+        "integrations": [
+          "n8n-nodes-base.filter",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.scheduleTrigger"
+        ],
+        "credentialReferenceCount": 1
+      },
+      {
+        "file": "workflow_tiktok_instagram_publisher.json",
+        "name": "TikTok Instagram Publisher",
+        "active": false,
+        "status": "BLOCKED - publishing credentials and approval required",
+        "integrations": [
+          "n8n-nodes-base.discord",
+          "n8n-nodes-base.executeCommand",
+          "n8n-nodes-base.filter",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.openAi",
+          "n8n-nodes-base.scheduleTrigger"
+        ],
+        "credentialReferenceCount": 5
+      },
+      {
+        "file": "workflow_timezone_travelers_video_generator.json",
+        "name": "Time-Zone Travelers Video Generator",
+        "active": false,
+        "status": "UNTESTED - needs credential verification",
+        "integrations": [
+          "n8n-nodes-base.discord",
+          "n8n-nodes-base.elevenLabs",
+          "n8n-nodes-base.executeCommand",
+          "n8n-nodes-base.filter",
+          "n8n-nodes-base.googleSheets",
+          "n8n-nodes-base.httpRequest",
+          "n8n-nodes-base.openAi",
+          "n8n-nodes-base.pexels",
+          "n8n-nodes-base.scheduleTrigger",
+          "n8n-nodes-base.writeFile"
+        ],
+        "credentialReferenceCount": 5
+      }
+    ]
+  },
+  "credentialHealth": {
+    "policy": "Credential names/integration references only; no secret values included.",
+    "firebaseHostingServiceAccount": "WORKING_FOR_PR_PREVIEW",
+    "firebaseClientConfig": "NEEDS_DANIEL_GITHUB_SECRET_OR_VARIABLE_VALUES_FOR_FULL_AUTH_RUNTIME",
+    "n8nRuntimeCredentials": "UNVERIFIED_FROM_REPOSITORY_ONLY",
+    "referencedCredentialCount": 22,
+    "referencedCredentialNames": [
+      "Ani-Dax YouTube",
+      "Dax Main GSheets OAuth2",
+      "DeepSeek API",
+      "Discord Bot",
+      "ElevenLabs API",
+      "Facebook API",
+      "Faith Blog WordPress",
+      "Fal.AI API",
+      "God's Vessel YouTube",
+      "Google Drive API",
+      "Google Sheets API",
+      "Google Sheets OAuth2",
+      "Google Sheets account",
+      "Instagram API",
+      "OpenAI API",
+      "Pexels API",
+      "SELECT_YOUR_CREDENTIAL",
+      "TikTok API",
+      "Time-Zone Travelers YouTube",
+      "Travel Blog WordPress",
+      "Twitter API",
+      "YouTube OAuth2"
+    ]
+  },
+  "revenueReadiness": {
+    "generatedAt": "2026-09-15T17:33:10.134Z",
+    "status": "REVENUE_READY_FOR_APPROVAL_NOT_EARNING",
+    "verifiedRevenueUsd": 0,
+    "verifiedCostUsd": 0,
+    "verifiedProfitUsd": 0,
+    "adSpendUsd": 0,
+    "publicPublishingAllowed": false,
+    "purchaseOrEnrollmentAllowed": false,
+    "brandCount": 4,
+    "firstDollarSequence": [
+      {
+        "rank": 1,
+        "path": "God's Vessel approved apparel launch",
+        "why": "Closest direct offer once theology/design/vendor/storefront approvals are complete.",
+        "blockedByDaniel": true
+      },
+      {
+        "rank": 2,
+        "path": "Dax the Traveler approved support content to channel/profile CTA",
+        "why": "Uses an existing personal brand without inventing experiences; monetization comes later after approved links.",
+        "blockedByDaniel": true
+      },
+      {
+        "rank": 3,
+        "path": "Time-Zone Travelers official-source trust content then approved travel affiliates/guides",
+        "why": "Clear link attribution exists, but affiliate enrollment and offer approval are not done.",
+        "blockedByDaniel": true
+      },
+      {
+        "rank": 4,
+        "path": "Ani-Dax audience building, then merch/membership/sponsors",
+        "why": "Needs consistent content proof and channel eligibility before meaningful revenue.",
+        "blockedByDaniel": true
+      }
+    ],
+    "measurementFields": [
+      "brand",
+      "contentId",
+      "offerId",
+      "ctaType",
+      "destinationUrl",
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "clicks",
+      "leads",
+      "conversions",
+      "grossRevenueUsd",
+      "feesUsd",
+      "productionCostUsd",
+      "adSpendUsd",
+      "profitUsd",
+      "approvalStatus"
+    ]
+  },
+  "costs": [
+    {
+      "brandId": "ani-dax",
+      "artifactPath": "artifacts/anidax/sprint-1-sample/generated/cost-record.json",
+      "localProofRunUsd": {
+        "llm": 0,
+        "image": 0,
+        "video": 0,
+        "tts": 0,
+        "musicSfx": 0,
+        "storage": 0,
+        "api": 0,
+        "other": 0,
+        "notes": "This local proof uses deterministic text assets, supplied local/review audio, and FFmpeg only."
+      }
+    },
+    {
+      "brandId": "time-zone-travelers",
+      "artifactPath": "artifacts/timezone-travelers/sprint-3-sample/generated/cost-record.json",
+      "localProofRunUsd": {
+        "llm": 0,
+        "imageGeneration": 0,
+        "videoGeneration": 0,
+        "tts": 0,
+        "music": 0,
+        "storage": 0,
+        "api": 0,
+        "other": 0,
+        "notes": "Local proof uses source notes, approved repo assets, deterministic SVG/ASS, and FFmpeg only."
+      }
+    },
+    {
+      "brandId": "dax-the-traveler",
+      "artifactPath": "artifacts/dax-the-traveler/sprint-4-support/generated/cost-record.json",
+      "localProofRunUsd": {
+        "llm": 0,
+        "imageGeneration": 0,
+        "videoGeneration": 0,
+        "tts": 0,
+        "music": 0,
+        "storage": 0,
+        "api": 0,
+        "other": 0
+      }
+    }
+  ],
+  "measurements": {
+    "generatedAt": "2026-09-15T23:07:47.142Z",
+    "source": "business-state/measurement-observations.json",
+    "status": "NO_PROVIDER_OBSERVATIONS",
+    "rule": "USD transaction events are additive; analytics are latest cumulative snapshots per provider/platform. No inferred zero, complete profit, live connection, or causal learning claims.",
+    "publicPublishingAllowed": false,
+    "items": [
+      {
+        "brandId": "ani-dax",
+        "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+        "observationCount": 0,
+        "netRevenueUsd": null,
+        "recordedCostUsd": null,
+        "recordedContributionUsd": null,
+        "totalProfitUsd": null,
+        "costByCategoryUsd": {
+          "llm": null,
+          "image": null,
+          "video": null,
+          "tts": null,
+          "music": null,
+          "storage": null,
+          "api": null,
+          "other": null,
+          "product": null,
+          "platformFee": null,
+          "adSpend": null
+        },
+        "latestAnalytics": [],
+        "learningStatus": "INSUFFICIENT_MEASURED_DATA",
+        "nextAction": "Import a verified provider aggregate export after approved distribution."
+      },
+      {
+        "brandId": "gods-vessel",
+        "contentId": "gods-vessel-names-of-god",
+        "observationCount": 0,
+        "netRevenueUsd": null,
+        "recordedCostUsd": null,
+        "recordedContributionUsd": null,
+        "totalProfitUsd": null,
+        "costByCategoryUsd": {
+          "llm": null,
+          "image": null,
+          "video": null,
+          "tts": null,
+          "music": null,
+          "storage": null,
+          "api": null,
+          "other": null,
+          "product": null,
+          "platformFee": null,
+          "adSpend": null
+        },
+        "latestAnalytics": [],
+        "learningStatus": "INSUFFICIENT_MEASURED_DATA",
+        "nextAction": "Import a verified provider aggregate export after approved distribution."
+      },
+      {
+        "brandId": "time-zone-travelers",
+        "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
+        "observationCount": 0,
+        "netRevenueUsd": null,
+        "recordedCostUsd": null,
+        "recordedContributionUsd": null,
+        "totalProfitUsd": null,
+        "costByCategoryUsd": {
+          "llm": null,
+          "image": null,
+          "video": null,
+          "tts": null,
+          "music": null,
+          "storage": null,
+          "api": null,
+          "other": null,
+          "product": null,
+          "platformFee": null,
+          "adSpend": null
+        },
+        "latestAnalytics": [],
+        "learningStatus": "INSUFFICIENT_MEASURED_DATA",
+        "nextAction": "Import a verified provider aggregate export after approved distribution."
+      },
+      {
+        "brandId": "dax-the-traveler",
+        "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+        "observationCount": 0,
+        "netRevenueUsd": null,
+        "recordedCostUsd": null,
+        "recordedContributionUsd": null,
+        "totalProfitUsd": null,
+        "costByCategoryUsd": {
+          "llm": null,
+          "image": null,
+          "video": null,
+          "tts": null,
+          "music": null,
+          "storage": null,
+          "api": null,
+          "other": null,
+          "product": null,
+          "platformFee": null,
+          "adSpend": null
+        },
+        "latestAnalytics": [],
+        "learningStatus": "INSUFFICIENT_MEASURED_DATA",
+        "nextAction": "Import a verified provider aggregate export after approved distribution."
+      }
+    ]
+  },
+  "blockers": {
+    "file": "BLOCKERS.md",
+    "durableStatusFile": "EXECUTION_STATUS.md",
+    "topHumanApprovals": [
+      "Merge PR #3 and approve public deployment.",
+      "Add/confirm Firebase browser config values in GitHub Secrets or Variables.",
+      "Approve any public publishing item by item.",
+      "Approve any final narration, TTS, affiliate, product, purchase, or ad-spend decision."
+    ]
+  },
+  "actions": {
+    "canListBrands": true,
+    "canReadBrandRules": true,
+    "canReadContentQueue": true,
+    "canReadWorkflowHealth": true,
+    "canReadCredentialHealthWithoutSecrets": true,
+    "canCreateDrafts": true,
+    "canUpdateStatusFiles": true,
+    "canTriggerPublicPublishing": false,
+    "canPurchaseOrSpend": false,
+    "canChangeCredentials": false
+  }
+}

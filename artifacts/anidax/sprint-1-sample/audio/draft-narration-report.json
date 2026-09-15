@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-09-15T17:15:23.0051733Z",
+  "sourcePackage": "artifacts/anidax/sprint-1-sample/generated/content-package.json",
+  "outputFile": "artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav",
+  "voice": "Microsoft David Desktop - English (United States)",
+  "rate": 7,
+  "approvedForPublishing": false,
+  "status": "DRAFT_REVIEW_AUDIO_NEEDS_DANIEL_APPROVAL",
+  "costUsd": 0
+}

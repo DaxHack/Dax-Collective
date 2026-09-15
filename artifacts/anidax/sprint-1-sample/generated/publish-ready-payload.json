@@ -1,0 +1,31 @@
+{
+  "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+  "brand": "Ani-Dax",
+  "approvalStatus": "READY_FOR_DANIEL_REVIEW_VOICE_NOT_FINAL",
+  "publishAllowed": false,
+  "youtubePrivacyStatus": "private",
+  "automaticCrossPostingAllowed": false,
+  "requiredBeforePublishing": [
+    "Daniel approves concept/script.",
+    "Daniel approves final narration/voice.",
+    "Final canon/source check is completed for any specific claims.",
+    "Final visual style/art pass is approved.",
+    "Ani-Dax platform account mapping and credentials are verified.",
+    "Daniel approves the specific public publishing target and metadata."
+  ],
+  "suggestedPlatforms": [
+    "YouTube Shorts private draft",
+    "TikTok/Instagram drafts only after Daniel approval"
+  ],
+  "title": "Subaru's Return by Death Is Not a Power Fantasy",
+  "description": "Ani-Dax character analysis draft. This video uses original narration and original motion-graphic support only. No anime clips, no fabricated quotes, and no public publishing until Daniel approves.",
+  "tags": [
+    "Ani-Dax",
+    "anime analysis",
+    "ReZero",
+    "Subaru Natsuki",
+    "character writing",
+    "anime theory"
+  ],
+  "thumbnail": "thumbnail/thumbnail.svg"
+}

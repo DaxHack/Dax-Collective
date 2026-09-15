@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Tilt from 'react-parallax-tilt';
 import { Compass, Sparkles, Globe2, Cross, ArrowRight, PlayCircle, Star, MoveRight } from 'lucide-react';
@@ -298,6 +298,45 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Automation and Legal Note */}
+      <section className="relative py-20 z-10 border-y border-white/10 bg-black/20">
+        <div className="max-w-5xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="grid gap-8 md:grid-cols-[1fr_1.4fr] md:items-start"
+          >
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-indigo-300 mb-4">Transparency</p>
+              <h2 className="text-3xl md:text-4xl font-bold">Automation, OAuth, and site data</h2>
+            </div>
+            <div className="space-y-5 text-sm md:text-base leading-7 text-indigo-100/70">
+              <p>
+                Dax Collective uses Google and YouTube API access only for owner-authorized automation
+                workflows, such as reading channel data, syncing video information, or supporting configured
+                backend and n8n operations. Public visitors are not asked to grant YouTube permissions from
+                this homepage.
+              </p>
+              <p>
+                Site analytics use direct Google gtag. Admin features use Firebase Authentication. The footer
+                email field is not connected to subscriber storage yet, and Buy Me a Coffee support happens on
+                Buy Me a Coffee rather than through on-site checkout.
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Link to="/privacy" className="text-indigo-200 hover:text-white font-semibold transition-colors">
+                  Privacy Policy
+                </Link>
+                <Link to="/terms" className="text-indigo-200 hover:text-white font-semibold transition-colors">
+                  Terms of Service
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Footer CTA */}
       <section className="relative py-32 z-10 border-t border-white/10 bg-gradient-to-b from-transparent to-indigo-950/20">
         <div className="max-w-4xl mx-auto px-6 text-center">
@@ -313,9 +352,12 @@ export default function Home() {
             <p className="text-xl text-indigo-100/70 mb-10 max-w-2xl mx-auto">
               Join the collective. Stories that spark curiosity and celebrate identity across the globe.
             </p>
-            <button className="px-10 py-5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full font-bold text-lg hover:shadow-[0_0_40px_rgba(99,102,241,0.5)] transition-all hover:scale-105 active:scale-95 text-white">
-              Subscribe to Updates
-            </button>
+            <Link
+              to="/dax-the-traveler"
+              className="inline-flex px-10 py-5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full font-bold text-lg hover:shadow-[0_0_40px_rgba(99,102,241,0.5)] transition-all hover:scale-105 active:scale-95 text-white"
+            >
+              Start Exploring
+            </Link>
           </motion.div>
         </div>
       </section>

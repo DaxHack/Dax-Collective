@@ -537,7 +537,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_STRATEGY_CHANNEL_ID}}",
-        "text": "🚀 **SCALING OPPORTUNITY DETECTED!**\n\n**Asset Volume:** {{$('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length}} total assets\n\n**AUTOMATED SCALING STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**IMMEDIATE IMPLEMENTATION:**\n⚡ Activate batch processing workflows\n🎯 Launch automated content variations\n💰 Implement revenue multiplication tactics\n📊 Set up performance tracking\n🔄 Optimize asset utilization rates\n\n**REVENUE POTENTIAL:** With this asset volume, we can scale to ${{($('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length) * 100}}-${{($('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length) * 500}} monthly revenue\n\n*Time to scale the content empire to the next level!* 📈"
+        "text": "📦 **ASSET READINESS REVIEW**\n\n**Asset Volume:** {{$('Filter Image Assets').all().length + $('Filter Video Assets').all().length + $('Filter Audio Assets').all().length}} total assets\n\n**REVIEW NOTES:**\n{{$json.choices[0].message.content}}\n\n**REQUIRED BEFORE SCALE:**\n- Verify usage rights and brand fit\n- Confirm Daniel approval for public use\n- Confirm correct brand/account mapping\n- Set up performance and cost tracking\n- Record revenue only from verified provider data\n\nThis alert does not authorize automated scaling, ad spend, or revenue projections."
       },
       "id": "16",
       "name": "Scaling Strategy Alert",

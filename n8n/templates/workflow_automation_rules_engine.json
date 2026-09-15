@@ -545,11 +545,11 @@
           "values": [
             {
               "role": "system",
-              "content": "You are a scaling strategist. When content performance reaches success thresholds, create aggressive scaling strategies to multiply revenue and reach."
+              "content": "You are a conservative operations reviewer. When tracked content appears to reach performance thresholds, create verification-first scaling notes that protect approvals, spend limits, and revenue accuracy."
             },
             {
               "role": "user",
-              "content": "SUCCESS THRESHOLD REACHED! {{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content have 1000+ views.\n\nSuccessful content:\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).map(item => `- ${item['Brand']}: ${item['Video Title']} (${item['Performance Views']} views)`).join('\\n')}}\n\nCreate an aggressive scaling strategy:\n1. Content multiplication tactics\n2. Revenue scaling opportunities\n3. Brand expansion strategies\n4. Automation scaling recommendations\n5. Investment priorities\n6. Team scaling needs\n\nThis is the moment to scale from thousands to tens of thousands in revenue!"
+              "content": "PERFORMANCE THRESHOLD REVIEW: {{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content are marked with 1000+ views in the sheet.\n\nCandidate content:\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).map(item => `- ${item['Brand']}: ${item['Video Title']} (${item['Performance Views']} views)`).join('\\n')}}\n\nCreate verification-first next steps:\n1. Direct platform analytics verification\n2. Daniel approval confirmation\n3. Brand/account mapping checks\n4. Quality and compliance review\n5. Cost and spend limit review\n6. Conservative follow-up recommendations\n\nDo not project revenue, authorize ad spend, or claim monetization success."
             }
           ]
         }
@@ -572,7 +572,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_STRATEGY_CHANNEL_ID}}",
-        "text": "🚀 **SUCCESS THRESHOLD REACHED - SCALING MODE ACTIVATED!** 🚀\n\n**PERFORMANCE MILESTONE:**\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content with 1000+ views!\n\n**AGGRESSIVE SCALING STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**IMMEDIATE SCALING ACTIONS:**\n⚡ Multiply successful content formats\n💰 Scale revenue streams aggressively\n🎯 Expand to new platforms and audiences\n🤖 Increase automation capacity\n📊 Implement advanced analytics\n💸 Reinvest profits for exponential growth\n\n**REVENUE PROJECTION:** With this performance level, we're on track for ${{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length * 500}}-${{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length * 2000}} monthly revenue\n\n*This is the breakthrough moment - time to scale to the moon!* 🌙"
+        "text": "📈 **PERFORMANCE THRESHOLD REVIEW**\n\n**PERFORMANCE MILESTONE:**\n{{$('Read Current State').all().filter(item => item['Upload Status'] === 'Published' && item['Performance Views'] >= 1000).length}} pieces of content are marked published with 1000+ views in the tracking sheet.\n\n**REVIEW NOTES:**\n{{$json.choices[0].message.content}}\n\n**REQUIRED BEFORE SCALING:**\n- Verify platform analytics directly\n- Confirm Daniel approval and brand/account mapping\n- Confirm quality gate did not fail\n- Confirm spend limits and monetization approvals\n- Record actual revenue only from verified provider data\n\nNo automated scaling, ad spend, or revenue projection is authorized by this alert."
       },
       "id": "16",
       "name": "Scaling Success Alert",

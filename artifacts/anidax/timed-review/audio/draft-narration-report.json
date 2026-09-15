@@ -1,0 +1,38 @@
+{
+    "generatedAt":  "2026-09-15T23:04:35.7705514Z",
+    "sourcePackage":  "artifacts/anidax/sprint-1-sample/generated/content-package.json",
+    "outputFile":  "artifacts/anidax/timed-review/audio/draft-review-narration.wav",
+    "voice":  "Microsoft David Desktop - English (United States)",
+    "rate":  3,
+    "approvedForPublishing":  false,
+    "status":  "DRAFT_REVIEW_AUDIO_NEEDS_DANIEL_APPROVAL",
+    "costUsd":  0,
+    "segmentTimings":  [
+                           {
+                               "text":  "What if Return by Death is not Subaru\u0027s advantage? What if it is the story\u0027s harshest interrogation room?",
+                               "start":  0,
+                               "end":  5.097
+                           },
+                           {
+                               "text":  "Most power systems reward control. Return by Death removes control, then asks whether one person can carry memory, guilt, and consequence without becoming numb.",
+                               "start":  5.097,
+                               "end":  13.043
+                           },
+                           {
+                               "text":  "If Ani-Dax sat Subaru down after another reset, the first question would not be how many tries he gets. It would be: what did the last version of you lose?",
+                               "start":  13.043,
+                               "end":  20.732
+                           },
+                           {
+                               "text":  "That is why the mechanic works. It turns suspense into character study. Every reset can move the plot, but the real cost lands inside Subaru before it lands on the timeline.",
+                               "start":  20.732,
+                               "end":  29.404
+                           },
+                           {
+                               "text":  "Ani-Dax takeaway: the ability is not interesting because it beats death. It is interesting because it makes survival emotionally expensive.",
+                               "start":  29.404,
+                               "end":  35.931
+                           }
+                       ],
+    "audioSha256":  "6bab9bfb1a1d4e809b3317d7423bd05e834b50fb3fe4e17b3a6da3ff074e8c19"
+}

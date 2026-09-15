@@ -114,11 +114,11 @@
           "values": [
             {
               "role": "system",
-              "content": "You are an expert travel content creator specializing in survival tips, cultural insights, and practical travel advice. Create engaging, informative scripts that could save lives and enhance travel experiences."
+              "content": "You are an expert travel content creator specializing in source-backed destination context, cultural insight, and practical travel advice. Create engaging, informative scripts without fabricating personal experience or presenting time-sensitive claims as current unless source notes support them."
             },
             {
               "role": "user",
-              "content": "Create a detailed travel video script based on this prompt: {{$json['Script Prompt']}}\n\nLocation: {{$json['Location Focus']}}\nCurrent weather: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C\nContent type: {{$json['Content Type']}}\nTarget platform: {{$json['Target Platform']}}\nSurvival element: {{$json['Survival Element']}}\n\nInclude practical tips, cultural insights, and safety warnings. Start with a compelling hook about the dangers or unique aspects of this location. Include CTAs for Patreon travel guides and affiliate travel gear."
+              "content": "Create a detailed travel video script based on this prompt: {{$json['Script Prompt']}}\n\nLocation: {{$json['Location Focus']}}\nCurrent weather: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C\nContent type: {{$json['Content Type']}}\nTarget platform: {{$json['Target Platform']}}\nPlanning element: {{$json['Survival Element']}}\n\nInclude practical tips, cultural insights, and source-backed caveats for time-sensitive facts. Start with a compelling hook about the decision, tradeoff, or unusual context for this location. Include only neutral subscribe/comment CTAs unless approved affiliate, sponsor, product, guide, or membership links are explicitly provided."
             }
           ]
         }
@@ -258,7 +258,7 @@
             },
             {
               "role": "user",
-              "content": "Convert this travel video script into a comprehensive blog post:\n\n{{$('Generate Travel Script').item.json.choices[0].message.content}}\n\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nInclude: Introduction, main content sections, practical tips, safety warnings, packing list, and conclusion with CTAs for Patreon travel guides."
+              "content": "Convert this travel video script into a comprehensive blog post:\n\n{{$('Generate Travel Script').item.json.choices[0].message.content}}\n\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nInclude: Introduction, main content sections, practical tips, source caveats for time-sensitive facts, packing/context notes where relevant, and a conclusion with only approved CTAs."
             }
           ]
         }
@@ -323,7 +323,7 @@
     {
       "parameters": {
         "path": "/tmp/travel_blog_{{$('Read Timezone Travelers Sheet').item.json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.md",
-        "fileContent": "# {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n\n{{$('Generate Travel Blog').item.json.choices[0].message.content}}\n\n---\n\n**Join the Traveler's Club on Patreon for exclusive travel guides and insider tips!**\n\n**Affiliate Links:**\n{{$('Read Timezone Travelers Sheet').item.json['Affiliate Link']}}"
+        "fileContent": "# {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n\n{{$('Generate Travel Blog').item.json.choices[0].message.content}}\n\n---\n\n**Daniel review required before public use.** Add affiliate, sponsor, guide, membership, or product links only after approval and tracking setup.\n\n**Approved monetization link, if any:**\n{{$('Read Timezone Travelers Sheet').item.json['Affiliate Link'] || 'None approved'}}"
       },
       "id": "13",
       "name": "Save Blog Post",
@@ -337,7 +337,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_CHANNEL_ID}}",
-        "text": "🌍 New Time-Zone Travelers content generated!\n\n**Title:** {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n**Location:** {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\n**Viral Score:** {{$('Read Timezone Travelers Sheet').item.json['Viral Score']}}\n**Platform:** {{$('Read Timezone Travelers Sheet').item.json['Target Platform']}}\n\n✅ Video created\n✅ Blog post generated\n✅ Ready for upload\n\nCurrent weather in {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C"
+        "text": "🌍 Time-Zone Travelers draft generated for review.\n\n**Title:** {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\n**Location:** {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\n**Interest Score:** {{$('Read Timezone Travelers Sheet').item.json['Viral Score']}}\n**Platform:** {{$('Read Timezone Travelers Sheet').item.json['Target Platform']}}\n\n✅ Draft assets generated\n✅ Blog draft generated\n⏳ Daniel review required before upload or publication\n⏳ Time-sensitive claims require source verification before public use\n\nWeather API output captured for review: {{$('Get Location Weather Data').item.json.weather[0].description}}, {{$('Get Location Weather Data').item.json.main.temp}}°C"
       },
       "id": "14",
       "name": "Travel Discord Notification",
@@ -378,7 +378,7 @@
         "options": {}
       },
       "id": "15",
-      "name": "Check High Revenue Potential",
+      "name": "Check Monetization Readiness Potential",
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2,
       "position": [
@@ -397,11 +397,11 @@
           "values": [
             {
               "role": "system",
-              "content": "You are a travel affiliate marketing expert. Suggest specific products and strategies to maximize revenue from travel content."
+              "content": "You are a travel monetization readiness analyst. Suggest legitimate monetization categories and tracking fields without claiming active affiliate enrollment or inserting unapproved links."
             },
             {
               "role": "user",
-              "content": "This travel content has high revenue potential:\n\nTitle: {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nSurvival Element: {{$('Read Timezone Travelers Sheet').item.json['Survival Element']}}\n\nSuggest 5 specific affiliate products that would be perfect for this content, including Amazon product categories and potential commission rates."
+              "content": "This travel content may have future monetization readiness potential:\n\nTitle: {{$('Read Timezone Travelers Sheet').item.json['Video Title']}}\nLocation: {{$('Read Timezone Travelers Sheet').item.json['Location Focus']}}\nPlanning Element: {{$('Read Timezone Travelers Sheet').item.json['Survival Element']}}\n\nSuggest 5 legitimate monetization categories, the approval needed for each, and the click/conversion tracking fields required. Do not claim current enrollment, commission rates, sale terms, sponsorships, or approved affiliate links unless the reviewed input provides them."
             }
           ]
         }
@@ -574,7 +574,7 @@
             "index": 0
           },
           {
-            "node": "Check High Revenue Potential",
+            "node": "Check Monetization Readiness Potential",
             "type": "main",
             "index": 0
           }
@@ -592,7 +592,7 @@
         ]
       ]
     },
-    "Check High Revenue Potential": {
+    "Check Monetization Readiness Potential": {
       "main": [
         [
           {
@@ -616,4 +616,3 @@
   "id": "timezone-travelers-video-generator",
   "tags": []
 }
-

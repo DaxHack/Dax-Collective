@@ -364,7 +364,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_CHANNEL_ID}}",
-        "text": "📱 **MULTI-PLATFORM CONTENT PUBLISHED!**\n\n**Title:** {{$('Read Master Control').item.json['Video Title']}}\n**Brand:** {{$('Read Master Control').item.json['Brand']}}\n**Platforms:** TikTok + Instagram Reels\n**Viral Score:** {{$('Read Master Control').item.json['Viral Score']}}\n\n**TikTok:** {{$('Upload to TikTok').item.json.share_url || 'Published successfully'}}\n**Instagram:** {{$('Publish Instagram Reel').item.json.id || 'Published successfully'}}\n\n**Performance Tracking:**\n📊 Monitor engagement in first 2 hours\n🔥 Track viral potential indicators\n💰 Measure revenue impact\n📈 Analyze cross-platform performance\n\n*Short-form content is live and ready to go viral!* 🚀"
+        "text": "📱 **SHORT-FORM PUBLISHER RESULT NEEDS VERIFICATION**\n\n**Title:** {{$('Read Master Control').item.json['Video Title']}}\n**Brand:** {{$('Read Master Control').item.json['Brand']}}\n**Platforms:** TikTok + Instagram Reels\n**Viral Score:** {{$('Read Master Control').item.json['Viral Score']}}\n\n**TikTok result:** {{$('Upload to TikTok').item.json.share_url || 'No verified public URL returned'}}\n**Instagram result:** {{$('Publish Instagram Reel').item.json.id || 'No verified public ID returned'}}\n\n**Required next checks:**\n- Confirm Daniel approval exists for this item\n- Confirm correct brand account mapping\n- Verify platform response before marking live\n- Record analytics/revenue only after real data exists\n\nDo not treat this notification alone as proof of public publishing."
       },
       "id": "12",
       "name": "Multi-Platform Success Alert",
@@ -428,7 +428,7 @@
             },
             {
               "role": "user",
-              "content": "This content has viral potential (Score: {{$('Read Master Control').item.json['Viral Score']}}):\n\nTitle: {{$('Read Master Control').item.json['Video Title']}}\nBrand: {{$('Read Master Control').item.json['Brand']}}\n\nCreate an immediate viral amplification strategy including: engagement tactics, cross-promotion ideas, community activation, and revenue maximization steps."
+              "content": "This content has possible audience potential (Score: {{$('Read Master Control').item.json['Viral Score']}}):\n\nTitle: {{$('Read Master Control').item.json['Video Title']}}\nBrand: {{$('Read Master Control').item.json['Brand']}}\n\nCreate a conservative review plan including: engagement tactics, cross-promotion ideas, community activation, approval requirements, account mapping checks, and measurement fields. Do not recommend ad spend or revenue maximization unless Daniel approval and verified monetization paths are present."
             }
           ]
         }
@@ -451,7 +451,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_VIRAL_CHANNEL_ID}}",
-        "text": "🔥 **VIRAL ALERT - IMMEDIATE ACTION REQUIRED!**\n\n**Content:** {{$('Read Master Control').item.json['Video Title']}}\n**Viral Score:** {{$('Read Master Control').item.json['Viral Score']}}/100\n**Brand:** {{$('Read Master Control').item.json['Brand']}}\n\n**VIRAL AMPLIFICATION STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**IMMEDIATE ACTIONS:**\n🚨 Monitor comments and engage within 30 minutes\n📢 Share in relevant communities and Discord servers\n💬 Activate audience for early engagement boost\n🔄 Prepare follow-up content to ride the wave\n💰 Optimize monetization for maximum revenue\n\n**This could be THE viral hit we've been waiting for!** 🎯"
+        "text": "📣 **AUDIENCE OPPORTUNITY REVIEW**\n\n**Content:** {{$('Read Master Control').item.json['Video Title']}}\n**Viral Score:** {{$('Read Master Control').item.json['Viral Score']}}/100\n**Brand:** {{$('Read Master Control').item.json['Brand']}}\n\n**REVIEW PLAN:**\n{{$json.choices[0].message.content}}\n\n**REQUIRED ACTIONS:**\n- Confirm Daniel approval for public activity\n- Verify correct brand/account mapping\n- Monitor comments only after publication is verified\n- Prepare follow-up content without ad spend unless approved\n- Record revenue as $0 until real provider data exists\n\nThis alert does not prove a viral event or authorize monetization."
       },
       "id": "15",
       "name": "Viral Emergency Alert",

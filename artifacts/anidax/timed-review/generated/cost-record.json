@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-09-15T23:05:46.213Z",
+  "localProofRunUsd": {
+    "llm": 0,
+    "image": 0,
+    "video": 0,
+    "tts": 0,
+    "musicSfx": 0,
+    "storage": 0,
+    "api": 0,
+    "other": 0,
+    "notes": "This local proof uses deterministic text assets, supplied local/review audio, and FFmpeg only."
+  },
+  "finalProductionExpectedCosts": [
+    {
+      "item": "LLM/script polish",
+      "status": "optional",
+      "estimateUsd": "TBD by provider/model"
+    },
+    {
+      "item": "Narration/TTS",
+      "status": "draft/review audio supplied",
+      "estimateUsd": "0 for this local review run; final narration cost depends on Daniel-approved voice path"
+    },
+    {
+      "item": "Image/video generation",
+      "status": "optional",
+      "estimateUsd": "TBD; prefer original reusable motion templates first"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "generatedAt": "2026-09-15T23:07:47.333Z",
+  "sourceApprovalQueueGeneratedAt": "2026-09-15T23:07:47.266Z",
+  "status": "PENDING_HUMAN_DECISIONS",
+  "publicPublishingAllowed": false,
+  "purchaseOrSpendAllowed": false,
+  "credentialChangesAllowed": false,
+  "allowedDecisionStatuses": [
+    "PENDING_DANIEL_REVIEW",
+    "APPROVED_FOR_PRIVATE_DRAFT_NEXT_STEP",
+    "REVISION_REQUESTED",
+    "BLOCKED_BY_DANIEL",
+    "REJECTED"
+  ],
+  "rule": "Daniel decisions may move work to the next private/draft step only. Public publishing, purchase/spend, checkout, credential changes, and legal commitments remain separately gated.",
+  "decisions": [
+    {
+      "brandId": "ani-dax",
+      "brand": "Ani-Dax",
+      "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+      "title": "Subaru's Return by Death Is Not a Power Fantasy",
+      "itemStatus": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+      "reviewFingerprint": "7326dd0da581bb9b57c5580438c9729f57a168f1c58d3dfaecde345f4908fe4f",
+      "reviewArtifactsPresent": true,
+      "decisionInvalidatedByArtifactChange": true,
+      "decisionStatus": "PENDING_DANIEL_REVIEW",
+      "decisionOwner": "Daniel",
+      "decisionRecordedAt": null,
+      "decisionNotes": "",
+      "requestedRevision": "",
+      "approvedNextPrivateStep": "",
+      "canProceedToPrivateDraftNextStep": false,
+      "canPublishPublicly": false,
+      "canEnableCheckoutOrProductPublication": false,
+      "canSpendOrPurchase": false,
+      "canChangeCredentials": false,
+      "blockedActions": [
+        "public publishing"
+      ],
+      "reviewArtifacts": [
+        "artifacts/anidax/timed-review/approval-package.md",
+        "artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4",
+        "artifacts/anidax/timed-review/audio/draft-review-narration.wav",
+        "artifacts/anidax/timed-review/generated/publish-ready-payload.json",
+        "artifacts/anidax/timed-review/generated/content-package.json",
+        "artifacts/anidax/timed-review/generated/captions.srt",
+        "artifacts/anidax/timed-review/generated/review-validation.json"
+      ]
+    },
+    {
+      "brandId": "gods-vessel",
+      "brand": "God's Vessel",
+      "contentId": "gods-vessel-names-of-god",
+      "title": "Names of God",
+      "itemStatus": "READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP",
+      "reviewFingerprint": "2be90f7bdb3d476bec8fb702656d9eb237df1097a56fb1de42ad652e4439ae8c",
+      "reviewArtifactsPresent": true,
+      "decisionInvalidatedByArtifactChange": false,
+      "decisionStatus": "PENDING_DANIEL_REVIEW",
+      "decisionOwner": "Daniel",
+      "decisionRecordedAt": null,
+      "decisionNotes": "",
+      "requestedRevision": "",
+      "approvedNextPrivateStep": "",
+      "canProceedToPrivateDraftNextStep": false,
+      "canPublishPublicly": false,
+      "canEnableCheckoutOrProductPublication": false,
+      "canSpendOrPurchase": false,
+      "canChangeCredentials": false,
+      "blockedActions": [
+        "public publishing",
+        "product publication",
+        "checkout enablement",
+        "paid order"
+      ],
+      "reviewArtifacts": [
+        "artifacts/gods-vessel/names-of-god/commerce-readiness.md",
+        "artifacts/gods-vessel/names-of-god/listings/approval-checklist.md",
+        "artifacts/gods-vessel/names-of-god/listings/storefront-listings.json",
+        "artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv",
+        "artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv"
+      ]
+    },
+    {
+      "brandId": "time-zone-travelers",
+      "brand": "Time-Zone Travelers",
+      "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
+      "title": "Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers?",
+      "itemStatus": "READY_FOR_DANIEL_REVIEW",
+      "reviewFingerprint": "56c46c6209d443f9267dacf5fae022d55b53c08dc4b06ee98d193283af4be4db",
+      "reviewArtifactsPresent": true,
+      "decisionInvalidatedByArtifactChange": false,
+      "decisionStatus": "PENDING_DANIEL_REVIEW",
+      "decisionOwner": "Daniel",
+      "decisionRecordedAt": null,
+      "decisionNotes": "",
+      "requestedRevision": "",
+      "approvedNextPrivateStep": "",
+      "canProceedToPrivateDraftNextStep": false,
+      "canPublishPublicly": false,
+      "canEnableCheckoutOrProductPublication": false,
+      "canSpendOrPurchase": false,
+      "canChangeCredentials": false,
+      "blockedActions": [
+        "public publishing",
+        "affiliate enrollment",
+        "monetized link insertion"
+      ],
+      "reviewArtifacts": [
+        "artifacts/timezone-travelers/sprint-3-sample/approval-package.md",
+        "artifacts/timezone-travelers/sprint-3-sample/render/timezone-proof-render.mp4",
+        "artifacts/timezone-travelers/sprint-3-sample/generated/publish-ready-payload.json",
+        "artifacts/timezone-travelers/sprint-3-sample/generated/monetization-path.json"
+      ]
+    },
+    {
+      "brandId": "dax-the-traveler",
+      "brand": "Dax the Traveler",
+      "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+      "title": "The Travel Moment Worth Saving",
+      "itemStatus": "READY_FOR_DANIEL_REVIEW",
+      "reviewFingerprint": "01591c6529df88ec29571d8d0d40339066e460efd9c5b4d5870194d60cfe6bb8",
+      "reviewArtifactsPresent": true,
+      "decisionInvalidatedByArtifactChange": false,
+      "decisionStatus": "PENDING_DANIEL_REVIEW",
+      "decisionOwner": "Daniel",
+      "decisionRecordedAt": null,
+      "decisionNotes": "",
+      "requestedRevision": "",
+      "approvedNextPrivateStep": "",
+      "canProceedToPrivateDraftNextStep": false,
+      "canPublishPublicly": false,
+      "canEnableCheckoutOrProductPublication": false,
+      "canSpendOrPurchase": false,
+      "canChangeCredentials": false,
+      "blockedActions": [
+        "public publishing",
+        "voice replacement",
+        "fabricated experience"
+      ],
+      "reviewArtifacts": [
+        "artifacts/dax-the-traveler/sprint-4-support/approval-package.md",
+        "artifacts/dax-the-traveler/sprint-4-support/render/dax-traveler-proof-render.mp4",
+        "artifacts/dax-the-traveler/sprint-4-support/generated/content-inventory.json",
+        "artifacts/dax-the-traveler/sprint-4-support/generated/content-queue.json"
+      ]
+    }
+  ]
+}

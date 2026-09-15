@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 // Firebase imports
-import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth';
+import { onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 import {
   collection,
   query,
@@ -22,7 +22,7 @@ import {
   doc,
   serverTimestamp
 } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 
 const CommentsSection = ({ sectionId, sectionTitle = "Comments" }) => {
   const [comments, setComments] = useState([]);
@@ -31,10 +31,12 @@ const CommentsSection = ({ sectionId, sectionTitle = "Comments" }) => {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // Initialize auth
   React.useEffect(() => {
-    const auth = getAuth();
-    
+    if (!auth || !db) {
+      setAuthLoading(false);
+      return undefined;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setAuthLoading(false);
@@ -52,7 +54,7 @@ const CommentsSection = ({ sectionId, sectionTitle = "Comments" }) => {
 
   // Load comments
   React.useEffect(() => {
-    if (!sectionId) return;
+    if (!sectionId || !db) return undefined;
 
     const commentsRef = collection(db, 'comments');
     const q = query(
@@ -117,6 +119,20 @@ const CommentsSection = ({ sectionId, sectionTitle = "Comments" }) => {
           <div className="h-3 bg-gray-700 rounded w-full mb-2"></div>
           <div className="h-3 bg-gray-700 rounded w-3/4"></div>
         </div>
+      </div>
+    );
+  }
+
+  if (!auth || !db) {
+    return (
+      <div className="bg-gray-800/50 rounded-lg p-6">
+        <div className="flex items-center mb-3">
+          <ChatBubbleLeftIcon className="w-6 h-6 text-purple-400 mr-2" />
+          <h3 className="text-xl font-bold text-white">{sectionTitle}</h3>
+        </div>
+        <p className="text-gray-400">
+          Comments are unavailable until Firebase is configured for this build.
+        </p>
       </div>
     );
   }

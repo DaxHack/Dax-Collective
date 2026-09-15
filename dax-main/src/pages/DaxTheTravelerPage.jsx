@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { MapPinIcon, CameraIcon, PlayIcon, ArrowRightIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
@@ -35,7 +35,7 @@ const CHAPTERS = [
     title: 'Havana, Cuba',
     year: '2024',
     coords: '23.1330° N, 82.3830° W',
-    description: 'No tourist traps, no resorts. Just casas, classic cars, and the best mojito of my life.',
+    description: 'Approved Cuba frames: classic cars, street textures, food details, and arrival moments ready for Daniel to narrate.',
     photos: [
       `${BASE}/2024-cuba-havana-classic-car.png`,
       `${BASE}/2024-cuba-street-food-mofongo.png`,
@@ -48,7 +48,7 @@ const CHAPTERS = [
     title: 'Puerto Rico',
     year: '2024',
     coords: '18.2208° N, 66.5901° W',
-    description: 'Old San Juan, El Morro, and a zipline I almost said no to. Learning to slow down.',
+    description: 'Old San Juan, El Morro, zipline, beach, and airport moments from approved 2024 travel media.',
     photos: [
       `${BASE}/2024-puerto-rico-old-san-juan-street.png`,
       `${BASE}/2024-puerto-rico-condado-beach-morning.png`,
@@ -71,9 +71,9 @@ const CHAPTERS = [
 ];
 
 const PASSPORT_NOTES = [
-  { location: 'El Morro, San Juan', coords: '18.4710° N, 66.1235° W', date: 'Spring 2024', note: 'The wind off the Atlantic hits different here. Spent two hours just watching the kites.' },
-  { location: 'Havana Vieja', coords: '23.1368° N, 82.3533° W', date: 'Winter 2024', note: 'Met a guy named Carlos who fixed his 1957 Chevy with spare refrigerator parts.' },
-  { location: 'Toro Verde', coords: '18.2546° N, 66.3916° W', date: 'Spring 2024', note: 'Terrified of heights. Went anyway. The silence when you are airborne is absolute.' }
+  { location: 'El Morro, San Juan', coords: '18.4710° N, 66.1235° W', date: 'Spring 2024', note: 'Daniel prompt: record the real feeling behind this El Morro moment before turning it into a narrated Short.' },
+  { location: 'Havana Vieja', coords: '23.1368° N, 82.3533° W', date: 'Winter 2024', note: 'Daniel prompt: add the true context behind this Havana frame before publishing a first-person story.' },
+  { location: 'Toro Verde', coords: '18.2546° N, 66.3916° W', date: 'Spring 2024', note: 'Daniel prompt: confirm the real lesson from this zipline footage before it becomes a public travel beat.' }
 ];
 
 const MEMORIES = [
@@ -406,7 +406,7 @@ function PassportPieces() {
         <div className="text-center mb-16">
           <MapPinIcon className="w-8 h-8 text-[#F59E0B] mx-auto mb-4 opacity-80" />
           <h2 className="text-3xl font-bold text-white mb-2">Field Notes</h2>
-          <p className="text-white/50 font-mono text-xs tracking-widest uppercase">Raw thoughts from the road</p>
+          <p className="text-white/50 font-mono text-xs tracking-widest uppercase">Story prompts for Daniel to confirm</p>
         </div>
 
         <div className="space-y-12">
@@ -446,14 +446,14 @@ function WorkWithDax() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#0EA5E9]/10 rounded-full blur-[120px] pointer-events-none" />
       
       <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
-        <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">Let's tell a real story.</h2>
+        <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">Let&apos;s tell a real story.</h2>
         <p className="text-xl text-white/70 mb-12 leading-relaxed">
-          I don't do polished hotel reviews or fake enthusiastic brand reads. If you have a destination, gear, or experience that needs an honest, cinematic eye — let's talk.
+          I don&apos;t do polished hotel reviews or fake enthusiastic brand reads. If you have a destination, gear, or experience that needs an honest, cinematic eye - let&apos;s talk.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <a 
-            href={`mailto:${daxTravelerSocialLinks?.email || 'contact@daxcollective.com'}`}
+            href={`mailto:${daxTravelerSocialLinks?.email || 'daxdaniel2013@gmail.com'}`}
             className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-colors focus:ring-4 focus:ring-white/50 focus:outline-none"
           >
             Start a Conversation
@@ -466,6 +466,20 @@ function WorkWithDax() {
           >
             <PlayIcon className="w-5 h-5" /> Watch the Films
           </a>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-white/50">
+          {daxTravelerSocialLinks.links.map((social) => (
+            <a
+              key={social.label}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#38BDF8] transition-colors"
+            >
+              {social.label}
+            </a>
+          ))}
         </div>
       </div>
     </section>

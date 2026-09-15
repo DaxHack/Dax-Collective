@@ -1,0 +1,20 @@
+{
+  "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+  "technicalPass": true,
+  "errors": [],
+  "reviewRequired": [
+    "Narration is draft audio; Daniel must approve or replace it",
+    "Caption speech alignment needs listening review; media duration is not alignment proof",
+    "Canon/fact handling: Stable high-level premise only; final claims need episode/source verification.",
+    "Visual quality: FFmpeg proof render verifies pipeline shape; final visuals need art pass.",
+    "Narration quality: Draft review audio was supplied and rendered; Daniel must approve or replace the voice before public publishing.",
+    "Public publishing: Requires Daniel approval and verified Ani-Dax account credential mapping."
+  ],
+  "durationSeconds": 35.933333,
+  "narrationDurationSeconds": 35.931066,
+  "captionCount": 5,
+  "publishAllowed": false,
+  "youtubePrivacyStatus": "private",
+  "automaticCrossPostingAllowed": false,
+  "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC"
+}

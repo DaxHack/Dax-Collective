@@ -1,0 +1,61 @@
+{
+  "generatedFor": "Dax Collective shared business state",
+  "brands": [
+    {
+      "id": "ani-dax",
+      "name": "Ani-Dax",
+      "type": "AI-assisted anime/media operation",
+      "primaryGoal": "Create high-quality anime commentary and character-interview packages that reach READY_FOR_APPROVAL before public publishing.",
+      "rules": [
+        "Do not use ripped, cropped, mirrored, or sped-up anime clips as the production base.",
+        "Prefer original narration, original compositions, motion graphics, generated supporting visuals, user-created assets, and licensed or public-domain material.",
+        "Reject fabricated canon quotes and unsupported lore claims.",
+        "Public publishing requires Daniel approval and verified brand account mapping."
+      ],
+      "currentApprovedActions": ["read state", "create drafts", "create non-public proof renders", "update queue/status files"],
+      "approvalRequiredFor": ["public publishing", "paid tools", "copyright-sensitive assets", "brand account credential changes"]
+    },
+    {
+      "id": "gods-vessel",
+      "name": "God's Vessel",
+      "type": "Faith-content and commerce brand",
+      "primaryGoal": "Prepare a small coherent Names of God collection with theology, design, product, and conversion tracking ready for Daniel/vendor approval.",
+      "rules": [
+        "Do not publish theological claims or product listings without Daniel approval.",
+        "Do not claim live commerce, live checkout, testimonials, or sales unless verified.",
+        "No paid orders, purchases, or vendor activation without Daniel approval.",
+        "Track base cost, sale price, platform fees, margin, and profit estimates separately from verified live commerce."
+      ],
+      "currentApprovedActions": ["read state", "create draft assets", "create product metadata", "prepare non-public commerce handoff"],
+      "approvalRequiredFor": ["Printify/Shopify setup", "public product launch", "pricing approval", "payment/tax/shipping setup"]
+    },
+    {
+      "id": "time-zone-travelers",
+      "name": "Time-Zone Travelers",
+      "type": "Travel discovery/media brand",
+      "primaryGoal": "Create source-backed travel decision content without generic top-10 spam or fabricated personal experience.",
+      "rules": [
+        "Time-sensitive claims require current source verification before publication.",
+        "Do not fabricate Daniel travel experience.",
+        "Do not claim active affiliate enrollment unless verified.",
+        "Public publishing requires Daniel approval and verified platform account mapping."
+      ],
+      "currentApprovedActions": ["read state", "create source-backed drafts", "create non-public proof renders", "prepare affiliate-ready tracking without enrollment claims"],
+      "approvalRequiredFor": ["public publishing", "affiliate enrollment", "paid providers", "sponsorship claims"]
+    },
+    {
+      "id": "dax-the-traveler",
+      "name": "Dax the Traveler",
+      "type": "Daniel's personal travel brand",
+      "primaryGoal": "Support Daniel by inventorying and repurposing his existing approved material without replacing his face, voice, or lived experience.",
+      "rules": [
+        "Do not replace Daniel's face or voice.",
+        "Do not fabricate where Daniel went, what Daniel did, or what Daniel personally felt.",
+        "Separate original Daniel material, AI-generated support, and third-party material.",
+        "Public publishing requires Daniel approval, final narration approval, and verified platform account mapping."
+      ],
+      "currentApprovedActions": ["read state", "inventory approved media", "recommend repurposing", "create draft packages and non-public proof renders"],
+      "approvalRequiredFor": ["public publishing", "voice replacement", "affiliate links", "sponsorships", "bulk historical edits"]
+    }
+  ]
+}

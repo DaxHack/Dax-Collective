@@ -1,0 +1,346 @@
+{
+  "generatedAt": "2026-09-14T00:02:25.598Z",
+  "brand": "Dax the Traveler",
+  "source": "dax-main/src/data/approvedMedia.js",
+  "rule": "Only assets marked Approved and Public Safe are included.",
+  "totalApprovedPublicSafeAssets": 14,
+  "assetTypes": {
+    "Photo": 14
+  },
+  "seriesCounts": {
+    "From the Vlog": 3,
+    "Quick Blips": 2,
+    "Wanderlost with Dax": 3,
+    "Dax Travel Kit": 2,
+    "Seen in the Vlog": 2,
+    "Quick Jumps": 2
+  },
+  "destinationCounts": {
+    "Old San Juan, Puerto Rico": 2,
+    "Havana, Cuba": 5,
+    "Toro Verde, Puerto Rico": 1,
+    "San Juan, Puerto Rico": 2,
+    "Condado, Puerto Rico": 1,
+    "Atlanta, GA": 2,
+    "Puerto Rico": 1
+  },
+  "topTags": [
+    {
+      "tag": "Puerto Rico",
+      "count": 7
+    },
+    {
+      "tag": "solo trip",
+      "count": 5
+    },
+    {
+      "tag": "Cuba",
+      "count": 5
+    },
+    {
+      "tag": "culture",
+      "count": 4
+    },
+    {
+      "tag": "gear",
+      "count": 3
+    },
+    {
+      "tag": "tips",
+      "count": 3
+    },
+    {
+      "tag": "street",
+      "count": 2
+    },
+    {
+      "tag": "Havana",
+      "count": 2
+    },
+    {
+      "tag": "adventure",
+      "count": 2
+    },
+    {
+      "tag": "budget",
+      "count": 2
+    },
+    {
+      "tag": "landscape",
+      "count": 2
+    },
+    {
+      "tag": "packing",
+      "count": 2
+    }
+  ],
+  "analyticsStatus": "No live YouTube/TikTok/Instagram analytics were available in this repository session, so performance scores are opportunity estimates, not historical-performance claims.",
+  "assets": [
+    {
+      "id": "dtt-vlog-001",
+      "title": "Old San Juan — cobblestone street at golden hour",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-old-san-juan-street.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Old San Juan, Puerto Rico",
+      "tripYear": "2024",
+      "relatedSeries": "From the Vlog",
+      "tags": [
+        "Puerto Rico",
+        "Old San Juan",
+        "street",
+        "golden hour",
+        "solo trip"
+      ],
+      "peopleShown": [],
+      "notes": "Wide street shot, no identifiable people. Safe to publish."
+    },
+    {
+      "id": "dtt-vlog-002",
+      "title": "Havana — classic car parked on Malecón",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-cuba-havana-classic-car.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Havana, Cuba",
+      "tripYear": "2024",
+      "relatedSeries": "From the Vlog",
+      "tags": [
+        "Cuba",
+        "Havana",
+        "classic car",
+        "Malecón",
+        "culture"
+      ],
+      "peopleShown": [],
+      "notes": "Classic car only, no people in frame."
+    },
+    {
+      "id": "dtt-vlog-003",
+      "title": "Toro Verde — zipline launch platform view",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-toro-verde-zipline.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Toro Verde, Puerto Rico",
+      "tripYear": "2024",
+      "relatedSeries": "From the Vlog",
+      "tags": [
+        "Puerto Rico",
+        "Toro Verde",
+        "adventure",
+        "zipline",
+        "first time"
+      ],
+      "peopleShown": [],
+      "notes": "Platform and jungle canopy only, no people."
+    },
+    {
+      "id": "dtt-blip-001",
+      "title": "Cuban street food — mofongo at roadside stall",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-cuba-street-food-mofongo.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Havana, Cuba",
+      "tripYear": "2024",
+      "relatedSeries": "Quick Blips",
+      "tags": [
+        "Cuba",
+        "food",
+        "street food",
+        "mofongo",
+        "budget"
+      ],
+      "peopleShown": [],
+      "notes": "Food close-up only. No identifiable people."
+    },
+    {
+      "id": "dtt-blip-002",
+      "title": "Night market lights — San Juan La Placita",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-la-placita-night-market.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "San Juan, Puerto Rico",
+      "tripYear": "2024",
+      "relatedSeries": "Quick Blips",
+      "tags": [
+        "Puerto Rico",
+        "La Placita",
+        "night",
+        "market",
+        "culture"
+      ],
+      "peopleShown": [],
+      "notes": "String lights and signage, crowd blurred in background."
+    },
+    {
+      "id": "dtt-wander-001",
+      "title": "El Morro grass field — kite in distance",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-el-morro-kite.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Old San Juan, Puerto Rico",
+      "tripYear": "2024",
+      "relatedSeries": "Wanderlost with Dax",
+      "tags": [
+        "Puerto Rico",
+        "El Morro",
+        "solo trip",
+        "landscape",
+        "adventure"
+      ],
+      "peopleShown": [],
+      "notes": "Landscape shot, kite visible, no identifiable subjects."
+    },
+    {
+      "id": "dtt-wander-002",
+      "title": "Havana Vieja — peeling building facade",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-cuba-havana-vieja-facade.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Havana, Cuba",
+      "tripYear": "2024",
+      "relatedSeries": "Wanderlost with Dax",
+      "tags": [
+        "Cuba",
+        "Havana",
+        "architecture",
+        "culture",
+        "solo trip"
+      ],
+      "peopleShown": [],
+      "notes": "Architectural detail, no people in frame."
+    },
+    {
+      "id": "dtt-wander-003",
+      "title": "Condado Beach — morning shoreline",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-condado-beach-morning.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Condado, Puerto Rico",
+      "tripYear": "2024",
+      "relatedSeries": "Wanderlost with Dax",
+      "tags": [
+        "Puerto Rico",
+        "beach",
+        "morning",
+        "landscape",
+        "solo trip"
+      ],
+      "peopleShown": [],
+      "notes": "Early morning shot, beach empty."
+    },
+    {
+      "id": "dtt-kit-001",
+      "title": "Open camera bag — travel gear layout",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-atlanta-camera-bag-gear.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Atlanta, GA",
+      "tripYear": "2024",
+      "relatedSeries": "Dax Travel Kit",
+      "tags": [
+        "gear",
+        "camera",
+        "packing",
+        "kit",
+        "budget"
+      ],
+      "peopleShown": [],
+      "notes": "Flat-lay of camera bag contents. No people."
+    },
+    {
+      "id": "dtt-kit-002",
+      "title": "Packing flat-lay — carry-on essentials",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-atlanta-packing-flatlay.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Atlanta, GA",
+      "tripYear": "2024",
+      "relatedSeries": "Dax Travel Kit",
+      "tags": [
+        "gear",
+        "packing",
+        "carry-on",
+        "kit",
+        "tips"
+      ],
+      "peopleShown": [],
+      "notes": "Overhead flat-lay, no people."
+    },
+    {
+      "id": "dtt-seen-001",
+      "title": "Vlog scene — Cuba street walk B-roll",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-cuba-street-walk-broll.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Havana, Cuba",
+      "tripYear": "2024",
+      "relatedSeries": "Seen in the Vlog",
+      "tags": [
+        "Cuba",
+        "vlog",
+        "street",
+        "solo trip",
+        "culture"
+      ],
+      "peopleShown": [],
+      "notes": "Used as vlog thumbnail. No faces visible."
+    },
+    {
+      "id": "dtt-seen-002",
+      "title": "Filming setup — outdoor B-roll Puerto Rico",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-filming-setup.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Puerto Rico",
+      "tripYear": "2024",
+      "relatedSeries": "Seen in the Vlog",
+      "tags": [
+        "Puerto Rico",
+        "vlog",
+        "filming",
+        "gear",
+        "behind-the-scenes"
+      ],
+      "peopleShown": [],
+      "notes": "Camera on tripod, no people."
+    },
+    {
+      "id": "dtt-jump-001",
+      "title": "SJU airport terminal — departure gate",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-sju-airport-gate.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "San Juan, Puerto Rico",
+      "tripYear": "2024",
+      "relatedSeries": "Quick Jumps",
+      "tags": [
+        "Puerto Rico",
+        "airport",
+        "travel",
+        "tips",
+        "logistics"
+      ],
+      "peopleShown": [],
+      "notes": "Terminal signage visible. No identifiable people."
+    },
+    {
+      "id": "dtt-jump-002",
+      "title": "Cuba arrival — José Martí international airport",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-cuba-jose-marti-airport.png",
+      "exists": true,
+      "assetType": "Photo",
+      "location": "Havana, Cuba",
+      "tripYear": "2024",
+      "relatedSeries": "Quick Jumps",
+      "tags": [
+        "Cuba",
+        "airport",
+        "arrival",
+        "tips",
+        "logistics"
+      ],
+      "peopleShown": [],
+      "notes": "Airport exterior. No identifiable people."
+    }
+  ]
+}

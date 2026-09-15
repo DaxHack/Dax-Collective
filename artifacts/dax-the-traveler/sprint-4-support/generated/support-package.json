@@ -1,0 +1,155 @@
+{
+  "generatedAt": "2026-09-14T00:02:25.598Z",
+  "brand": "Dax the Traveler",
+  "contentId": "dtt-2026-09-13-puerto-rico-repurpose",
+  "status": "READY_FOR_DANIEL_REVIEW",
+  "publishAllowed": false,
+  "purpose": "Support Daniel by inventorying existing approved material and preparing repurposing drafts without replacing his face, voice, or lived experience.",
+  "selectedOpportunity": {
+    "id": "dtt-repurpose-001",
+    "title": "Puerto Rico memory Short built around the decision point",
+    "format": "Short",
+    "status": "READY_FOR_DANIEL_REVIEW",
+    "priorityScore": 87,
+    "sourceAssetIds": [
+      "dtt-vlog-003",
+      "dtt-wander-001",
+      "dtt-jump-001",
+      "dtt-kit-002"
+    ],
+    "why": "Combines adventure, logistics, and practical value from approved Puerto Rico assets without inventing a story.",
+    "danielNeedsToProvide": "Actual narration about what happened, what he felt, and one practical tip from the trip.",
+    "safeDraftAngle": "What made this Puerto Rico moment worth saving, and what another traveler should prepare before saying yes."
+  },
+  "selectedAssets": [
+    {
+      "id": "dtt-vlog-003",
+      "title": "Toro Verde — zipline launch platform view",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-toro-verde-zipline.png",
+      "location": "Toro Verde, Puerto Rico",
+      "relatedSeries": "From the Vlog",
+      "rights": "Original approved repository media, marked Approved and Public Safe."
+    },
+    {
+      "id": "dtt-wander-001",
+      "title": "El Morro grass field — kite in distance",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-el-morro-kite.png",
+      "location": "Old San Juan, Puerto Rico",
+      "relatedSeries": "Wanderlost with Dax",
+      "rights": "Original approved repository media, marked Approved and Public Safe."
+    },
+    {
+      "id": "dtt-jump-001",
+      "title": "SJU airport terminal — departure gate",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-puerto-rico-sju-airport-gate.png",
+      "location": "San Juan, Puerto Rico",
+      "relatedSeries": "Quick Jumps",
+      "rights": "Original approved repository media, marked Approved and Public Safe."
+    },
+    {
+      "id": "dtt-kit-002",
+      "title": "Packing flat-lay — carry-on essentials",
+      "filePath": "/assets/approved-media/dax-the-traveler/2024-atlanta-packing-flatlay.png",
+      "location": "Atlanta, GA",
+      "relatedSeries": "Dax Travel Kit",
+      "rights": "Original approved repository media, marked Approved and Public Safe."
+    }
+  ],
+  "boundaries": {
+    "originalDanielMaterial": "Only approved repository media is used in the proof render. No third-party travel footage is pulled.",
+    "aiGeneratedSupport": "This tool creates planning records, captions, overlays, storyboard, thumbnail SVG, and a silent proof render.",
+    "thirdPartyMaterial": "None used in the local proof. Any future third-party asset requires licensing and explicit tracking.",
+    "personalExperience": "The draft uses prompts for Daniel to supply real narration. It does not fabricate that Daniel said, did, liked, bought, or experienced anything beyond existing approved asset metadata."
+  },
+  "draftSegments": [
+    {
+      "start": 0,
+      "end": 4,
+      "label": "Hook card",
+      "overlay": "Puerto Rico memory draft",
+      "danielPrompt": "Daniel: record the real feeling or lesson behind this saved moment."
+    },
+    {
+      "start": 4,
+      "end": 10,
+      "label": "Original asset proof",
+      "overlay": "Use original Daniel material only",
+      "danielPrompt": "Name the specific clip or photo source before approving this draft."
+    },
+    {
+      "start": 10,
+      "end": 17,
+      "label": "Moment selection",
+      "overlay": "Best moment: the decision point",
+      "danielPrompt": "Explain what made the moment worth filming or remembering."
+    },
+    {
+      "start": 17,
+      "end": 24,
+      "label": "Viewer value",
+      "overlay": "Turn the memory into one useful travel lesson",
+      "danielPrompt": "Add one practical tip that is true from Daniel experience."
+    },
+    {
+      "start": 24,
+      "end": 30,
+      "label": "Approval gate",
+      "overlay": "Ready for Daniel review",
+      "danielPrompt": "Approve, revise, or reject before any public post."
+    }
+  ],
+  "draftShort": {
+    "format": "Short / Reel / TikTok draft",
+    "durationSeconds": 30,
+    "workingTitle": "The Travel Moment Worth Saving",
+    "finalNarrationStatus": "NEEDS_DANIEL_OR_APPROVED_VOICE",
+    "captionDraft": "Draft built from approved Dax the Traveler media. Daniel review required before any public post.",
+    "thumbnailText": "REAL TRAVEL MEMORY"
+  },
+  "approvalGate": {
+    "requiredBeforePublishing": [
+      "Daniel approves the selected source assets.",
+      "Daniel records or approves final narration.",
+      "No AI voice replacement is used without Daniel approval.",
+      "Platform account mapping is verified.",
+      "Any affiliate or product link is legitimate and approved."
+    ]
+  },
+  "qc": [
+    [
+      "Personal brand protection",
+      "PASS",
+      "No face or voice replacement is attempted."
+    ],
+    [
+      "No fabricated experience",
+      "PASS",
+      "Draft uses Daniel prompts instead of invented first-person claims."
+    ],
+    [
+      "Original material separation",
+      "PASS",
+      "Selected assets are listed as original approved repository material."
+    ],
+    [
+      "Third-party material",
+      "PASS",
+      "No third-party media is used."
+    ],
+    [
+      "Publishing gate",
+      "BLOCKED",
+      "Public publishing requires Daniel approval."
+    ],
+    [
+      "Analytics",
+      "PARTIAL",
+      "Tracking schema exists, but live platform analytics were not available."
+    ],
+    [
+      "Revenue tracking",
+      "PARTIAL",
+      "Attribution fields exist, but no active affiliate enrollment is claimed."
+    ]
+  ]
+}

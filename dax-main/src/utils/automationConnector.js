@@ -57,7 +57,7 @@ const SOCIAL_SHEETS = {
 // N8N webhook configuration
 const N8N_CONFIG = {
   baseUrl: process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook',
-  apiKey: process.env.REACT_APP_N8N_API_KEY || '',
+  allowBrowserWebhookExecution: process.env.REACT_APP_ENABLE_BROWSER_N8N_WEBHOOKS === 'true',
   webhooks: {
     contentGeneration: process.env.REACT_APP_N8N_WEBHOOK_CONTENT_GENERATION || '',
     socialDistribution: process.env.REACT_APP_N8N_WEBHOOK_SOCIAL_DISTRIBUTION || '',
@@ -81,6 +81,14 @@ export const triggerAutomationWorkflow = async (type, data) => {
     
     if (!brandConfig) {
       throw new Error(`Brand configuration not found for: ${data.brandKey}`);
+    }
+
+    if (type === 'social_distribution' && !hasHumanPublishApproval(data)) {
+      return {
+        success: false,
+        status: 'approval_required',
+        error: 'Social distribution requires Daniel approval before any platform or workflow action.'
+      };
     }
 
     switch (type) {
@@ -436,7 +444,7 @@ async function addSocialPostToPipeline(content, brandConfig, timestamp) {
       hashtags: content.hashtags,
       scheduledTime: content.scheduledTime
     },
-    status: 'scheduled'
+    status: hasHumanPublishApproval(content) ? 'approved_for_scheduling' : 'ready_for_review'
   };
 
   // Add to appropriate social tracking sheet
@@ -515,7 +523,7 @@ async function addQuoteToPipeline(content, brandConfig, timestamp) {
       category: content.category,
       featured: content.featured
     },
-    status: 'active'
+    status: 'draft'
   };
 
   // Add to quotes sheet
@@ -540,12 +548,20 @@ async function triggerN8NWebhook(webhookType, data) {
     return;
   }
 
+  if (!N8N_CONFIG.allowBrowserWebhookExecution) {
+    console.warn(`Browser n8n webhook execution blocked for: ${webhookType}`);
+    return {
+      skipped: true,
+      status: 'blocked_by_browser_safety_gate',
+      reason: 'Set REACT_APP_ENABLE_BROWSER_N8N_WEBHOOKS=true only after workflow approval gates and account mapping are verified.'
+    };
+  }
+
   try {
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        ...(N8N_CONFIG.apiKey && { 'Authorization': `Bearer ${N8N_CONFIG.apiKey}` })
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     });
@@ -569,8 +585,8 @@ async function logToSocialSheet(platform, data) {
     console.log(`📊 Logging to ${platform} sheet:`, data);
     
     // This would use your Google Sheets API integration
-    // For now, we'll just log the action
-    return { success: true };
+    // For now, return an explicit non-connected state so callers do not treat console logging as persistence.
+    return { success: false, status: 'not_connected', error: 'Social tracking sheet write is not implemented.' };
   } catch (error) {
     console.error(`Error logging to ${platform} sheet:`, error);
     return { success: false, error: error.message };
@@ -583,7 +599,7 @@ async function logToSocialSheet(platform, data) {
 async function addToBlogSheet(sheetId, entry) {
   try {
     console.log('📝 Adding to blog sheet:', entry);
-    return { success: true };
+    return { success: false, status: 'not_connected', error: 'Blog sheet write is not implemented.' };
   } catch (error) {
     console.error('Error adding to blog sheet:', error);
     return { success: false, error: error.message };
@@ -596,7 +612,7 @@ async function addToBlogSheet(sheetId, entry) {
 async function logToAnalyticsSheet(data) {
   try {
     console.log('📈 Logging to analytics sheet:', data);
-    return { success: true };
+    return { success: false, status: 'not_connected', error: 'Analytics sheet write is not implemented.' };
   } catch (error) {
     console.error('Error logging to analytics sheet:', error);
     return { success: false, error: error.message };
@@ -609,7 +625,7 @@ async function logToAnalyticsSheet(data) {
 async function addToDesignSheet(sheetId, entry) {
   try {
     console.log('🎨 Adding to design sheet:', entry);
-    return { success: true };
+    return { success: false, status: 'not_connected', error: 'Design sheet write is not implemented.' };
   } catch (error) {
     console.error('Error adding to design sheet:', error);
     return { success: false, error: error.message };
@@ -622,7 +638,7 @@ async function addToDesignSheet(sheetId, entry) {
 async function addToRecipeSheet(sheetId, entry) {
   try {
     console.log('🍳 Adding to recipe sheet:', entry);
-    return { success: true };
+    return { success: false, status: 'not_connected', error: 'Recipe sheet write is not implemented.' };
   } catch (error) {
     console.error('Error adding to recipe sheet:', error);
     return { success: false, error: error.message };
@@ -635,7 +651,7 @@ async function addToRecipeSheet(sheetId, entry) {
 async function addToQuoteSheet(sheetId, entry) {
   try {
     console.log('📖 Adding to quote sheet:', entry);
-    return { success: true };
+    return { success: false, status: 'not_connected', error: 'Quote sheet write is not implemented.' };
   } catch (error) {
     console.error('Error adding to quote sheet:', error);
     return { success: false, error: error.message };
@@ -749,7 +765,7 @@ export const validateAutomationConfig = () => {
   // Validate N8N configuration
   validation.n8nConfig = {
     baseUrl: !!N8N_CONFIG.baseUrl,
-    apiKey: !!N8N_CONFIG.apiKey,
+    browserWebhookExecution: N8N_CONFIG.allowBrowserWebhookExecution,
     webhooks: Object.entries(N8N_CONFIG.webhooks).reduce((acc, [key, value]) => {
       acc[key] = !!value;
       return acc;
@@ -758,6 +774,14 @@ export const validateAutomationConfig = () => {
 
   return validation;
 };
+
+function hasHumanPublishApproval(data = {}) {
+  const approval = data.approval || {};
+  return data.publishAllowed === true &&
+    approval.status === 'approved' &&
+    Boolean(approval.approvedBy) &&
+    Boolean(approval.approvedAt);
+}
 
 // Export all functions and configurations
 export default {

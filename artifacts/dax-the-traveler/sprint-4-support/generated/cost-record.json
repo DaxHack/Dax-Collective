@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-09-14T00:02:25.598Z",
+  "localProofRunUsd": {
+    "llm": 0,
+    "imageGeneration": 0,
+    "videoGeneration": 0,
+    "tts": 0,
+    "music": 0,
+    "storage": 0,
+    "api": 0,
+    "other": 0
+  },
+  "notes": "Local Sprint 4 support proof uses repository assets, deterministic SVG/ASS, and FFmpeg only. No paid services, orders, or public publishing."
+}

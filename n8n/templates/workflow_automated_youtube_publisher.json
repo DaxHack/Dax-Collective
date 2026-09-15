@@ -54,7 +54,7 @@
             {
               "id": "1",
               "leftValue": "={{$json['Upload Status']}}",
-              "rightValue": "Generated",
+              "rightValue": "Approved",
               "operator": {
                 "type": "string",
                 "operation": "equals"
@@ -191,9 +191,9 @@
     {
       "parameters": {
         "title": "={{$json['Video Title']}}",
-        "description": "{{$json['Video Title']}}\n\n🎌 Welcome to Ani-Dax! Your ultimate destination for anime character analysis, hidden lore, and mind-blowing theories that will change how you see your favorite series.\n\n🔥 In this video:\n{{$json['Content Type']}} featuring {{$json['Character Focus'] || 'your favorite anime characters'}}\n\n💡 Don't forget to:\n✅ LIKE if this blew your mind\n✅ SUBSCRIBE for more anime secrets\n✅ COMMENT your theories below\n✅ SHARE with fellow anime fans\n\n🔗 Join our community:\n📱 Discord: [Link in bio]\n🎯 Patreon: [Link in bio]\n\n#anime #{{$json['Character Focus'] || 'animetheory'}} #animelore #shorts\n\n{{$json['Tags/Hashtags']}}",
+        "description": "{{$json['Video Title']}}\n\n🎌 Ani-Dax draft for Daniel review.\n\nIn this video:\n{{$json['Content Type']}} featuring {{$json['Character Focus'] || 'anime characters'}}\n\nApproval checklist before any public release:\n- Canon/fact check complete\n- Copyright/compliance check complete\n- Daniel approval recorded\n- Only approved community or monetization links added\n\n#anime #{{$json['Character Focus'] || 'animetheory'}} #animelore #shorts\n\n{{$json['Tags/Hashtags']}}",
         "categoryId": "24",
-        "privacyStatus": "public",
+        "privacyStatus": "private",
         "tags": "={{$json['Tags/Hashtags'].split(' ')}}",
         "videoFile": "/tmp/ani_dax_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4",
         "thumbnailFile": "/tmp/ani_dax_thumbnail_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.jpg"
@@ -216,9 +216,9 @@
     {
       "parameters": {
         "title": "={{$json['Video Title']}}",
-        "description": "{{$json['Video Title']}}\n\n🌍 Welcome to Time-Zone Travelers! Your guide to surviving the world's most challenging destinations and uncovering travel secrets that could save your life.\n\n🎒 In this video:\n{{$json['Content Type']}} about {{$json['Location Focus'] || 'dangerous travel destinations'}}\n{{$json['Survival Element'] || 'Essential survival tips'}}\n\n🔥 What you'll learn:\n✅ Critical safety information\n✅ Cultural insights and local customs\n✅ Practical travel hacks\n✅ Gear recommendations\n\n🎯 Join the Traveler's Club on Patreon:\n🌟 Explorer Tier: Exclusive travel guides\n🌟 Adventurer Tier: Personal Q&A sessions\n🌟 Globetrotter VIP: Custom itineraries\n\n🛒 Recommended gear (affiliate links):\n{{$json['Affiliate Link']}}\n\n#travel #survival #{{$json['Location Focus'] || 'adventure'}} #backpacking #traveltips\n\n{{$json['Tags/Hashtags']}}",
+        "description": "{{$json['Video Title']}}\n\n🌍 Time-Zone Travelers draft for Daniel review.\n\nIn this video:\n{{$json['Content Type']}} about {{$json['Location Focus'] || 'travel destinations'}}\n{{$json['Survival Element'] || 'Practical travel context'}}\n\nApproval checklist before any public release:\n- Current source verification complete for time-sensitive claims\n- Daniel approval recorded\n- Only approved non-enrolled or enrolled monetization links added after review\n- No fabricated personal experience included\n\n#travel #{{$json['Location Focus'] || 'adventure'}} #backpacking #traveltips\n\n{{$json['Tags/Hashtags']}}",
         "categoryId": "19",
-        "privacyStatus": "public",
+        "privacyStatus": "private",
         "tags": "={{$json['Tags/Hashtags'].split(' ')}}",
         "videoFile": "/tmp/timezone_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4",
         "thumbnailFile": "/tmp/timezone_thumbnail_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.jpg"
@@ -241,9 +241,9 @@
     {
       "parameters": {
         "title": "={{$json['Video Title']}}",
-        "description": "{{$json['Video Title']}}\n\n✝️ Welcome to God's Vessel! A place of hope, faith, and encouragement where we explore God's Word and its practical application in our daily lives.\n\n🙏 In this devotional:\n{{$json['Content Type']}} focusing on {{$json['Scripture Focus'] || 'Biblical truth'}}\nTheme: {{$json['Message Theme'] || 'Faith and hope'}}\n\n💝 What you'll discover:\n✅ Biblical insights for real-life challenges\n✅ Encouragement for your faith journey\n✅ Practical application of God's Word\n✅ Community and prayer support\n\n🛍️ Shop faith-inspired apparel:\nFind t-shirts and merchandise that share your faith\n{{$json['Affiliate Link']}}\n\n🤝 Join our faith community:\n💬 Share your testimony in the comments\n🙏 Request prayer in our community tab\n📖 Suggest Bible verses for future videos\n\n#faith #christian #bible #hope #testimony #godsword #devotional\n\n{{$json['Tags/Hashtags']}}",
+        "description": "{{$json['Video Title']}}\n\n✝️ God's Vessel draft for Daniel review.\n\nIn this devotional:\n{{$json['Content Type']}} focusing on {{$json['Scripture Focus'] || 'Biblical truth'}}\nTheme: {{$json['Message Theme'] || 'Faith and hope'}}\n\nApproval checklist before any public release:\n- Scripture/theology review complete\n- Daniel approval recorded\n- Product, affiliate, sale, or donation links added only after approval and tracking setup\n\n💬 Share thoughtful comments after publication.\n📖 Suggest Bible verses for future reviewed drafts.\n\n#faith #christian #bible #hope #testimony #godsword #devotional\n\n{{$json['Tags/Hashtags']}}",
         "categoryId": "22",
-        "privacyStatus": "public",
+        "privacyStatus": "private",
         "tags": "={{$json['Tags/Hashtags'].split(' ')}}",
         "videoFile": "/tmp/gods_vessel_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4",
         "thumbnailFile": "/tmp/gods_vessel_thumbnail_{{$json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.jpg"
@@ -277,7 +277,7 @@
           "values": [
             {
               "column": "Upload Status",
-              "fieldValue": "Published"
+              "fieldValue": "Private Draft Created"
             },
             {
               "column": "Performance Views",
@@ -289,7 +289,7 @@
             },
             {
               "column": "Next Action Required",
-              "fieldValue": "Monitor performance"
+              "fieldValue": "Daniel review required before public publishing"
             }
           ]
         }
@@ -312,7 +312,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_CHANNEL_ID}}",
-        "text": "🎬 **NEW VIDEO PUBLISHED!**\n\n**Brand:** {{$json['Brand']}}\n**Title:** {{$json['Video Title']}}\n**Platform:** YouTube\n**Viral Score:** {{$json['Viral Score']}}\n**Revenue Potential:** {{$json['Revenue Potential']}}\n\n**YouTube URL:** {{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}\n\n**Next Steps:**\n✅ Monitor performance in first 24 hours\n✅ Engage with early comments\n✅ Share on other social platforms\n✅ Track revenue metrics\n\n*Let's see this content reach its viral potential!* 🚀"
+        "text": "🎬 **PRIVATE YOUTUBE DRAFT CREATED - REVIEW REQUIRED**\n\n**Brand:** {{$json['Brand']}}\n**Title:** {{$json['Video Title']}}\n**Platform:** YouTube private/draft\n**Interest Score:** {{$json['Viral Score']}}\n**Revenue Readiness:** {{$json['Revenue Potential']}}\n\n**Private YouTube ID:** {{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}\n\n**Required before public release:**\n- Daniel approval recorded\n- Brand/account mapping verified\n- QC/copyright/source review complete\n- Monetized links approved and tracked\n\nThis notification does not verify public publication or revenue."
       },
       "id": "11",
       "name": "Success Notification",
@@ -380,7 +380,7 @@
           "parameters": [
             {
               "name": "text",
-              "value": "🔥 NEW VIDEO: {{$json['Video Title']}}\n\nThis {{$json['Content Type']}} will blow your mind! 🤯\n\n{{$json['Brand'] === 'Ani-Dax' ? '#anime #animetheory' : $json['Brand'] === 'Time-Zone Travelers' ? '#travel #adventure' : '#faith #christian'}}\n\nWatch now: [YouTube Link]\n\n{{$json['Tags/Hashtags']}}"
+              "value": "DRAFT ONLY - do not post automatically. Prepare platform copy after Daniel approval for: {{$json['Video Title']}}"
             }
           ]
         }
@@ -398,7 +398,8 @@
           "id": "9",
           "name": "Twitter API"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -410,11 +411,11 @@
           "parameters": [
             {
               "name": "message",
-              "value": "🎬 Just dropped a new {{$json['Content Type']}}!\n\n{{$json['Video Title']}}\n\n{{$json['Brand'] === 'Ani-Dax' ? 'Anime fans, this one is for you! 🎌' : $json['Brand'] === 'Time-Zone Travelers' ? 'Travelers, this could save your life! 🌍' : 'Faith family, this message is for you! ✝️'}}\n\nCheck it out and let me know what you think in the comments!\n\n{{$json['Tags/Hashtags']}}"
+              "value": "DRAFT ONLY - do not post automatically. Prepare platform copy after Daniel approval for: {{$json['Video Title']}}"
             },
             {
               "name": "link",
-              "value": "https://youtube.com/watch?v={{$('Upload Ani-Dax to YouTube').item.json.id || $('Upload Travel to YouTube').item.json.id || $('Upload Faith to YouTube').item.json.id}}"
+              "value": ""
             }
           ]
         }
@@ -432,7 +433,8 @@
           "id": "10",
           "name": "Facebook API"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -458,7 +460,7 @@
         "options": {}
       },
       "id": "15",
-      "name": "Check High Revenue Content",
+      "name": "Check Revenue Readiness Content",
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2,
       "position": [
@@ -469,7 +471,7 @@
     {
       "parameters": {
         "channel": "={{$env.DISCORD_REVENUE_CHANNEL_ID}}",
-        "text": "💰 **HIGH REVENUE CONTENT PUBLISHED!**\n\n**Title:** {{$json['Video Title']}}\n**Brand:** {{$json['Brand']}}\n**Revenue Potential:** {{$json['Revenue Potential']}}\n**Viral Score:** {{$json['Viral Score']}}\n\n**Revenue Optimization Actions:**\n🎯 Monitor affiliate link clicks\n💳 Track Patreon sign-ups\n📊 Analyze engagement metrics\n🔄 Prepare follow-up content\n\n**Projected Revenue:** ${{$json['Viral Score'] * 2}}-${{$json['Viral Score'] * 5}} in first week\n\n*This content has serious money-making potential!* 💸"
+        "text": "📋 **PRIVATE DRAFT READY FOR REVENUE REVIEW**\n\n**Title:** {{$json['Video Title']}}\n**Brand:** {{$json['Brand']}}\n**Revenue Readiness:** {{$json['Revenue Potential']}}\n**Interest Score:** {{$json['Viral Score']}}\n\n**Required before monetized public release:**\n- Daniel content approval\n- Correct brand/account mapping verified\n- Affiliate, membership, sponsor, product, or donation links approved\n- Click/conversion/revenue tracking fields configured\n\nNo public publishing or revenue claim has been verified by this notification."
       },
       "id": "16",
       "name": "Revenue Alert",
@@ -612,7 +614,7 @@
             "index": 0
           },
           {
-            "node": "Check High Revenue Content",
+            "node": "Check Revenue Readiness Content",
             "type": "main",
             "index": 0
           }
@@ -635,7 +637,7 @@
         ]
       ]
     },
-    "Check High Revenue Content": {
+    "Check Revenue Readiness Content": {
       "main": [
         [
           {
@@ -659,4 +661,3 @@
   "id": "automated-youtube-publisher",
   "tags": []
 }
-

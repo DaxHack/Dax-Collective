@@ -26,11 +26,11 @@
           "messages": [
             {
               "role": "system",
-              "message": "You are Dax, a travel content creator focused on authentic travel experiences, budget-friendly adventures, and inspiring others to explore the world. Your content helps people plan amazing trips while building a community of passionate travelers."
+              "message": "You are supporting Daniel's Dax the Traveler brand. Draft concepts around approved Daniel source material or clearly labeled support research. Do not fabricate Daniel's personal experiences, replace his voice, or add monetization claims without approval."
             },
             {
               "role": "user",
-              "message": "Generate a travel video concept for this week. Consider:\n\nCurrent trends: {{ $json.travel_trends }}\nSeason: {{ $now.format('MMMM YYYY') }}\nUpcoming holidays: {{ $json.upcoming_holidays }}\nPopular destinations: {{ $json.trending_destinations }}\n\nCreate:\n1. Engaging video title (8-12 words, SEO optimized)\n2. Video description with travel tips and inspiration\n3. Key talking points covering practical advice\n4. Patreon Traveler's Club integration opportunities\n5. Affiliate product recommendations (travel gear, booking sites)\n6. Thumbnail concept featuring destination/travel theme\n7. Target 8-12 minute video length\n\nFocus on actionable travel advice that provides real value to viewers planning their next adventure."
+              "message": "Generate a travel video concept for Daniel review this week. Consider:\n\nCurrent trends: {{ $json.travel_trends }}\nSeason: {{ $now.format('MMMM YYYY') }}\nUpcoming holidays: {{ $json.upcoming_holidays }}\nPopular destinations: {{ $json.trending_destinations }}\nApproved Daniel source notes: {{ $json.approved_daniel_source_notes || 'None provided' }}\n\nCreate:\n1. Engaging video title (8-12 words, SEO optimized)\n2. Video description with travel tips and inspiration\n3. Key talking points covering practical advice\n4. Daniel verification notes for any personal-experience claims\n5. Monetization placeholders only where Daniel approval and tracking would be required\n6. Thumbnail concept featuring destination/travel theme\n7. Target 8-12 minute video length\n\nFocus on actionable travel advice that provides real value. Mark anything not backed by Daniel source material as support research."
             }
           ]
         },
@@ -53,11 +53,11 @@
           "messages": [
             {
               "role": "system",
-              "message": "You are Dax, creating an authentic travel video script. Write in first person, conversational tone as if talking to a friend about travel. Include personal anecdotes, practical tips, and genuine enthusiasm for travel."
+              "message": "You are drafting a Dax the Traveler script for Daniel review. Use first person only for facts explicitly present in approved Daniel source notes. Otherwise write as draft support copy with verification notes. Do not add unapproved voice, affiliate, sponsor, membership, or product claims."
             },
             {
               "role": "user",
-              "message": "Create a detailed script for this travel video concept:\n\n{{ $json.video_concept }}\n\nScript structure:\n1. Hook (0-15 seconds): Compelling opening question or statement\n2. Introduction (15-45 seconds): What viewers will learn\n3. Main content (2-10 minutes): Detailed travel advice with personal insights\n4. Patreon promotion (30 seconds): Natural integration of Traveler's Club benefits\n5. Affiliate recommendations (1 minute): Genuine product recommendations\n6. Conclusion (30 seconds): Call-to-action and subscribe reminder\n\nInclude markers:\n- [PAUSE] for natural breaks\n- [EMPHASIS] for important points\n- [VISUAL: description] for b-roll footage\n- [CTA: specific action] for calls-to-action\n\nMaintain authentic, enthusiastic tone throughout. Make it feel like a conversation with a knowledgeable travel friend."
+              "message": "Create a detailed script for this travel video concept:\n\n{{ $json.video_concept }}\n\nScript structure:\n1. Hook (0-15 seconds): Compelling opening question or statement\n2. Introduction (15-45 seconds): What viewers will learn\n3. Main content (2-10 minutes): Detailed travel advice with Daniel verification notes where needed\n4. CTA section: neutral subscribe/comment prompt unless approved monetization links are provided\n5. Conclusion (30 seconds): Clear next viewer action and review note\n\nInclude markers:\n- [PAUSE] for natural breaks\n- [EMPHASIS] for important points\n- [VISUAL: approved Daniel footage or support visual description]\n- [CTA: specific approved action or review placeholder]\n\nMaintain authentic, enthusiastic tone throughout. Do not fabricate Daniel's travel history."
             }
           ]
         },
@@ -149,7 +149,7 @@
       "parameters": {
         "authentication": "oAuth2",
         "title": "{{ $json.video_title }}",
-        "description": "{{ $json.video_description }}\n\n🌍 Join the Traveler's Club on Patreon for exclusive travel guides and planning resources!\n💼 Patreon: {{ $env.PATREON_URL }}\n\n🎒 Travel gear I recommend:\n{{ $json.affiliate_links }}\n\n📱 Follow my adventures:\n• Instagram: @daxthetraveler\n• TikTok: @daxthetraveler\n• Twitter: @daxthetraveler\n\n🔔 Subscribe for weekly travel tips and destination guides!\n\n#Travel #Adventure #TravelTips #Backpacking #TravelGuide #DaxTheTraveler",
+        "description": "{{ $json.video_description }}\n\nDaniel approval required before public release. Add affiliate, sponsor, guide, membership, or product links only after Daniel approves the offer and tracking setup.\n\n📱 Follow Dax the Traveler:\n• Instagram: @daxthetraveler\n• TikTok: @daxthetraveler\n• YouTube: @daxthetraveler\n\n🔔 Subscribe for travel tips and destination guides.\n\n#Travel #Adventure #TravelTips #Backpacking #TravelGuide #DaxTheTraveler",
         "tags": "travel,adventure,travel tips,backpacking,travel guide,destination guide,budget travel,travel vlog",
         "categoryId": "19",
         "privacyStatus": "private",
@@ -176,8 +176,8 @@
             "Duration": "{{ $json.video_duration }}",
             "Script Word Count": "{{ $json.word_count }}",
             "Visual Cues": "{{ $json.visual_cues.length }}",
-            "Affiliate Products": "{{ $json.affiliate_products }}",
-            "Patreon Integration": "Yes",
+            "Monetization Approval": "Required before links are added",
+            "Voice Approval": "Required before using Daniel voice or alternate narration",
             "Status": "Uploaded - Private",
             "Publish Date": "{{ $now.plus({days: 1}).format('YYYY-MM-DD') }}",
             "Cross-Platform Ready": "Pending"
@@ -193,7 +193,7 @@
     {
       "parameters": {
         "channel": "#dax-traveler-content",
-        "text": "🎬 New Dax the Traveler video ready!\n\n📹 *{{ $json.video_title }}*\n🔗 YouTube: {{ $json.youtube_url }}\n⏱️ Duration: {{ $json.video_duration }}\n📊 Word count: {{ $json.word_count }}\n\n💰 Revenue integrations:\n• Patreon Traveler's Club promotion\n• {{ $json.affiliate_products }} affiliate products\n• Subscribe & engagement CTAs\n\n✅ Next steps:\n1. Review video quality and audio sync\n2. Adjust thumbnail if needed\n3. Schedule publication for tomorrow\n4. Prepare cross-platform content\n5. Set up Instagram/TikTok promotion\n\n🚀 Ready to drive traffic to Patreon and affiliate partners!"
+        "text": "🎬 Dax the Traveler private draft needs Daniel review\n\n📹 *{{ $json.video_title }}*\n🔗 Draft YouTube response: {{ $json.youtube_url }}\n⏱️ Duration: {{ $json.video_duration }}\n📊 Word count: {{ $json.word_count }}\n\nRequired checks:\n1. Confirm every personal-experience claim against Daniel source material\n2. Confirm final voice/narration approval\n3. Review video quality and audio sync\n4. Approve or remove any monetized CTA before publication\n5. Verify correct brand/channel mapping before public release\n\nNo public publishing or monetized CTA is approved by this notification."
       },
       "id": "11",
       "name": "Notify Team",

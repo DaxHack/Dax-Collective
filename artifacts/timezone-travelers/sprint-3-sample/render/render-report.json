@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-09-13T22:57:08.957Z",
+  "rendered": true,
+  "videoPath": "artifacts/timezone-travelers/sprint-3-sample/render/timezone-proof-render.mp4",
+  "audioSource": "silent-placeholder",
+  "command": "ffmpeg -y -loop 1 -t 7.5 -i C:\\Users\\Daniel Rollins\\AppData\\Local\\Temp\\dax-collective-legal-oauth-20260913\\dax-main\\public\\assets\\approved-media\\time-zone-travelers\\2024-tokyo-zone-guide-shibuya.png -loop 1 -t 7.5 -i C:\\Users\\Daniel Rollins\\AppData\\Local\\Temp\\dax-collective-legal-oauth-20260913\\dax-main\\public\\assets\\approved-media\\time-zone-travelers\\2023-paris-seine-riverbank-dusk.png -loop 1 -t 7.5 -i C:\\Users\\Daniel Rollins\\AppData\\Local\\Temp\\dax-collective-legal-oauth-20260913\\dax-main\\public\\assets\\approved-media\\time-zone-travelers\\2024-atlanta-budget-carryon-setup.png -loop 1 -t 7.5 -i C:\\Users\\Daniel Rollins\\AppData\\Local\\Temp\\dax-collective-legal-oauth-20260913\\dax-main\\public\\assets\\approved-media\\time-zone-travelers\\2024-atlanta-airport-gate-morning.png -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -filter_complex [0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v0];[1:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v1];[2:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v2];[3:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v3];[v0][v1][v2][v3]concat=n=4:v=1:a=0,format=yuv420p,ass=proof.ass[v] -map [v] -map 4:a -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest timezone-proof-render.mp4",
+  "status": 0,
+  "usedAssets": [
+    "dax-main/public/assets/approved-media/time-zone-travelers/2024-tokyo-zone-guide-shibuya.png",
+    "dax-main/public/assets/approved-media/time-zone-travelers/2023-paris-seine-riverbank-dusk.png",
+    "dax-main/public/assets/approved-media/time-zone-travelers/2024-atlanta-budget-carryon-setup.png",
+    "dax-main/public/assets/approved-media/time-zone-travelers/2024-atlanta-airport-gate-morning.png"
+  ],
+  "stderrTail": [
+    "  Stream #0:1: Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 128 kb/s",
+    "    Metadata:",
+    "      encoder         : Lavc62.11.100 aac",
+    "frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    \rframe=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.02    \rframe=   38 fps= 25 q=28.0 size=     256KiB time=00:00:01.44 bitrate=1456.6kbits/s speed=0.929x elapsed=0:00:01.55    \rframe=   88 fps= 43 q=28.0 size=     256KiB time=00:00:03.44 bitrate= 609.7kbits/s speed=1.67x elapsed=0:00:02.06    \rframe=  135 fps= 53 q=28.0 size=     256KiB time=00:00:05.32 bitrate= 394.3kbits/s speed=2.07x elapsed=0:00:02.57    \rframe=  183 fps= 59 q=28.0 size=     256KiB time=00:00:07.24 bitrate= 289.7kbits/s speed=2.34x elapsed=0:00:03.08    \rframe=  193 fps= 53 q=28.0 size=     512KiB time=00:00:07.64 bitrate= 549.0kbits/s speed=2.12x elapsed=0:00:03.60    \rframe=  193 fps= 47 q=28.0 size=     512KiB time=00:00:07.64 bitrate= 549.0kbits/s speed=1.85x elapsed=0:00:04.12    \rframe=  193 fps= 42 q=28.0 size=     512KiB time=00:00:07.64 bitrate= 549.0kbits/s speed=1.65x elapsed=0:00:04.63    \rframe=  193 fps= 37 q=28.0 size=     512KiB time=00:00:07.64 bitrate= 549.0kbits/s speed=1.48x elapsed=0:00:05.15    \rframe=  193 fps= 34 q=28.0 size=     512KiB time=00:00:07.64 bitrate= 549.0kbits/s speed=1.35x elapsed=0:00:05.67    \rframe=  193 fps= 31 q=28.0 size=     512KiB time=00:00:07.64 bitrate= 549.0kbits/s speed=1.23x elapsed=0:00:06.19    \rframe=  193 fps= 29 q=28.0 size=     512KiB time=00:00:07.64 bitrate= 549.0kbits/s speed=1.14x elapsed=0:00:06.70    \rframe=  220 fps= 30 q=28.0 size=     512KiB time=00:00:08.72 bitrate= 481.0kbits/s speed=1.21x elapsed=0:00:07.21    \rframe=  247 fps= 32 q=28.0 size=     512KiB time=00:00:09.80 bitrate= 428.0kbits/s speed=1.27x elapsed=0:00:07.73    \rframe=  280 fps= 34 q=28.0 size=     768KiB time=00:00:11.12 bitrate= 565.8kbits/s speed=1.35x elapsed=0:00:08.24    \rframe=  309 fps= 35 q=28.0 size=     768KiB time=00:00:12.28 bitrate= 512.4kbits/s speed= 1.4x elapsed=0:00:08.76    \rframe=  330 fps= 36 q=28.0 size=     768KiB time=00:00:13.12 bitrate= 479.6kbits/s speed=1.41x elapsed=0:00:09.27    \rframe=  351 fps= 36 q=28.0 size=     768KiB time=00:00:13.96 bitrate= 450.7kbits/s speed=1.42x elapsed=0:00:09.80    \rframe=  377 fps= 37 q=28.0 size=    1024KiB time=00:00:15.00 bitrate= 559.3kbits/s speed=1.45x elapsed=0:00:10.31    \rframe=  406 fps= 38 q=28.0 size=    1024KiB time=00:00:16.16 bitrate= 519.1kbits/s speed=1.49x elapsed=0:00:10.81    \rframe=  430 fps= 38 q=28.0 size=    1024KiB time=00:00:17.12 bitrate= 490.0kbits/s speed=1.51x elapsed=0:00:11.33    \rframe=  477 fps= 40 q=28.0 size=    1024KiB time=00:00:22.15 bitrate= 378.7kbits/s speed=1.87x elapsed=0:00:11.85    \rframe=  510 fps= 41 q=28.0 size=    1280KiB time=00:00:23.45 bitrate= 447.1kbits/s speed= 1.9x elapsed=0:00:12.37    \rframe=  561 fps= 44 q=28.0 size=    1280KiB time=00:00:25.49 bitrate= 411.3kbits/s speed=1.98x elapsed=0:00:12.88    \rframe=  624 fps= 47 q=28.0 size=    1536KiB time=00:00:28.02 bitrate= 449.0kbits/s speed=2.09x elapsed=0:00:13.40    \r[out#0/mp4 @ 000002b65637d2c0] video:1739KiB audio:8KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 1.488971%",
+    "frame=  752 fps= 54 q=-1.0 Lsize=    1773KiB time=00:00:30.00 bitrate= 484.0kbits/s speed=2.15x elapsed=0:00:13.92    ",
+    "[libx264 @ 000002b6562e0d00] frame I:4     Avg QP:16.58  size:244674",
+    "[libx264 @ 000002b6562e0d00] frame P:190   Avg QP:15.79  size:  3943",
+    "[libx264 @ 000002b6562e0d00] frame B:558   Avg QP:20.45  size:    93",
+    "[libx264 @ 000002b6562e0d00] consecutive B-frames:  1.1%  0.0%  0.0% 98.9%",
+    "[libx264 @ 000002b6562e0d00] mb I  I16..4:  6.5% 74.4% 19.1%",
+    "[libx264 @ 000002b6562e0d00] mb P  I16..4:  0.1%  1.2%  0.3%  P16..4:  2.1%  0.1%  0.1%  0.0%  0.0%    skip:96.1%",
+    "[libx264 @ 000002b6562e0d00] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.4%  0.0%  0.0%  direct: 0.0%  skip:99.6%  L0:23.5% L1:76.5% BI: 0.0%",
+    "[libx264 @ 000002b6562e0d00] 8x8 transform intra:75.4% inter:84.6%",
+    "[libx264 @ 000002b6562e0d00] coded y,uvDC,uvAC intra: 88.3% 79.6% 61.5% inter: 0.1% 0.3% 0.0%",
+    "[libx264 @ 000002b6562e0d00] i16 v,h,dc,p: 23% 55%  5% 18%",
+    "[libx264 @ 000002b6562e0d00] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 16% 33% 20%  4%  5%  4%  6%  4%  8%",
+    "[libx264 @ 000002b6562e0d00] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 27% 28%  7%  4%  8%  7%  7%  5%  6%",
+    "[libx264 @ 000002b6562e0d00] i8c dc,h,v,p: 43% 34% 16%  8%",
+    "[libx264 @ 000002b6562e0d00] Weighted P-Frames: Y:0.0% UV:0.0%",
+    "[libx264 @ 000002b6562e0d00] ref P L0: 87.6%  1.6%  9.7%  1.0%",
+    "[libx264 @ 000002b6562e0d00] ref B L0: 54.4% 45.6%  0.0%",
+    "[libx264 @ 000002b6562e0d00] ref B L1: 96.1%  3.9%",
+    "[libx264 @ 000002b6562e0d00] kb/s:473.38",
+    "[aac @ 000002b6562e5fc0] Qavg: 65536.000",
+    ""
+  ],
+  "ffprobe": {
+    "format": {
+      "duration": "30.080000",
+      "size": "1815114"
+    }
+  }
+}
