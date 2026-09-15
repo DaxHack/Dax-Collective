@@ -2,7 +2,7 @@
 
 ## LAST VERIFIED DATE/TIME
 
-2026-09-15T13:45:05-04:00
+2026-09-15T13:50:50-04:00
 
 ## VERIFIED DONE
 
@@ -63,6 +63,14 @@
   - `purchaseEnabled` remains `false`
   - Claude/Canva production artwork masters remain pending before vendor publication
 - God's Vessel listing handoff commit `d85cd42271e3ebc319f86e90432b0b8905564c1d` was pushed to PR #3 and its Firebase Hosting PR workflow run `35002481942` succeeded.
+- Cross-brand approval queue created and tested:
+  - command: `npm run approval:queue`
+  - output: `APPROVAL_QUEUE.md`
+  - output: `artifacts/approval-queue/current-approval-queue.json`
+  - queue items: 4
+  - public publishing remains disabled
+  - purchase/spend remains disabled
+  - credential changes remain disabled
 - God's Vessel page now describes actual current behavior:
   - draft collection, not live products
   - no on-site checkout
@@ -306,12 +314,13 @@
 2. If Daniel approves or replaces the narration, rerun the Ani-Dax package with `--audio-file` and `--audio-approval-status approved-final`.
 3. Daniel/Claude should provide or approve final God's Vessel Canva production masters, then Daniel should approve theology, product copy, garment/vendor, pricing, taxes, shipping, and launch timing.
 4. After approval and account-owner login, use the prepared God's Vessel listing files in `artifacts/gods-vessel/names-of-god/listings/` to configure Printify/Shopify drafts; do not publish or enable checkout before human storefront review.
-5. Repair Ani-Dax n8n templates before importing/running live:
+5. Use `APPROVAL_QUEUE.md` as the current human review list before any public publishing, product setup, paid action, credential change, or monetized link insertion.
+6. Repair Ani-Dax n8n templates before importing/running live:
    - add runtime approval/QC gate
    - remove/replace unsafe generic Pexels anime-character search
    - require per-brand credential mapping
-6. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
-7. After Daniel approval, merge/deploy PR #3; do not merge without explicit approval because it can deploy live changes.
+7. If workflow env values are absent in GitHub, Daniel should add the seven `REACT_APP_FIREBASE_*` values listed above. The public site renders without them, but Firebase Auth/admin behavior remains degraded until they exist.
+8. After Daniel approval, merge/deploy PR #3; do not merge without explicit approval because it can deploy live changes.
 
 ## DO NOT REDO
 
@@ -477,6 +486,9 @@
 | `npm run revenue:readiness` after God's Vessel listing handoff | PASS; 4 brand paths, God's Vessel listing package included, verified revenue/profit `$0` |
 | `npm run business-state:build` after God's Vessel listing handoff | PASS; content queue includes God's Vessel commerce artifacts and still blocks publishing/purchase |
 | `npm run business-state:query -- content-queue` after God's Vessel listing handoff | PASS; God's Vessel queue item includes five prepared listing artifacts, `publicPublishingAllowed: false`, and `purchaseEnabled: false` |
+| `node --check tools/ops/build-approval-queue.mjs` | PASS |
+| `npm run approval:queue` | PASS; 4 review items generated, public publishing false, purchase/spend false |
+| Approval queue assertion | PASS; all 4 queue items have review artifacts and keep publish/spend/credential gates closed |
 | modified n8n JSON parse check | PASS; 12 modified workflow exports parsed |
 | workflow logic assertions | PASS; YouTube publisher requires Approved, private draft status, private uploads, disabled cross-posts, no-tax-advice financial policy |
 | workflow structure assertions | PASS; modified workflow node counts unchanged; only approved safety renames/disables detected |
@@ -553,6 +565,8 @@ Build warnings are existing lint warnings in unrelated files, plus existing AniD
 - `artifacts/dax-the-traveler/sprint-4-support/render/render-report.json`
 - `artifacts/business-state/current-state.json`
 - `BUSINESS_STATE.md`
+- `APPROVAL_QUEUE.md`
+- `artifacts/approval-queue/current-approval-queue.json`
 - `GO_LIVE_MATRIX.md`
 - `business-state/brand-rules.json`
 - `business-state/permissions.json`
