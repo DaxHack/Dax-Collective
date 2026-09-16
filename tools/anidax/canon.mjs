@@ -25,6 +25,17 @@ export function validateCanon(data) {
       evidence(edge);
       if (!characters.has(edge.speaker) || !characters.has(edge.subject) || edge.assertionIds.some((id) => !assertions.has(id)) || edge.sharedEventIds.some((id) => !events.has(id))) throw new Error('Invalid relationship reference');
     }
+    for (const memory of state.memoryStates ?? []) {
+      if (!characters.has(memory.characterId) || !['UNKNOWN_WITHHELD', 'SOURCE_SUPPORTED'].includes(memory.status) || !memory.topic || !memory.boundary) throw new Error('Invalid memory boundary');
+      if (memory.status === 'SOURCE_SUPPORTED') evidence(memory);
+    }
+    if (state.visualReferenceIndex) ids(state.visualReferenceIndex);
+    for (const reference of state.visualReferenceIndex ?? []) {
+      evidence(reference);
+      if (!characters.has(reference.characterId) || !state.locations.some((x) => x.id === reference.locationId) || reference.rights !== 'IDENTIFICATION_ONLY_NOT_LICENSED' || reference.binaryCopied !== false || reference.productionUseApproved !== false) throw new Error('Invalid visual reference or rights boundary');
+      if (!reference.url?.startsWith('https://') || !Array.isArray(reference.descriptors) || !Array.isArray(reference.verifiedViewAngles) || reference.verifiedViewAngles.length || reference.descriptors.length || reference.outfitState !== 'UNVERIFIED') throw new Error('Visual evidence ingestion requires review; this slice indexes source pages only');
+      if (!data.sources.some((x) => reference.sourceIds.includes(x.id) && x.url === reference.url)) throw new Error('Visual provenance URL mismatch');
+    }
     if (state.quotes.length) throw new Error('Canonical quote ingestion is not enabled in this slice');
   }
   return data;
@@ -57,6 +68,8 @@ export function queryCanon(data, request) {
     sources: data.sources.filter((x) => sourceIds.has(x.id)),
     visualReferences: [speaker, subject].map((x) => ({ characterId: x.id, references: x.referenceViews, descriptors: x.visualDescriptors, outfitStates: x.outfitStates })),
     publicApproval: false,
+    ...(state.memoryStates ? { memoryStates: state.memoryStates.filter((x) => x.characterId === speaker.id) } : {}),
+    ...(state.visualReferenceIndex ? { visualReferenceIndex: state.visualReferenceIndex.filter((x) => [speaker.id, subject.id].includes(x.characterId)) } : {}),
   };
 }
 

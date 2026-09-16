@@ -1,5 +1,9 @@
 # Blockers
 
+## Episode-33 Extension
+
+No technical blocker to querying the new state. Rem recognition/family memory is explicitly unknown/withheld, not inferred from earlier profiles. Voice, final fictional dialogue, character imagery/rights and public approval remain Daniel decisions. Reference index licenses nothing; no visual assets were copied. Later-state script/render is not produced. Existing original Subaru approvals remain unchanged.
+
 ## Character/Canon Slice
 
 Ram interview is a 30s silent technical proof with source-backed context and invented dialogue. Final characterization, character voice, imagery/rights and public approval remain Daniel gates. Later arcs need sourced snapshots; no technical blocker prevents adding those. Existing Subaru review approvals remain pending. Reference URLs do not grant asset reuse rights.

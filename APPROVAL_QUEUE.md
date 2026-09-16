@@ -1,8 +1,8 @@
 # Dax Collective Approval Queue
 
-Generated: 2026-09-16T15:00:58.126Z
+Generated: 2026-09-16T15:05:24.011Z
 
-Source business state: 2026-09-16T15:00:58.046Z
+Source business state: 2026-09-16T15:05:23.938Z
 
 This queue prepares review decisions only. It does not publish, spend, change credentials, enable checkout, or create products.
 

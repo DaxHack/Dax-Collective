@@ -3,6 +3,7 @@
   "seriesId": "re-zero",
   "seriesName": "Re:Zero - Starting Life in Another World",
   "sources": [
+    {"id":"anime-episode-33","url":"https://re-zero-anime.jp/tv/story/tv2.html","medium":"official-anime-synopsis","locator":"Episode 33, The Value of Life, synopsis; cooperation and Roswaal instruction disclosure only","checkedAt":"2026-09-16","scope":"Anime episode 33 selected loop; not subsequent outcomes or other loops"},
     {"id":"ram-profile","url":"https://www.re-zero.com/character/%E3%83%A9%E3%83%A0/","medium":"official-novel-profile","locator":"2014-02-10 profile paragraphs 1-5","checkedAt":"2026-09-16","scope":"Early mansion role and characterization; not later memory states"},
     {"id":"rem-profile","url":"https://www.re-zero.com/character/%E3%83%AC%E3%83%A0/","medium":"official-novel-profile","locator":"2014-02-10 profile paragraphs 1-5","checkedAt":"2026-09-16","scope":"Early mansion role and characterization"},
     {"id":"subaru-profile","url":"https://www.re-zero.com/character/%E3%83%8A%E3%83%84%E3%82%AD%E3%83%BB%E3%82%B9%E3%83%90%E3%83%AB/","medium":"official-novel-profile","locator":"2013-11-27 profile paragraphs 1-4","checkedAt":"2026-09-16","scope":"Origin and general characterization; not automatically known to other characters"}
@@ -13,6 +14,23 @@
     {"id":"subaru","canonicalName":"Natsuki Subaru","aliases":["Subaru Natsuki","ナツキ・スバル"],"identity":"Protagonist transported from modern Japan","sourceIds":["subaru-profile"],"visualDescriptors":[],"referenceViews":[{"view":"profile-page","url":"https://www.re-zero.com/character/","sourceId":"subaru-profile","rights":"IDENTIFICATION_ONLY_NOT_LICENSED","binaryCopied":false,"verifiedViewAngles":[]}],"outfitStates":[],"unknownFields":["state-specific outfits","front/side/back model sheets"]}
   ],
   "states": [
+    {
+      "id":"arc4-episode33-cooperation","version":1,"continuity":"anime-episode-33-selected-loop","arc":4,
+      "boundary":"After Subaru learns that Ram is helping on Roswaal's instructions; before subsequent episode events. No inheritance from another loop, novel profile or later arc.",
+      "spoilerLevel":"anime-episode-33","inherits":null,
+      "assertions":[
+        {"id":"ram-assistance","kind":"canon_fact","field":"action","text":"Ram helps Subaru on Roswaal's instructions.","sourceIds":["anime-episode-33"],"knownBy":["ram","subaru"]},
+        {"id":"ram-order-context","kind":"supported_inference","field":"motivation","text":"Frame the assistance around the instruction, not proof of unconditional trust or affection.","sourceIds":["anime-episode-33"],"knownBy":["ram"]}
+      ],
+      "relationships":[{"speaker":"ram","subject":"subaru","type":"instructed-cooperator","assertionIds":["ram-assistance","ram-order-context"],"perspective":"Cooperation is established; the synopsis does not establish her private emotional assessment.","kind":"supported_inference","sourceIds":["anime-episode-33"],"sharedEventIds":["cooperation-disclosed"]}],
+      "events":[{"id":"cooperation-disclosed","text":"Subaru learns of Ram's assistance and Roswaal's instruction.","participants":["ram","subaru"],"sourceIds":["anime-episode-33"]}],
+      "locations":[{"id":"sanctuary-escape-context","name":"Sanctuary escape context","kind":"supported_inference","sourceIds":["anime-episode-33"],"participants":["ram","subaru"],"context":"Synopsis refers to the trial, tomb and barrier; exact interview room and character blocking are not certified.","visualRequirements":"Original abstract setting; no copied backgrounds or asserted exact scene reconstruction","referenceViews":[]}],
+      "knowledgeExclusions":[{"speaker":"ram","topic":"Return by Death, Subaru's private experiences, other loops and later outcomes","reason":"Not supported as speaker knowledge by this selected synopsis"},{"speaker":"ram","topic":"Rem's sleep, recognition and remembered family history; Pristella and Watchtower events","reason":"Not established in this snapshot; do not import early-mansion memory or future knowledge"}],
+      "memoryStates":[{"characterId":"ram","topic":"Rem recognition and family memory","status":"UNKNOWN_WITHHELD","boundary":"Requires a separately sourced memory-state snapshot; unknown is not an assertion of remembering or forgetting."}],
+      "visualReferenceIndex":[{"id":"ram-episode33-source-page","characterId":"ram","locationId":"sanctuary-escape-context","outfitState":"UNVERIFIED","url":"https://re-zero-anime.jp/tv/story/tv2.html","sourceIds":["anime-episode-33"],"locator":"Episode 33 only; page includes later spoilers","descriptors":[],"verifiedViewAngles":[],"rights":"IDENTIFICATION_ONLY_NOT_LICENSED","binaryCopied":false,"productionUseApproved":false}],
+      "uncertainty":["Synopsis establishes cooperation, not an interview, exact staging, speech mannerisms or emotional loyalty.","Location identification is contextual inference; no frame-level visual inspection or outfit certification performed."],
+      "conflicts":[],"quotes":[]
+    },
     {
       "id":"arc2-first-employment","version":1,"continuity":"novel-profile-early-mansion","arc":2,
       "boundary":"Subaru has begun mansion employment and Ram is his trainer; before importing later loop outcomes. No anime episode/timecode equivalence asserted.",

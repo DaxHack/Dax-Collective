@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T15:00:58.288Z",
+  "generatedAt": "2026-09-16T15:05:24.154Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -369,7 +369,7 @@
   ],
   "approvalDecisions": {
     "source": "business-state/approval-decisions.json",
-    "generatedAt": "2026-09-16T15:00:58.189Z",
+    "generatedAt": "2026-09-16T15:05:24.075Z",
     "pending": 5,
     "decisions": [
       {
@@ -773,7 +773,7 @@
     }
   ],
   "measurements": {
-    "generatedAt": "2026-09-16T15:00:57.992Z",
+    "generatedAt": "2026-09-16T15:05:23.882Z",
     "source": "business-state/measurement-observations.json",
     "status": "NO_PROVIDER_OBSERVATIONS",
     "rule": "USD transaction events are additive; analytics are latest cumulative snapshots per provider/platform. No inferred zero, complete profit, live connection, or causal learning claims.",

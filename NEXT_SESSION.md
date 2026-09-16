@@ -1,5 +1,11 @@
 # Next Session Handoff
 
+## Latest: Episode-33 State Is Implemented
+
+First slice pushed as a355d62; subsequent checkpoint adds `arc4-episode33-cooperation` version 1 in the same canon file. Query with location `sanctuary-escape-context`. Official anime episode-33 synopsis supports instructed cooperation only, not Ram's private affection, Rem memory or other loops. Reference index is identification-only and unverified for outfits/views. 15 tests and full ops:review passed; both existing renders preserved, five approvals pending.
+
+Next exact action: obtain Daniel's creative/voice/rights direction for the existing Ram draft before final production. A later interview can reuse buildInterview and the producer with five original evidence-linked beats; first generalize the CLI source-review scope string (currently early-mansion-only). Later assembly has only a test fixture, not a new content package. Do not claim it is rendered. No need for more infrastructure. Original Subaru segment-2/voice/visual approvals unchanged; Claude owns commerce/design. Keep public false/private YouTube/cross-post false. Check latest PR #3 CI; do not merge.
+
 ## Character/Canon Resume Point
 
 First slice is complete: `business-state/canon/re-zero.json`, `ram-interview-request.json`, `tools/anidax/canon.mjs`, `interview.mjs`, and `artifacts/anidax/ram-interview-v1/`. Existing producer supports `--brief` and `--validate-only`; original request and canon are checked again before render/review. 13 tests, full ops:review, actual producer validation and existing 30s silent render validation passed. Five queue items remain pending.

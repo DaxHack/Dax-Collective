@@ -19,7 +19,9 @@ export function buildInterview(data, request) {
     description: 'Original fictional interview draft informed by sourced characterization. Dialogue is invented, not canonical. Story-state lock and rights/voice/visual review required before publication.',
     context, scriptSegments,
     storyboard: scriptSegments.map((s) => ({ time: `${s.start}-${s.end}s`, visual: s.label === context.speaker.name ? 'Original abstract speaker card; no character likeness or copied reference art' : 'Original interviewer question card', textOverlay: s.label, assetType: 'Original text layout' })),
-    assetPlan: ['Original abstract mansion interview set; architectural accuracy not claimed.', 'Official profile links are identification references only; no licensed front/side/back views verified.', 'No voice imitation or external media retrieval.'],
+    assetPlan: context.visualReferenceIndex
+      ? [context.location.visualRequirements, 'State-scoped reference pages are identification-only; outfit geometry and view angles remain unverified.', 'No voice imitation or external media retrieval.']
+      : ['Original abstract mansion interview set; architectural accuracy not claimed.', 'Official profile links are identification references only; no licensed front/side/back views verified.', 'No voice imitation or external media retrieval.'],
     qc: [['Canon context','REVIEW_REQUIRED','Exact state, knowledge ownership and evidence IDs checked; semantic fidelity of invented dialogue still requires editorial review.'],['Visual rights','BLOCKED','Reference URLs do not license reuse or generation of character likenesses.'],['Narration','BLOCKED','No approved character voice supplied.'],['Publishing','BLOCKED','Daniel final approval required.']],
     publicApproval: false, publishAllowed: false,
     canonRequest: request,

@@ -1,5 +1,13 @@
 # Character + Canon Slice
 
+## Later Snapshot
+
+`node tools/anidax/canon.mjs business-state/canon/re-zero.json ram subaru arc4-episode33-cooperation 1 sanctuary-escape-context`
+
+This independent anime snapshot covers the episode-33 disclosure of Ram's cooperation on Roswaal's instruction. It does not inherit the novel-profile state, other loops or Rem memories. Source: official anime season-2 page, episode-33 synopsis only. Location is contextual inference, not a verified room layout. No canonical interview is claimed.
+
+Optional per-state `memoryStates` records separate unknown/withheld memory from sourced memory. `visualReferenceIndex` links characters and locations to provenance URLs with outfit state, descriptors, view angles and rights flags. This first index accepts source-page pointers only: descriptors/views empty, outfit UNVERIFIED, binaries absent, production permission false. Reviewed visual ingestion can extend it later; URLs are not asset licenses. Later interview assembly is tested with a fixture, not final content. CLI source-review scope text still needs generalizing before creating a later-state artifact.
+
 The existing producer consumes a deterministic interview brief. No database, API, image scraper or multi-agent framework was added.
 
 ## Commands

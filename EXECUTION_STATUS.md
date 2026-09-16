@@ -1,5 +1,15 @@
 # The Dax Collective Execution Status
 
+## 2026-09-16: Episode-33 Expansion Checkpoint
+
+- VERIFIED DONE: first preserved slice committed/pushed as `a355d62` to `codex/legal-oauth-pages-20260913`, PR #3. Added one independent anime episode-33 Ram/Subaru cooperation snapshot, sourced to official episode synopsis; no cross-loop or early-profile memory inheritance.
+- State-scoped memory uncertainty and visual reference index now validate fail-closed. Reference page only, no copied binary, verified views, outfit assertions or commercial-use permission. Existing early-mansion brief remains valid unchanged.
+- Tests: 15 targeted Node tests passed; existing producer --validate-only passed; actual `npm run ops:review` passed both media packages and refreshed business state. Five approvals pending, zero provider observations. Original Subaru 35.933s draft and Ram 30s silent proof preserved. Public false, YouTube private, cross-post false.
+- IN PROGRESS / prepared only: episode-33 query and interview assembly tested with non-content fixtures, not a second approved script/render. Memory circumstances involving Rem remain UNKNOWN_WITHHELD. No frontend/workflow edits; frontend build not rerun for this data/Node-only block.
+- BLOCKED - DANIEL: original segment-2 wording, draft voice, canon/creative fidelity, rights/final visuals and publishing review remain open. No revenue/live publishing claimed.
+- NEXT: review the existing Ram fictional dialogue/voice direction; then author one episode-33 interview request with evidence-linked original beats, remove the CLI source-review's early-mansion-only scope wording for new states, and create a new versioned package using the existing producer. Do not regenerate existing outputs or duplicate Claude commerce work.
+- DO NOT REDO: original source audit, existing media, first canon slice, later-state research. Worktree: `C:/Users/Daniel Rollins/AppData/Local/Temp/dax-collective-legal-oauth-20260913`. No merge/deployment performed; new PR CI must be checked after push.
+
 ## 2026-09-16: Character/Canon Slice Checkpoint
 
 - VERIFIED DONE: preserved interrupted work (13 tracked changes plus new canon/package files). Ram/Rem/Subaru profiles, exact versioned early-mansion snapshot, directional relationships, evidence-scoped speaker knowledge and Roswaal Mansion context feed an interview brief and the existing producer. No new framework/database.
