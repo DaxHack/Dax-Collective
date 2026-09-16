@@ -1,5 +1,9 @@
 # Blockers
 
+## 2026-09-16 Exact Ani-Dax Gate
+
+Daniel: review the proposed segment 2 replacement in `artifacts/anidax/timed-review/generated/source-review.json`; approve or revise the draft voice and final visual direction. Source checking is complete at public-synopsis scope and flags interpretation separately from canon. Script/narration remain unchanged pending review. Public approval, rights decisions and verified account mapping remain separate gates. No need for additional infrastructure before this review.
+
 ## Timed Ani-Dax Draft
 
 The late final subtitle defect is repaired in `artifacts/anidax/timed-review/`; five cues follow measured SAPI segment boundaries. Final narration/listening approval, canon/source verification and visual quality review remain open. Public publishing is false, YouTube private, cross-posting false. Local technical proof does not certify editorial quality or establish live publishing/analytics connections.

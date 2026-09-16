@@ -1,8 +1,8 @@
 # Dax Collective Approval Decisions
 
-Generated: 2026-09-15T23:07:47.333Z
+Generated: 2026-09-16T05:06:16.838Z
 
-Source approval queue: 2026-09-15T23:07:47.266Z
+Source approval queue: 2026-09-16T05:06:16.766Z
 
 Daniel decisions may move work to the next private/draft step only. Public publishing, purchase/spend, checkout, credential changes, and legal commitments remain separately gated.
 
@@ -59,6 +59,7 @@ Review artifacts:
 - `artifacts/anidax/timed-review/generated/content-package.json`
 - `artifacts/anidax/timed-review/generated/captions.srt`
 - `artifacts/anidax/timed-review/generated/review-validation.json`
+- `artifacts/anidax/timed-review/generated/source-review.json`
 
 ## God's Vessel: Names of God
 

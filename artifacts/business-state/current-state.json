@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T23:07:47.409Z",
+  "generatedAt": "2026-09-16T05:06:16.926Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -90,10 +90,10 @@
           "openQc": [
             "Narration is draft audio; Daniel must approve or replace it",
             "Caption speech alignment needs listening review; media duration is not alignment proof",
-            "Canon/fact handling: Stable high-level premise only; final claims need episode/source verification.",
             "Visual quality: FFmpeg proof render verifies pipeline shape; final visuals need art pass.",
             "Narration quality: Draft review audio was supplied and rendered; Daniel must approve or replace the voice before public publishing.",
-            "Public publishing: Requires Daniel approval and verified Ani-Dax account credential mapping."
+            "Public publishing: Requires Daniel approval and verified Ani-Dax account credential mapping.",
+            "Source QC: EDITORIAL_REVISION_REQUIRED; revision segments: 2. Final editorial/rights approval remains pending."
           ],
           "publishAllowed": false,
           "owner": "Daniel",
@@ -266,10 +266,10 @@
       "openQc": [
         "Narration is draft audio; Daniel must approve or replace it",
         "Caption speech alignment needs listening review; media duration is not alignment proof",
-        "Canon/fact handling: Stable high-level premise only; final claims need episode/source verification.",
         "Visual quality: FFmpeg proof render verifies pipeline shape; final visuals need art pass.",
         "Narration quality: Draft review audio was supplied and rendered; Daniel must approve or replace the voice before public publishing.",
-        "Public publishing: Requires Daniel approval and verified Ani-Dax account credential mapping."
+        "Public publishing: Requires Daniel approval and verified Ani-Dax account credential mapping.",
+        "Source QC: EDITORIAL_REVISION_REQUIRED; revision segments: 2. Final editorial/rights approval remains pending."
       ],
       "publishAllowed": false,
       "owner": "Daniel",
@@ -329,13 +329,13 @@
   ],
   "approvalDecisions": {
     "source": "business-state/approval-decisions.json",
-    "generatedAt": "2026-09-15T23:07:47.333Z",
+    "generatedAt": "2026-09-16T05:06:16.838Z",
     "pending": 4,
     "decisions": [
       {
         "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
         "decisionStatus": "PENDING_DANIEL_REVIEW",
-        "reviewFingerprint": "7326dd0da581bb9b57c5580438c9729f57a168f1c58d3dfaecde345f4908fe4f"
+        "reviewFingerprint": "565d129761f0283121b796609afb679532edb7bd9acaa97f1fa3cbc1c5c397c2"
       },
       {
         "contentId": "gods-vessel-names-of-god",
@@ -728,7 +728,7 @@
     }
   ],
   "measurements": {
-    "generatedAt": "2026-09-15T23:07:47.142Z",
+    "generatedAt": "2026-09-16T05:06:16.635Z",
     "source": "business-state/measurement-observations.json",
     "status": "NO_PROVIDER_OBSERVATIONS",
     "rule": "USD transaction events are additive; analytics are latest cumulative snapshots per provider/platform. No inferred zero, complete profit, live connection, or causal learning claims.",

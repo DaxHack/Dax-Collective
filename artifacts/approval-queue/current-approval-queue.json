@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T23:07:47.266Z",
-  "sourceStateGeneratedAt": "2026-09-15T23:07:47.199Z",
+  "generatedAt": "2026-09-16T05:06:16.766Z",
+  "sourceStateGeneratedAt": "2026-09-16T05:06:16.694Z",
   "status": "READY_ITEMS_REQUIRE_HUMAN_APPROVAL",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -27,7 +27,8 @@
         "artifacts/anidax/timed-review/generated/publish-ready-payload.json",
         "artifacts/anidax/timed-review/generated/content-package.json",
         "artifacts/anidax/timed-review/generated/captions.srt",
-        "artifacts/anidax/timed-review/generated/review-validation.json"
+        "artifacts/anidax/timed-review/generated/review-validation.json",
+        "artifacts/anidax/timed-review/generated/source-review.json"
       ],
       "humanApprovalNeeded": [
         "script/canon posture",

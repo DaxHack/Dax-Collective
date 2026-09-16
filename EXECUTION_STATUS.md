@@ -1,5 +1,15 @@
 # The Dax Collective Execution Status
 
+## 2026-09-16: Source QC Checkpoint
+
+- VERIFIED DONE: resumed clean `1b08cb965ccfb196b112673196ca6744f5a59012`; Firebase PR preview run `35034478622` succeeded. No prior sprint was repeated.
+- Added `artifacts/anidax/timed-review/generated/source-review.json`: official Re:ZERO and Yen Press volume 1/2 synopsis evidence, exact segment classifications, limitations and a proposed draft revision for segment 2. No footage/full-book acquisition or rights clearance claimed.
+- Existing verifier now binds review evidence to exact content ID/script text and source references. Stale/incomplete recorded evidence fails validation; source review cannot grant publishing approval. Review queue includes the source dossier in its artifact fingerprint.
+- Tests: `node --test tools/anidax/verify-review.test.mjs` 4/4 passed; actual `npm run ops:review` passed. Business-state open QC now identifies `EDITORIAL_REVISION_REQUIRED`, segment 2. Four decisions pending; no measured provider revenue.
+- IN PROGRESS: candidate remains the unchanged 35.93s timed review draft. No final/public copy was approved or silently substituted. No frontend changes; new CI result must be checked after push.
+- BLOCKED - DANIEL: review segment 2 proposed wording, approve/revise narrator and choose final visual direction; approve rights/public release and account mapping separately. Claude owns commerce/artwork tasks. No further infrastructure needed to request these decisions.
+- NEXT: after review, apply accepted script/voice decisions through existing timed producer, rerun ops:review and preserve approval reset. DO NOT REDO: source lookup for unchanged script, legal audit, initial render, or Claude design work.
+
 ## Latest Verified Checkpoint 2026-09-15
 
 - Remote checkpoints: `7ab55f6fa87b378036b85d9a8a780bcc87db778c` (timed render) and `734e8abec9be027b2baef81c0a69de2fd203a8a8` (operating refresh) both pushed. Firebase build/preview run `35034205660` for `7ab55f6` succeeded. Run `35034333185` for `734e8ab` was still in progress at this handoff write; verify its final result before merge. No local frontend rebuild was repeated for these tooling-only changes.

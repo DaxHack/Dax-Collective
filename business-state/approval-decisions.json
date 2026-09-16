@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T23:07:47.333Z",
-  "sourceApprovalQueueGeneratedAt": "2026-09-15T23:07:47.266Z",
+  "generatedAt": "2026-09-16T05:06:16.838Z",
+  "sourceApprovalQueueGeneratedAt": "2026-09-16T05:06:16.766Z",
   "status": "PENDING_HUMAN_DECISIONS",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -20,7 +20,7 @@
       "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
       "title": "Subaru's Return by Death Is Not a Power Fantasy",
       "itemStatus": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
-      "reviewFingerprint": "7326dd0da581bb9b57c5580438c9729f57a168f1c58d3dfaecde345f4908fe4f",
+      "reviewFingerprint": "565d129761f0283121b796609afb679532edb7bd9acaa97f1fa3cbc1c5c397c2",
       "reviewArtifactsPresent": true,
       "decisionInvalidatedByArtifactChange": true,
       "decisionStatus": "PENDING_DANIEL_REVIEW",
@@ -44,7 +44,8 @@
         "artifacts/anidax/timed-review/generated/publish-ready-payload.json",
         "artifacts/anidax/timed-review/generated/content-package.json",
         "artifacts/anidax/timed-review/generated/captions.srt",
-        "artifacts/anidax/timed-review/generated/review-validation.json"
+        "artifacts/anidax/timed-review/generated/review-validation.json",
+        "artifacts/anidax/timed-review/generated/source-review.json"
       ]
     },
     {

@@ -3,6 +3,20 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
+export function validateSourceReview(pkg, sourceReview) {
+  if (!sourceReview) return { current: false, reason: 'Source review missing' };
+  const sources = new Set((sourceReview.sources || []).map((source) => source.id));
+  const segments = sourceReview.segments;
+  const current = sourceReview.contentId === pkg.metadata.contentId
+    && Array.isArray(segments) && segments.length === pkg.scriptSegments.length
+    && segments.every((row, index) => row.text === pkg.scriptSegments[index].text
+      && typeof row.revisionRequired === 'boolean' && row.finding
+      && Array.isArray(row.sourceIds) && row.sourceIds.length > 0
+      && row.sourceIds.every((id) => sources.has(id)));
+  if (!current) return { current: false, reason: 'Source review is stale or incomplete; review the current script' };
+  return { current: true, decision: segments.some((row) => row.revisionRequired) ? 'EDITORIAL_REVISION_REQUIRED' : 'SOURCE_REVIEW_RECORDED_PUBLIC_APPROVAL_PENDING', revisionSegments: segments.flatMap((row, index) => row.revisionRequired ? [index + 1] : []), publicApproval: false };
+}
+
 export function validateMedia(pkg, payload, video, audio, captions) {
   const errors = [];
   const review = [];
@@ -62,6 +76,16 @@ export function verify(root, packageRelative = 'artifacts/anidax/sprint-1-sample
   const video = probe(report.videoPath);
   const audio = probe(pkg.audio.source);
   const result = { contentId: pkg.metadata.contentId, ...validateMedia(pkg, payload, video, audio, fs.readFileSync(path.join(folder, 'generated/captions.srt'), 'utf8')) };
+  const sourceFile = path.join(folder, 'generated/source-review.json');
+  result.sourceReview = validateSourceReview(pkg, fs.existsSync(sourceFile) ? read('generated/source-review.json') : null);
+  if (fs.existsSync(sourceFile) && !result.sourceReview.current) {
+    result.technicalPass = false;
+    result.errors.push(result.sourceReview.reason);
+  }
+  if (result.sourceReview.current) {
+    result.reviewRequired = result.reviewRequired.filter((note) => !note.startsWith('Canon/fact handling:'));
+    result.reviewRequired.push(`Source QC: ${result.sourceReview.decision}; revision segments: ${result.sourceReview.revisionSegments.join(', ') || 'none'}. Final editorial/rights approval remains pending.`);
+  }
   result.status = result.technicalPass ? 'READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC' : 'TECHNICAL_VALIDATION_FAILED';
   fs.writeFileSync(path.join(folder, 'generated/review-validation.json'), `${JSON.stringify(result, null, 2)}\n`);
   return result;

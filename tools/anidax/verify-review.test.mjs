@@ -1,12 +1,22 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateMedia } from './verify-review.mjs';
+import { validateMedia, validateSourceReview } from './verify-review.mjs';
 
 const payload = { brand: 'Ani-Dax', contentId: 'fixture', publishAllowed: false, youtubePrivacyStatus: 'private', automaticCrossPostingAllowed: false };
 const pkg = { metadata: { contentId: 'fixture' }, publishReadyPayload: payload, scriptSegments: [{ text: 'Test' }], audio: { readyForFinal: false } };
 const video = { format: { duration: '30' }, streams: [{ codec_type: 'video' }, { codec_type: 'audio', duration: '25' }] };
 const audio = { format: { duration: '25' } };
 const captions = '1\n00:00:00,000 --> 00:00:25,000\nTest';
+test('source review follows exact script and never grants public approval', () => {
+  const source = { contentId: 'fixture', sources: [{ id: 'official' }], segments: [{ text: 'Test', finding: 'Needs qualification', sourceIds: ['official'], revisionRequired: true }] };
+  const result = validateSourceReview(pkg, source);
+  assert.equal(result.current, true);
+  assert.equal(result.decision, 'EDITORIAL_REVISION_REQUIRED');
+  assert.equal(result.publicApproval, false);
+  assert.equal(validateSourceReview({ ...pkg, scriptSegments: [{ text: 'Changed' }] }, source).current, false);
+  assert.equal(validateSourceReview(pkg, { ...source, sources: [] }).current, false);
+  assert.equal(validateSourceReview(pkg, null).current, false);
+});
 test('private draft passes technical checks and still requires review', () => {
   const result = validateMedia(pkg, payload, video, audio, captions);
   assert.equal(result.technicalPass, true);

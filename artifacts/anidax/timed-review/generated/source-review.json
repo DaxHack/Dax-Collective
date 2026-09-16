@@ -1,0 +1,51 @@
+{
+  "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+  "reviewedAt": "2026-09-16",
+  "scope": "Public official/publisher synopses only; no episode footage or full novel text accessed. This supports premise-level commentary, not episode-specific claims or rights clearance.",
+  "sources": [
+    { "id": "yen-v1", "url": "https://yenpress.com/titles/9780316398398-re-starting-life-in-another-world-vol-1-light-novel", "publisher": "Yen Press", "evidence": "Publisher synopsis identifies Subaru and a time-travel ability triggered by death." },
+    { "id": "yen-v2", "url": "https://yenpress.com/titles/9780316398374-re-starting-life-in-another-world-vol-2-light-novel", "publisher": "Yen Press", "evidence": "Publisher synopsis describes recurring death cycles and Subaru alone remembering shared time." },
+    { "id": "official-story", "url": "https://re-zero.com/story/", "publisher": "Official Re:ZERO novel website", "evidence": "Japanese story synopsis describes rewinding through death, isolation, retained memories and emotional wear. This is a paraphrase, not a canonical translated quote." }
+  ],
+  "segments": [
+    {
+      "text": "What if Return by Death is not Subaru's advantage? What if it is the story's harshest interrogation room?",
+      "classification": "INTERPRETATION",
+      "sourceIds": ["yen-v1", "official-story"],
+      "finding": "Rhetorical thesis and metaphor, not a canon fact. Sources support both utility and personal cost; avoid implying the ability never helps.",
+      "revisionRequired": false
+    },
+    {
+      "text": "Most power systems reward control. Return by Death removes control, then asks whether one person can carry memory, guilt, and consequence without becoming numb.",
+      "classification": "MIXED_REQUIRES_REVISION",
+      "sourceIds": ["yen-v2", "official-story"],
+      "finding": "Retained memory and emotional burden are supported. The broad comparison to most power systems is unsourced; removes control is too absolute. Guilt/numbness are thematic interpretation, not verified diagnosis or author intent.",
+      "revisionRequired": true,
+      "proposedDraft": "Return by Death gives Subaru another chance, but it does not spare him the memories. My reading is that the emotional cost matters as much as the reset."
+    },
+    {
+      "text": "If Ani-Dax sat Subaru down after another reset, the first question would not be how many tries he gets. It would be: what did the last version of you lose?",
+      "classification": "HYPOTHETICAL_INTERVIEW",
+      "sourceIds": ["yen-v2"],
+      "finding": "Explicitly conditional original interview prompt. No character reply or quote is attributed to canon. Last version is a metaphor, not evidence of alternate-person mechanics.",
+      "revisionRequired": false
+    },
+    {
+      "text": "That is why the mechanic works. It turns suspense into character study. Every reset can move the plot, but the real cost lands inside Subaru before it lands on the timeline.",
+      "classification": "INTERPRETATION",
+      "sourceIds": ["official-story"],
+      "finding": "Literary interpretation of emotional cost; before is rhetorical, not a factual claim about chronology. Not a statement of author intent.",
+      "revisionRequired": false
+    },
+    {
+      "text": "Ani-Dax takeaway: the ability is not interesting because it beats death. It is interesting because it makes survival emotionally expensive.",
+      "classification": "INTERPRETATION",
+      "sourceIds": ["official-story"],
+      "finding": "Explicit Ani-Dax critical opinion supported by the synopsis's emphasis on isolation and emotional cost, not a canon quote.",
+      "revisionRequired": false
+    }
+  ],
+  "decision": "EDITORIAL_REVISION_REQUIRED",
+  "publicApproval": false,
+  "nextAction": "Daniel reviews the proposed replacement for segment 2 alongside the draft voice and visual direction. Do not silently replace the current narration or mark this script approved."
+}

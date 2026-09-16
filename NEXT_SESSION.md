@@ -1,5 +1,11 @@
 # Next Session Handoff
 
+## 2026-09-16 Resume Point
+
+Source QC is implemented in the existing verifier and exercised by `npm run ops:review`. Four verifier tests pass. Read `artifacts/anidax/timed-review/generated/source-review.json`: premise verified against official/public publisher synopses; segment 2 contains an unsourced generalization and over-absolute wording, with a proposed replacement for review. Exact-script matching invalidates stale evidence. Public approval remains false.
+
+Next highest-value gate: Daniel reviews the segment 2 replacement, narrator and visual direction. Do not build more infrastructure while those creative decisions are pending. Once decisions arrive, reuse the current timed producer, update affected source-review text/evidence, and refresh the existing queue. No rerender or final-copy substitution was performed in this checkpoint. Starting checkpoint `1b08cb9` passed Firebase run `35034478622`; check new PR CI after push.
+
 ## Current Operating Command
 
 Last implementation commit: `734e8abec9be027b2baef81c0a69de2fd203a8a8`, pushed to PR #3. Prior timed-render commit `7ab55f6` passed Firebase build/preview run `35034205660`; latest implementation run `35034333185` was pending at handoff write. Verify final CI state, then continue editorial/source and visual production work. No public approval has been granted. Working branch is `codex/legal-oauth-pages-20260913` in the Temp worktree, not main.
