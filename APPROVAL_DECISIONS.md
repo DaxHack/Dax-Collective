@@ -1,8 +1,8 @@
 # Dax Collective Approval Decisions
 
-Generated: 2026-09-16T15:05:24.075Z
+Generated: 2026-09-16T21:04:25.719Z
 
-Source approval queue: 2026-09-16T15:05:24.011Z
+Source approval queue: 2026-09-16T21:04:25.647Z
 
 Daniel decisions may move work to the next private/draft step only. Public publishing, purchase/spend, checkout, credential changes, and legal commitments remain separately gated.
 
@@ -18,6 +18,7 @@ Credential changes allowed: no
 | --- | --- | --- | --- | --- | --- | --- |
 | Ani-Dax | Subaru's Return by Death Is Not a Power Fantasy | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
 | Ani-Dax | Ram's First Impressions: A Fictional Mansion Interview | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
+| Ani-Dax | Ram Helped Subaru. Is That Trust? | Re:Zero | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
 | God's Vessel | Names of God | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
 | Time-Zone Travelers | Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers? | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
 | Dax the Traveler | The Travel Moment Worth Saving | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
@@ -53,8 +54,8 @@ Can enable checkout/product publication: no
 Can spend/purchase: no
 
 Review artifacts:
-- `artifacts/anidax/timed-review/approval-package.md`
 - `artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4`
+- `artifacts/anidax/timed-review/approval-package.md`
 - `artifacts/anidax/timed-review/generated/publish-ready-payload.json`
 - `artifacts/anidax/timed-review/generated/content-package.json`
 - `artifacts/anidax/timed-review/generated/captions.srt`
@@ -85,14 +86,50 @@ Can enable checkout/product publication: no
 Can spend/purchase: no
 
 Review artifacts:
-- `artifacts/anidax/ram-interview-v1/approval-package.md`
 - `artifacts/anidax/ram-interview-v1/render/ani-dax-proof-render.mp4`
+- `artifacts/anidax/ram-interview-v1/approval-package.md`
 - `artifacts/anidax/ram-interview-v1/generated/publish-ready-payload.json`
 - `artifacts/anidax/ram-interview-v1/generated/content-package.json`
 - `artifacts/anidax/ram-interview-v1/generated/captions.srt`
 - `artifacts/anidax/ram-interview-v1/generated/review-validation.json`
 - `artifacts/anidax/ram-interview-v1/generated/source-review.json`
 - `artifacts/anidax/ram-interview-v1/brief.json`
+
+## Ani-Dax: Ram Helped Subaru. Is That Trust? | Re:Zero
+
+Content ID: `anidax-ram-help-is-not-proof-of-trust-v1`
+
+Decision status: PENDING_DANIEL_REVIEW
+
+Decision owner: Daniel
+
+Decision notes: none
+
+Requested revision: none
+
+Approved next private step: none
+
+Can proceed to private/draft next step: no
+
+Can publish publicly: no
+
+Can enable checkout/product publication: no
+
+Can spend/purchase: no
+
+Review artifacts:
+- `artifacts/anidax/ram-episode33-candidate-v1/render/candidate-review.mp4`
+- `artifacts/anidax/ram-episode33-candidate-v1/approval-package.md`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/publish-ready-payload.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/content-package.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/captions.srt`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/review-validation.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/source-review.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/production-qc.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/thumbnail/thumbnail.png`
+- `artifacts/anidax/ram-episode33-candidate-v1/audio/draft-review-narration.wav`
+- `artifacts/anidax/ram-episode33-candidate-v1/brief.json`
 
 ## God's Vessel: Names of God
 

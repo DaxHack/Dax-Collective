@@ -1,0 +1,29 @@
+{
+  "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+  "brand": "Ani-Dax",
+  "approvalStatus": "READY_FOR_DANIEL_REVIEW_VOICE_NOT_FINAL",
+  "publishAllowed": false,
+  "youtubePrivacyStatus": "private",
+  "automaticCrossPostingAllowed": false,
+  "requiredBeforePublishing": [
+    "Daniel approves concept/script.",
+    "Daniel approves final narration/voice.",
+    "Final canon/source check is completed for any specific claims.",
+    "Final visual style/art pass is approved.",
+    "Ani-Dax platform account mapping and credentials are verified.",
+    "Daniel approves the specific public publishing target and metadata."
+  ],
+  "suggestedPlatforms": [
+    "YouTube Shorts private draft",
+    "TikTok/Instagram drafts only after Daniel approval"
+  ],
+  "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+  "description": "Episode 33 spoilers. Ram helps Subaru, but what does that establish? Ani-Dax separates the official synopsis's account of Roswaal's instruction from an interpretation about trust. The imagined Ram response is original fictional dialogue, NOT a canonical quote or scene. We do not claim she feels no affection or trust. Source: official Re:Zero anime episode 33 synopsis at https://re-zero-anime.jp/tv/story/tv2.html (episode 33 section only). Original analysis and motion typography; no anime clips, screenshots, soundtrack or actor imitation. Draft synthetic narration pending final review. What would count as evidence of trust? #ReZero #Ram #Subaru",
+  "tags": [
+    "Ani-Dax",
+    "fictional interview",
+    "Re:Zero - Starting Life in Another World",
+    "Ram"
+  ],
+  "thumbnail": "thumbnail/thumbnail.svg"
+}

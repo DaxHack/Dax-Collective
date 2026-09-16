@@ -3,6 +3,7 @@
   "completed": [
     "tools/anidax/verify-review.mjs",
     "tools/anidax/verify-review.mjs",
+    "tools/anidax/verify-review.mjs",
     "tools/business-state/build-state.mjs",
     "tools/revenue-readiness/measurements.mjs",
     "tools/business-state/build-state.mjs",

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-16T15:05:24.075Z",
-  "sourceApprovalQueueGeneratedAt": "2026-09-16T15:05:24.011Z",
+  "generatedAt": "2026-09-16T21:04:25.719Z",
+  "sourceApprovalQueueGeneratedAt": "2026-09-16T21:04:25.647Z",
   "status": "PENDING_HUMAN_DECISIONS",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -20,9 +20,9 @@
       "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
       "title": "Subaru's Return by Death Is Not a Power Fantasy",
       "itemStatus": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
-      "reviewFingerprint": "959daeb2178cf7208c785dbdc0651c36b9d3ba81271dfd30a6d0e0606bbe5534",
+      "reviewFingerprint": "dbd1b0e87435ef0bbf62c80c6a5369b33ecadf54671c351470246948285933e2",
       "reviewArtifactsPresent": true,
-      "decisionInvalidatedByArtifactChange": false,
+      "decisionInvalidatedByArtifactChange": true,
       "decisionStatus": "PENDING_DANIEL_REVIEW",
       "decisionOwner": "Daniel",
       "decisionRecordedAt": null,
@@ -38,8 +38,8 @@
         "public publishing"
       ],
       "reviewArtifacts": [
-        "artifacts/anidax/timed-review/approval-package.md",
         "artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4",
+        "artifacts/anidax/timed-review/approval-package.md",
         "artifacts/anidax/timed-review/generated/publish-ready-payload.json",
         "artifacts/anidax/timed-review/generated/content-package.json",
         "artifacts/anidax/timed-review/generated/captions.srt",
@@ -54,9 +54,9 @@
       "contentId": "anidax-ram-subaru-arc2-training-v1",
       "title": "Ram's First Impressions: A Fictional Mansion Interview",
       "itemStatus": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
-      "reviewFingerprint": "294bbdd10050d190353cf2b77b5f4fa71553a04aa199b2e6118501ac9c2e71b0",
+      "reviewFingerprint": "b3a06bb7e37a30b52cfcb080101c1d598ec67528477ebce3bd37b70fd5a0976b",
       "reviewArtifactsPresent": true,
-      "decisionInvalidatedByArtifactChange": false,
+      "decisionInvalidatedByArtifactChange": true,
       "decisionStatus": "PENDING_DANIEL_REVIEW",
       "decisionOwner": "Daniel",
       "decisionRecordedAt": null,
@@ -72,14 +72,52 @@
         "public publishing"
       ],
       "reviewArtifacts": [
-        "artifacts/anidax/ram-interview-v1/approval-package.md",
         "artifacts/anidax/ram-interview-v1/render/ani-dax-proof-render.mp4",
+        "artifacts/anidax/ram-interview-v1/approval-package.md",
         "artifacts/anidax/ram-interview-v1/generated/publish-ready-payload.json",
         "artifacts/anidax/ram-interview-v1/generated/content-package.json",
         "artifacts/anidax/ram-interview-v1/generated/captions.srt",
         "artifacts/anidax/ram-interview-v1/generated/review-validation.json",
         "artifacts/anidax/ram-interview-v1/generated/source-review.json",
         "artifacts/anidax/ram-interview-v1/brief.json"
+      ]
+    },
+    {
+      "brandId": "ani-dax",
+      "brand": "Ani-Dax",
+      "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+      "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+      "itemStatus": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+      "reviewFingerprint": "8015a11f8199041a75071f9e77d52655ea4bd34311bc8a44fffaf155c9cc87cf",
+      "reviewArtifactsPresent": true,
+      "decisionInvalidatedByArtifactChange": true,
+      "decisionStatus": "PENDING_DANIEL_REVIEW",
+      "decisionOwner": "Daniel",
+      "decisionRecordedAt": null,
+      "decisionNotes": "",
+      "requestedRevision": "",
+      "approvedNextPrivateStep": "",
+      "canProceedToPrivateDraftNextStep": false,
+      "canPublishPublicly": false,
+      "canEnableCheckoutOrProductPublication": false,
+      "canSpendOrPurchase": false,
+      "canChangeCredentials": false,
+      "blockedActions": [
+        "public publishing"
+      ],
+      "reviewArtifacts": [
+        "artifacts/anidax/ram-episode33-candidate-v1/render/candidate-review.mp4",
+        "artifacts/anidax/ram-episode33-candidate-v1/approval-package.md",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/publish-ready-payload.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/content-package.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/captions.srt",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/review-validation.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/source-review.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/production-qc.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/thumbnail/thumbnail.png",
+        "artifacts/anidax/ram-episode33-candidate-v1/audio/draft-review-narration.wav",
+        "artifacts/anidax/ram-episode33-candidate-v1/brief.json"
       ]
     },
     {

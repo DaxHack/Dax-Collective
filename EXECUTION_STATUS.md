@@ -1,5 +1,14 @@
 # The Dax Collective Execution Status
 
+## 2026-09-16: Episode-33 Publication Candidate
+
+- VERIFIED DONE: resumed clean a65ca34, no lost edits. Produced the selected 'Ram Helped Subaru. Is That Trust?' candidate at `artifacts/anidax/ram-episode33-candidate-v1/`. State/request validation, source-scoped script, explicitly invented reply, measured local draft audio, 47.735s vertical review cut, five subtitle cues, storyboard, SVG/PNG thumbnail, metadata, source QC and final asset specification are present. No earlier package regenerated.
+- Actual checks: 16 targeted Node tests pass; candidate media validation and full ops:review pass; sampled contact-sheet frames and thumbnail visually inspected. Six review items remain pending, no provider observations. Source QC records no required factual revision at official synopsis scope; not final creative/copyright approval.
+- IN PROGRESS / quality hold: neutral SAPI is draft timing audio. Final natural voice, listening/phrase-caption pass and motion pacing per `FINAL_REVIEW.md` are not approved. Current cut is an editorial rough cut, not a publication master. Original type only, no anime images/music/actor imitation. USD 0 external production spend; subscription/compute/labor unallocated.
+- BLOCKED - DANIEL: review script/interpretation and fictional response; approve/provide final neutral narration and final visual/rights/disclosure direction. Publishing false, YouTube private, cross-post false; original Subaru segment-2/voice gates unchanged. Claude commerce/design untouched.
+- NEXT: use candidate FINAL_REVIEW.md and production-qc.json; finish voice and paced captions/graphics against measured final audio after review, then rerun current producer/verifier and ops:review. Do not research another concept or build another framework. CLI source-review now derives the correct state scope.
+- Branch/PR: `codex/legal-oauth-pages-20260913`, PR #3. Temp worktree unchanged. No merge or live deployment. Frontend unchanged, so no frontend rebuild for this targeted production block. DO NOT REDO prior canon infrastructure or existing renders.
+
 ## 2026-09-16: Episode-33 Expansion Checkpoint
 
 - VERIFIED DONE: first preserved slice committed/pushed as `a355d62` to `codex/legal-oauth-pages-20260913`, PR #3. Added one independent anime episode-33 Ram/Subaru cooperation snapshot, sourced to official episode synopsis; no cross-loop or early-profile memory inheritance.

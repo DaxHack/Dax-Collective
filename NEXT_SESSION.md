@@ -1,5 +1,11 @@
 # Next Session Handoff
 
+## Current Candidate: Ram Helped Subaru. Is That Trust?
+
+Open `artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md` and `render/candidate-review.mp4`. A complete 47.735s editorial rough cut now exists with draft neutral narration, original animated typography, measured captions, thumbnail and exact final-assembly requirements. Read `generated/production-qc.json` for honest holds. Source review is complete at official episode-33 synopsis scope; invented response is not canon. 16 targeted tests and full ops:review passed; six pending queue items. No publication approval.
+
+Next: Daniel reviews this specific script/fictional reply and final neutral voice/visual direction. Replace or clear timing voice, finish phrase-level captions and kinetic argument graphics per FINAL_REVIEW.md, validate exact text/timing and refresh existing queue. Do not silently approve SAPI or publish. No new concept/infrastructure needed. Do not redo original Subaru or early-mansion outputs. Claude owns commerce/artwork. Existing producer supports the candidate-specific treatment; older brief validation still passes. No frontend changes.
+
 ## Latest: Episode-33 State Is Implemented
 
 First slice pushed as a355d62; subsequent checkpoint adds `arc4-episode33-cooperation` version 1 in the same canon file. Query with location `sanctuary-escape-context`. Official anime episode-33 synopsis supports instructed cooperation only, not Ram's private affection, Rem memory or other loops. Reference index is identification-only and unverified for outfits/views. 15 tests and full ops:review passed; both existing renders preserved, five approvals pending.

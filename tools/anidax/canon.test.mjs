@@ -6,6 +6,20 @@ import { buildInterview, validateBrief } from './interview.mjs';
 const data = JSON.parse(fs.readFileSync(new URL('../../business-state/canon/re-zero.json', import.meta.url)));
 const request = JSON.parse(fs.readFileSync(new URL('../../business-state/canon/ram-interview-request.json', import.meta.url)));
 const early = (value) => value.states.find((state) => state.id === request.storyState);
+
+test('candidate treatment cannot inject overrides or detach from the approved request', () => {
+  const candidate = JSON.parse(fs.readFileSync(new URL('../../business-state/canon/ram-episode33-candidate.json', import.meta.url)));
+  const brief = buildInterview(data, candidate);
+  validateBrief(data, brief);
+  assert.equal(brief.context.storyState.id, 'arc4-episode33-cooperation');
+  assert.equal(brief.publishAllowed, false);
+  for (const patch of [{ shots: [] }, { publishAllowed: true }, { description: '{\\pos(1,1)}' }]) {
+    assert.throws(() => buildInterview(data, { ...candidate, editorialTreatment: { ...candidate.editorialTreatment, ...patch } }));
+  }
+  const changed = structuredClone(brief);
+  changed.editorialTreatment.shots[1].headline = 'A canonical confession';
+  assert.throws(() => validateBrief(data, changed, candidate));
+});
 test('Ram query includes training relationship but excludes Subaru private origin', () => {
   const result = queryCanon(data, request);
   assert.equal(result.relationship.type, 'trainer-to-new-employee');

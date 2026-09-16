@@ -1,0 +1,38 @@
+{
+    "generatedAt":  "2026-09-16T20:59:45.5592259Z",
+    "sourcePackage":  "artifacts/anidax/ram-episode33-candidate-v1/brief.json",
+    "outputFile":  "artifacts/anidax/ram-episode33-candidate-v1/audio/draft-review-narration.wav",
+    "voice":  "Microsoft David Desktop - English (United States)",
+    "rate":  0,
+    "approvedForPublishing":  false,
+    "status":  "DRAFT_REVIEW_AUDIO_NEEDS_DANIEL_APPROVAL",
+    "costUsd":  0,
+    "segmentTimings":  [
+                           {
+                               "text":  "interviewer: Ram helps Subaru. Does that prove trust? Episode thirty-three spoilers. Imagine asking her why.",
+                               "start":  0,
+                               "end":  10.168
+                           },
+                           {
+                               "text":  "Ram: Roswaal gave an instruction. You have turned it into a confession.",
+                               "start":  10.168,
+                               "end":  16.287
+                           },
+                           {
+                               "text":  "narrator: That reply is invented. The official synopsis says Ram helps on Roswaal\u0027s instructions. It does not settle her private feelings.",
+                               "start":  16.287,
+                               "end":  26.935
+                           },
+                           {
+                               "text":  "narrator: Cooperation is the action. Trust is an interpretation. They could overlap. But this instruction means the help alone cannot prove unconditional trust.",
+                               "start":  26.935,
+                               "end":  39.522
+                           },
+                           {
+                               "text":  "interviewer: Watch who gives the order before deciding what help means. What would count as evidence of trust instead?",
+                               "start":  39.522,
+                               "end":  47.735
+                           }
+                       ],
+    "audioSha256":  "55318e89002e9fc661474abda6f22741a11381e7e5575fad09ab26914f127598"
+}

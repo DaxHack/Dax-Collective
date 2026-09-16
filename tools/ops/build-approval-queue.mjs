@@ -72,9 +72,16 @@ function reviewArtifactsFor(item) {
   const humanApprovalNeeded = [];
 
   if (item.brandId === 'ani-dax') {
+    const candidateVideo = `${item.artifactPath}render/candidate-review.mp4`;
+    const video = fs.existsSync(path.join(root, candidateVideo)) ? candidateVideo : `${item.artifactPath}render/ani-dax-proof-render.mp4`;
     artifacts.push(
-      ...['approval-package.md', 'render/ani-dax-proof-render.mp4', 'generated/publish-ready-payload.json', 'generated/content-package.json', 'generated/captions.srt', 'generated/review-validation.json', 'generated/source-review.json'].map((file) => `${item.artifactPath}${file}`),
+      video,
+      ...['approval-package.md', 'generated/publish-ready-payload.json', 'generated/content-package.json', 'generated/captions.srt', 'generated/review-validation.json', 'generated/source-review.json'].map((file) => `${item.artifactPath}${file}`),
     );
+    for (const file of ['FINAL_REVIEW.md', 'generated/production-qc.json', 'thumbnail/thumbnail.png']) {
+      const candidate = `${item.artifactPath}${file}`;
+      if (fs.existsSync(path.join(root, candidate))) artifacts.push(candidate);
+    }
     const audioPath = `${item.artifactPath}audio/draft-review-narration.wav`;
     if (fs.existsSync(path.join(root, audioPath))) artifacts.push(audioPath);
     const briefPath = `${item.artifactPath}brief.json`;

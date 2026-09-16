@@ -493,6 +493,7 @@ function buildSrt() {
 }
 
 function buildAss() {
+  if (brief?.editorialTreatment) return buildEditorialAss();
   const overlayEnd = assTimestamp(Math.max(30, ...scriptSegments.map((segment) => segment.end)));
   const lines = [
     '[Script Info]',
@@ -604,7 +605,32 @@ Daniel must approve final concept/script, final voice path, final visual style, 
 `;
 }
 
+function buildEditorialAss() {
+  const end = assTimestamp(Math.max(30, ...scriptSegments.map((s) => s.end)));
+  const lines = ['[Script Info]', 'ScriptType: v4.00+', 'PlayResX: 1080', 'PlayResY: 1920', '', '[V4+ Styles]',
+    'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding',
+    'Style: Main,Arial,74,&H00FFFFFF,&H00000000,&H00111111,&H00000000,1,0,0,0,100,100,0,0,1,0,0,5,100,100,0,1',
+    'Style: Small,Arial,30,&H00DBDED8,&H00000000,&H00111111,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,100,100,0,1',
+    'Style: Caption,Arial,43,&H00FFFFFF,&H00000000,&H00111111,&H00000000,0,0,0,0,100,100,0,0,1,2,0,5,110,110,0,1', '', '[Events]',
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+    `Dialogue: 0,0:00:00.00,${end},Small,,0,0,0,,{\\pos(500,230)}ANI-DAX / RE:ZERO / EPISODE 33 SPOILERS`,
+    `Dialogue: 0,0:00:00.00,${end},Small,,0,0,0,,{\\pos(500,1630)}Original analysis + imagined dialogue\\NPrivate review / draft voice`,
+  ];
+  scriptSegments.forEach((segment, index) => {
+    const start = assTimestamp(segment.start), stop = assTimestamp(segment.end);
+    const shot = brief.editorialTreatment.shots[index];
+    const color = index === 1 ? '&H00C5B5FF&' : '&H00B4EBC9&';
+    lines.push(`Dialogue: 0,${start},${stop},Main,,0,0,0,,{\\move(500,610,500,570,0,350)\\fad(180,140)\\c${color}}${wrapAss(shot.headline, 21)}`);
+    lines.push(`Dialogue: 0,${start},${stop},Small,,0,0,0,,{\\pos(500,850)\\fad(300,140)}${wrapAss(shot.kicker, 36)}`);
+    // The argument's changing label, not anime imagery, is the central visual.
+    lines.push(`Dialogue: 0,${start},${stop},Small,,0,0,0,,{\\pos(500,1030)\\fad(450,140)\\c${color}}${index === 1 ? 'CREATIVE EXTRAPOLATION' : index === 2 ? 'SOURCE: OFFICIAL EPISODE 33 SYNOPSIS' : index === 3 ? 'DO NOT CONFUSE THE TWO' : `${index + 1} / 5`}`);
+    lines.push(`Dialogue: 1,${start},${stop},Caption,,0,0,0,,{\\pos(500,1320)}${wrapAss(segment.text, 35)}`);
+  });
+  return `${lines.join('\n')}\n`;
+}
+
 function buildThumbnailSvg() {
+  if (brief?.editorialTreatment) return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720"><rect width="1280" height="720" fill="#141817"/><text x="80" y="100" fill="#c9ebb4" font-family="Arial" font-size="30">ANI-DAX / RE:ZERO / EPISODE 33 ANALYSIS</text><text x="80" y="280" fill="white" font-family="Arial" font-weight="bold" font-size="90">RAM HELPED SUBARU.</text><path d="M80 345H1190" stroke="#c9ebb4" stroke-width="5"/><text x="80" y="485" fill="#c9ebb4" font-family="Arial" font-weight="bold" font-size="104">IS THAT TRUST?</text><text x="80" y="630" fill="#d8dedb" font-family="Arial" font-size="30">Original analysis + imagined dialogue</text></svg>`;
   if (brief) return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720"><rect width="1280" height="720" fill="#111111"/><text x="70" y="200" fill="white" font-family="Arial" font-size="48">ANI-DAX: FICTIONAL INTERVIEW</text><text x="70" y="340" fill="white" font-family="Arial" font-size="48">${escapeHtml(brief.context.speaker.name)} on ${escapeHtml(brief.context.subject.name)}</text><text x="70" y="500" fill="#dddddd" font-family="Arial" font-size="28">Draft only - original dialogue, not a canonical scene</text></svg>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <defs>
@@ -682,7 +708,8 @@ function renderProof() {
   const assPath = path.join(renderDir, 'proof.ass');
   fs.writeFileSync(assPath, buildAss());
 
-  const videoPath = path.join(renderDir, 'ani-dax-proof-render.mp4');
+  const videoName = brief?.editorialTreatment ? 'candidate-review.mp4' : 'ani-dax-proof-render.mp4';
+  const videoPath = path.join(renderDir, videoName);
   const suppliedAudioDuration = hasSuppliedAudio ? probeDurationSeconds(suppliedAudioFile) : null;
   const renderDuration = Math.max(30, suppliedAudioDuration || 0);
   const args = [
@@ -704,6 +731,7 @@ function renderProof() {
     );
   }
 
+  if (brief?.editorialTreatment && hasSuppliedAudio) args.push('-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-ar', '48000', '-b:a', '192k');
   args.push(
     '-vf',
     'ass=proof.ass',
@@ -715,7 +743,7 @@ function renderProof() {
     'aac',
     '-t',
     renderDuration.toFixed(3),
-    'ani-dax-proof-render.mp4',
+    videoName,
   );
 
   const ffmpeg = spawnSync('ffmpeg', args, {
@@ -745,7 +773,7 @@ function renderProof() {
   if (report.rendered) {
     const ffprobe = spawnSync(
       'ffprobe',
-      ['-v', 'error', '-show_entries', 'format=duration,size', '-of', 'json', 'ani-dax-proof-render.mp4'],
+      ['-v', 'error', '-show_entries', 'format=duration,size', '-of', 'json', videoName],
       { cwd: renderDir, encoding: 'utf8' },
     );
     report.ffprobe = ffprobe.status === 0 ? JSON.parse(ffprobe.stdout) : { error: ffprobe.stderr };

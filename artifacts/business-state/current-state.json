@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T15:05:24.154Z",
+  "generatedAt": "2026-09-16T21:04:25.812Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -120,12 +120,33 @@
           "nextAction": "Approve concept/script and final voice/visual style before publishing.",
           "artifactPath": "artifacts/anidax/ram-interview-v1/",
           "materialSeparation": "AI-assisted support package; no public publishing."
+        },
+        {
+          "brandId": "ani-dax",
+          "brand": "Ani-Dax",
+          "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+          "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+          "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+          "openQc": [
+            "Narration is draft audio; Daniel must approve or replace it",
+            "Caption speech alignment needs listening review; media duration is not alignment proof",
+            "Canon context: Exact state, knowledge ownership and evidence IDs checked; semantic fidelity of invented dialogue still requires editorial review.",
+            "Visual rights: Reference URLs do not license reuse or generation of character likenesses.",
+            "Narration: No approved character voice supplied.",
+            "Publishing: Daniel final approval required.",
+            "Source QC: SOURCE_REVIEW_RECORDED_PUBLIC_APPROVAL_PENDING; revision segments: none. Final editorial/rights approval remains pending."
+          ],
+          "publishAllowed": false,
+          "owner": "Daniel",
+          "nextAction": "Approve concept/script and final voice/visual style before publishing.",
+          "artifactPath": "artifacts/anidax/ram-episode33-candidate-v1/",
+          "materialSeparation": "AI-assisted support package; no public publishing."
         }
       ],
       "currentState": {
-        "queueItems": 2,
-        "readyForReview": 2,
-        "publishBlockedItems": 2,
+        "queueItems": 3,
+        "readyForReview": 3,
+        "publishBlockedItems": 3,
         "publicPublishingAllowed": false
       }
     },
@@ -318,6 +339,27 @@
       "materialSeparation": "AI-assisted support package; no public publishing."
     },
     {
+      "brandId": "ani-dax",
+      "brand": "Ani-Dax",
+      "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+      "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+      "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+      "openQc": [
+        "Narration is draft audio; Daniel must approve or replace it",
+        "Caption speech alignment needs listening review; media duration is not alignment proof",
+        "Canon context: Exact state, knowledge ownership and evidence IDs checked; semantic fidelity of invented dialogue still requires editorial review.",
+        "Visual rights: Reference URLs do not license reuse or generation of character likenesses.",
+        "Narration: No approved character voice supplied.",
+        "Publishing: Daniel final approval required.",
+        "Source QC: SOURCE_REVIEW_RECORDED_PUBLIC_APPROVAL_PENDING; revision segments: none. Final editorial/rights approval remains pending."
+      ],
+      "publishAllowed": false,
+      "owner": "Daniel",
+      "nextAction": "Approve concept/script and final voice/visual style before publishing.",
+      "artifactPath": "artifacts/anidax/ram-episode33-candidate-v1/",
+      "materialSeparation": "AI-assisted support package; no public publishing."
+    },
+    {
       "brandId": "gods-vessel",
       "brand": "God's Vessel",
       "contentId": "gods-vessel-names-of-god",
@@ -369,18 +411,23 @@
   ],
   "approvalDecisions": {
     "source": "business-state/approval-decisions.json",
-    "generatedAt": "2026-09-16T15:05:24.075Z",
-    "pending": 5,
+    "generatedAt": "2026-09-16T21:04:25.719Z",
+    "pending": 6,
     "decisions": [
       {
         "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
         "decisionStatus": "PENDING_DANIEL_REVIEW",
-        "reviewFingerprint": "959daeb2178cf7208c785dbdc0651c36b9d3ba81271dfd30a6d0e0606bbe5534"
+        "reviewFingerprint": "dbd1b0e87435ef0bbf62c80c6a5369b33ecadf54671c351470246948285933e2"
       },
       {
         "contentId": "anidax-ram-subaru-arc2-training-v1",
         "decisionStatus": "PENDING_DANIEL_REVIEW",
-        "reviewFingerprint": "294bbdd10050d190353cf2b77b5f4fa71553a04aa199b2e6118501ac9c2e71b0"
+        "reviewFingerprint": "b3a06bb7e37a30b52cfcb080101c1d598ec67528477ebce3bd37b70fd5a0976b"
+      },
+      {
+        "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+        "decisionStatus": "PENDING_DANIEL_REVIEW",
+        "reviewFingerprint": "8015a11f8199041a75071f9e77d52655ea4bd34311bc8a44fffaf155c9cc87cf"
       },
       {
         "contentId": "gods-vessel-names-of-god",
@@ -773,7 +820,7 @@
     }
   ],
   "measurements": {
-    "generatedAt": "2026-09-16T15:05:23.882Z",
+    "generatedAt": "2026-09-16T21:04:25.519Z",
     "source": "business-state/measurement-observations.json",
     "status": "NO_PROVIDER_OBSERVATIONS",
     "rule": "USD transaction events are additive; analytics are latest cumulative snapshots per provider/platform. No inferred zero, complete profit, live connection, or causal learning claims.",
@@ -807,6 +854,31 @@
       {
         "brandId": "ani-dax",
         "contentId": "anidax-ram-subaru-arc2-training-v1",
+        "observationCount": 0,
+        "netRevenueUsd": null,
+        "recordedCostUsd": null,
+        "recordedContributionUsd": null,
+        "totalProfitUsd": null,
+        "costByCategoryUsd": {
+          "llm": null,
+          "image": null,
+          "video": null,
+          "tts": null,
+          "music": null,
+          "storage": null,
+          "api": null,
+          "other": null,
+          "product": null,
+          "platformFee": null,
+          "adSpend": null
+        },
+        "latestAnalytics": [],
+        "learningStatus": "INSUFFICIENT_MEASURED_DATA",
+        "nextAction": "Import a verified provider aggregate export after approved distribution."
+      },
+      {
+        "brandId": "ani-dax",
+        "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
         "observationCount": 0,
         "netRevenueUsd": null,
         "recordedCostUsd": null,

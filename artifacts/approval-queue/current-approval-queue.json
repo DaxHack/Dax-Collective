@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-16T15:05:24.011Z",
-  "sourceStateGeneratedAt": "2026-09-16T15:05:23.938Z",
+  "generatedAt": "2026-09-16T21:04:25.647Z",
+  "sourceStateGeneratedAt": "2026-09-16T21:04:25.573Z",
   "status": "READY_ITEMS_REQUIRE_HUMAN_APPROVAL",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -21,8 +21,8 @@
       "artifactPath": "artifacts/anidax/timed-review/",
       "materialSeparation": "AI-assisted support package; no public publishing.",
       "reviewArtifacts": [
-        "artifacts/anidax/timed-review/approval-package.md",
         "artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4",
+        "artifacts/anidax/timed-review/approval-package.md",
         "artifacts/anidax/timed-review/generated/publish-ready-payload.json",
         "artifacts/anidax/timed-review/generated/content-package.json",
         "artifacts/anidax/timed-review/generated/captions.srt",
@@ -54,8 +54,8 @@
       "artifactPath": "artifacts/anidax/ram-interview-v1/",
       "materialSeparation": "AI-assisted support package; no public publishing.",
       "reviewArtifacts": [
-        "artifacts/anidax/ram-interview-v1/approval-package.md",
         "artifacts/anidax/ram-interview-v1/render/ani-dax-proof-render.mp4",
+        "artifacts/anidax/ram-interview-v1/approval-package.md",
         "artifacts/anidax/ram-interview-v1/generated/publish-ready-payload.json",
         "artifacts/anidax/ram-interview-v1/generated/content-package.json",
         "artifacts/anidax/ram-interview-v1/generated/captions.srt",
@@ -75,6 +75,43 @@
     },
     {
       "order": 3,
+      "brandId": "ani-dax",
+      "brand": "Ani-Dax",
+      "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+      "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+      "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+      "publishAllowed": false,
+      "purchaseEnabled": false,
+      "owner": "Daniel",
+      "nextAction": "Approve concept/script and final voice/visual style before publishing.",
+      "artifactPath": "artifacts/anidax/ram-episode33-candidate-v1/",
+      "materialSeparation": "AI-assisted support package; no public publishing.",
+      "reviewArtifacts": [
+        "artifacts/anidax/ram-episode33-candidate-v1/render/candidate-review.mp4",
+        "artifacts/anidax/ram-episode33-candidate-v1/approval-package.md",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/publish-ready-payload.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/content-package.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/captions.srt",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/review-validation.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/source-review.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md",
+        "artifacts/anidax/ram-episode33-candidate-v1/generated/production-qc.json",
+        "artifacts/anidax/ram-episode33-candidate-v1/thumbnail/thumbnail.png",
+        "artifacts/anidax/ram-episode33-candidate-v1/audio/draft-review-narration.wav",
+        "artifacts/anidax/ram-episode33-candidate-v1/brief.json"
+      ],
+      "humanApprovalNeeded": [
+        "script/canon posture",
+        "draft narration or replacement voice",
+        "visual style",
+        "platform/account target"
+      ],
+      "blockedActions": [
+        "public publishing"
+      ]
+    },
+    {
+      "order": 4,
       "brandId": "gods-vessel",
       "brand": "God's Vessel",
       "contentId": "gods-vessel-names-of-god",
@@ -108,7 +145,7 @@
       ]
     },
     {
-      "order": 4,
+      "order": 5,
       "brandId": "time-zone-travelers",
       "brand": "Time-Zone Travelers",
       "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
@@ -140,7 +177,7 @@
       ]
     },
     {
-      "order": 5,
+      "order": 6,
       "brandId": "dax-the-traveler",
       "brand": "Dax the Traveler",
       "contentId": "dtt-2026-09-13-puerto-rico-repurpose",

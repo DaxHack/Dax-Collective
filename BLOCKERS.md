@@ -1,5 +1,9 @@
 # Blockers
 
+## Current Episode-33 Candidate
+
+`artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md` is the owner review entrypoint. No source/API/rendering blocker: complete draft audio/video/subtitle package exists. Final-quality gates remain: Daniel editorial interpretation/fictional response review; natural neutral narration approval or recording (SAPI is timing-only, commercial-use suitability unverified); final motion/caption pacing and visual/rights/disclosure review. Exact execution specification is included; no copyrighted reference asset or paid service is required. Not ready to publish. No public upload/cross-posting permitted.
+
 ## Episode-33 Extension
 
 No technical blocker to querying the new state. Rem recognition/family memory is explicitly unknown/withheld, not inferred from earlier profiles. Voice, final fictional dialogue, character imagery/rights and public approval remain Daniel decisions. Reference index licenses nothing; no visual assets were copied. Later-state script/render is not produced. Existing original Subaru approvals remain unchanged.

@@ -1,8 +1,8 @@
 # Dax Collective Approval Queue
 
-Generated: 2026-09-16T15:05:24.011Z
+Generated: 2026-09-16T21:04:25.647Z
 
-Source business state: 2026-09-16T15:05:23.938Z
+Source business state: 2026-09-16T21:04:25.573Z
 
 This queue prepares review decisions only. It does not publish, spend, change credentials, enable checkout, or create products.
 
@@ -18,9 +18,10 @@ Credential changes allowed: no
 | ---: | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Ani-Dax | Subaru's Return by Death Is Not a Power Fantasy | READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC | no | no | Daniel | Approve concept/script and final voice/visual style before publishing. |
 | 2 | Ani-Dax | Ram's First Impressions: A Fictional Mansion Interview | READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC | no | no | Daniel | Approve concept/script and final voice/visual style before publishing. |
-| 3 | God's Vessel | Names of God | READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP | no | no | Daniel | Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path. |
-| 4 | Time-Zone Travelers | Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers? | READY_FOR_DANIEL_REVIEW | no | no | Daniel | Approve concept/script, final source check, narration, account mapping, and links. |
-| 5 | Dax the Traveler | The Travel Moment Worth Saving | READY_FOR_DANIEL_REVIEW | no | no | Daniel | Approve/revise selected assets and record final narration. |
+| 3 | Ani-Dax | Ram Helped Subaru. Is That Trust? | Re:Zero | READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC | no | no | Daniel | Approve concept/script and final voice/visual style before publishing. |
+| 4 | God's Vessel | Names of God | READY_FOR_DANIEL_REVIEW_AND_VENDOR_SETUP | no | no | Daniel | Review prepared storefront/Printify/Shopify draft listing package, then approve theology, product copy, final Canva masters, vendor setup, and storefront path. |
+| 5 | Time-Zone Travelers | Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers? | READY_FOR_DANIEL_REVIEW | no | no | Daniel | Approve concept/script, final source check, narration, account mapping, and links. |
+| 6 | Dax the Traveler | The Travel Moment Worth Saving | READY_FOR_DANIEL_REVIEW | no | no | Daniel | Approve/revise selected assets and record final narration. |
 
 ## 1. Ani-Dax: Subaru's Return by Death Is Not a Power Fantasy
 
@@ -42,8 +43,8 @@ Blocked actions:
 - public publishing
 
 Review artifacts:
-- `artifacts/anidax/timed-review/approval-package.md`
 - `artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4`
+- `artifacts/anidax/timed-review/approval-package.md`
 - `artifacts/anidax/timed-review/generated/publish-ready-payload.json`
 - `artifacts/anidax/timed-review/generated/content-package.json`
 - `artifacts/anidax/timed-review/generated/captions.srt`
@@ -71,8 +72,8 @@ Blocked actions:
 - public publishing
 
 Review artifacts:
-- `artifacts/anidax/ram-interview-v1/approval-package.md`
 - `artifacts/anidax/ram-interview-v1/render/ani-dax-proof-render.mp4`
+- `artifacts/anidax/ram-interview-v1/approval-package.md`
 - `artifacts/anidax/ram-interview-v1/generated/publish-ready-payload.json`
 - `artifacts/anidax/ram-interview-v1/generated/content-package.json`
 - `artifacts/anidax/ram-interview-v1/generated/captions.srt`
@@ -80,7 +81,40 @@ Review artifacts:
 - `artifacts/anidax/ram-interview-v1/generated/source-review.json`
 - `artifacts/anidax/ram-interview-v1/brief.json`
 
-## 3. God's Vessel: Names of God
+## 3. Ani-Dax: Ram Helped Subaru. Is That Trust? | Re:Zero
+
+Content ID: `anidax-ram-help-is-not-proof-of-trust-v1`
+
+Status: READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC
+
+Publish allowed: no
+
+Purchase enabled: no
+
+Human approval needed:
+- script/canon posture
+- draft narration or replacement voice
+- visual style
+- platform/account target
+
+Blocked actions:
+- public publishing
+
+Review artifacts:
+- `artifacts/anidax/ram-episode33-candidate-v1/render/candidate-review.mp4`
+- `artifacts/anidax/ram-episode33-candidate-v1/approval-package.md`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/publish-ready-payload.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/content-package.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/captions.srt`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/review-validation.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/source-review.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md`
+- `artifacts/anidax/ram-episode33-candidate-v1/generated/production-qc.json`
+- `artifacts/anidax/ram-episode33-candidate-v1/thumbnail/thumbnail.png`
+- `artifacts/anidax/ram-episode33-candidate-v1/audio/draft-review-narration.wav`
+- `artifacts/anidax/ram-episode33-candidate-v1/brief.json`
+
+## 4. God's Vessel: Names of God
 
 Content ID: `gods-vessel-names-of-god`
 
@@ -110,7 +144,7 @@ Review artifacts:
 - `artifacts/gods-vessel/names-of-god/listings/shopify-draft-products.csv`
 - `artifacts/gods-vessel/names-of-god/listings/printify-handoff.csv`
 
-## 4. Time-Zone Travelers: Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers?
+## 5. Time-Zone Travelers: Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers?
 
 Content ID: `tzt-2026-09-13-tokyo-seoul-night-owl`
 
@@ -138,7 +172,7 @@ Review artifacts:
 - `artifacts/timezone-travelers/sprint-3-sample/generated/publish-ready-payload.json`
 - `artifacts/timezone-travelers/sprint-3-sample/generated/monetization-path.json`
 
-## 5. Dax the Traveler: The Travel Moment Worth Saving
+## 6. Dax the Traveler: The Travel Moment Worth Saving
 
 Content ID: `dtt-2026-09-13-puerto-rico-repurpose`
 

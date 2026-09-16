@@ -1,0 +1,35 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Main,Arial,74,&H00FFFFFF,&H00000000,&H00111111,&H00000000,1,0,0,0,100,100,0,0,1,0,0,5,100,100,0,1
+Style: Small,Arial,30,&H00DBDED8,&H00000000,&H00111111,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,100,100,0,1
+Style: Caption,Arial,43,&H00FFFFFF,&H00000000,&H00111111,&H00000000,0,0,0,0,100,100,0,0,1,2,0,5,110,110,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:47.73,Small,,0,0,0,,{\pos(500,230)}ANI-DAX / RE:ZERO / EPISODE 33 SPOILERS
+Dialogue: 0,0:00:00.00,0:00:47.73,Small,,0,0,0,,{\pos(500,1630)}Original analysis + imagined dialogue\NPrivate review / draft voice
+Dialogue: 0,0:00:00.00,0:00:10.17,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}HELP = TRUST?
+Dialogue: 0,0:00:00.00,0:00:10.17,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}EPISODE 33 SPOILERS / AN ORIGINAL\NANALYSIS
+Dialogue: 0,0:00:00.00,0:00:10.17,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}1 / 5
+Dialogue: 1,0:00:00.00,0:00:10.17,Caption,,0,0,0,,{\pos(500,1320)}interviewer: Ram helps Subaru. Does\Nthat prove trust? Episode\Nthirty-three spoilers. Imagine\Nasking her why.
+Dialogue: 0,0:00:10.17,0:00:16.29,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00C5B5FF&}AN ORDER. NOT A\NCONFESSION.
+Dialogue: 0,0:00:10.17,0:00:16.29,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}IMAGINED RAM RESPONSE / NOT CANON\NDIALOGUE
+Dialogue: 0,0:00:10.17,0:00:16.29,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00C5B5FF&}CREATIVE EXTRAPOLATION
+Dialogue: 1,0:00:10.17,0:00:16.29,Caption,,0,0,0,,{\pos(500,1320)}Ram: Roswaal gave an instruction.\NYou have turned it into a\Nconfession.
+Dialogue: 0,0:00:16.29,0:00:26.93,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}WHAT THE SOURCE\NESTABLISHES
+Dialogue: 0,0:00:16.29,0:00:26.93,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}ROSWAAL'S INSTRUCTION > RAM'S\NASSISTANCE
+Dialogue: 0,0:00:16.29,0:00:26.93,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}SOURCE: OFFICIAL EPISODE 33 SYNOPSIS
+Dialogue: 1,0:00:16.29,0:00:26.93,Caption,,0,0,0,,{\pos(500,1320)}narrator: That reply is invented.\NThe official synopsis says Ram\Nhelps on Roswaal's instructions. It\Ndoes not settle her private\Nfeelings.
+Dialogue: 0,0:00:26.93,0:00:39.52,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}ACTION IS NOT PROOF\NOF FEELING
+Dialogue: 0,0:00:26.93,0:00:39.52,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}COOPERATION: OBSERVED / TRUST:\NINTERPRETATION
+Dialogue: 0,0:00:26.93,0:00:39.52,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}DO NOT CONFUSE THE TWO
+Dialogue: 1,0:00:26.93,0:00:39.52,Caption,,0,0,0,,{\pos(500,1320)}narrator: Cooperation is the\Naction. Trust is an interpretation.\NThey could overlap. But this\Ninstruction means the help alone\Ncannot prove unconditional trust.
+Dialogue: 0,0:00:39.52,0:00:47.73,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}WHAT WOULD PROVE\NTRUST?
+Dialogue: 0,0:00:39.52,0:00:47.73,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}THE QUESTION IS OPEN / ANI-DAX
+Dialogue: 0,0:00:39.52,0:00:47.73,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}5 / 5
+Dialogue: 1,0:00:39.52,0:00:47.73,Caption,,0,0,0,,{\pos(500,1320)}interviewer: Watch who gives the\Norder before deciding what help\Nmeans. What would count as evidence\Nof trust instead?

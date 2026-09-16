@@ -1,0 +1,25 @@
+{
+  "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+  "speaker": "ram", "subject": "subaru",
+  "storyState": "arc4-episode33-cooperation", "version": 1,
+  "location": "sanctuary-escape-context", "format": "interview", "maxSpoilerArc": 4,
+  "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+  "angle": "Separate an observable act of cooperation from an inference about affection: Roswaal's instruction complicates what Ram's help can establish. One fictional response illustrates the distinction, not Ram's canonical thoughts.",
+  "dialogue": [
+    {"role":"interviewer","text":"Ram helps Subaru. Does that prove trust? Episode thirty-three spoilers. Imagine asking her why.","evidenceIds":["ram-assistance"]},
+    {"role":"character","text":"Roswaal gave an instruction. You have turned it into a confession.","evidenceIds":["ram-assistance","ram-order-context"]},
+    {"role":"narrator","text":"That reply is invented. The official synopsis says Ram helps on Roswaal's instructions. It does not settle her private feelings.","evidenceIds":["ram-assistance","ram-order-context"]},
+    {"role":"narrator","text":"Cooperation is the action. Trust is an interpretation. They could overlap. But this instruction means the help alone cannot prove unconditional trust.","evidenceIds":["ram-assistance","ram-order-context"]},
+    {"role":"interviewer","text":"Watch who gives the order before deciding what help means. What would count as evidence of trust instead?","evidenceIds":["ram-order-context"]}
+  ],
+  "editorialTreatment": {
+    "description": "Episode 33 spoilers. Ram helps Subaru, but what does that establish? Ani-Dax separates the official synopsis's account of Roswaal's instruction from an interpretation about trust. The imagined Ram response is original fictional dialogue, NOT a canonical quote or scene. We do not claim she feels no affection or trust. Source: official Re:Zero anime episode 33 synopsis at https://re-zero-anime.jp/tv/story/tv2.html (episode 33 section only). Original analysis and motion typography; no anime clips, screenshots, soundtrack or actor imitation. Draft synthetic narration pending final review. What would count as evidence of trust? #ReZero #Ram #Subaru",
+    "shots": [
+      {"headline":"HELP = TRUST?","kicker":"EPISODE 33 SPOILERS / AN ORIGINAL ANALYSIS"},
+      {"headline":"AN ORDER. NOT A CONFESSION.","kicker":"IMAGINED RAM RESPONSE / NOT CANON DIALOGUE"},
+      {"headline":"WHAT THE SOURCE ESTABLISHES","kicker":"ROSWAAL'S INSTRUCTION > RAM'S ASSISTANCE"},
+      {"headline":"ACTION IS NOT PROOF OF FEELING","kicker":"COOPERATION: OBSERVED / TRUST: INTERPRETATION"},
+      {"headline":"WHAT WOULD PROVE TRUST?","kicker":"THE QUESTION IS OPEN / ANI-DAX"}
+    ]
+  }
+}

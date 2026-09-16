@@ -88,7 +88,7 @@ function writeJson(file, value) {
 function collectContentQueue() {
   const items = [];
 
-  for (const aniDaxRoot of ['artifacts/anidax/timed-review/', 'artifacts/anidax/ram-interview-v1/']) {
+  for (const aniDaxRoot of ['artifacts/anidax/timed-review/', 'artifacts/anidax/ram-interview-v1/', 'artifacts/anidax/ram-episode33-candidate-v1/']) {
   const aniDax = readJson(path.join(root, aniDaxRoot, 'generated', 'content-package.json'));
   const aniDaxValidation = readJson(path.join(root, aniDaxRoot, 'generated', 'review-validation.json'));
   if (aniDax) {
