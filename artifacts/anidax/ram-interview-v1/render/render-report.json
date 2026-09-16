@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-09-16T05:23:11.591Z",
+  "rendered": true,
+  "videoPath": "artifacts/anidax/ram-interview-v1/render/ani-dax-proof-render.mp4",
+  "audioSource": "silent-placeholder",
+  "audioSourceLabel": "No narration audio supplied",
+  "audioApprovalStatus": "missing",
+  "audioReadyForReview": false,
+  "audioReadyForFinal": false,
+  "suppliedAudioDurationSeconds": null,
+  "renderDurationSeconds": 30,
+  "command": "ffmpeg -y -f lavfi -i color=c=0x060610:s=1080x1920:d=30.000:r=30 -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -vf ass=proof.ass -c:v libx264 -pix_fmt yuv420p -c:a aac -t 30.000 ani-dax-proof-render.mp4",
+  "status": 0,
+  "stderrTail": [
+    "[libx264 @ 000001a4b1786f00] frame I:4     Avg QP: 9.44  size: 47209",
+    "[libx264 @ 000001a4b1786f00] frame P:227   Avg QP:12.67  size:   372",
+    "[libx264 @ 000001a4b1786f00] frame B:669   Avg QP:13.68  size:    77",
+    "[libx264 @ 000001a4b1786f00] consecutive B-frames:  0.9%  0.0%  0.0% 99.1%",
+    "[libx264 @ 000001a4b1786f00] mb I  I16..4: 77.7% 12.1% 10.3%",
+    "[libx264 @ 000001a4b1786f00] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4:  0.1%  0.0%  0.0%  0.0%  0.0%    skip:99.8%",
+    "[libx264 @ 000001a4b1786f00] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.1%  0.0%  0.0%  direct: 0.0%  skip:99.9%  L0:61.2% L1:38.8% BI: 0.0%",
+    "[libx264 @ 000001a4b1786f00] 8x8 transform intra:12.5% inter:14.2%",
+    "[libx264 @ 000001a4b1786f00] coded y,uvDC,uvAC intra: 8.7% 11.2% 9.3% inter: 0.0% 0.0% 0.0%",
+    "[libx264 @ 000001a4b1786f00] i16 v,h,dc,p: 98%  1%  1%  0%",
+    "[libx264 @ 000001a4b1786f00] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 43%  9% 48%  0%  0%  0%  0%  0%  0%",
+    "[libx264 @ 000001a4b1786f00] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 38% 22% 10%  4%  4%  7%  5%  6%  5%",
+    "[libx264 @ 000001a4b1786f00] i8c dc,h,v,p: 91%  5%  3%  1%",
+    "[libx264 @ 000001a4b1786f00] Weighted P-Frames: Y:0.0% UV:0.0%",
+    "[libx264 @ 000001a4b1786f00] ref P L0: 85.7%  5.6%  7.5%  1.1%",
+    "[libx264 @ 000001a4b1786f00] ref B L0: 50.3% 49.7%",
+    "[libx264 @ 000001a4b1786f00] ref B L1: 99.5%  0.5%",
+    "[libx264 @ 000001a4b1786f00] kb/s:86.52",
+    "[aac @ 000001a4b1c40840] Qavg: 65536.000",
+    ""
+  ],
+  "ffprobe": {
+    "format": {
+      "duration": "30.000000",
+      "size": "367001"
+    }
+  }
+}

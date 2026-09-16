@@ -1,5 +1,11 @@
 # Next Session Handoff
 
+## Character/Canon Resume Point
+
+First slice is complete: `business-state/canon/re-zero.json`, `ram-interview-request.json`, `tools/anidax/canon.mjs`, `interview.mjs`, and `artifacts/anidax/ram-interview-v1/`. Existing producer supports `--brief` and `--validate-only`; original request and canon are checked again before render/review. 13 tests, full ops:review, actual producer validation and existing 30s silent render validation passed. Five queue items remain pending.
+
+Next: source one later-state relationship and expand the existing state snapshots/reference metadata. Do not regenerate either existing render; early mansion is only the first fixture. No unsupported Ram memory state, copied images, character voice or public approval is authorized. Claude commerce work remains separate.
+
 ## 2026-09-16 Resume Point
 
 Source QC is implemented in the existing verifier and exercised by `npm run ops:review`. Four verifier tests pass. Read `artifacts/anidax/timed-review/generated/source-review.json`: premise verified against official/public publisher synopses; segment 2 contains an unsourced generalization and over-absolute wording, with a proposed replacement for review. Exact-script matching invalidates stale evidence. Public approval remains false.

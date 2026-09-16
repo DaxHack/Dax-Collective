@@ -1,0 +1,32 @@
+{
+  "contentId": "anidax-ram-subaru-arc2-training-v1",
+  "technicalPass": true,
+  "errors": [],
+  "reviewRequired": [
+    "Canon context: Exact state, knowledge ownership and evidence IDs checked; semantic fidelity of invented dialogue still requires editorial review.",
+    "Visual rights: Reference URLs do not license reuse or generation of character likenesses.",
+    "Narration: No approved character voice supplied.",
+    "Publishing: Daniel final approval required.",
+    "Silent placeholder audio only; no character narration has been produced or approved",
+    "Source QC: EDITORIAL_REVISION_REQUIRED; revision segments: 1, 2, 3, 4, 5. Final editorial/rights approval remains pending."
+  ],
+  "durationSeconds": 30,
+  "narrationDurationSeconds": null,
+  "captionCount": 5,
+  "publishAllowed": false,
+  "youtubePrivacyStatus": "private",
+  "automaticCrossPostingAllowed": false,
+  "sourceReview": {
+    "current": true,
+    "decision": "EDITORIAL_REVISION_REQUIRED",
+    "revisionSegments": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "publicApproval": false
+  },
+  "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC"
+}

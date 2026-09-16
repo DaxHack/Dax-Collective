@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { validateBrief } from './interview.mjs';
 
 export function validateSourceReview(pkg, sourceReview) {
   if (!sourceReview) return { current: false, reason: 'Source review missing' };
@@ -47,8 +48,10 @@ export function validateMedia(pkg, payload, video, audio, captions) {
     if (cue.text.trim() !== pkg.scriptSegments?.[index]?.text?.trim()) errors.push('Caption text differs from script');
     if (cue.start >= audioDuration - 0.25) review.push(`Cue ${index + 1} starts at/after narration end; narration alignment needs revision`);
   }
-  if (!pkg.audio?.readyForFinal) review.push('Narration is draft audio; Daniel must approve or replace it');
-  review.push('Caption speech alignment needs listening review; media duration is not alignment proof');
+  if (pkg.audio?.supplied !== false) {
+    if (!pkg.audio?.readyForFinal) review.push('Narration is draft audio; Daniel must approve or replace it');
+    review.push('Caption speech alignment needs listening review; media duration is not alignment proof');
+  }
   for (const [gate, status, note] of pkg.qc || []) if (status !== 'PASS') review.push(`${gate}: ${note}`);
   return { technicalPass: errors.length === 0, errors: [...new Set(errors)], reviewRequired: [...new Set(review)], durationSeconds: duration, narrationDurationSeconds: audioDuration, captionCount: cues.length, publishAllowed: false, youtubePrivacyStatus: 'private', automaticCrossPostingAllowed: false };
 }
@@ -63,6 +66,11 @@ export function verify(root, packageRelative = 'artifacts/anidax/sprint-1-sample
   const folder = inside(packageRelative);
   const read = (relative) => JSON.parse(fs.readFileSync(path.join(folder, relative), 'utf8'));
   const pkg = read('generated/content-package.json');
+  if (fs.existsSync(path.join(folder, 'brief.json'))) {
+    const brief = read('brief.json');
+    validateBrief(JSON.parse(fs.readFileSync(inside(brief.canonFile), 'utf8')), brief, JSON.parse(fs.readFileSync(inside(brief.requestFile), 'utf8')));
+    if (JSON.stringify(pkg.canonContext) !== JSON.stringify(brief.context) || JSON.stringify(pkg.scriptSegments.map((s) => s.text)) !== JSON.stringify(brief.scriptSegments.map((s) => s.text))) throw new Error('Rendered package context/script differs from validated brief');
+  }
   const payload = read('generated/publish-ready-payload.json');
   const report = read('render/render-report.json');
   for (const file of ['approval-package.md', 'thumbnail/thumbnail.svg', 'generated/storyboard.svg', 'generated/analytics-record.json', 'generated/cost-record.json', 'generated/monetization-path.json']) {
@@ -74,8 +82,12 @@ export function verify(root, packageRelative = 'artifacts/anidax/sprint-1-sample
     return JSON.parse(result.stdout);
   };
   const video = probe(report.videoPath);
-  const audio = probe(pkg.audio.source);
+  const audio = pkg.audio.supplied === false ? video : probe(pkg.audio.source);
   const result = { contentId: pkg.metadata.contentId, ...validateMedia(pkg, payload, video, audio, fs.readFileSync(path.join(folder, 'generated/captions.srt'), 'utf8')) };
+  if (pkg.audio.supplied === false) {
+    result.narrationDurationSeconds = null;
+    result.reviewRequired.push('Silent placeholder audio only; no character narration has been produced or approved');
+  }
   const sourceFile = path.join(folder, 'generated/source-review.json');
   result.sourceReview = validateSourceReview(pkg, fs.existsSync(sourceFile) ? read('generated/source-review.json') : null);
   if (fs.existsSync(sourceFile) && !result.sourceReview.current) {

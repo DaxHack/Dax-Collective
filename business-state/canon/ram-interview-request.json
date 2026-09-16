@@ -1,0 +1,13 @@
+{
+  "contentId":"anidax-ram-subaru-arc2-training-v1",
+  "speaker":"ram","subject":"subaru","storyState":"arc2-first-employment","version":1,"location":"roswaal-mansion","format":"interview",
+  "title":"Ram's First Impressions: A Fictional Mansion Interview",
+  "angle":"Evaluate a newcomer through his trainer's standards, without importing later heroism or private memories.",
+  "dialogue":[
+    {"role":"interviewer","text":"Ram, what does the mansion's new employee need to learn first?","evidenceIds":["ram-role"]},
+    {"role":"character","text":"To finish the task before announcing how impressive he is. We have work to do.","evidenceIds":["ram-role","ram-style"]},
+    {"role":"interviewer","text":"Is that your final verdict on Subaru?","evidenceIds":["ram-role"]},
+    {"role":"character","text":"A verdict already? Let him learn. I would prefer useful hands to another speech.","evidenceIds":["ram-role","ram-style"]},
+    {"role":"narrator","text":"An imagined interview, not canon dialogue. At this point, Ram is Subaru's trainer. What would earn her respect?","evidenceIds":["ram-role"]}
+  ]
+}

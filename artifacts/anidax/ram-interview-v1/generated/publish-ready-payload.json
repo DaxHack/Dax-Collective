@@ -1,0 +1,29 @@
+{
+  "contentId": "anidax-ram-subaru-arc2-training-v1",
+  "brand": "Ani-Dax",
+  "approvalStatus": "READY_FOR_DANIEL_REVIEW_VOICE_NOT_FINAL",
+  "publishAllowed": false,
+  "youtubePrivacyStatus": "private",
+  "automaticCrossPostingAllowed": false,
+  "requiredBeforePublishing": [
+    "Daniel approves concept/script.",
+    "Daniel approves final narration/voice.",
+    "Final canon/source check is completed for any specific claims.",
+    "Final visual style/art pass is approved.",
+    "Ani-Dax platform account mapping and credentials are verified.",
+    "Daniel approves the specific public publishing target and metadata."
+  ],
+  "suggestedPlatforms": [
+    "YouTube Shorts private draft",
+    "TikTok/Instagram drafts only after Daniel approval"
+  ],
+  "title": "Ram's First Impressions: A Fictional Mansion Interview",
+  "description": "Original fictional interview draft informed by sourced characterization. Dialogue is invented, not canonical. Story-state lock and rights/voice/visual review required before publication.",
+  "tags": [
+    "Ani-Dax",
+    "fictional interview",
+    "Re:Zero - Starting Life in Another World",
+    "Ram"
+  ],
+  "thumbnail": "thumbnail/thumbnail.svg"
+}

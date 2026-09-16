@@ -1,8 +1,8 @@
 # Dax Collective Approval Decisions
 
-Generated: 2026-09-16T05:06:16.838Z
+Generated: 2026-09-16T15:00:58.189Z
 
-Source approval queue: 2026-09-16T05:06:16.766Z
+Source approval queue: 2026-09-16T15:00:58.126Z
 
 Daniel decisions may move work to the next private/draft step only. Public publishing, purchase/spend, checkout, credential changes, and legal commitments remain separately gated.
 
@@ -17,6 +17,7 @@ Credential changes allowed: no
 | Brand | Item | Decision | Private Next Step | Public Publish | Product/Checkout | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
 | Ani-Dax | Subaru's Return by Death Is Not a Power Fantasy | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
+| Ani-Dax | Ram's First Impressions: A Fictional Mansion Interview | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
 | God's Vessel | Names of God | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
 | Time-Zone Travelers | Tokyo vs Seoul: Which First Trip Fits Night-Owl Travelers? | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
 | Dax the Traveler | The Travel Moment Worth Saving | PENDING_DANIEL_REVIEW | no | no | no | Daniel |
@@ -54,12 +55,44 @@ Can spend/purchase: no
 Review artifacts:
 - `artifacts/anidax/timed-review/approval-package.md`
 - `artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4`
-- `artifacts/anidax/timed-review/audio/draft-review-narration.wav`
 - `artifacts/anidax/timed-review/generated/publish-ready-payload.json`
 - `artifacts/anidax/timed-review/generated/content-package.json`
 - `artifacts/anidax/timed-review/generated/captions.srt`
 - `artifacts/anidax/timed-review/generated/review-validation.json`
 - `artifacts/anidax/timed-review/generated/source-review.json`
+- `artifacts/anidax/timed-review/audio/draft-review-narration.wav`
+
+## Ani-Dax: Ram's First Impressions: A Fictional Mansion Interview
+
+Content ID: `anidax-ram-subaru-arc2-training-v1`
+
+Decision status: PENDING_DANIEL_REVIEW
+
+Decision owner: Daniel
+
+Decision notes: none
+
+Requested revision: none
+
+Approved next private step: none
+
+Can proceed to private/draft next step: no
+
+Can publish publicly: no
+
+Can enable checkout/product publication: no
+
+Can spend/purchase: no
+
+Review artifacts:
+- `artifacts/anidax/ram-interview-v1/approval-package.md`
+- `artifacts/anidax/ram-interview-v1/render/ani-dax-proof-render.mp4`
+- `artifacts/anidax/ram-interview-v1/generated/publish-ready-payload.json`
+- `artifacts/anidax/ram-interview-v1/generated/content-package.json`
+- `artifacts/anidax/ram-interview-v1/generated/captions.srt`
+- `artifacts/anidax/ram-interview-v1/generated/review-validation.json`
+- `artifacts/anidax/ram-interview-v1/generated/source-review.json`
+- `artifacts/anidax/ram-interview-v1/brief.json`
 
 ## God's Vessel: Names of God
 

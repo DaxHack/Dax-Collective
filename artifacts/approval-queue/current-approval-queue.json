@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-16T05:06:16.766Z",
-  "sourceStateGeneratedAt": "2026-09-16T05:06:16.694Z",
+  "generatedAt": "2026-09-16T15:00:58.126Z",
+  "sourceStateGeneratedAt": "2026-09-16T15:00:58.046Z",
   "status": "READY_ITEMS_REQUIRE_HUMAN_APPROVAL",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -23,12 +23,12 @@
       "reviewArtifacts": [
         "artifacts/anidax/timed-review/approval-package.md",
         "artifacts/anidax/timed-review/render/ani-dax-proof-render.mp4",
-        "artifacts/anidax/timed-review/audio/draft-review-narration.wav",
         "artifacts/anidax/timed-review/generated/publish-ready-payload.json",
         "artifacts/anidax/timed-review/generated/content-package.json",
         "artifacts/anidax/timed-review/generated/captions.srt",
         "artifacts/anidax/timed-review/generated/review-validation.json",
-        "artifacts/anidax/timed-review/generated/source-review.json"
+        "artifacts/anidax/timed-review/generated/source-review.json",
+        "artifacts/anidax/timed-review/audio/draft-review-narration.wav"
       ],
       "humanApprovalNeeded": [
         "script/canon posture",
@@ -42,6 +42,39 @@
     },
     {
       "order": 2,
+      "brandId": "ani-dax",
+      "brand": "Ani-Dax",
+      "contentId": "anidax-ram-subaru-arc2-training-v1",
+      "title": "Ram's First Impressions: A Fictional Mansion Interview",
+      "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+      "publishAllowed": false,
+      "purchaseEnabled": false,
+      "owner": "Daniel",
+      "nextAction": "Approve concept/script and final voice/visual style before publishing.",
+      "artifactPath": "artifacts/anidax/ram-interview-v1/",
+      "materialSeparation": "AI-assisted support package; no public publishing.",
+      "reviewArtifacts": [
+        "artifacts/anidax/ram-interview-v1/approval-package.md",
+        "artifacts/anidax/ram-interview-v1/render/ani-dax-proof-render.mp4",
+        "artifacts/anidax/ram-interview-v1/generated/publish-ready-payload.json",
+        "artifacts/anidax/ram-interview-v1/generated/content-package.json",
+        "artifacts/anidax/ram-interview-v1/generated/captions.srt",
+        "artifacts/anidax/ram-interview-v1/generated/review-validation.json",
+        "artifacts/anidax/ram-interview-v1/generated/source-review.json",
+        "artifacts/anidax/ram-interview-v1/brief.json"
+      ],
+      "humanApprovalNeeded": [
+        "script/canon posture",
+        "draft narration or replacement voice",
+        "visual style",
+        "platform/account target"
+      ],
+      "blockedActions": [
+        "public publishing"
+      ]
+    },
+    {
+      "order": 3,
       "brandId": "gods-vessel",
       "brand": "God's Vessel",
       "contentId": "gods-vessel-names-of-god",
@@ -75,7 +108,7 @@
       ]
     },
     {
-      "order": 3,
+      "order": 4,
       "brandId": "time-zone-travelers",
       "brand": "Time-Zone Travelers",
       "contentId": "tzt-2026-09-13-tokyo-seoul-night-owl",
@@ -107,7 +140,7 @@
       ]
     },
     {
-      "order": 4,
+      "order": 5,
       "brandId": "dax-the-traveler",
       "brand": "Dax the Traveler",
       "contentId": "dtt-2026-09-13-puerto-rico-repurpose",

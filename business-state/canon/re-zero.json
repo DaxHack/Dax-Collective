@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "seriesId": "re-zero",
+  "seriesName": "Re:Zero - Starting Life in Another World",
+  "sources": [
+    {"id":"ram-profile","url":"https://www.re-zero.com/character/%E3%83%A9%E3%83%A0/","medium":"official-novel-profile","locator":"2014-02-10 profile paragraphs 1-5","checkedAt":"2026-09-16","scope":"Early mansion role and characterization; not later memory states"},
+    {"id":"rem-profile","url":"https://www.re-zero.com/character/%E3%83%AC%E3%83%A0/","medium":"official-novel-profile","locator":"2014-02-10 profile paragraphs 1-5","checkedAt":"2026-09-16","scope":"Early mansion role and characterization"},
+    {"id":"subaru-profile","url":"https://www.re-zero.com/character/%E3%83%8A%E3%83%84%E3%82%AD%E3%83%BB%E3%82%B9%E3%83%90%E3%83%AB/","medium":"official-novel-profile","locator":"2013-11-27 profile paragraphs 1-4","checkedAt":"2026-09-16","scope":"Origin and general characterization; not automatically known to other characters"}
+  ],
+  "characters": [
+    {"id":"ram","canonicalName":"Ram","aliases":["ラム"],"identity":"Older twin maid at Roswaal Mansion","sourceIds":["ram-profile"],"visualDescriptors":[],"referenceViews":[{"view":"profile-page","url":"https://www.re-zero.com/character/","sourceId":"ram-profile","rights":"IDENTIFICATION_ONLY_NOT_LICENSED","binaryCopied":false,"verifiedViewAngles":[]}],"outfitStates":[],"unknownFields":["front/side/back model sheets","outfit-specific geometry","fears","abilities"]},
+    {"id":"rem","canonicalName":"Rem","aliases":["レム"],"identity":"Younger twin maid at Roswaal Mansion","sourceIds":["rem-profile"],"visualDescriptors":[],"referenceViews":[{"view":"profile-page","url":"https://www.re-zero.com/character/","sourceId":"rem-profile","rights":"IDENTIFICATION_ONLY_NOT_LICENSED","binaryCopied":false,"verifiedViewAngles":[]}],"outfitStates":[],"unknownFields":["front/side/back model sheets","precise visual measurements","abilities"]},
+    {"id":"subaru","canonicalName":"Natsuki Subaru","aliases":["Subaru Natsuki","ナツキ・スバル"],"identity":"Protagonist transported from modern Japan","sourceIds":["subaru-profile"],"visualDescriptors":[],"referenceViews":[{"view":"profile-page","url":"https://www.re-zero.com/character/","sourceId":"subaru-profile","rights":"IDENTIFICATION_ONLY_NOT_LICENSED","binaryCopied":false,"verifiedViewAngles":[]}],"outfitStates":[],"unknownFields":["state-specific outfits","front/side/back model sheets"]}
+  ],
+  "states": [
+    {
+      "id":"arc2-first-employment","version":1,"continuity":"novel-profile-early-mansion","arc":2,
+      "boundary":"Subaru has begun mansion employment and Ram is his trainer; before importing later loop outcomes. No anime episode/timecode equivalence asserted.",
+      "spoilerLevel":"early-arc-2","inherits":null,
+      "assertions":[
+        {"id":"ram-role","kind":"canon_fact","field":"affiliation","text":"Ram serves at Roswaal Mansion and trains the new employee Subaru.","sourceIds":["ram-profile"],"knownBy":["ram","rem","subaru"]},
+        {"id":"ram-style","kind":"supported_inference","field":"speechPatterns","text":"Use brief, cutting criticism and demanding instruction; do not assume warmth or later loyalty to Subaru.","sourceIds":["ram-profile"],"knownBy":["ram"]},
+        {"id":"ram-traits","kind":"canon_fact","field":"personality","text":"The profile depicts Ram as proud and sharp-tongued.","sourceIds":["ram-profile"],"knownBy":["ram"]},
+        {"id":"ram-values","kind":"canon_fact","field":"values","text":"Ram is devoted to Roswaal and is especially close to Rem.","sourceIds":["ram-profile"],"knownBy":["ram","rem"]},
+        {"id":"rem-role","kind":"canon_fact","field":"strengths","text":"Rem handles the mansion's domestic work competently.","sourceIds":["rem-profile"],"knownBy":["ram","rem"]},
+        {"id":"subaru-origin","kind":"canon_fact","field":"identity","text":"Subaru came from modern Japan.","sourceIds":["subaru-profile"],"knownBy":["subaru"]}
+      ],
+      "relationships":[
+        {"speaker":"ram","subject":"subaru","type":"trainer-to-new-employee","assertionIds":["ram-role","ram-style"],"perspective":"Demanding trainer; praise of later heroism is unsupported at this boundary.","kind":"supported_inference","sourceIds":["ram-profile"],"sharedEventIds":["training"]},
+        {"speaker":"ram","subject":"rem","type":"older-twin-to-younger-twin","assertionIds":["ram-values","rem-role"],"perspective":"Rem is within Ram's small circle of trust.","kind":"canon_fact","sourceIds":["ram-profile"],"sharedEventIds":["household-work"]}
+      ],
+      "events":[
+        {"id":"training","text":"Ram is assigned to train Subaru at the mansion.","participants":["ram","subaru"],"sourceIds":["ram-profile"]},
+        {"id":"household-work","text":"The twin sisters work at Roswaal Mansion.","participants":["ram","rem"],"sourceIds":["ram-profile","rem-profile"]}
+      ],
+      "locations":[{"id":"roswaal-mansion","name":"Roswaal Mansion","sourceIds":["ram-profile","rem-profile"],"participants":["ram","rem","subaru"],"context":"Household employment/training","visualRequirements":"Original abstract interview set only; no unverified room layout or copied anime background","referenceViews":[]}],
+      "knowledgeExclusions":[
+        {"speaker":"ram","topic":"Subaru's origin, private thoughts, death-loop experiences or Return by Death mechanics","reason":"Not established as Ram knowledge in this snapshot; conservative exclusion, not a universal canon claim"},
+        {"speaker":"ram","topic":"Later Rem sleep/memory status, Sanctuary outcomes, Pristella, Watchtower events, Otto or Garfiel's later bonds","reason":"Outside selected state; later sources must not be applied retroactively"}
+      ],
+      "uncertainty":["Official profiles compress early mansion events; no exact loop/day or anime scene alignment is certified.","Unlisted traits, motivations, fears, abilities, outfits and quotes are unknown; absence is not a negative canon fact."],
+      "conflicts":[],"quotes":[]
+    }
+  ]
+}

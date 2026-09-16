@@ -3,10 +3,28 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { validateBrief } from './interview.mjs';
 
 const root = process.cwd();
 const cli = parseArgs(process.argv.slice(2));
+const brief = cli.brief ? JSON.parse(fs.readFileSync(path.resolve(root, cli.brief), 'utf8')) : null;
+if (brief) {
+  const canonFile = path.resolve(root, brief.canonFile || '');
+  const relativeCanon = path.relative(root, canonFile);
+  if (relativeCanon.startsWith('..') || path.isAbsolute(relativeCanon)) throw new Error('Canon file must be repository-local');
+  const requestFile = path.resolve(root, brief.requestFile || '');
+  const relativeRequest = path.relative(root, requestFile);
+  if (relativeRequest.startsWith('..') || path.isAbsolute(relativeRequest)) throw new Error('Request file must be repository-local');
+  validateBrief(JSON.parse(fs.readFileSync(canonFile, 'utf8')), brief, JSON.parse(fs.readFileSync(requestFile, 'utf8')));
+  if (!cli.out || brief.schemaVersion !== 1 || brief.publishAllowed !== false || brief.publicApproval !== false || !brief.context?.storyState || !Array.isArray(brief.scriptSegments) || !brief.scriptSegments.length) throw new Error('Invalid private production brief or missing isolated output path');
+  if (['artifacts/anidax/sprint-1-sample', 'artifacts/anidax/timed-review'].some((p) => path.resolve(root, cli.out) === path.resolve(root, p))) throw new Error('Brief output must not overwrite existing review candidates');
+}
 const outRoot = path.join(root, cli.out || path.join('artifacts', 'anidax', 'sprint-1-sample'));
+if (cli.validateOnly) {
+  if (!brief) throw new Error('Validation-only mode requires a canon brief');
+  console.log(JSON.stringify({ valid: true, contentId: brief.contentId, rendered: false, publishAllowed: false }));
+  process.exit(0);
+}
 const generatedDir = path.join(outRoot, 'generated');
 const renderDir = path.join(outRoot, 'render');
 const thumbnailDir = path.join(outRoot, 'thumbnail');
@@ -16,8 +34,8 @@ for (const dir of [outRoot, generatedDir, renderDir, thumbnailDir]) {
 }
 
 const now = new Date().toISOString();
-const topic = cli.topic || "Why Subaru's Return by Death is not a power fantasy";
-const series = cli.series || 'Re:Zero - Starting Life in Another World';
+const topic = brief?.topic || cli.topic || "Why Subaru's Return by Death is not a power fantasy";
+const series = brief?.series || cli.series || 'Re:Zero - Starting Life in Another World';
 const suppliedAudioFile = cli.audioFile ? path.resolve(root, cli.audioFile) : null;
 const hasSuppliedAudio = Boolean(suppliedAudioFile && fs.existsSync(suppliedAudioFile));
 const audioApprovalStatus = String(
@@ -29,7 +47,7 @@ const audioReadyForFinal =
   hasSuppliedAudio && ['approved-final', 'daniel-approved', 'final-approved'].includes(audioApprovalStatus);
 const audioReadyForReview = hasSuppliedAudio;
 const contentId =
-  cli.contentId || `anidax-${new Date(now).toISOString().slice(0, 10)}-${slugify(topic).slice(0, 64)}`;
+  brief?.contentId || cli.contentId || `anidax-${new Date(now).toISOString().slice(0, 10)}-${slugify(topic).slice(0, 64)}`;
 
 const concept = {
   brand: 'Ani-Dax',
@@ -51,7 +69,8 @@ const concept = {
   ],
 };
 
-const scriptSegments = buildScriptSegments(topic, series);
+if (brief) Object.assign(concept, { contentType: 'fictional interview', originalAngle: brief.angle, storyState: brief.context.storyState });
+const scriptSegments = brief?.scriptSegments || buildScriptSegments(topic, series);
 if (cli.narrationReport) {
   const narration = JSON.parse(fs.readFileSync(path.resolve(root, cli.narrationReport), 'utf8'));
   if (!hasSuppliedAudio || narration.audioSha256 !== createHash('sha256').update(fs.readFileSync(suppliedAudioFile)).digest('hex')) throw new Error('Narration report does not match supplied audio');
@@ -188,6 +207,10 @@ const analyticsRecord = {
   aiApiCost: 0,
   profitEstimate: 0,
 };
+if (brief) {
+  storyboard.splice(0, storyboard.length, ...brief.storyboard);
+  Object.assign(metadata, { title: brief.title, description: brief.description, tags: ['Ani-Dax', 'fictional interview', series, brief.context.speaker.name], thumbnail: 'Original text-only interview review card; no source images copied.' });
+}
 
 if (cli.narrationReport) {
   storyboard.forEach((scene, index) => {
@@ -287,6 +310,14 @@ const contentPackage = {
   monetizationPath,
   costEstimate,
 };
+if (brief) {
+  contentPackage.canonContext = brief.context;
+  qc.splice(0, qc.length, ...brief.qc);
+  contentPackage.assetPlan = brief.assetPlan;
+  contentPackage.qc = brief.qc;
+  contentPackage.opportunityScore = { status: 'UNSCORED', notes: 'No measured opportunity/retention score exists for this draft.' };
+  contentPackage.researchNotes = brief.context.sources;
+}
 
 function writeJson(file, value) {
   fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
@@ -574,6 +605,7 @@ Daniel must approve final concept/script, final voice path, final visual style, 
 }
 
 function buildThumbnailSvg() {
+  if (brief) return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720"><rect width="1280" height="720" fill="#111111"/><text x="70" y="200" fill="white" font-family="Arial" font-size="48">ANI-DAX: FICTIONAL INTERVIEW</text><text x="70" y="340" fill="white" font-family="Arial" font-size="48">${escapeHtml(brief.context.speaker.name)} on ${escapeHtml(brief.context.subject.name)}</text><text x="70" y="500" fill="#dddddd" font-family="Arial" font-size="28">Draft only - original dialogue, not a canonical scene</text></svg>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">

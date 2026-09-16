@@ -1,0 +1,71 @@
+{
+  "contentId": "anidax-ram-subaru-arc2-training-v1",
+  "reviewedAt": "2026-09-16",
+  "scope": "Profile-based early-mansion draft; semantic dialogue/rights review pending",
+  "sources": [
+    {
+      "id": "ram-profile",
+      "url": "https://www.re-zero.com/character/%E3%83%A9%E3%83%A0/",
+      "medium": "official-novel-profile",
+      "locator": "2014-02-10 profile paragraphs 1-5",
+      "checkedAt": "2026-09-16",
+      "scope": "Early mansion role and characterization; not later memory states"
+    },
+    {
+      "id": "rem-profile",
+      "url": "https://www.re-zero.com/character/%E3%83%AC%E3%83%A0/",
+      "medium": "official-novel-profile",
+      "locator": "2014-02-10 profile paragraphs 1-5",
+      "checkedAt": "2026-09-16",
+      "scope": "Early mansion role and characterization"
+    }
+  ],
+  "segments": [
+    {
+      "text": "interviewer: Ram, what does the mansion's new employee need to learn first?",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "ram-profile"
+      ],
+      "finding": "Original fictional dialogue anchored to the selected speaker knowledge; not a canonical quote.",
+      "revisionRequired": true
+    },
+    {
+      "text": "Ram: To finish the task before announcing how impressive he is. We have work to do.",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "ram-profile"
+      ],
+      "finding": "Original fictional dialogue anchored to the selected speaker knowledge; not a canonical quote.",
+      "revisionRequired": true
+    },
+    {
+      "text": "interviewer: Is that your final verdict on Subaru?",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "ram-profile"
+      ],
+      "finding": "Original fictional dialogue anchored to the selected speaker knowledge; not a canonical quote.",
+      "revisionRequired": true
+    },
+    {
+      "text": "Ram: A verdict already? Let him learn. I would prefer useful hands to another speech.",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "ram-profile"
+      ],
+      "finding": "Original fictional dialogue anchored to the selected speaker knowledge; not a canonical quote.",
+      "revisionRequired": true
+    },
+    {
+      "text": "narrator: An imagined interview, not canon dialogue. At this point, Ram is Subaru's trainer. What would earn her respect?",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "ram-profile"
+      ],
+      "finding": "Original fictional dialogue anchored to the selected speaker knowledge; not a canonical quote.",
+      "revisionRequired": true
+    }
+  ],
+  "publicApproval": false
+}

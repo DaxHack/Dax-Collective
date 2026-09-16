@@ -1,0 +1,376 @@
+{
+  "schemaVersion": 1,
+  "contentId": "anidax-ram-subaru-arc2-training-v1",
+  "series": "Re:Zero - Starting Life in Another World",
+  "title": "Ram's First Impressions: A Fictional Mansion Interview",
+  "topic": "Ram's First Impressions: A Fictional Mansion Interview",
+  "angle": "Evaluate a newcomer through his trainer's standards, without importing later heroism or private memories.",
+  "description": "Original fictional interview draft informed by sourced characterization. Dialogue is invented, not canonical. Story-state lock and rights/voice/visual review required before publication.",
+  "context": {
+    "seriesId": "re-zero",
+    "storyState": {
+      "id": "arc2-first-employment",
+      "version": 1,
+      "continuity": "novel-profile-early-mansion",
+      "boundary": "Subaru has begun mansion employment and Ram is his trainer; before importing later loop outcomes. No anime episode/timecode equivalence asserted.",
+      "spoilerLevel": "early-arc-2"
+    },
+    "speaker": {
+      "id": "ram",
+      "name": "Ram"
+    },
+    "subject": {
+      "id": "subaru",
+      "name": "Natsuki Subaru"
+    },
+    "knownFacts": [
+      {
+        "id": "ram-role",
+        "kind": "canon_fact",
+        "field": "affiliation",
+        "text": "Ram serves at Roswaal Mansion and trains the new employee Subaru.",
+        "sourceIds": [
+          "ram-profile"
+        ],
+        "knownBy": [
+          "ram",
+          "rem",
+          "subaru"
+        ]
+      },
+      {
+        "id": "ram-traits",
+        "kind": "canon_fact",
+        "field": "personality",
+        "text": "The profile depicts Ram as proud and sharp-tongued.",
+        "sourceIds": [
+          "ram-profile"
+        ],
+        "knownBy": [
+          "ram"
+        ]
+      },
+      {
+        "id": "ram-values",
+        "kind": "canon_fact",
+        "field": "values",
+        "text": "Ram is devoted to Roswaal and is especially close to Rem.",
+        "sourceIds": [
+          "ram-profile"
+        ],
+        "knownBy": [
+          "ram",
+          "rem"
+        ]
+      },
+      {
+        "id": "rem-role",
+        "kind": "canon_fact",
+        "field": "strengths",
+        "text": "Rem handles the mansion's domestic work competently.",
+        "sourceIds": [
+          "rem-profile"
+        ],
+        "knownBy": [
+          "ram",
+          "rem"
+        ]
+      }
+    ],
+    "characterizationInferences": [
+      {
+        "id": "ram-style",
+        "kind": "supported_inference",
+        "field": "speechPatterns",
+        "text": "Use brief, cutting criticism and demanding instruction; do not assume warmth or later loyalty to Subaru.",
+        "sourceIds": [
+          "ram-profile"
+        ],
+        "knownBy": [
+          "ram"
+        ]
+      }
+    ],
+    "relationship": {
+      "speaker": "ram",
+      "subject": "subaru",
+      "type": "trainer-to-new-employee",
+      "assertionIds": [
+        "ram-role",
+        "ram-style"
+      ],
+      "perspective": "Demanding trainer; praise of later heroism is unsupported at this boundary.",
+      "kind": "supported_inference",
+      "sourceIds": [
+        "ram-profile"
+      ],
+      "sharedEventIds": [
+        "training"
+      ]
+    },
+    "sharedEvents": [
+      {
+        "id": "training",
+        "text": "Ram is assigned to train Subaru at the mansion.",
+        "participants": [
+          "ram",
+          "subaru"
+        ],
+        "sourceIds": [
+          "ram-profile"
+        ]
+      }
+    ],
+    "location": {
+      "id": "roswaal-mansion",
+      "name": "Roswaal Mansion",
+      "sourceIds": [
+        "ram-profile",
+        "rem-profile"
+      ],
+      "participants": [
+        "ram",
+        "rem",
+        "subaru"
+      ],
+      "context": "Household employment/training",
+      "visualRequirements": "Original abstract interview set only; no unverified room layout or copied anime background",
+      "referenceViews": []
+    },
+    "mustNotKnow": [
+      {
+        "speaker": "ram",
+        "topic": "Subaru's origin, private thoughts, death-loop experiences or Return by Death mechanics",
+        "reason": "Not established as Ram knowledge in this snapshot; conservative exclusion, not a universal canon claim"
+      },
+      {
+        "speaker": "ram",
+        "topic": "Later Rem sleep/memory status, Sanctuary outcomes, Pristella, Watchtower events, Otto or Garfiel's later bonds",
+        "reason": "Outside selected state; later sources must not be applied retroactively"
+      }
+    ],
+    "uncertainty": [
+      "Official profiles compress early mansion events; no exact loop/day or anime scene alignment is certified.",
+      "Unlisted traits, motivations, fears, abilities, outfits and quotes are unknown; absence is not a negative canon fact."
+    ],
+    "conflicts": [],
+    "sources": [
+      {
+        "id": "ram-profile",
+        "url": "https://www.re-zero.com/character/%E3%83%A9%E3%83%A0/",
+        "medium": "official-novel-profile",
+        "locator": "2014-02-10 profile paragraphs 1-5",
+        "checkedAt": "2026-09-16",
+        "scope": "Early mansion role and characterization; not later memory states"
+      },
+      {
+        "id": "rem-profile",
+        "url": "https://www.re-zero.com/character/%E3%83%AC%E3%83%A0/",
+        "medium": "official-novel-profile",
+        "locator": "2014-02-10 profile paragraphs 1-5",
+        "checkedAt": "2026-09-16",
+        "scope": "Early mansion role and characterization"
+      }
+    ],
+    "visualReferences": [
+      {
+        "characterId": "ram",
+        "references": [
+          {
+            "view": "profile-page",
+            "url": "https://www.re-zero.com/character/",
+            "sourceId": "ram-profile",
+            "rights": "IDENTIFICATION_ONLY_NOT_LICENSED",
+            "binaryCopied": false,
+            "verifiedViewAngles": []
+          }
+        ],
+        "descriptors": [],
+        "outfitStates": []
+      },
+      {
+        "characterId": "subaru",
+        "references": [
+          {
+            "view": "profile-page",
+            "url": "https://www.re-zero.com/character/",
+            "sourceId": "subaru-profile",
+            "rights": "IDENTIFICATION_ONLY_NOT_LICENSED",
+            "binaryCopied": false,
+            "verifiedViewAngles": []
+          }
+        ],
+        "descriptors": [],
+        "outfitStates": []
+      }
+    ],
+    "publicApproval": false
+  },
+  "scriptSegments": [
+    {
+      "start": 0,
+      "end": 6,
+      "label": "interviewer",
+      "text": "interviewer: Ram, what does the mansion's new employee need to learn first?",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-role"
+      ]
+    },
+    {
+      "start": 6,
+      "end": 12,
+      "label": "Ram",
+      "text": "Ram: To finish the task before announcing how impressive he is. We have work to do.",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-role",
+        "ram-style"
+      ]
+    },
+    {
+      "start": 12,
+      "end": 18,
+      "label": "interviewer",
+      "text": "interviewer: Is that your final verdict on Subaru?",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-role"
+      ]
+    },
+    {
+      "start": 18,
+      "end": 24,
+      "label": "Ram",
+      "text": "Ram: A verdict already? Let him learn. I would prefer useful hands to another speech.",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-role",
+        "ram-style"
+      ]
+    },
+    {
+      "start": 24,
+      "end": 30,
+      "label": "narrator",
+      "text": "narrator: An imagined interview, not canon dialogue. At this point, Ram is Subaru's trainer. What would earn her respect?",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-role"
+      ]
+    }
+  ],
+  "storyboard": [
+    {
+      "time": "0-6s",
+      "visual": "Original interviewer question card",
+      "textOverlay": "interviewer",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "6-12s",
+      "visual": "Original abstract speaker card; no character likeness or copied reference art",
+      "textOverlay": "Ram",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "12-18s",
+      "visual": "Original interviewer question card",
+      "textOverlay": "interviewer",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "18-24s",
+      "visual": "Original abstract speaker card; no character likeness or copied reference art",
+      "textOverlay": "Ram",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "24-30s",
+      "visual": "Original interviewer question card",
+      "textOverlay": "narrator",
+      "assetType": "Original text layout"
+    }
+  ],
+  "assetPlan": [
+    "Original abstract mansion interview set; architectural accuracy not claimed.",
+    "Official profile links are identification references only; no licensed front/side/back views verified.",
+    "No voice imitation or external media retrieval."
+  ],
+  "qc": [
+    [
+      "Canon context",
+      "REVIEW_REQUIRED",
+      "Exact state, knowledge ownership and evidence IDs checked; semantic fidelity of invented dialogue still requires editorial review."
+    ],
+    [
+      "Visual rights",
+      "BLOCKED",
+      "Reference URLs do not license reuse or generation of character likenesses."
+    ],
+    [
+      "Narration",
+      "BLOCKED",
+      "No approved character voice supplied."
+    ],
+    [
+      "Publishing",
+      "BLOCKED",
+      "Daniel final approval required."
+    ]
+  ],
+  "publicApproval": false,
+  "publishAllowed": false,
+  "canonRequest": {
+    "contentId": "anidax-ram-subaru-arc2-training-v1",
+    "speaker": "ram",
+    "subject": "subaru",
+    "storyState": "arc2-first-employment",
+    "version": 1,
+    "location": "roswaal-mansion",
+    "format": "interview",
+    "title": "Ram's First Impressions: A Fictional Mansion Interview",
+    "angle": "Evaluate a newcomer through his trainer's standards, without importing later heroism or private memories.",
+    "dialogue": [
+      {
+        "role": "interviewer",
+        "text": "Ram, what does the mansion's new employee need to learn first?",
+        "evidenceIds": [
+          "ram-role"
+        ]
+      },
+      {
+        "role": "character",
+        "text": "To finish the task before announcing how impressive he is. We have work to do.",
+        "evidenceIds": [
+          "ram-role",
+          "ram-style"
+        ]
+      },
+      {
+        "role": "interviewer",
+        "text": "Is that your final verdict on Subaru?",
+        "evidenceIds": [
+          "ram-role"
+        ]
+      },
+      {
+        "role": "character",
+        "text": "A verdict already? Let him learn. I would prefer useful hands to another speech.",
+        "evidenceIds": [
+          "ram-role",
+          "ram-style"
+        ]
+      },
+      {
+        "role": "narrator",
+        "text": "An imagined interview, not canon dialogue. At this point, Ram is Subaru's trainer. What would earn her respect?",
+        "evidenceIds": [
+          "ram-role"
+        ]
+      }
+    ]
+  },
+  "canonFile": "business-state/canon/re-zero.json",
+  "requestFile": "business-state/canon/ram-interview-request.json"
+}

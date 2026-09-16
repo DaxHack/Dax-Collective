@@ -1,5 +1,13 @@
 # The Dax Collective Execution Status
 
+## 2026-09-16: Character/Canon Slice Checkpoint
+
+- VERIFIED DONE: preserved interrupted work (13 tracked changes plus new canon/package files). Ram/Rem/Subaru profiles, exact versioned early-mansion snapshot, directional relationships, evidence-scoped speaker knowledge and Roswaal Mansion context feed an interview brief and the existing producer. No new framework/database.
+- Producer and review validator recheck both current canon and original request. Unknown request overrides, mismatched speaker/state/relationship, stale briefs, private-knowledge evidence and unsupported spoiler/state/location fail. Fictional dialogue stays creative extrapolation; semantic fidelity still requires review.
+- Existing `artifacts/anidax/ram-interview-v1/` 30s silent review render preserved and validated, not regenerated in this resume. Original timed Subaru package and segment-2/voice/visual/public approval gates remain unchanged.
+- Tests: 13 targeted Node tests passed; actual ops:review passed with 5 pending items; producer `--validate-only` and actual Ram review validation passed. Public false, YouTube private, cross-post false; no spend/provider calls.
+- NEXT: one sourced later-state relationship expansion plus reference index validation; unsupported later states remain blocked, not an intended permanent content limit. Read `tools/anidax/CANON.md`.
+
 ## 2026-09-16: Source QC Checkpoint
 
 - VERIFIED DONE: resumed clean `1b08cb965ccfb196b112673196ca6744f5a59012`; Firebase PR preview run `35034478622` succeeded. No prior sprint was repeated.

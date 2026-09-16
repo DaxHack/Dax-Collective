@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 export const steps = [
   ['tools/anidax/verify-review.mjs', 'artifacts/anidax/timed-review'],
+  ['tools/anidax/verify-review.mjs', 'artifacts/anidax/ram-interview-v1'],
   ['tools/business-state/build-state.mjs'],
   ['tools/revenue-readiness/measurements.mjs'],
   ['tools/business-state/build-state.mjs'],

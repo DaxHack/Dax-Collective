@@ -1,5 +1,9 @@
 # Blockers
 
+## Character/Canon Slice
+
+Ram interview is a 30s silent technical proof with source-backed context and invented dialogue. Final characterization, character voice, imagery/rights and public approval remain Daniel gates. Later arcs need sourced snapshots; no technical blocker prevents adding those. Existing Subaru review approvals remain pending. Reference URLs do not grant asset reuse rights.
+
 ## 2026-09-16 Exact Ani-Dax Gate
 
 Daniel: review the proposed segment 2 replacement in `artifacts/anidax/timed-review/generated/source-review.json`; approve or revise the draft voice and final visual direction. Source checking is complete at public-synopsis scope and flags interpretation separately from canon. Script/narration remain unchanged pending review. Public approval, rights decisions and verified account mapping remain separate gates. No need for additional infrastructure before this review.

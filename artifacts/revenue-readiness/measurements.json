@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T05:06:16.635Z",
+  "generatedAt": "2026-09-16T15:00:57.992Z",
   "source": "business-state/measurement-observations.json",
   "status": "NO_PROVIDER_OBSERVATIONS",
   "rule": "USD transaction events are additive; analytics are latest cumulative snapshots per provider/platform. No inferred zero, complete profit, live connection, or causal learning claims.",
@@ -8,6 +8,31 @@
     {
       "brandId": "ani-dax",
       "contentId": "anidax-2026-09-14-why-subaru-s-return-by-death-is-not-a-power-fantasy",
+      "observationCount": 0,
+      "netRevenueUsd": null,
+      "recordedCostUsd": null,
+      "recordedContributionUsd": null,
+      "totalProfitUsd": null,
+      "costByCategoryUsd": {
+        "llm": null,
+        "image": null,
+        "video": null,
+        "tts": null,
+        "music": null,
+        "storage": null,
+        "api": null,
+        "other": null,
+        "product": null,
+        "platformFee": null,
+        "adSpend": null
+      },
+      "latestAnalytics": [],
+      "learningStatus": "INSUFFICIENT_MEASURED_DATA",
+      "nextAction": "Import a verified provider aggregate export after approved distribution."
+    },
+    {
+      "brandId": "ani-dax",
+      "contentId": "anidax-ram-subaru-arc2-training-v1",
       "observationCount": 0,
       "netRevenueUsd": null,
       "recordedCostUsd": null,
