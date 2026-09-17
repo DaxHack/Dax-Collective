@@ -5,6 +5,34 @@
       "id": "ani-dax",
       "name": "Ani-Dax",
       "type": "AI-assisted anime/media operation",
+      "editorialConfiguration": {
+        "authority": "Daniel editorial preference; separate from neutral sourced canon, never canon evidence",
+        "evidenceHierarchy": ["sourced canon event", "what the event directly establishes", "reasonable interpretation", "what it does not establish"],
+        "ramSubaru": {
+          "preferredLens": "Respect/trust, not romance",
+          "ownerInterpretation": "Ram comes to genuinely respect and trust Subaru more than she openly admits while finding him annoying/goofy and treating him accordingly.",
+          "constraint": "This is Daniel's interpretation, not a timeless canon fact. Establish support separately at each selected story state. Do not promote Ram/Subaru as a romantic pairing.",
+          "episode33": "Assistance is sourced canon; degree of trust/respect is analysis. Neither romance nor unconditional trust follows without separate evidence. Do not infer absence of trust from compliance with an instruction."
+        },
+        "shippingPreferences": {
+          "favoredDiscussion": ["Subaru/Emilia", "Subaru/Rem"],
+          "openTo": "Rem-Subaru-Emilia outcome as editorial preference only",
+          "cruschSubaru": "Speculative/fantasy shipping only, not established canon",
+          "canonOverridesPreference": true
+        },
+        "spoilerPolicy": {
+          "defaultAudience": "anime-only friendly",
+          "storyStateRequired": true,
+          "ownerKnowledgeCeiling": "Arc 10; not permission to use later knowledge in public content",
+          "rule": "Scope claims, character knowledge and interpretation to the selected arc/event and audience boundary. No later-state leakage or disguised heavy spoilers presented as hints."
+        },
+        "futureDiscovery": {
+          "priority": "Actual current fandom claims/hot takes in Reddit, comments and social discussion, then prove, disprove or qualify against sourced canon",
+          "evidenceRequired": "Record a real source URL, observation date and precise claim; distinguish one comment from measured trend evidence",
+          "prohibited": "Fabricated trending claims, invented audience consensus or unsupported popularity metrics",
+          "implementationStatus": "Rules recorded only; no trend discovery system implemented"
+        }
+      },
       "primaryGoal": "Create high-quality anime commentary and character-interview packages that reach READY_FOR_APPROVAL before public publishing.",
       "rules": [
         "Do not use ripped, cropped, mirrored, or sped-up anime clips as the production base.",

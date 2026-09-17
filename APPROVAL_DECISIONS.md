@@ -1,8 +1,8 @@
 # Dax Collective Approval Decisions
 
-Generated: 2026-09-16T21:04:25.719Z
+Generated: 2026-09-17T02:04:04.167Z
 
-Source approval queue: 2026-09-16T21:04:25.647Z
+Source approval queue: 2026-09-17T02:04:04.103Z
 
 Daniel decisions may move work to the next private/draft step only. Public publishing, purchase/spend, checkout, credential changes, and legal commitments remain separately gated.
 

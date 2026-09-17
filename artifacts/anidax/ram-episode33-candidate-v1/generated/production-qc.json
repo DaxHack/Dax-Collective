@@ -5,7 +5,7 @@
   "sourceScope": "Official anime episode-33 synopsis only; not exhaustive episode review",
   "originalValue": "A distinction between instructed cooperation and inferred unconditional trust, illustrated with labeled fictional dialogue",
   "canonReview": "No unsupported feeling, exclusive motive, later knowledge or canonical-quote assertion found at synopsis scope; final editorial decision pending",
-  "audio": {"kind":"local synthetic timing draft","actorImitation":false,"humanListeningReviewCompleted":false,"finalApproved":false},
+  "audio": {"kind":"local synthetic timing draft","actorImitation":false,"humanListeningReviewCompleted":false,"finalApproved":false,"encodedIntegratedLufs":-18.01,"encodedTruePeakDbtp":-1.42,"measurement":"FFmpeg loudnorm input measurements of candidate-review.mp4; final mix/listening still required"},
   "visuals": {"kind":"original animated typography","externalImagesCopied":false,"sampledFramesChecked":true,"overlapDetected":false,"finalPacingApproved":false},
   "captions": {"kind":"five measured segment cues","wordLevelSyncVerified":false,"finalPhraseLevelPassRequired":true},
   "rights": {"copyrightClearanceClaimed":false,"referenceImagesLicensed":false,"referenceImagesUsed":false,"voiceCommercialUseVerified":false},

@@ -1,5 +1,9 @@
 # Blockers
 
+## Editorial Addendum Applied
+
+Owner preferences recorded separately in business-state/brand-rules.json. Current piece does not assert romantic interest. Daniel should review the ambiguous word 'confession' in the explicitly invented reply; respect/trust is the intended frame. No script/video change authorized merely for subjective improvement before review. Remaining gates are the existing final script, natural narration/listening, pacing and rights/public approval decisions.
+
 ## Current Episode-33 Candidate
 
 `artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md` is the owner review entrypoint. No source/API/rendering blocker: complete draft audio/video/subtitle package exists. Final-quality gates remain: Daniel editorial interpretation/fictional response review; natural neutral narration approval or recording (SAPI is timing-only, commercial-use suitability unverified); final motion/caption pacing and visual/rights/disclosure review. Exact execution specification is included; no copyrighted reference asset or paid service is required. Not ready to publish. No public upload/cross-posting permitted.

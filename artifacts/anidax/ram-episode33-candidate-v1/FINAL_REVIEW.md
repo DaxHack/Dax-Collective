@@ -2,6 +2,8 @@
 
 ## Decision
 
+Editorial addendum: Daniel's preferred Ram/Subaru lens is respect/trust, not romance. That preference is not evidence; this piece remains episode-33 scoped. The existing imagined line uses 'confession', which may carry an unintended romantic connotation. Please review that word. A possible precision revision is 'You have turned an instruction into a declaration of trust.' It has NOT been substituted or recorded. No current video change has been made for this addendum.
+
 Publication candidate, not a pipeline test. Status: READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC. Watch `render/candidate-review.mp4`. This is a complete editorial rough cut with original typography and a neutral synthetic timing voice, NOT an approved publication master. No publishing/upload has occurred.
 
 The value is a specific reading distinction: cooperation under an instruction does not, by itself, establish unconditional trust. It does not establish the absence of affection either. One invented reply illustrates the distinction; the analysis does not use that reply as evidence.

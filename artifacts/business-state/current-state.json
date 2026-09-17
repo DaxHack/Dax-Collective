@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T21:04:25.812Z",
+  "generatedAt": "2026-09-17T02:04:04.273Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -61,6 +61,42 @@
       "id": "ani-dax",
       "name": "Ani-Dax",
       "type": "AI-assisted anime/media operation",
+      "editorialConfiguration": {
+        "authority": "Daniel editorial preference; separate from neutral sourced canon, never canon evidence",
+        "evidenceHierarchy": [
+          "sourced canon event",
+          "what the event directly establishes",
+          "reasonable interpretation",
+          "what it does not establish"
+        ],
+        "ramSubaru": {
+          "preferredLens": "Respect/trust, not romance",
+          "ownerInterpretation": "Ram comes to genuinely respect and trust Subaru more than she openly admits while finding him annoying/goofy and treating him accordingly.",
+          "constraint": "This is Daniel's interpretation, not a timeless canon fact. Establish support separately at each selected story state. Do not promote Ram/Subaru as a romantic pairing.",
+          "episode33": "Assistance is sourced canon; degree of trust/respect is analysis. Neither romance nor unconditional trust follows without separate evidence. Do not infer absence of trust from compliance with an instruction."
+        },
+        "shippingPreferences": {
+          "favoredDiscussion": [
+            "Subaru/Emilia",
+            "Subaru/Rem"
+          ],
+          "openTo": "Rem-Subaru-Emilia outcome as editorial preference only",
+          "cruschSubaru": "Speculative/fantasy shipping only, not established canon",
+          "canonOverridesPreference": true
+        },
+        "spoilerPolicy": {
+          "defaultAudience": "anime-only friendly",
+          "storyStateRequired": true,
+          "ownerKnowledgeCeiling": "Arc 10; not permission to use later knowledge in public content",
+          "rule": "Scope claims, character knowledge and interpretation to the selected arc/event and audience boundary. No later-state leakage or disguised heavy spoilers presented as hints."
+        },
+        "futureDiscovery": {
+          "priority": "Actual current fandom claims/hot takes in Reddit, comments and social discussion, then prove, disprove or qualify against sourced canon",
+          "evidenceRequired": "Record a real source URL, observation date and precise claim; distinguish one comment from measured trend evidence",
+          "prohibited": "Fabricated trending claims, invented audience consensus or unsupported popularity metrics",
+          "implementationStatus": "Rules recorded only; no trend discovery system implemented"
+        }
+      },
       "primaryGoal": "Create high-quality anime commentary and character-interview packages that reach READY_FOR_APPROVAL before public publishing.",
       "rules": [
         "Do not use ripped, cropped, mirrored, or sped-up anime clips as the production base.",
@@ -411,7 +447,7 @@
   ],
   "approvalDecisions": {
     "source": "business-state/approval-decisions.json",
-    "generatedAt": "2026-09-16T21:04:25.719Z",
+    "generatedAt": "2026-09-17T02:04:04.167Z",
     "pending": 6,
     "decisions": [
       {
@@ -427,7 +463,7 @@
       {
         "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
         "decisionStatus": "PENDING_DANIEL_REVIEW",
-        "reviewFingerprint": "8015a11f8199041a75071f9e77d52655ea4bd34311bc8a44fffaf155c9cc87cf"
+        "reviewFingerprint": "933100eeb8fbb612e9e023321fc670428db4ae43c88551fdcdece7a2a4d2facd"
       },
       {
         "contentId": "gods-vessel-names-of-god",
@@ -820,7 +856,7 @@
     }
   ],
   "measurements": {
-    "generatedAt": "2026-09-16T21:04:25.519Z",
+    "generatedAt": "2026-09-17T02:04:03.966Z",
     "source": "business-state/measurement-observations.json",
     "status": "NO_PROVIDER_OBSERVATIONS",
     "rule": "USD transaction events are additive; analytics are latest cumulative snapshots per provider/platform. No inferred zero, complete profit, live connection, or causal learning claims.",

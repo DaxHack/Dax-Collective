@@ -1,6 +1,17 @@
 # The Dax Collective Execution Status
 
+## Resume Checkpoint: Existing Candidate Preserved
+
+- Resume validation: 16/16 targeted tests passed; full ops:review passed with six pending items; editorial JSON/private-gate assertions passed; git diff --check passed. Video Git blob `530fed6d242637364afeb5854e3c54116f0503d4` equals f23f748. No frontend rebuild needed for this scoped change.
+
+- Preserved the 16 interrupted modified files: storyboard layout/title/whitespace repair, measured audio QC, generated timestamps and handoff updates. No new candidate, script edit, canon database change or video regeneration in this resume. Candidate render matches committed f23f748.
+- Ani-Dax editorialConfiguration now lives in existing `business-state/brand-rules.json`, separate from canon: respect/trust not romantic Ram/Subaru, evidence hierarchy, owner shipping preferences subordinate to canon, anime-only/arc-bounded defaults, and real-source-only future discovery. Configuration is guidance, not a new automated semantic gate.
+- Current candidate contains no explicit romance assertion. 'Confession' in the invented response is a possible romantic connotation for Daniel to review, not a canonical quote. Preserve current cut pending decision; a possible precision edit is 'You have turned an instruction into a declaration of trust.' Do not substitute without review.
+- NEXT: present current FINAL_REVIEW.md/render and exact script to Daniel. No infrastructure expansion or rerender before his review. Publishing false, YouTube private, cross-post false. Source/voice/final pacing/rights approvals remain pending.
+
 ## 2026-09-16: Episode-33 Publication Candidate
+
+- Checkpoint `f23f748` pushed to PR #3. Firebase preview run `35150368187` was in progress when checked. Follow-up fixes the reused storyboard's stale title/overflow for this candidate; records actual encoded audio measurements (-18.01 LUFS, -1.42 dBTP), not an assumed normalization target.
 
 - VERIFIED DONE: resumed clean a65ca34, no lost edits. Produced the selected 'Ram Helped Subaru. Is That Trust?' candidate at `artifacts/anidax/ram-episode33-candidate-v1/`. State/request validation, source-scoped script, explicitly invented reply, measured local draft audio, 47.735s vertical review cut, five subtitle cues, storyboard, SVG/PNG thumbnail, metadata, source QC and final asset specification are present. No earlier package regenerated.
 - Actual checks: 16 targeted Node tests pass; candidate media validation and full ops:review pass; sampled contact-sheet frames and thumbnail visually inspected. Six review items remain pending, no provider observations. Source QC records no required factual revision at official synopsis scope; not final creative/copyright approval.

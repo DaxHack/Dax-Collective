@@ -662,6 +662,14 @@ function buildThumbnailSvg() {
 }
 
 function buildStoryboardSvg() {
+  if (brief?.editorialTreatment) {
+    const rows = storyboard.map((item, i) => {
+      const y = 200 + i * 160;
+      const detail = wrapAss(item.visual, 60).split('\\N').map((line, n) => `<tspan x="860" y="${y + 32 + n * 27}">${escapeHtml(line)}</tspan>`).join('');
+      return `<path d="M80 ${y - 20}H1840" stroke="#637168"/><text x="80" y="${y + 25}" fill="#c9ebb4" font-size="24">${escapeHtml(item.time)}</text><text x="80" y="${y + 72}" fill="white" font-size="25">${escapeHtml(item.textOverlay)}</text><text fill="#d8dedb" font-size="23">${detail}</text>`;
+    });
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080"><rect width="1920" height="1080" fill="#141817"/><g font-family="Arial"><text x="80" y="85" fill="white" font-size="42">${escapeHtml(brief.title)}</text><text x="80" y="135" fill="#c9ebb4" font-size="25">EDITORIAL SHOT PLAN / ORIGINAL TYPOGRAPHY / NOT A CANONICAL SCENE</text>${rows.join('')}</g></svg>\n`;
+  }
   const cards = storyboard
     .map((item, index) => {
       const y = 170 + index * 160;

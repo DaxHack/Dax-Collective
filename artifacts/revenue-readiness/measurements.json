@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T21:04:25.519Z",
+  "generatedAt": "2026-09-17T02:04:03.966Z",
   "source": "business-state/measurement-observations.json",
   "status": "NO_PROVIDER_OBSERVATIONS",
   "rule": "USD transaction events are additive; analytics are latest cumulative snapshots per provider/platform. No inferred zero, complete profit, live connection, or causal learning claims.",

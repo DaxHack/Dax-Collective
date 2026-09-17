@@ -1,6 +1,14 @@
 # Next Session Handoff
 
+## Stop Point: Daniel Reviews Existing Cut
+
+The interrupted storyboard cleanup and state updates are preserved. This resume does not regenerate video or change script. Editorial guidance is in `business-state/brand-rules.json` under Ani-Dax editorialConfiguration, NOT in neutral canon. Respect/trust is the preferred Ram/Subaru lens, not romance; all preferences yield to state-bounded evidence. Anime-friendly defaults and future real-fandom-source discovery rules are recorded, not a new subsystem.
+
+Present `artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md` and the existing 47.735s candidate-review.mp4. Ask only for editorial/voice/final visual-rights decisions. Flag the possible romantic reading of the invented word 'confession'; do not replace it or rerender until Daniel reviews. No new concept, trend engine or infrastructure work.
+
 ## Current Candidate: Ram Helped Subaru. Is That Trust?
+
+Candidate checkpoint `f23f748` is pushed to existing PR #3; Firebase preview run 35150368187 was in progress. Follow-up corrects the reused storyboard label/layout and records measured audio loudness. No final publication-quality approval is implied.
 
 Open `artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md` and `render/candidate-review.mp4`. A complete 47.735s editorial rough cut now exists with draft neutral narration, original animated typography, measured captions, thumbnail and exact final-assembly requirements. Read `generated/production-qc.json` for honest holds. Source review is complete at official episode-33 synopsis scope; invented response is not canon. 16 targeted tests and full ops:review passed; six pending queue items. No publication approval.
 
