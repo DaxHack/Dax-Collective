@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-09-17",
+  "audience": {
+    "medium": "anime",
+    "maxArc": 4,
+    "note": "Conservative ceiling, not a claim about the latest aired arc; explicit scope review required to raise it"
+  },
+  "collectionMode": "MANUAL_BOUNDED_PUBLIC_EVIDENCE_INTAKE_NO_SCRAPING",
+  "candidates": [
+    {
+      "id": "rezero-strength-20260905",
+      "claim": "would subaru get be stronger?",
+      "source": {
+        "url": "https://www.reddit.com/r/ReZero/comments/1w7paf4/would_subaru_get_be_stronger/",
+        "publishedAt": "2026-09-05",
+        "observedAt": "2026-09-17",
+        "access": "search_excerpt",
+        "locator": "Post title and indexed excerpt",
+        "activity": {
+          "displayedVotes": 5,
+          "comments": null,
+          "scope": "Indexed snapshot only; not a current live count"
+        },
+        "popularityConclusion": "ONE_OBSERVED_DISCUSSION_NOT_A_TREND"
+      },
+      "scope": {
+        "classification": "unknown",
+        "maxArc": null,
+        "reason": "Excerpt discusses future abilities; complete post/comments not verified. Proposed early-anime reframing is not yet source-cleared."
+      },
+      "characters": [
+        "subaru"
+      ],
+      "topics": [
+        "strength",
+        "support versus combat"
+      ],
+      "claimType": "speculative",
+      "formatId": "canon-check",
+      "canonSourcesRequired": [
+        "Licensed anime scenes within explicitly selected early-arc boundary showing individual versus cooperative outcomes",
+        "Official episode synopsis locators; verify limits before any strength comparison"
+      ],
+      "angle": "Replace an unknowable future power forecast with an explicit test: what counts as strength in the selected early-anime events? Label the reframing as Ani-Dax's question.",
+      "originalityOpportunity": "Separate combat, information and coordination rather than rank characters by a single power number.",
+      "spoilerRisk": "high until source and target boundary are isolated",
+      "copyrightAssetDifficulty": "low for original argument graphics; source clips not authorized",
+      "productionComplexity": "medium: scene-level evidence research; original diagrams feasible",
+      "audienceRelevance": "Likely useful to viewers frustrated by non-combat protagonists; inference, not measured demand",
+      "monetizationRelevance": "Audience retention/series discovery only; no verified offer or earnings",
+      "assessment": {
+        "viewerInterest": {
+          "score": 3,
+          "reason": "Actual audience question, only a small observed snapshot"
+        },
+        "analyzability": {
+          "score": 4,
+          "reason": "Can operationalize strength, but reframing requires explicit disclosure"
+        },
+        "originality": {
+          "score": 4,
+          "reason": "Multi-axis analysis adds reasoning"
+        },
+        "canonSupport": {
+          "score": 2,
+          "reason": "Scene evidence still missing"
+        },
+        "feasibility": {
+          "score": 4,
+          "reason": "Original graphics avoid acquisition dependency"
+        }
+      },
+      "ranking": {
+        "score": 66,
+        "components": {
+          "viewerInterest": 15,
+          "analyzability": 16,
+          "originality": 12,
+          "canonSupport": 8,
+          "feasibility": 8,
+          "timeliness": 7
+        },
+        "label": "EDITORIAL_PRIORITIZATION_NOT_PREDICTED_PERFORMANCE",
+        "ageDays": 12,
+        "engagementWeight": 0
+      },
+      "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+      "holds": [
+        "VERIFY_SOURCE_CONTEXT",
+        "SPOILER_SCOPE_REVIEW"
+      ],
+      "evidenceLadder": {
+        "fandomClaim": "would subaru get be stronger?",
+        "sourcedCanonEvidence": [],
+        "directlyEstablishes": null,
+        "reasonableInterpretation": null,
+        "doesNotEstablish": null,
+        "aniDaxConclusion": null,
+        "preferenceConflict": "NOT_ASSESSED_CANON_OVERRIDES_PREFERENCE"
+      },
+      "productionHandoff": {
+        "formatId": "canon-check",
+        "requiredFields": [
+          "discussionProvenance",
+          "exactQuestion",
+          "storyStateLock",
+          "canonEvidence",
+          "directlyEstablishes",
+          "interpretation",
+          "doesNotEstablish",
+          "conclusion",
+          "uncertainty",
+          "preferenceConflict",
+          "copyrightPlan",
+          "spoilerReview",
+          "humanApproval",
+          "testableProposition",
+          "verdictWithLimits",
+          "counterEvidence"
+        ],
+        "missingFields": [
+          "discussionProvenance",
+          "exactQuestion",
+          "storyStateLock",
+          "canonEvidence",
+          "directlyEstablishes",
+          "interpretation",
+          "doesNotEstablish",
+          "conclusion",
+          "uncertainty",
+          "preferenceConflict",
+          "copyrightPlan",
+          "spoilerReview",
+          "humanApproval",
+          "testableProposition",
+          "verdictWithLimits",
+          "counterEvidence"
+        ],
+        "storyStateLock": null,
+        "canonStore": "business-state/canon/re-zero.json",
+        "availableSnapshotIds": [
+          {
+            "id": "arc4-episode33-cooperation",
+            "version": 1
+          },
+          {
+            "id": "arc2-first-employment",
+            "version": 1
+          }
+        ],
+        "evidenceBinding": "Select an exact snapshot or source a new one; existing snapshots do not automatically support this topic",
+        "adapter": null,
+        "adapterStatus": "CONTRACT_PREPARED_RENDER_ADAPTER_NOT_IMPLEMENTED",
+        "qcRequired": [
+          "Do not treat votes as truth",
+          "Do not manufacture a consensus or trend"
+        ],
+        "renderAllowed": false,
+        "publishAllowed": false,
+        "automaticCrossPostingAllowed": false
+      }
+    },
+    {
+      "id": "rezero-romantic-chances-20260905",
+      "claim": "Does rem really have the same chance as Emilia?",
+      "source": {
+        "url": "https://www.reddit.com/r/ReZero/comments/1w7u8j7/does_rem_really_have_the_same_chance_as_emilia/",
+        "publishedAt": "2026-09-05",
+        "observedAt": "2026-09-17",
+        "access": "search_excerpt",
+        "locator": "Post title and indexed excerpt; direct open failed",
+        "activity": {
+          "displayedVotes": 93,
+          "comments": null,
+          "scope": "Indexed snapshot only; no growth series or cross-platform corroboration"
+        },
+        "popularityConclusion": "ONE_OBSERVED_DISCUSSION_NOT_A_TREND"
+      },
+      "scope": {
+        "classification": "unknown",
+        "maxArc": null,
+        "reason": "Whole-story relationship prediction; comment spoiler scope unverified"
+      },
+      "characters": [
+        "subaru",
+        "rem",
+        "emilia"
+      ],
+      "topics": [
+        "relationship interpretation",
+        "prediction"
+      ],
+      "claimType": "speculative",
+      "formatId": "theory-speculation",
+      "canonSourcesRequired": [
+        "State-bounded licensed anime dialogue establishing what each character actually says",
+        "Counter-evidence within the same audience boundary; no author-intent rumor without primary citation"
+      ],
+      "angle": "Separate demonstrated attachment from predictions about an ending; no invented probabilities or preferred-ship guarantee.",
+      "originalityOpportunity": "An evidence-versus-forecast explanation rather than a ship contest.",
+      "spoilerRisk": "high: future relationship knowledge could contaminate analysis",
+      "copyrightAssetDifficulty": "low with original evidence diagrams; no fan art or screenshots licensed",
+      "productionComplexity": "medium: dialogue/source verification",
+      "audienceRelevance": "Observed relationship question; relevance plausible, size unknown",
+      "monetizationRelevance": "Community discussion only; no commercial conversion evidence",
+      "assessment": {
+        "viewerInterest": {
+          "score": 4,
+          "reason": "Clear recurring type of audience question, one observed post"
+        },
+        "analyzability": {
+          "score": 3,
+          "reason": "Premises testable, final romantic outcome speculative"
+        },
+        "originality": {
+          "score": 3,
+          "reason": "Needs substantive evidence distinctions"
+        },
+        "canonSupport": {
+          "score": 1,
+          "reason": "No scoped supporting dossier yet"
+        },
+        "feasibility": {
+          "score": 3,
+          "reason": "Research and spoiler isolation required"
+        }
+      },
+      "ranking": {
+        "score": 58,
+        "components": {
+          "viewerInterest": 20,
+          "analyzability": 12,
+          "originality": 9,
+          "canonSupport": 4,
+          "feasibility": 6,
+          "timeliness": 7
+        },
+        "label": "EDITORIAL_PRIORITIZATION_NOT_PREDICTED_PERFORMANCE",
+        "ageDays": 12,
+        "engagementWeight": 0
+      },
+      "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+      "holds": [
+        "VERIFY_SOURCE_CONTEXT",
+        "SPOILER_SCOPE_REVIEW"
+      ],
+      "evidenceLadder": {
+        "fandomClaim": "Does rem really have the same chance as Emilia?",
+        "sourcedCanonEvidence": [],
+        "directlyEstablishes": null,
+        "reasonableInterpretation": null,
+        "doesNotEstablish": null,
+        "aniDaxConclusion": null,
+        "preferenceConflict": "NOT_ASSESSED_CANON_OVERRIDES_PREFERENCE"
+      },
+      "productionHandoff": {
+        "formatId": "theory-speculation",
+        "requiredFields": [
+          "discussionProvenance",
+          "exactQuestion",
+          "storyStateLock",
+          "canonEvidence",
+          "directlyEstablishes",
+          "interpretation",
+          "doesNotEstablish",
+          "conclusion",
+          "uncertainty",
+          "preferenceConflict",
+          "copyrightPlan",
+          "spoilerReview",
+          "humanApproval",
+          "premises",
+          "counterEvidence",
+          "falsifiability",
+          "speculationLabel"
+        ],
+        "missingFields": [
+          "discussionProvenance",
+          "exactQuestion",
+          "storyStateLock",
+          "canonEvidence",
+          "directlyEstablishes",
+          "interpretation",
+          "doesNotEstablish",
+          "conclusion",
+          "uncertainty",
+          "preferenceConflict",
+          "copyrightPlan",
+          "spoilerReview",
+          "humanApproval",
+          "premises",
+          "counterEvidence",
+          "falsifiability",
+          "speculationLabel"
+        ],
+        "storyStateLock": null,
+        "canonStore": "business-state/canon/re-zero.json",
+        "availableSnapshotIds": [
+          {
+            "id": "arc4-episode33-cooperation",
+            "version": 1
+          },
+          {
+            "id": "arc2-first-employment",
+            "version": 1
+          }
+        ],
+        "evidenceBinding": "Select an exact snapshot or source a new one; existing snapshots do not automatically support this topic",
+        "adapter": null,
+        "adapterStatus": "CONTRACT_PREPARED_RENDER_ADAPTER_NOT_IMPLEMENTED",
+        "qcRequired": [
+          "Prediction is never a confirmed outcome"
+        ],
+        "renderAllowed": false,
+        "publishAllowed": false,
+        "automaticCrossPostingAllowed": false
+      }
+    },
+    {
+      "id": "rezero-season-comparison-20260911",
+      "claim": "Season 1 vs Season 4",
+      "source": {
+        "url": "https://www.reddit.com/r/ReZero/comments/1wdhhpp/season_1_vs_season_4/",
+        "publishedAt": "2026-09-11",
+        "observedAt": "2026-09-17",
+        "access": "search_excerpt",
+        "locator": "Post title; excerpt states Season 1 remains the author's peak experience; direct open failed",
+        "activity": {
+          "displayedVotes": 14,
+          "comments": null,
+          "scope": "Indexed snapshot, not representative fandom preference"
+        },
+        "popularityConclusion": "ONE_OBSERVED_DISCUSSION_NOT_A_TREND"
+      },
+      "scope": {
+        "classification": "mixed-spoilers",
+        "maxArc": null,
+        "reason": "Season-4 comparison and potential novel context; outside conservative Arc-4 default until mapped and reviewed"
+      },
+      "characters": [
+        "subaru"
+      ],
+      "topics": [
+        "adaptation",
+        "pacing",
+        "comparison"
+      ],
+      "claimType": "subjective",
+      "formatId": "ranking-comparison",
+      "canonSourcesRequired": [
+        "Official episode list and selected comparable scenes",
+        "Declared pacing/character-focus criteria; licensed novel edition and locators only if a separate novel-spoiler analysis is approved"
+      ],
+      "angle": "Distinguish personal peak experience from verifiable adaptation/pacing differences; taste cannot be disproved by canon.",
+      "originalityOpportunity": "Compare a small matched pair of storytelling choices instead of declaring a universal best season.",
+      "spoilerRisk": "high; held from default anime-safe intake",
+      "copyrightAssetDifficulty": "medium; comparison invites clip reuse, prefer original diagrams",
+      "productionComplexity": "high: matched evidence and adaptation review",
+      "audienceRelevance": "Recent comparative discussion, not proof of general sentiment",
+      "monetizationRelevance": "Potential returning-viewer relevance only; no revenue forecast",
+      "assessment": {
+        "viewerInterest": {
+          "score": 3,
+          "reason": "Actual recent comparison prompt"
+        },
+        "analyzability": {
+          "score": 2,
+          "reason": "Taste itself is not canon-testable"
+        },
+        "originality": {
+          "score": 3,
+          "reason": "Matched criteria could add specificity"
+        },
+        "canonSupport": {
+          "score": 1,
+          "reason": "No verified comparison dossier"
+        },
+        "feasibility": {
+          "score": 2,
+          "reason": "Higher research and spoiler cost"
+        }
+      },
+      "ranking": {
+        "score": 50,
+        "components": {
+          "viewerInterest": 15,
+          "analyzability": 8,
+          "originality": 9,
+          "canonSupport": 4,
+          "feasibility": 4,
+          "timeliness": 10
+        },
+        "label": "EDITORIAL_PRIORITIZATION_NOT_PREDICTED_PERFORMANCE",
+        "ageDays": 6,
+        "engagementWeight": 0
+      },
+      "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+      "holds": [
+        "VERIFY_SOURCE_CONTEXT",
+        "SPOILER_SCOPE_REVIEW"
+      ],
+      "evidenceLadder": {
+        "fandomClaim": "Season 1 vs Season 4",
+        "sourcedCanonEvidence": [],
+        "directlyEstablishes": null,
+        "reasonableInterpretation": null,
+        "doesNotEstablish": null,
+        "aniDaxConclusion": null,
+        "preferenceConflict": "NOT_ASSESSED_CANON_OVERRIDES_PREFERENCE"
+      },
+      "productionHandoff": {
+        "formatId": "ranking-comparison",
+        "requiredFields": [
+          "discussionProvenance",
+          "exactQuestion",
+          "storyStateLock",
+          "canonEvidence",
+          "directlyEstablishes",
+          "interpretation",
+          "doesNotEstablish",
+          "conclusion",
+          "uncertainty",
+          "preferenceConflict",
+          "copyrightPlan",
+          "spoilerReview",
+          "humanApproval",
+          "comparisonCriteria",
+          "comparableStoryStates",
+          "reasoningPerEntry"
+        ],
+        "missingFields": [
+          "discussionProvenance",
+          "exactQuestion",
+          "storyStateLock",
+          "canonEvidence",
+          "directlyEstablishes",
+          "interpretation",
+          "doesNotEstablish",
+          "conclusion",
+          "uncertainty",
+          "preferenceConflict",
+          "copyrightPlan",
+          "spoilerReview",
+          "humanApproval",
+          "comparisonCriteria",
+          "comparableStoryStates",
+          "reasoningPerEntry"
+        ],
+        "storyStateLock": null,
+        "canonStore": "business-state/canon/re-zero.json",
+        "availableSnapshotIds": [
+          {
+            "id": "arc4-episode33-cooperation",
+            "version": 1
+          },
+          {
+            "id": "arc2-first-employment",
+            "version": 1
+          }
+        ],
+        "evidenceBinding": "Select an exact snapshot or source a new one; existing snapshots do not automatically support this topic",
+        "adapter": null,
+        "adapterStatus": "CONTRACT_PREPARED_RENDER_ADAPTER_NOT_IMPLEMENTED",
+        "qcRequired": [
+          "Subjective weights must be disclosed"
+        ],
+        "renderAllowed": false,
+        "publishAllowed": false,
+        "automaticCrossPostingAllowed": false
+      }
+    }
+  ],
+  "safeQueue": [],
+  "held": [
+    {
+      "id": "rezero-strength-20260905",
+      "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+      "holds": [
+        "VERIFY_SOURCE_CONTEXT",
+        "SPOILER_SCOPE_REVIEW"
+      ]
+    },
+    {
+      "id": "rezero-romantic-chances-20260905",
+      "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+      "holds": [
+        "VERIFY_SOURCE_CONTEXT",
+        "SPOILER_SCOPE_REVIEW"
+      ]
+    },
+    {
+      "id": "rezero-season-comparison-20260911",
+      "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+      "holds": [
+        "VERIFY_SOURCE_CONTEXT",
+        "SPOILER_SCOPE_REVIEW"
+      ]
+    }
+  ],
+  "renderAllowed": false,
+  "publishAllowed": false,
+  "automaticCrossPostingAllowed": false
+}

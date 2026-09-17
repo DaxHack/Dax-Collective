@@ -32,6 +32,7 @@ const state = {
     currentState: summarizeBrandState(brand.id, queue),
   })),
   contentQueue: queue,
+  aniDaxResearchQueue: readJson(path.join(root, 'artifacts/anidax/discovery/anime-safe-queue.json')),
   approvalDecisions: approvalDecisions ? {
     source: 'business-state/approval-decisions.json',
     generatedAt: approvalDecisions.generatedAt,

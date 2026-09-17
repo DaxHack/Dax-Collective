@@ -23,6 +23,9 @@ switch (command) {
   case 'content-queue':
     print(state.contentQueue);
     break;
+  case 'anidax-research':
+    print(state.aniDaxResearchQueue || null);
+    break;
   case 'approval-decisions':
     print(state.approvalDecisions);
     break;

@@ -1,5 +1,17 @@
 # Next Session Handoff
 
+## Current: Discovery V1 Checkpoint - Stop For Review
+
+Recovery preserved the interrupted intake, format registry and shared-state integration. 22 targeted tests pass. Three real indexed Reddit leads are ranked, all held for source-context/spoiler review; no verified trend or production-ready topic exists. See `tools/anidax/DISCOVERY.md`, `business-state/anidax-discovery.json`, `business-state/anidax-formats.json` and `artifacts/anidax/discovery/private-research-queue.json`.
+
+Run `npm run anidax:discover -- 2026-09-17`, then `npm run business-state:build` and `npm run business-state:query -- anidax-research` to reproduce this dated snapshot. This is manual evidence intake, not an internet crawler. Source access and scope require actual review; changing a label does not verify a page. Shared state exposes only the spoiler-safe projection.
+
+Next exact action: Daniel reviews the three leads/format contracts. Subsequent research must verify direct source context, select the precise anime/story boundary and gather primary scene evidence plus counter-evidence before a claim can be answered. Strength and romantic-chances leads have unknown scope; season comparison has mixed/unverified later scope. Search counts are not live demand measurements. Seven formats have contracts only; Character Interview alone has the existing production adapter.
+
+R1/R2 and neutral canon remain unchanged against `61632a4`. Do not run ops:review or regenerate media for discovery; that rewrites frozen review artifacts. No R3, new video, adapter, dashboard, scraper or publication during this recovery. Existing Daniel voice/rights/final approval gates remain; source-access failure is not a Daniel approval gate. Claude commerce/design untouched.
+
+Branch `codex/legal-oauth-pages-20260913`, PR #3, Temp worktree `C:/Users/Daniel Rollins/AppData/Local/Temp/dax-collective-legal-oauth-20260913`. Discovery-only checkpoint follows `61632a4`; no frontend change/build, main merge or live deployment. See git log for the exact recovery commit. Do not restart completed sprints.
+
 ## Current: V1-R2 Awaiting Daniel Review
 
 Recovery checks passed: 17 targeted tests, producer validation-only, full review/state refresh, media decode, audio hash and exact-script/queue assertions, PowerShell syntax and whitespace checks. R1/R2 media hashes unchanged. No voice or video generation was performed in recovery.

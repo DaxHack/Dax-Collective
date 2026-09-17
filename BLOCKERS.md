@@ -1,5 +1,11 @@
 # Blockers
 
+## Discovery V1 Source Holds - 2026-09-17
+
+All three intake leads are search-index observations only; direct Reddit opens failed during collection. Both VERIFY_SOURCE_CONTEXT and SPOILER_SCOPE_REVIEW apply to each. Strength and romantic-chances questions have unknown arc scope; season comparison is mixed-spoiler/unmapped. None enters the anime-safe research queue or production. Need accessible full source context, exact audience boundary and primary canon/counter-evidence dossier before advancing; do not invent counts, popularity or conclusions. This is an external/source-verification limitation, not a request for credentials or Daniel approval.
+
+Seven format entries are evidence/QC contracts without production adapters; only Character Interview reuses the implemented adapter. No new adapter is requested in this recovery. Daniel reviews discovery results; existing frozen R2 approval remains a separate human gate. No publishing/cross-posting or spend occurred.
+
 ## Active V1-R2 Gate
 
 The wording decision is resolved: Daniel's exact declaration-of-trust revision is rendered. The measured phrase-caption/pacing pass exists. Daniel now reviews the existing 53.081s cut in `artifacts/anidax/ram-episode33-candidate-v1-r2/`. Synthetic voice and typography remain V1 placeholders; review pronunciation/cadence, caption transitions and presentation. Commercial voice suitability and final rights/public approval are not established. No technical/tool blocker is claimed for delivering this review cut. No R3 authorized.

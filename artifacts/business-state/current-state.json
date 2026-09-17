@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T08:32:09.508Z",
+  "generatedAt": "2026-09-17T13:44:24.764Z",
   "stateVersion": 1,
   "sourceOfTruth": {
     "repository": "DaxHack/Dax-Collective",
@@ -142,7 +142,7 @@
           "priority": "Actual current fandom claims/hot takes in Reddit, comments and social discussion, then prove, disprove or qualify against sourced canon",
           "evidenceRequired": "Record a real source URL, observation date and precise claim; distinguish one comment from measured trend evidence",
           "prohibited": "Fabricated trending claims, invented audience consensus or unsupported popularity metrics",
-          "implementationStatus": "Rules recorded only; no trend discovery system implemented"
+          "implementationStatus": "Bounded manual discovery intake, ranking and format research handoff implemented; no crawler or verified trend detector"
         }
       },
       "primaryGoal": "Create high-quality anime commentary and character-interview packages that reach READY_FOR_APPROVAL before public publishing.",
@@ -493,6 +493,46 @@
       "materialSeparation": "ORIGINAL_DANIEL_MATERIAL_WITH_AI_GENERATED_SUPPORT"
     }
   ],
+  "aniDaxResearchQueue": {
+    "schemaVersion": 1,
+    "asOf": "2026-09-17",
+    "audience": {
+      "medium": "anime",
+      "maxArc": 4,
+      "note": "Conservative ceiling, not a claim about the latest aired arc; explicit scope review required to raise it"
+    },
+    "collectionMode": "MANUAL_BOUNDED_PUBLIC_EVIDENCE_INTAKE_NO_SCRAPING",
+    "safeQueue": [],
+    "held": [
+      {
+        "id": "rezero-strength-20260905",
+        "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+        "holds": [
+          "VERIFY_SOURCE_CONTEXT",
+          "SPOILER_SCOPE_REVIEW"
+        ]
+      },
+      {
+        "id": "rezero-romantic-chances-20260905",
+        "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+        "holds": [
+          "VERIFY_SOURCE_CONTEXT",
+          "SPOILER_SCOPE_REVIEW"
+        ]
+      },
+      {
+        "id": "rezero-season-comparison-20260911",
+        "route": "HELD_FOR_SOURCE_OR_SPOILERS",
+        "holds": [
+          "VERIFY_SOURCE_CONTEXT",
+          "SPOILER_SCOPE_REVIEW"
+        ]
+      }
+    ],
+    "renderAllowed": false,
+    "publishAllowed": false,
+    "automaticCrossPostingAllowed": false
+  },
   "approvalDecisions": {
     "source": "business-state/approval-decisions.json",
     "generatedAt": "2026-09-17T08:32:09.392Z",

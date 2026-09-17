@@ -1,5 +1,16 @@
 # The Dax Collective Execution Status
 
+## 2026-09-17: Discovery V1 Recovery Checkpoint
+
+- VERIFIED DONE: preserved interrupted discovery intake and eight-format registry. `npm run anidax:discover -- 2026-09-17` validates and ranks three real indexed public discussion leads; all three remain held for direct source-context and spoiler review. No trend, consensus, canon conclusion or render-ready topic is asserted. Votes are observed search snapshots, never ranking weight or canon evidence.
+- Runnable: bounded manual intake -> deterministic source/date/scope validation -> weighted research queue -> format-specific evidence/QC requirements -> existing business-state `anidax-research` query. Default anime ceiling is Arc 4, not an assertion about current airing. Shared projection suppresses held claim text/URLs. Complete operator dossiers remain in `artifacts/anidax/discovery/private-research-queue.json`.
+- Prepared only: seven format production adapters; Character Interview alone references the existing validated producer adapter. No automatic discovery scraper, semantic source verifier, new render or autonomous publishing was implemented. Existing canon snapshots are references, not evidence automatically supporting these topics.
+- Tests: 22/22 targeted Node tests passed (discovery, canon, review verifier, refresh orchestration). CLI intake and shared-state build/query exercised. Frozen R1/R2 and neutral canon diff against `61632a4` must remain empty; whitespace checked before commit. Frontend/workflows unchanged, so no frontend build or media refresh required. No merge/deployment performed.
+- IN PROGRESS: none beyond checkpoint delivery; stop for Daniel's discovery review. BLOCKED - EXTERNAL: direct Reddit opens failed during collection; search excerpts alone cannot verify context. BLOCKED - DANIEL: existing R2 final voice/pacing/rights/public approval remains pending, independent of discovery source research.
+- NEXT: review the three held leads and format contracts. Before any production, verify source context, isolate a precise audience/story boundary, obtain state-bounded primary canon evidence and counter-evidence, distinguish facts/inference/speculation, and complete rights/QC/human gates. No new adapter/video authorized in this recovery.
+- DO NOT REDO: source searches, R1/R2 renders, prior canon infrastructure or Claude commerce work. Publishing/cross-posting remain disabled and YouTube remains private. No spend or credential changes.
+- Branch: `codex/legal-oauth-pages-20260913`; PR https://github.com/DaxHack/Dax-Collective/pull/3. Worktree: `C:/Users/Daniel Rollins/AppData/Local/Temp/dax-collective-legal-oauth-20260913`. Base/frozen checkpoint `61632a4`; this recovery is the following discovery commit, not a change to the frozen candidate.
+
 ## 2026-09-17: V1-R2 Recovered Checkpoint
 
 - Recovery verification passed: 17/17 targeted tests, producer --validate-only, full ops:review (six pending items), full FFmpeg decode, narration PowerShell parse, audio SHA-256 binding, exact approved-line/unchanged-other-beats assertions, unique R2 queue entry/artifact checks and whitespace checks. No frontend build required. R2 Git blob remains `43169e997e23bebef253f0d69836d08c12ef6940`; R1 remains `530fed6d242637364afeb5854e3c54116f0503d4`.

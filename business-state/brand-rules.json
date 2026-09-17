@@ -46,7 +46,7 @@
           "priority": "Actual current fandom claims/hot takes in Reddit, comments and social discussion, then prove, disprove or qualify against sourced canon",
           "evidenceRequired": "Record a real source URL, observation date and precise claim; distinguish one comment from measured trend evidence",
           "prohibited": "Fabricated trending claims, invented audience consensus or unsupported popularity metrics",
-          "implementationStatus": "Rules recorded only; no trend discovery system implemented"
+          "implementationStatus": "Bounded manual discovery intake, ranking and format research handoff implemented; no crawler or verified trend detector"
         }
       },
       "primaryGoal": "Create high-quality anime commentary and character-interview packages that reach READY_FOR_APPROVAL before public publishing.",

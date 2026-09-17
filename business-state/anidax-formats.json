@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "defaultAudience": {"medium":"anime","maxArc":4,"note":"Conservative ceiling, not a claim about the latest aired arc; explicit scope review required to raise it"},
+  "sharedRequired": ["discussionProvenance","exactQuestion","storyStateLock","canonEvidence","directlyEstablishes","interpretation","doesNotEstablish","conclusion","uncertainty","preferenceConflict","copyrightPlan","spoilerReview","humanApproval"],
+  "formats": [
+    {"id":"canon-check","name":"Hot Take / Canon Check","requires":["testableProposition","verdictWithLimits","counterEvidence"],"qc":["Do not treat votes as truth","Do not manufacture a consensus or trend"],"rendererAdapter":null},
+    {"id":"character-analysis","name":"Character Analysis","requires":["characterIds","stateSpecificActions","alternativeReadings"],"qc":["Private motive is inference unless established"],"rendererAdapter":null},
+    {"id":"lore-explanation","name":"Lore/Explanation","requires":["mechanismClaims","sourceContinuity","exceptions"],"qc":["Unknown is not a negative canon fact"],"rendererAdapter":null},
+    {"id":"character-interview","name":"Character Interview","requires":["speaker","subject","relationshipQuery","knownBy","inventedDialogueLabels"],"qc":["Creative dialogue is not a canon quotation","Speaker cannot know later events"],"rendererAdapter":"tools/anidax/interview.mjs -> tools/anidax/produce-sample.mjs --brief"},
+    {"id":"theory-speculation","name":"Theory/Speculation","requires":["premises","counterEvidence","falsifiability","speculationLabel"],"qc":["Prediction is never a confirmed outcome"],"rendererAdapter":null},
+    {"id":"ranking-comparison","name":"Ranking/Comparison","requires":["comparisonCriteria","comparableStoryStates","reasoningPerEntry"],"qc":["Subjective weights must be disclosed"],"rendererAdapter":null},
+    {"id":"news-update","name":"News/Update","requires":["primaryAnnouncement","eventDate","verifiedAt","correctionPolicy"],"qc":["Recheck time-sensitive facts before script lock"],"rendererAdapter":null},
+    {"id":"short-essay","name":"Short Essay","requires":["thesis","evidenceChain","counterArgument"],"qc":["Thesis must not outrank contradictory evidence"],"rendererAdapter":null}
+  ]
+}
