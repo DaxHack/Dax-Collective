@@ -4,6 +4,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { validateBrief } from './interview.mjs';
+import { validateCaptionTimings } from './verify-review.mjs';
 
 const root = process.cwd();
 const cli = parseArgs(process.argv.slice(2));
@@ -71,6 +72,7 @@ const concept = {
 
 if (brief) Object.assign(concept, { contentType: 'fictional interview', originalAngle: brief.angle, storyState: brief.context.storyState });
 const scriptSegments = brief?.scriptSegments || buildScriptSegments(topic, series);
+let captionSegments = null;
 if (cli.narrationReport) {
   const narration = JSON.parse(fs.readFileSync(path.resolve(root, cli.narrationReport), 'utf8'));
   if (!hasSuppliedAudio || narration.audioSha256 !== createHash('sha256').update(fs.readFileSync(suppliedAudioFile)).digest('hex')) throw new Error('Narration report does not match supplied audio');
@@ -82,6 +84,7 @@ if (cli.narrationReport) {
     Object.assign(segment, { start: timing.start, end: timing.end });
     previousEnd = timing.end;
   }
+  if (narration.captionTimings?.length) captionSegments = validateCaptionTimings(scriptSegments, narration.captionTimings);
 }
 
 const storyboard = [
@@ -282,6 +285,7 @@ const contentPackage = {
     'Avoid pretending current trend data was fetched; no live analytics API was used in this run.',
   ],
   scriptSegments,
+  ...(captionSegments ? { captionSegments } : {}),
   storyboard,
   assetPlan: [
     'Abstract reset-loop motion graphic.',
@@ -445,8 +449,9 @@ function escapeHtml(value) {
 }
 
 function srtTimestamp(seconds) {
-  const whole = Math.floor(seconds);
-  const ms = Math.round((seconds - whole) * 1000);
+  const ticks = Math.round(seconds * 1000);
+  const whole = Math.floor(ticks / 1000);
+  const ms = ticks % 1000;
   const h = String(Math.floor(whole / 3600)).padStart(2, '0');
   const m = String(Math.floor((whole % 3600) / 60)).padStart(2, '0');
   const s = String(whole % 60).padStart(2, '0');
@@ -454,8 +459,9 @@ function srtTimestamp(seconds) {
 }
 
 function assTimestamp(seconds) {
-  const whole = Math.floor(seconds);
-  const cs = Math.round((seconds - whole) * 100);
+  const ticks = Math.round(seconds * 100);
+  const whole = Math.floor(ticks / 100);
+  const cs = ticks % 100;
   const h = Math.floor(whole / 3600);
   const m = String(Math.floor((whole % 3600) / 60)).padStart(2, '0');
   const s = String(whole % 60).padStart(2, '0');
@@ -480,7 +486,7 @@ function wrapAss(text, max = 34) {
 }
 
 function buildSrt() {
-  return scriptSegments
+  return (captionSegments || scriptSegments)
     .map((segment, index) =>
       [
         index + 1,
@@ -624,7 +630,14 @@ function buildEditorialAss() {
     lines.push(`Dialogue: 0,${start},${stop},Small,,0,0,0,,{\\pos(500,850)\\fad(300,140)}${wrapAss(shot.kicker, 36)}`);
     // The argument's changing label, not anime imagery, is the central visual.
     lines.push(`Dialogue: 0,${start},${stop},Small,,0,0,0,,{\\pos(500,1030)\\fad(450,140)\\c${color}}${index === 1 ? 'CREATIVE EXTRAPOLATION' : index === 2 ? 'SOURCE: OFFICIAL EPISODE 33 SYNOPSIS' : index === 3 ? 'DO NOT CONFUSE THE TWO' : `${index + 1} / 5`}`);
-    lines.push(`Dialogue: 1,${start},${stop},Caption,,0,0,0,,{\\pos(500,1320)}${wrapAss(segment.text, 35)}`);
+    const captions = captionSegments ? captionSegments.filter((cue) => cue.segmentIndex === index) : [segment];
+    captions.forEach((cue, cueIndex) => {
+      lines.push(`Dialogue: 1,${assTimestamp(cue.start)},${assTimestamp(cue.end)},Caption,,0,0,0,,{\\pos(500,1320)}${wrapAss(cue.text, 35)}`);
+      if (captionSegments) {
+        const width = Math.round(760 * (cueIndex + 1) / captions.length);
+        lines.push(`Dialogue: 0,${assTimestamp(cue.start)},${assTimestamp(cue.end)},Small,,0,0,0,,{\\an7\\pos(120,1160)\\c${color}\\p1}m 0 0 l ${width} 0 l ${width} 4 l 0 4{\\p0}`);
+      }
+    });
   });
   return `${lines.join('\n')}\n`;
 }

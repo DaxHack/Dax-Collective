@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 1,
+  "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+  "series": "Re:Zero - Starting Life in Another World",
+  "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+  "topic": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+  "angle": "Separate an observable act of cooperation from an inference about affection: Roswaal's instruction complicates what Ram's help can establish. One fictional response illustrates the distinction, not Ram's canonical thoughts.",
+  "description": "Episode 33 spoilers. Ram helps Subaru, but what does that establish? Ani-Dax separates the official synopsis's account of Roswaal's instruction from an interpretation about trust. The imagined Ram response is original fictional dialogue, NOT a canonical quote or scene. We do not claim she feels no affection or trust. Source: official Re:Zero anime episode 33 synopsis at https://re-zero-anime.jp/tv/story/tv2.html (episode 33 section only). Original analysis and motion typography; no anime clips, screenshots, soundtrack or actor imitation. Draft synthetic narration pending final review. What would count as evidence of trust? #ReZero #Ram #Subaru",
+  "context": {
+    "seriesId": "re-zero",
+    "storyState": {
+      "id": "arc4-episode33-cooperation",
+      "version": 1,
+      "continuity": "anime-episode-33-selected-loop",
+      "boundary": "After Subaru learns that Ram is helping on Roswaal's instructions; before subsequent episode events. No inheritance from another loop, novel profile or later arc.",
+      "spoilerLevel": "anime-episode-33"
+    },
+    "speaker": {
+      "id": "ram",
+      "name": "Ram"
+    },
+    "subject": {
+      "id": "subaru",
+      "name": "Natsuki Subaru"
+    },
+    "knownFacts": [
+      {
+        "id": "ram-assistance",
+        "kind": "canon_fact",
+        "field": "action",
+        "text": "Ram helps Subaru on Roswaal's instructions.",
+        "sourceIds": [
+          "anime-episode-33"
+        ],
+        "knownBy": [
+          "ram",
+          "subaru"
+        ]
+      }
+    ],
+    "characterizationInferences": [
+      {
+        "id": "ram-order-context",
+        "kind": "supported_inference",
+        "field": "motivation",
+        "text": "Frame the assistance around the instruction, not proof of unconditional trust or affection.",
+        "sourceIds": [
+          "anime-episode-33"
+        ],
+        "knownBy": [
+          "ram"
+        ]
+      }
+    ],
+    "relationship": {
+      "speaker": "ram",
+      "subject": "subaru",
+      "type": "instructed-cooperator",
+      "assertionIds": [
+        "ram-assistance",
+        "ram-order-context"
+      ],
+      "perspective": "Cooperation is established; the synopsis does not establish her private emotional assessment.",
+      "kind": "supported_inference",
+      "sourceIds": [
+        "anime-episode-33"
+      ],
+      "sharedEventIds": [
+        "cooperation-disclosed"
+      ]
+    },
+    "sharedEvents": [
+      {
+        "id": "cooperation-disclosed",
+        "text": "Subaru learns of Ram's assistance and Roswaal's instruction.",
+        "participants": [
+          "ram",
+          "subaru"
+        ],
+        "sourceIds": [
+          "anime-episode-33"
+        ]
+      }
+    ],
+    "location": {
+      "id": "sanctuary-escape-context",
+      "name": "Sanctuary escape context",
+      "kind": "supported_inference",
+      "sourceIds": [
+        "anime-episode-33"
+      ],
+      "participants": [
+        "ram",
+        "subaru"
+      ],
+      "context": "Synopsis refers to the trial, tomb and barrier; exact interview room and character blocking are not certified.",
+      "visualRequirements": "Original abstract setting; no copied backgrounds or asserted exact scene reconstruction",
+      "referenceViews": []
+    },
+    "mustNotKnow": [
+      {
+        "speaker": "ram",
+        "topic": "Return by Death, Subaru's private experiences, other loops and later outcomes",
+        "reason": "Not supported as speaker knowledge by this selected synopsis"
+      },
+      {
+        "speaker": "ram",
+        "topic": "Rem's sleep, recognition and remembered family history; Pristella and Watchtower events",
+        "reason": "Not established in this snapshot; do not import early-mansion memory or future knowledge"
+      }
+    ],
+    "uncertainty": [
+      "Synopsis establishes cooperation, not an interview, exact staging, speech mannerisms or emotional loyalty.",
+      "Location identification is contextual inference; no frame-level visual inspection or outfit certification performed."
+    ],
+    "conflicts": [],
+    "sources": [
+      {
+        "id": "anime-episode-33",
+        "url": "https://re-zero-anime.jp/tv/story/tv2.html",
+        "medium": "official-anime-synopsis",
+        "locator": "Episode 33, The Value of Life, synopsis; cooperation and Roswaal instruction disclosure only",
+        "checkedAt": "2026-09-16",
+        "scope": "Anime episode 33 selected loop; not subsequent outcomes or other loops"
+      }
+    ],
+    "visualReferences": [
+      {
+        "characterId": "ram",
+        "references": [
+          {
+            "view": "profile-page",
+            "url": "https://www.re-zero.com/character/",
+            "sourceId": "ram-profile",
+            "rights": "IDENTIFICATION_ONLY_NOT_LICENSED",
+            "binaryCopied": false,
+            "verifiedViewAngles": []
+          }
+        ],
+        "descriptors": [],
+        "outfitStates": []
+      },
+      {
+        "characterId": "subaru",
+        "references": [
+          {
+            "view": "profile-page",
+            "url": "https://www.re-zero.com/character/",
+            "sourceId": "subaru-profile",
+            "rights": "IDENTIFICATION_ONLY_NOT_LICENSED",
+            "binaryCopied": false,
+            "verifiedViewAngles": []
+          }
+        ],
+        "descriptors": [],
+        "outfitStates": []
+      }
+    ],
+    "publicApproval": false,
+    "memoryStates": [
+      {
+        "characterId": "ram",
+        "topic": "Rem recognition and family memory",
+        "status": "UNKNOWN_WITHHELD",
+        "boundary": "Requires a separately sourced memory-state snapshot; unknown is not an assertion of remembering or forgetting."
+      }
+    ],
+    "visualReferenceIndex": [
+      {
+        "id": "ram-episode33-source-page",
+        "characterId": "ram",
+        "locationId": "sanctuary-escape-context",
+        "outfitState": "UNVERIFIED",
+        "url": "https://re-zero-anime.jp/tv/story/tv2.html",
+        "sourceIds": [
+          "anime-episode-33"
+        ],
+        "locator": "Episode 33 only; page includes later spoilers",
+        "descriptors": [],
+        "verifiedViewAngles": [],
+        "rights": "IDENTIFICATION_ONLY_NOT_LICENSED",
+        "binaryCopied": false,
+        "productionUseApproved": false
+      }
+    ]
+  },
+  "scriptSegments": [
+    {
+      "start": 0,
+      "end": 6,
+      "label": "interviewer",
+      "text": "interviewer: Ram helps Subaru. Does that prove trust? Episode thirty-three spoilers. Imagine asking her why.",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-assistance"
+      ]
+    },
+    {
+      "start": 6,
+      "end": 12,
+      "label": "Ram",
+      "text": "Ram: Roswaal gave an instruction. You have turned an instruction into a declaration of trust.",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-assistance",
+        "ram-order-context"
+      ]
+    },
+    {
+      "start": 12,
+      "end": 18,
+      "label": "narrator",
+      "text": "narrator: That reply is invented. The official synopsis says Ram helps on Roswaal's instructions. It does not settle her private feelings.",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-assistance",
+        "ram-order-context"
+      ]
+    },
+    {
+      "start": 18,
+      "end": 24,
+      "label": "narrator",
+      "text": "narrator: Cooperation is the action. Trust is an interpretation. They could overlap. But this instruction means the help alone cannot prove unconditional trust.",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-assistance",
+        "ram-order-context"
+      ]
+    },
+    {
+      "start": 24,
+      "end": 30,
+      "label": "interviewer",
+      "text": "interviewer: Watch who gives the order before deciding what help means. What would count as evidence of trust instead?",
+      "classification": "creative_extrapolation",
+      "evidenceIds": [
+        "ram-order-context"
+      ]
+    }
+  ],
+  "storyboard": [
+    {
+      "time": "0-6s",
+      "visual": "Original animated argument typography: EPISODE 33 SPOILERS / AN ORIGINAL ANALYSIS; no character likeness or scene recreation",
+      "textOverlay": "HELP = TRUST?",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "6-12s",
+      "visual": "Original animated argument typography: IMAGINED RAM RESPONSE / NOT CANON DIALOGUE; no character likeness or scene recreation",
+      "textOverlay": "AN INSTRUCTION. NOT PROOF OF TRUST.",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "12-18s",
+      "visual": "Original animated argument typography: ROSWAAL'S INSTRUCTION > RAM'S ASSISTANCE; no character likeness or scene recreation",
+      "textOverlay": "WHAT THE SOURCE ESTABLISHES",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "18-24s",
+      "visual": "Original animated argument typography: COOPERATION: OBSERVED / TRUST: INTERPRETATION; no character likeness or scene recreation",
+      "textOverlay": "ACTION IS NOT PROOF OF FEELING",
+      "assetType": "Original text layout"
+    },
+    {
+      "time": "24-30s",
+      "visual": "Original animated argument typography: THE QUESTION IS OPEN / ANI-DAX; no character likeness or scene recreation",
+      "textOverlay": "WHAT WOULD PROVE TRUST?",
+      "assetType": "Original text layout"
+    }
+  ],
+  "assetPlan": [
+    "Original abstract setting; no copied backgrounds or asserted exact scene reconstruction",
+    "State-scoped reference pages are identification-only; outfit geometry and view angles remain unverified.",
+    "No voice imitation or external media retrieval."
+  ],
+  "qc": [
+    [
+      "Canon context",
+      "REVIEW_REQUIRED",
+      "Exact state, knowledge ownership and evidence IDs checked; semantic fidelity of invented dialogue still requires editorial review."
+    ],
+    [
+      "Visual rights",
+      "BLOCKED",
+      "Reference URLs do not license reuse or generation of character likenesses."
+    ],
+    [
+      "Narration",
+      "BLOCKED",
+      "No approved character voice supplied."
+    ],
+    [
+      "Publishing",
+      "BLOCKED",
+      "Daniel final approval required."
+    ]
+  ],
+  "publicApproval": false,
+  "publishAllowed": false,
+  "editorialTreatment": {
+    "description": "Episode 33 spoilers. Ram helps Subaru, but what does that establish? Ani-Dax separates the official synopsis's account of Roswaal's instruction from an interpretation about trust. The imagined Ram response is original fictional dialogue, NOT a canonical quote or scene. We do not claim she feels no affection or trust. Source: official Re:Zero anime episode 33 synopsis at https://re-zero-anime.jp/tv/story/tv2.html (episode 33 section only). Original analysis and motion typography; no anime clips, screenshots, soundtrack or actor imitation. Draft synthetic narration pending final review. What would count as evidence of trust? #ReZero #Ram #Subaru",
+    "shots": [
+      {
+        "headline": "HELP = TRUST?",
+        "kicker": "EPISODE 33 SPOILERS / AN ORIGINAL ANALYSIS"
+      },
+      {
+        "headline": "AN INSTRUCTION. NOT PROOF OF TRUST.",
+        "kicker": "IMAGINED RAM RESPONSE / NOT CANON DIALOGUE"
+      },
+      {
+        "headline": "WHAT THE SOURCE ESTABLISHES",
+        "kicker": "ROSWAAL'S INSTRUCTION > RAM'S ASSISTANCE"
+      },
+      {
+        "headline": "ACTION IS NOT PROOF OF FEELING",
+        "kicker": "COOPERATION: OBSERVED / TRUST: INTERPRETATION"
+      },
+      {
+        "headline": "WHAT WOULD PROVE TRUST?",
+        "kicker": "THE QUESTION IS OPEN / ANI-DAX"
+      }
+    ]
+  },
+  "canonRequest": {
+    "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+    "speaker": "ram",
+    "subject": "subaru",
+    "storyState": "arc4-episode33-cooperation",
+    "version": 1,
+    "location": "sanctuary-escape-context",
+    "format": "interview",
+    "maxSpoilerArc": 4,
+    "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
+    "angle": "Separate an observable act of cooperation from an inference about affection: Roswaal's instruction complicates what Ram's help can establish. One fictional response illustrates the distinction, not Ram's canonical thoughts.",
+    "dialogue": [
+      {
+        "role": "interviewer",
+        "text": "Ram helps Subaru. Does that prove trust? Episode thirty-three spoilers. Imagine asking her why.",
+        "evidenceIds": [
+          "ram-assistance"
+        ]
+      },
+      {
+        "role": "character",
+        "text": "Roswaal gave an instruction. You have turned an instruction into a declaration of trust.",
+        "evidenceIds": [
+          "ram-assistance",
+          "ram-order-context"
+        ]
+      },
+      {
+        "role": "narrator",
+        "text": "That reply is invented. The official synopsis says Ram helps on Roswaal's instructions. It does not settle her private feelings.",
+        "evidenceIds": [
+          "ram-assistance",
+          "ram-order-context"
+        ]
+      },
+      {
+        "role": "narrator",
+        "text": "Cooperation is the action. Trust is an interpretation. They could overlap. But this instruction means the help alone cannot prove unconditional trust.",
+        "evidenceIds": [
+          "ram-assistance",
+          "ram-order-context"
+        ]
+      },
+      {
+        "role": "interviewer",
+        "text": "Watch who gives the order before deciding what help means. What would count as evidence of trust instead?",
+        "evidenceIds": [
+          "ram-order-context"
+        ]
+      }
+    ],
+    "editorialTreatment": {
+      "description": "Episode 33 spoilers. Ram helps Subaru, but what does that establish? Ani-Dax separates the official synopsis's account of Roswaal's instruction from an interpretation about trust. The imagined Ram response is original fictional dialogue, NOT a canonical quote or scene. We do not claim she feels no affection or trust. Source: official Re:Zero anime episode 33 synopsis at https://re-zero-anime.jp/tv/story/tv2.html (episode 33 section only). Original analysis and motion typography; no anime clips, screenshots, soundtrack or actor imitation. Draft synthetic narration pending final review. What would count as evidence of trust? #ReZero #Ram #Subaru",
+      "shots": [
+        {
+          "headline": "HELP = TRUST?",
+          "kicker": "EPISODE 33 SPOILERS / AN ORIGINAL ANALYSIS"
+        },
+        {
+          "headline": "AN INSTRUCTION. NOT PROOF OF TRUST.",
+          "kicker": "IMAGINED RAM RESPONSE / NOT CANON DIALOGUE"
+        },
+        {
+          "headline": "WHAT THE SOURCE ESTABLISHES",
+          "kicker": "ROSWAAL'S INSTRUCTION > RAM'S ASSISTANCE"
+        },
+        {
+          "headline": "ACTION IS NOT PROOF OF FEELING",
+          "kicker": "COOPERATION: OBSERVED / TRUST: INTERPRETATION"
+        },
+        {
+          "headline": "WHAT WOULD PROVE TRUST?",
+          "kicker": "THE QUESTION IS OPEN / ANI-DAX"
+        }
+      ]
+    }
+  },
+  "canonFile": "business-state/canon/re-zero.json",
+  "requestFile": "business-state/canon/ram-episode33-candidate-r2.json"
+}

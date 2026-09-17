@@ -1,0 +1,63 @@
+{
+  "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+  "reviewedAt": "2026-09-17T02:14:32.119Z",
+  "scope": "arc4-episode33-cooperation@1: After Subaru learns that Ram is helping on Roswaal's instructions; before subsequent episode events. No inheritance from another loop, novel profile or later arc.; semantic dialogue/rights review pending",
+  "sources": [
+    {
+      "id": "anime-episode-33",
+      "url": "https://re-zero-anime.jp/tv/story/tv2.html",
+      "medium": "official-anime-synopsis",
+      "locator": "Episode 33, The Value of Life, synopsis; cooperation and Roswaal instruction disclosure only",
+      "checkedAt": "2026-09-16",
+      "scope": "Anime episode 33 selected loop; not subsequent outcomes or other loops"
+    }
+  ],
+  "segments": [
+    {
+      "text": "interviewer: Ram helps Subaru. Does that prove trust? Episode thirty-three spoilers. Imagine asking her why.",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "anime-episode-33"
+      ],
+      "finding": "Assistance is sourced; trust is posed as a question. Same approved V1 argument; no romantic assertion or later-state knowledge.",
+      "revisionRequired": false
+    },
+    {
+      "text": "Ram: Roswaal gave an instruction. You have turned an instruction into a declaration of trust.",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "anime-episode-33"
+      ],
+      "finding": "Daniel requested this exact revision: You have turned an instruction into a declaration of trust. Entire response remains invented and visibly labeled, not proof of Ram's private feelings or canonical speech. Direction approval is not publication approval.",
+      "revisionRequired": false
+    },
+    {
+      "text": "narrator: That reply is invented. The official synopsis says Ram helps on Roswaal's instructions. It does not settle her private feelings.",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "anime-episode-33"
+      ],
+      "finding": "Official episode-33 synopsis connects assistance to Roswaal's instruction. Its limited scope does not settle private feelings; no claim about all evidence in the full episode or series.",
+      "revisionRequired": false
+    },
+    {
+      "text": "narrator: Cooperation is the action. Trust is an interpretation. They could overlap. But this instruction means the help alone cannot prove unconditional trust.",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "anime-episode-33"
+      ],
+      "finding": "Reasonable interpretation of evidentiary limits, allowing trust to coexist with compliance. Does not deny respect/trust or establish unconditional trust. Argument unchanged.",
+      "revisionRequired": false
+    },
+    {
+      "text": "interviewer: Watch who gives the order before deciding what help means. What would count as evidence of trust instead?",
+      "classification": "CREATIVE_EXTRAPOLATION_NOT_CANON",
+      "sourceIds": [
+        "anime-episode-33"
+      ],
+      "finding": "Original viewer question, not an additional factual claim. No new shipping, future-arc or personal-experience assertion.",
+      "revisionRequired": false
+    }
+  ],
+  "publicApproval": false
+}

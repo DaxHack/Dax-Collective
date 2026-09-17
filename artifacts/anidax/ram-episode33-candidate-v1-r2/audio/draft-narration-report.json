@@ -1,0 +1,154 @@
+{
+    "generatedAt":  "2026-09-17T02:14:43.1885109Z",
+    "sourcePackage":  "artifacts/anidax/ram-episode33-candidate-v1-r2/brief.json",
+    "outputFile":  "artifacts/anidax/ram-episode33-candidate-v1-r2/audio/draft-review-narration.wav",
+    "voice":  "Microsoft David Desktop - English (United States)",
+    "rate":  0,
+    "approvedForPublishing":  false,
+    "status":  "DRAFT_REVIEW_AUDIO_NEEDS_DANIEL_APPROVAL",
+    "costUsd":  0,
+    "segmentTimings":  [
+                           {
+                               "text":  "interviewer: Ram helps Subaru. Does that prove trust? Episode thirty-three spoilers. Imagine asking her why.",
+                               "start":  0,
+                               "end":  10.166
+                           },
+                           {
+                               "text":  "Ram: Roswaal gave an instruction. You have turned an instruction into a declaration of trust.",
+                               "start":  10.166,
+                               "end":  18.614
+                           },
+                           {
+                               "text":  "narrator: That reply is invented. The official synopsis says Ram helps on Roswaal\u0027s instructions. It does not settle her private feelings.",
+                               "start":  18.614,
+                               "end":  30.31
+                           },
+                           {
+                               "text":  "narrator: Cooperation is the action. Trust is an interpretation. They could overlap. But this instruction means the help alone cannot prove unconditional trust.",
+                               "start":  30.31,
+                               "end":  43.96
+                           },
+                           {
+                               "text":  "interviewer: Watch who gives the order before deciding what help means. What would count as evidence of trust instead?",
+                               "start":  43.96,
+                               "end":  53.081
+                           }
+                       ],
+    "captionTimings":  [
+                           {
+                               "segmentIndex":  0,
+                               "text":  "interviewer: Ram helps Subaru.",
+                               "start":  0,
+                               "end":  3.129
+                           },
+                           {
+                               "segmentIndex":  0,
+                               "text":  "Does that prove trust?",
+                               "start":  3.129,
+                               "end":  5.293
+                           },
+                           {
+                               "segmentIndex":  0,
+                               "text":  "Episode thirty-three spoilers.",
+                               "start":  5.293,
+                               "end":  7.942
+                           },
+                           {
+                               "segmentIndex":  0,
+                               "text":  "Imagine asking her why.",
+                               "start":  7.942,
+                               "end":  10.166
+                           },
+                           {
+                               "segmentIndex":  1,
+                               "text":  "Ram: Roswaal gave an instruction.",
+                               "start":  10.166,
+                               "end":  13.595
+                           },
+                           {
+                               "segmentIndex":  1,
+                               "text":  "You have turned an instruction",
+                               "start":  13.595,
+                               "end":  15.965
+                           },
+                           {
+                               "segmentIndex":  1,
+                               "text":  "into a declaration of trust.",
+                               "start":  15.965,
+                               "end":  18.614
+                           },
+                           {
+                               "segmentIndex":  2,
+                               "text":  "narrator: That reply is invented.",
+                               "start":  18.614,
+                               "end":  21.753
+                           },
+                           {
+                               "segmentIndex":  2,
+                               "text":  "The official synopsis says",
+                               "start":  21.753,
+                               "end":  24.267
+                           },
+                           {
+                               "segmentIndex":  2,
+                               "text":  "Ram helps on Roswaal\u0027s instructions.",
+                               "start":  24.267,
+                               "end":  27.331
+                           },
+                           {
+                               "segmentIndex":  2,
+                               "text":  "It does not settle her private feelings.",
+                               "start":  27.331,
+                               "end":  30.31
+                           },
+                           {
+                               "segmentIndex":  3,
+                               "text":  "narrator: Cooperation is the action.",
+                               "start":  30.31,
+                               "end":  33.743
+                           },
+                           {
+                               "segmentIndex":  3,
+                               "text":  "Trust is an interpretation.",
+                               "start":  33.743,
+                               "end":  36.187
+                           },
+                           {
+                               "segmentIndex":  3,
+                               "text":  "They could overlap.",
+                               "start":  36.187,
+                               "end":  38.027
+                           },
+                           {
+                               "segmentIndex":  3,
+                               "text":  "But this instruction means",
+                               "start":  38.027,
+                               "end":  40.471
+                           },
+                           {
+                               "segmentIndex":  3,
+                               "text":  "the help alone cannot prove unconditional trust.",
+                               "start":  40.471,
+                               "end":  43.96
+                           },
+                           {
+                               "segmentIndex":  4,
+                               "text":  "interviewer: Watch who gives the order",
+                               "start":  43.96,
+                               "end":  47.139
+                           },
+                           {
+                               "segmentIndex":  4,
+                               "text":  "before deciding what help means.",
+                               "start":  47.139,
+                               "end":  49.813
+                           },
+                           {
+                               "segmentIndex":  4,
+                               "text":  "What would count as evidence of trust instead?",
+                               "start":  49.813,
+                               "end":  53.081
+                           }
+                       ],
+    "audioSha256":  "ad29f0cdc51420fc2016560072035dcbe93b9cd6473be2141f79fd9b499c3692"
+}

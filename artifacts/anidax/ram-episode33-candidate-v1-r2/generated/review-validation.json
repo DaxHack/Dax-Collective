@@ -1,0 +1,27 @@
+{
+  "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+  "technicalPass": true,
+  "errors": [],
+  "reviewRequired": [
+    "Narration is draft audio; Daniel must approve or replace it",
+    "Caption speech alignment needs listening review; media duration is not alignment proof",
+    "Canon context: Exact state, knowledge ownership and evidence IDs checked; semantic fidelity of invented dialogue still requires editorial review.",
+    "Visual rights: Reference URLs do not license reuse or generation of character likenesses.",
+    "Narration: No approved character voice supplied.",
+    "Publishing: Daniel final approval required.",
+    "Source QC: SOURCE_REVIEW_RECORDED_PUBLIC_APPROVAL_PENDING; revision segments: none. Final editorial/rights approval remains pending."
+  ],
+  "durationSeconds": 53.081,
+  "narrationDurationSeconds": 53.081406,
+  "captionCount": 19,
+  "publishAllowed": false,
+  "youtubePrivacyStatus": "private",
+  "automaticCrossPostingAllowed": false,
+  "sourceReview": {
+    "current": true,
+    "decision": "SOURCE_REVIEW_RECORDED_PUBLIC_APPROVAL_PENDING",
+    "revisionSegments": [],
+    "publicApproval": false
+  },
+  "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC"
+}

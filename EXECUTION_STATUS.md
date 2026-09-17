@@ -1,5 +1,15 @@
 # The Dax Collective Execution Status
 
+## 2026-09-17: V1-R2 Recovered Checkpoint
+
+- Recovery verification passed: 17/17 targeted tests, producer --validate-only, full ops:review (six pending items), full FFmpeg decode, narration PowerShell parse, audio SHA-256 binding, exact approved-line/unchanged-other-beats assertions, unique R2 queue entry/artifact checks and whitespace checks. No frontend build required. R2 Git blob remains `43169e997e23bebef253f0d69836d08c12ef6940`; R1 remains `530fed6d242637364afeb5854e3c54116f0503d4`.
+
+- VERIFIED DONE: recovered existing R2 work without regeneration. Added missing FINAL_REVIEW.md, production-qc.json and handoffs; restored non-phrase narration filename compatibility. Existing source-review and future production standards were already written, preserved without re-audit.
+- Active package: `artifacts/anidax/ram-episode33-candidate-v1-r2/`, same content ID/state, 53.081s and 19 measured phrase captions. Exact approved declaration-of-trust line; other spoken beats unchanged. R1 47.735s preserved. Current queue targets R2 rather than duplicating the candidate.
+- Future requirements remain separate from canon in brand-rules.json: original consistent non-impersonating voices, stronger rights-reviewed visuals, motion/editing, appropriate cleared music/SFX, phrase captions. Five-beat exchange/evidence/analysis format is one option, not universal.
+- BLOCKED - DANIEL: review R2 cadence, pronunciation, caption transitions and placeholder presentation; final voice/rights/public approval still required. Direction approval is not publishing approval. Public false, YouTube private, cross-post false. No spend or credential changes.
+- NEXT / DO NOT REDO: present existing R2 render; no R3, new video, infrastructure, source audit or old-render regeneration. PR #3 / branch `codex/legal-oauth-pages-20260913`; worktree `C:/Users/Daniel Rollins/AppData/Local/Temp/dax-collective-legal-oauth-20260913`. No merge/live deployment; frontend unchanged.
+
 ## Resume Checkpoint: Existing Candidate Preserved
 
 - Resume validation: 16/16 targeted tests passed; full ops:review passed with six pending items; editorial JSON/private-gate assertions passed; git diff --check passed. Video Git blob `530fed6d242637364afeb5854e3c54116f0503d4` equals f23f748. No frontend rebuild needed for this scoped change.

@@ -4,6 +4,23 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { validateBrief } from './interview.mjs';
 
+export function validateCaptionTimings(segments, cues) {
+  if (!Array.isArray(cues) || !cues.length) throw new Error('Empty phrase captions');
+  let previousEnd = -1;
+  let previousIndex = 0;
+  for (const cue of cues) {
+    const segment = segments[cue.segmentIndex];
+    if (!Number.isInteger(cue.segmentIndex) || !segment || cue.segmentIndex < previousIndex || typeof cue.text !== 'string' || !cue.text.trim() || cue.text.length > 70 || !Number.isFinite(cue.start) || !Number.isFinite(cue.end) || cue.end <= cue.start || cue.start < previousEnd || cue.start < segment.start - 0.001 || cue.end > segment.end + 0.001) throw new Error('Invalid phrase caption bounds/order');
+    previousEnd = cue.end;
+    previousIndex = cue.segmentIndex;
+  }
+  segments.forEach((segment, index) => {
+    const own = cues.filter((cue) => cue.segmentIndex === index);
+    if (own.map((cue) => cue.text).join(' ') !== segment.text || Math.abs(own[0].start - segment.start) > 0.001 || Math.abs(own.at(-1).end - segment.end) > 0.001) throw new Error('Phrase captions must cover exact full script');
+  });
+  return cues;
+}
+
 export function validateSourceReview(pkg, sourceReview) {
   if (!sourceReview) return { current: false, reason: 'Source review missing' };
   const sources = new Set((sourceReview.sources || []).map((source) => source.id));
@@ -42,10 +59,15 @@ export function validateMedia(pkg, payload, video, audio, captions) {
     if (!match) { errors.push('Invalid SRT cue'); return null; }
     return { start: time(match[1]), end: time(match[2]), text: lines.slice(2).join(' ') };
   }).filter(Boolean);
-  if (!cues.length || cues.length !== pkg.scriptSegments?.length) errors.push('Caption/script cue count mismatch');
+  const expectedCaptions = pkg.captionSegments || pkg.scriptSegments;
+  if (pkg.captionSegments) {
+    try { validateCaptionTimings(pkg.scriptSegments, pkg.captionSegments); } catch (error) { errors.push(error.message); }
+  }
+  if (!cues.length || cues.length !== expectedCaptions?.length) errors.push('Caption/script cue count mismatch');
   for (const [index, cue] of cues.entries()) {
     if (cue.end <= cue.start || cue.end > duration + 0.1 || (index && cue.start < cues[index - 1].end)) errors.push('Caption timing outside render or overlapping');
-    if (cue.text.trim() !== pkg.scriptSegments?.[index]?.text?.trim()) errors.push('Caption text differs from script');
+    if (cue.text.trim() !== expectedCaptions?.[index]?.text?.trim()) errors.push('Caption text differs from script');
+    if (pkg.captionSegments && (Math.abs(cue.start - expectedCaptions[index]?.start) > 0.001 || Math.abs(cue.end - expectedCaptions[index]?.end) > 0.001)) errors.push('Caption timing differs from measured phrase');
     if (cue.start >= audioDuration - 0.25) review.push(`Cue ${index + 1} starts at/after narration end; narration alignment needs revision`);
   }
   if (pkg.audio?.supplied !== false) {

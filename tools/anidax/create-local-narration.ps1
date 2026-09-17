@@ -3,7 +3,8 @@ param(
   [string]$OutputFile = "artifacts/anidax/sprint-1-sample/audio/draft-review-narration.wav",
   [string]$Voice = "Microsoft David Desktop",
   [int]$Rate = 0,
-  [switch]$SegmentTimings
+  [switch]$SegmentTimings,
+  [string]$PhrasePlan
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,6 +19,18 @@ if (-not $package.scriptSegments) {
 }
 
 $scriptText = ($package.scriptSegments | ForEach-Object { $_.text }) -join " "
+$phrases = $null
+if ($PhrasePlan) {
+  if (-not $SegmentTimings) { throw 'Phrase plan requires segment timing mode' }
+  $phrases = Get-Content -LiteralPath $PhrasePlan -Raw | ConvertFrom-Json
+  if ($phrases.Count -ne $package.scriptSegments.Count) { throw 'Phrase plan segment count mismatch' }
+  for ($i = 0; $i -lt $phrases.Count; $i++) {
+    if (($phrases[$i] -join ' ') -cne $package.scriptSegments[$i].text) { throw 'Phrase text differs from script' }
+    foreach ($phrase in $phrases[$i]) {
+      if ([string]::IsNullOrWhiteSpace($phrase) -or $phrase.Length -gt 70) { throw 'Invalid/overlong caption phrase' }
+    }
+  }
+}
 $outputDir = Split-Path -Parent $OutputFile
 if ($outputDir) {
   New-Item -ItemType Directory -Force -Path $outputDir | Out-Null
@@ -40,6 +53,7 @@ $speaker.Voice = $selectedVoice
 $speaker.Rate = $Rate
 
 $timedSegments = @()
+$captionTimings = @()
 if ($SegmentTimings) {
   $segmentDir = Join-Path (Split-Path -Parent $fullOutputFile) 'segments'
   New-Item -ItemType Directory -Force -Path $segmentDir | Out-Null
@@ -47,21 +61,29 @@ if ($SegmentTimings) {
   $offset = 0.0
   $index = 0
   foreach ($segment in $package.scriptSegments) {
-    $name = "segment-$index.wav"
+    $segmentStart = $offset
+    $takes = @([string]$segment.text)
+    if ($phrases) { $takes = @($phrases[$index]) }
+    $phraseIndex = 0
+    foreach ($take in $takes) {
+    $name = if ($phrases) { "segment-$index-phrase-$phraseIndex.wav" } else { "segment-$index.wav" }
     $segmentFile = Join-Path $segmentDir $name
     $stream = New-Object -ComObject SAPI.SpFileStream
     $stream.Open($segmentFile, 3, $false)
     try {
       $speaker.AudioOutputStream = $stream
-      $speaker.Speak([string]$segment.text) | Out-Null
+      $speaker.Speak([string]$take) | Out-Null
     } finally { $stream.Close() }
     $durationText = & ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $segmentFile
     if ($LASTEXITCODE -ne 0) { throw 'Segment duration probe failed' }
     $duration = [double]::Parse($durationText, [System.Globalization.CultureInfo]::InvariantCulture)
     if ($duration -le 0) { throw 'Empty narration segment' }
-    $timedSegments += [ordered]@{ text = $segment.text; start = [math]::Round($offset, 3); end = [math]::Round(($offset + $duration), 3) }
+    if ($phrases) { $captionTimings += [ordered]@{ segmentIndex = $index; text = $take; start = [math]::Round($offset, 3); end = [math]::Round(($offset + $duration), 3) } }
     $offset += $duration
     $concatLines += "file '$name'"
+    $phraseIndex++
+    }
+    $timedSegments += [ordered]@{ text = $segment.text; start = [math]::Round($segmentStart, 3); end = [math]::Round($offset, 3) }
     $index++
   }
   $concatPath = Join-Path $segmentDir 'concat.txt'
@@ -88,6 +110,7 @@ $report = [ordered]@{
   status = "DRAFT_REVIEW_AUDIO_NEEDS_DANIEL_APPROVAL"
   costUsd = 0
   segmentTimings = $timedSegments
+  captionTimings = $captionTimings
   audioSha256 = (Get-FileHash -LiteralPath $fullOutputFile -Algorithm SHA256).Hash.ToLowerInvariant()
 }
 

@@ -1,5 +1,9 @@
 # Blockers
 
+## Active V1-R2 Gate
+
+The wording decision is resolved: Daniel's exact declaration-of-trust revision is rendered. The measured phrase-caption/pacing pass exists. Daniel now reviews the existing 53.081s cut in `artifacts/anidax/ram-episode33-candidate-v1-r2/`. Synthetic voice and typography remain V1 placeholders; review pronunciation/cadence, caption transitions and presentation. Commercial voice suitability and final rights/public approval are not established. No technical/tool blocker is claimed for delivering this review cut. No R3 authorized.
+
 ## Editorial Addendum Applied
 
 Owner preferences recorded separately in business-state/brand-rules.json. Current piece does not assert romantic interest. Daniel should review the ambiguous word 'confession' in the explicitly invented reply; respect/trust is the intended frame. No script/video change authorized merely for subjective improvement before review. Remaining gates are the existing final script, natural narration/listening, pacing and rights/public approval decisions.

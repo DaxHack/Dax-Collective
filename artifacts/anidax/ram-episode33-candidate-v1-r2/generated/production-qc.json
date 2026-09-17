@@ -1,0 +1,18 @@
+{
+  "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
+  "revision": 2,
+  "status": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
+  "directionApproval": "Daniel approved V1 direction and exact declaration-of-trust line; not public publishing",
+  "publicationMasterReady": false,
+  "sourceScope": "Official episode-33 synopsis; unchanged",
+  "durationSeconds": 53.081,
+  "captionPass": {"status":"IMPLEMENTED_TECHNICALLY_VERIFIED","cueCount":19,"timingMethod":"Individually measured synthesized phrases","maxLines":2,"minimumCueSeconds":1.840,"maximumCharactersPerSecond":14.076,"humanListeningReviewPending":true},
+  "pacing": "Five-beat structure retained; phrase pauses measured; short captions and beat-progress accents added",
+  "voice": {"placeholder":true,"actorImitation":false,"commercialUseVerified":false,"finalApproved":false},
+  "visuals": {"placeholder":true,"externalImagesUsed":false,"sampledFramesChecked":true,"overlapDetected":false},
+  "externalSpendUsd": 0,
+  "subscriptionComputeLaborCost": null,
+  "publishAllowed": false,
+  "youtubePrivacyStatus": "private",
+  "automaticCrossPostingAllowed": false
+}

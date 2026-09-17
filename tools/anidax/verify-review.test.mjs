@@ -1,12 +1,26 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateMedia, validateSourceReview } from './verify-review.mjs';
+import { validateMedia, validateSourceReview, validateCaptionTimings } from './verify-review.mjs';
 
 const payload = { brand: 'Ani-Dax', contentId: 'fixture', publishAllowed: false, youtubePrivacyStatus: 'private', automaticCrossPostingAllowed: false };
 const pkg = { metadata: { contentId: 'fixture' }, publishReadyPayload: payload, scriptSegments: [{ text: 'Test' }], audio: { readyForFinal: false } };
 const video = { format: { duration: '30' }, streams: [{ codec_type: 'video' }, { codec_type: 'audio', duration: '25' }] };
 const audio = { format: { duration: '25' } };
 const captions = '1\n00:00:00,000 --> 00:00:25,000\nTest';
+
+test('measured phrases preserve full script, ordering and SRT timing', () => {
+  const segments = [{ text: 'First phrase. Second phrase.', start: 0, end: 25 }];
+  const phrases = [{ segmentIndex: 0, text: 'First phrase.', start: 0, end: 10 }, { segmentIndex: 0, text: 'Second phrase.', start: 10, end: 25 }];
+  const p = { ...pkg, scriptSegments: segments, captionSegments: phrases };
+  const srt = '1\n00:00:00,000 --> 00:00:10,000\nFirst phrase.\n\n2\n00:00:10,000 --> 00:00:25,000\nSecond phrase.';
+  assert.equal(validateMedia(p, payload, video, audio, srt).technicalPass, true);
+  assert.equal(validateMedia(p, payload, video, audio, srt.replace('00:00:10,000 -->', '00:00:11,000 -->')).technicalPass, false);
+  for (const patch of [{ text: 'Altered.' }, { start: 9 }, { end: 26 }, { segmentIndex: 1 }]) {
+    assert.throws(() => validateCaptionTimings(segments, [phrases[0], { ...phrases[1], ...patch }]));
+  }
+  assert.throws(() => validateCaptionTimings(segments, phrases.slice(0, 1)));
+  assert.throws(() => validateCaptionTimings(segments, []));
+});
 test('source review follows exact script and never grants public approval', () => {
   const source = { contentId: 'fixture', sources: [{ id: 'official' }], segments: [{ text: 'Test', finding: 'Needs qualification', sourceIds: ['official'], revisionRequired: true }] };
   const result = validateSourceReview(pkg, source);

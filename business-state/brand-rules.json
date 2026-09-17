@@ -6,6 +6,22 @@
       "name": "Ani-Dax",
       "type": "AI-assisted anime/media operation",
       "editorialConfiguration": {
+        "productionRequirements": {
+          "v1Placeholders": ["Single synthetic narrator", "Motion typography"],
+          "permanentQualityCeiling": false,
+          "voices": "Distinct, consistent, original character-appropriate voices. Capture delivery characteristics, never default to unauthorized exact voice-actor cloning or impersonation. Track provider/voice ID, version, commercial rights and consent/provenance before release.",
+          "originalVoiceProfileDrafts": [
+            {"id":"ram-original-v1","status":"DESIGN_ONLY_NOT_GENERATED","delivery":"Concise, dry, controlled articulation; restrained energy and brief rhetorical pauses, without a romantic affectation","identity":"Original voice, not an actor soundalike","canonConstraint":"Editorial performance direction only; check characterization against each selected story state"},
+            {"id":"anidax-presenter-v1","status":"DESIGN_ONLY_NOT_GENERATED","delivery":"Clear conversational analytical delivery, curious questions, audible distinction between fact and interpretation; no exaggerated announcer affect","identity":"Original consistent presenter voice"}
+          ],
+          "visuals": "Stronger character/scene visuals with consistency, shot variety and state-appropriate references; documented asset rights, no automatic reuse of source images.",
+          "editing": "Purposeful motion, shot rhythm, emphasis and transitions serving the argument; improve beyond text cards without changing sourced claims.",
+          "audioDesign": "Music/SFX where appropriate, original or commercially cleared and mixed beneath intelligible dialogue; never required merely to fill silence.",
+          "captions": "Phrase-level captions tied to actual audio, readable mobile-safe positioning and human listening review before release"
+        },
+        "reusableFormats": [
+          {"id":"fictional-exchange-evidence-analysis","sequence":["hook","clearly fictional in-universe exchange","canon evidence","analysis","viewer question"],"universalTemplate":false,"useWhen":"A short invented exchange helps expose an interpretation worth checking against canon","requirements":["Explicit invented-dialogue label","State-scoped source evidence","Separate canon and analysis","Human final review"],"alternatives":"Choose character analysis, lore, comparison, theory or other suitable formats when an interview adds no value"}
+        ],
         "authority": "Daniel editorial preference; separate from neutral sourced canon, never canon evidence",
         "evidenceHierarchy": ["sourced canon event", "what the event directly establishes", "reasonable interpretation", "what it does not establish"],
         "ramSubaru": {

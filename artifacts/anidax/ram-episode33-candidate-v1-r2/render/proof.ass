@@ -1,0 +1,68 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Main,Arial,74,&H00FFFFFF,&H00000000,&H00111111,&H00000000,1,0,0,0,100,100,0,0,1,0,0,5,100,100,0,1
+Style: Small,Arial,30,&H00DBDED8,&H00000000,&H00111111,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,100,100,0,1
+Style: Caption,Arial,43,&H00FFFFFF,&H00000000,&H00111111,&H00000000,0,0,0,0,100,100,0,0,1,2,0,5,110,110,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:53.08,Small,,0,0,0,,{\pos(500,230)}ANI-DAX / RE:ZERO / EPISODE 33 SPOILERS
+Dialogue: 0,0:00:00.00,0:00:53.08,Small,,0,0,0,,{\pos(500,1630)}Original analysis + imagined dialogue\NPrivate review / draft voice
+Dialogue: 0,0:00:00.00,0:00:10.17,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}HELP = TRUST?
+Dialogue: 0,0:00:00.00,0:00:10.17,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}EPISODE 33 SPOILERS / AN ORIGINAL\NANALYSIS
+Dialogue: 0,0:00:00.00,0:00:10.17,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}1 / 5
+Dialogue: 1,0:00:00.00,0:00:03.13,Caption,,0,0,0,,{\pos(500,1320)}interviewer: Ram helps Subaru.
+Dialogue: 0,0:00:00.00,0:00:03.13,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 190 0 l 190 4 l 0 4{\p0}
+Dialogue: 1,0:00:03.13,0:00:05.29,Caption,,0,0,0,,{\pos(500,1320)}Does that prove trust?
+Dialogue: 0,0:00:03.13,0:00:05.29,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 380 0 l 380 4 l 0 4{\p0}
+Dialogue: 1,0:00:05.29,0:00:07.94,Caption,,0,0,0,,{\pos(500,1320)}Episode thirty-three spoilers.
+Dialogue: 0,0:00:05.29,0:00:07.94,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 570 0 l 570 4 l 0 4{\p0}
+Dialogue: 1,0:00:07.94,0:00:10.17,Caption,,0,0,0,,{\pos(500,1320)}Imagine asking her why.
+Dialogue: 0,0:00:07.94,0:00:10.17,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 760 0 l 760 4 l 0 4{\p0}
+Dialogue: 0,0:00:10.17,0:00:18.61,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00C5B5FF&}AN INSTRUCTION. NOT\NPROOF OF TRUST.
+Dialogue: 0,0:00:10.17,0:00:18.61,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}IMAGINED RAM RESPONSE / NOT CANON\NDIALOGUE
+Dialogue: 0,0:00:10.17,0:00:18.61,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00C5B5FF&}CREATIVE EXTRAPOLATION
+Dialogue: 1,0:00:10.17,0:00:13.60,Caption,,0,0,0,,{\pos(500,1320)}Ram: Roswaal gave an instruction.
+Dialogue: 0,0:00:10.17,0:00:13.60,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00C5B5FF&\p1}m 0 0 l 253 0 l 253 4 l 0 4{\p0}
+Dialogue: 1,0:00:13.60,0:00:15.97,Caption,,0,0,0,,{\pos(500,1320)}You have turned an instruction
+Dialogue: 0,0:00:13.60,0:00:15.97,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00C5B5FF&\p1}m 0 0 l 507 0 l 507 4 l 0 4{\p0}
+Dialogue: 1,0:00:15.97,0:00:18.61,Caption,,0,0,0,,{\pos(500,1320)}into a declaration of trust.
+Dialogue: 0,0:00:15.97,0:00:18.61,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00C5B5FF&\p1}m 0 0 l 760 0 l 760 4 l 0 4{\p0}
+Dialogue: 0,0:00:18.61,0:00:30.31,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}WHAT THE SOURCE\NESTABLISHES
+Dialogue: 0,0:00:18.61,0:00:30.31,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}ROSWAAL'S INSTRUCTION > RAM'S\NASSISTANCE
+Dialogue: 0,0:00:18.61,0:00:30.31,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}SOURCE: OFFICIAL EPISODE 33 SYNOPSIS
+Dialogue: 1,0:00:18.61,0:00:21.75,Caption,,0,0,0,,{\pos(500,1320)}narrator: That reply is invented.
+Dialogue: 0,0:00:18.61,0:00:21.75,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 190 0 l 190 4 l 0 4{\p0}
+Dialogue: 1,0:00:21.75,0:00:24.27,Caption,,0,0,0,,{\pos(500,1320)}The official synopsis says
+Dialogue: 0,0:00:21.75,0:00:24.27,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 380 0 l 380 4 l 0 4{\p0}
+Dialogue: 1,0:00:24.27,0:00:27.33,Caption,,0,0,0,,{\pos(500,1320)}Ram helps on Roswaal's\Ninstructions.
+Dialogue: 0,0:00:24.27,0:00:27.33,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 570 0 l 570 4 l 0 4{\p0}
+Dialogue: 1,0:00:27.33,0:00:30.31,Caption,,0,0,0,,{\pos(500,1320)}It does not settle her private\Nfeelings.
+Dialogue: 0,0:00:27.33,0:00:30.31,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 760 0 l 760 4 l 0 4{\p0}
+Dialogue: 0,0:00:30.31,0:00:43.96,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}ACTION IS NOT PROOF\NOF FEELING
+Dialogue: 0,0:00:30.31,0:00:43.96,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}COOPERATION: OBSERVED / TRUST:\NINTERPRETATION
+Dialogue: 0,0:00:30.31,0:00:43.96,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}DO NOT CONFUSE THE TWO
+Dialogue: 1,0:00:30.31,0:00:33.74,Caption,,0,0,0,,{\pos(500,1320)}narrator: Cooperation is the\Naction.
+Dialogue: 0,0:00:30.31,0:00:33.74,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 152 0 l 152 4 l 0 4{\p0}
+Dialogue: 1,0:00:33.74,0:00:36.19,Caption,,0,0,0,,{\pos(500,1320)}Trust is an interpretation.
+Dialogue: 0,0:00:33.74,0:00:36.19,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 304 0 l 304 4 l 0 4{\p0}
+Dialogue: 1,0:00:36.19,0:00:38.03,Caption,,0,0,0,,{\pos(500,1320)}They could overlap.
+Dialogue: 0,0:00:36.19,0:00:38.03,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 456 0 l 456 4 l 0 4{\p0}
+Dialogue: 1,0:00:38.03,0:00:40.47,Caption,,0,0,0,,{\pos(500,1320)}But this instruction means
+Dialogue: 0,0:00:38.03,0:00:40.47,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 608 0 l 608 4 l 0 4{\p0}
+Dialogue: 1,0:00:40.47,0:00:43.96,Caption,,0,0,0,,{\pos(500,1320)}the help alone cannot prove\Nunconditional trust.
+Dialogue: 0,0:00:40.47,0:00:43.96,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 760 0 l 760 4 l 0 4{\p0}
+Dialogue: 0,0:00:43.96,0:00:53.08,Main,,0,0,0,,{\move(500,610,500,570,0,350)\fad(180,140)\c&H00B4EBC9&}WHAT WOULD PROVE\NTRUST?
+Dialogue: 0,0:00:43.96,0:00:53.08,Small,,0,0,0,,{\pos(500,850)\fad(300,140)}THE QUESTION IS OPEN / ANI-DAX
+Dialogue: 0,0:00:43.96,0:00:53.08,Small,,0,0,0,,{\pos(500,1030)\fad(450,140)\c&H00B4EBC9&}5 / 5
+Dialogue: 1,0:00:43.96,0:00:47.14,Caption,,0,0,0,,{\pos(500,1320)}interviewer: Watch who gives the\Norder
+Dialogue: 0,0:00:43.96,0:00:47.14,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 253 0 l 253 4 l 0 4{\p0}
+Dialogue: 1,0:00:47.14,0:00:49.81,Caption,,0,0,0,,{\pos(500,1320)}before deciding what help means.
+Dialogue: 0,0:00:47.14,0:00:49.81,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 507 0 l 507 4 l 0 4{\p0}
+Dialogue: 1,0:00:49.81,0:00:53.08,Caption,,0,0,0,,{\pos(500,1320)}What would count as evidence of\Ntrust instead?
+Dialogue: 0,0:00:49.81,0:00:53.08,Small,,0,0,0,,{\an7\pos(120,1160)\c&H00B4EBC9&\p1}m 0 0 l 760 0 l 760 4 l 0 4{\p0}

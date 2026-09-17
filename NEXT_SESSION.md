@@ -1,5 +1,13 @@
 # Next Session Handoff
 
+## Current: V1-R2 Awaiting Daniel Review
+
+Recovery checks passed: 17 targeted tests, producer validation-only, full review/state refresh, media decode, audio hash and exact-script/queue assertions, PowerShell syntax and whitespace checks. R1/R2 media hashes unchanged. No voice or video generation was performed in recovery.
+
+Open `artifacts/anidax/ram-episode33-candidate-v1-r2/FINAL_REVIEW.md` and `render/candidate-review.mp4`. Existing 53.081s render, 19 measured phrase cues, exact approved declaration-of-trust line. Same candidate; R1 preserved. Recovery added missing QC/handoff files without regenerating audio/video. Source dossier and production standards were already intact.
+
+Next exact action: Daniel reviews R2 pronunciation, cadence, caption transitions and V1 placeholder presentation. No R3/new video or infrastructure requested. Final voice/rights/public approval remains separate. Future original voices/visuals/editing/music/SFX standards and non-universal five-beat format live in brand-rules.json, not neutral canon. Existing producer/verifier and queue are reused. Do not redo prior work.
+
 ## Stop Point: Daniel Reviews Existing Cut
 
 The interrupted storyboard cleanup and state updates are preserved. This resume does not regenerate video or change script. Editorial guidance is in `business-state/brand-rules.json` under Ani-Dax editorialConfiguration, NOT in neutral canon. Respect/trust is the preferred Ram/Subaru lens, not romance; all preferences yield to state-bounded evidence. Anime-friendly defaults and future real-fandom-source discovery rules are recorded, not a new subsystem.

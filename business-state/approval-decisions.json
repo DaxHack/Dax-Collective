@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-17T02:04:04.167Z",
-  "sourceApprovalQueueGeneratedAt": "2026-09-17T02:04:04.103Z",
+  "generatedAt": "2026-09-17T08:32:09.392Z",
+  "sourceApprovalQueueGeneratedAt": "2026-09-17T08:32:09.323Z",
   "status": "PENDING_HUMAN_DECISIONS",
   "publicPublishingAllowed": false,
   "purchaseOrSpendAllowed": false,
@@ -88,7 +88,7 @@
       "contentId": "anidax-ram-help-is-not-proof-of-trust-v1",
       "title": "Ram Helped Subaru. Is That Trust? | Re:Zero",
       "itemStatus": "READY_FOR_DANIEL_REVIEW_WITH_OPEN_QC",
-      "reviewFingerprint": "933100eeb8fbb612e9e023321fc670428db4ae43c88551fdcdece7a2a4d2facd",
+      "reviewFingerprint": "feb823e6541a9981edee1cb3627d107156aa157cf08d4b344473d53064181dd8",
       "reviewArtifactsPresent": true,
       "decisionInvalidatedByArtifactChange": true,
       "decisionStatus": "PENDING_DANIEL_REVIEW",
@@ -106,18 +106,18 @@
         "public publishing"
       ],
       "reviewArtifacts": [
-        "artifacts/anidax/ram-episode33-candidate-v1/render/candidate-review.mp4",
-        "artifacts/anidax/ram-episode33-candidate-v1/approval-package.md",
-        "artifacts/anidax/ram-episode33-candidate-v1/generated/publish-ready-payload.json",
-        "artifacts/anidax/ram-episode33-candidate-v1/generated/content-package.json",
-        "artifacts/anidax/ram-episode33-candidate-v1/generated/captions.srt",
-        "artifacts/anidax/ram-episode33-candidate-v1/generated/review-validation.json",
-        "artifacts/anidax/ram-episode33-candidate-v1/generated/source-review.json",
-        "artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md",
-        "artifacts/anidax/ram-episode33-candidate-v1/generated/production-qc.json",
-        "artifacts/anidax/ram-episode33-candidate-v1/thumbnail/thumbnail.png",
-        "artifacts/anidax/ram-episode33-candidate-v1/audio/draft-review-narration.wav",
-        "artifacts/anidax/ram-episode33-candidate-v1/brief.json"
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/render/candidate-review.mp4",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/approval-package.md",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/generated/publish-ready-payload.json",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/generated/content-package.json",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/generated/captions.srt",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/generated/review-validation.json",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/generated/source-review.json",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/FINAL_REVIEW.md",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/generated/production-qc.json",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/thumbnail/thumbnail.png",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/audio/draft-review-narration.wav",
+        "artifacts/anidax/ram-episode33-candidate-v1-r2/brief.json"
       ]
     },
     {

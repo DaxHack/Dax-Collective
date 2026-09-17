@@ -1,8 +1,8 @@
 # Dax Collective Approval Decisions
 
-Generated: 2026-09-17T02:04:04.167Z
+Generated: 2026-09-17T08:32:09.392Z
 
-Source approval queue: 2026-09-17T02:04:04.103Z
+Source approval queue: 2026-09-17T08:32:09.323Z
 
 Daniel decisions may move work to the next private/draft step only. Public publishing, purchase/spend, checkout, credential changes, and legal commitments remain separately gated.
 
@@ -118,18 +118,18 @@ Can enable checkout/product publication: no
 Can spend/purchase: no
 
 Review artifacts:
-- `artifacts/anidax/ram-episode33-candidate-v1/render/candidate-review.mp4`
-- `artifacts/anidax/ram-episode33-candidate-v1/approval-package.md`
-- `artifacts/anidax/ram-episode33-candidate-v1/generated/publish-ready-payload.json`
-- `artifacts/anidax/ram-episode33-candidate-v1/generated/content-package.json`
-- `artifacts/anidax/ram-episode33-candidate-v1/generated/captions.srt`
-- `artifacts/anidax/ram-episode33-candidate-v1/generated/review-validation.json`
-- `artifacts/anidax/ram-episode33-candidate-v1/generated/source-review.json`
-- `artifacts/anidax/ram-episode33-candidate-v1/FINAL_REVIEW.md`
-- `artifacts/anidax/ram-episode33-candidate-v1/generated/production-qc.json`
-- `artifacts/anidax/ram-episode33-candidate-v1/thumbnail/thumbnail.png`
-- `artifacts/anidax/ram-episode33-candidate-v1/audio/draft-review-narration.wav`
-- `artifacts/anidax/ram-episode33-candidate-v1/brief.json`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/render/candidate-review.mp4`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/approval-package.md`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/generated/publish-ready-payload.json`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/generated/content-package.json`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/generated/captions.srt`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/generated/review-validation.json`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/generated/source-review.json`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/FINAL_REVIEW.md`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/generated/production-qc.json`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/thumbnail/thumbnail.png`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/audio/draft-review-narration.wav`
+- `artifacts/anidax/ram-episode33-candidate-v1-r2/brief.json`
 
 ## God's Vessel: Names of God
 
