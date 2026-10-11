@@ -1,0 +1,476 @@
+{
+  "name": "Cross-Brand Synergy & Recommendation Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 10 * * *"
+            }
+          ]
+        }
+      },
+      "id": "synergy-analysis-trigger",
+      "name": "Daily Synergy Analysis at 10 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Cross-Brand Synergy & Recommendation Agent\n// Identifies opportunities for cross-promotion and audience overlap optimization\n\nconst synergyConfig = {\n  brand_matrix: {\n    dax_traveler: {\n      enabled: $env.BRAND_DAX_TRAVELER_ENABLED === 'true',\n      primary_audience: 'adventure_travelers',\n      secondary_audiences: ['budget_travelers', 'solo_travelers', 'digital_nomads'],\n      content_themes: ['adventure', 'budget_travel', 'cultural_experiences', 'solo_travel'],\n      platforms: ['youtube', 'instagram', 'tiktok', 'blog'],\n      revenue_streams: ['youtube_ads', 'affiliate_marketing', 'patreon', 'merchandise'],\n      audience_overlap_potential: {\n        gods_vessel: 0.25, // 25% overlap (faith-based travelers)\n        timezone_travelers: 0.60, // 60% overlap (travel planning)\n        ani_dax: 0.15 // 15% overlap (young travelers)\n      }\n    },\n    gods_vessel: {\n      enabled: $env.BRAND_GODS_VESSEL_ENABLED === 'true',\n      primary_audience: 'christian_community',\n      secondary_audiences: ['faith_seekers', 'inspirational_content_consumers', 'spiritual_growth_focused'],\n      content_themes: ['faith', 'hope', 'love', 'spiritual_growth'],\n      platforms: ['instagram', 'facebook', 'pinterest', 'blog'],\n      revenue_streams: ['merchandise', 'donations', 'affiliate_marketing', 'courses'],\n      audience_overlap_potential: {\n        dax_traveler: 0.25, // 25% overlap (faith-based travelers)\n        timezone_travelers: 0.20, // 20% overlap (family travel)\n        ani_dax: 0.10 // 10% overlap (faith-based anime fans)\n      }\n    },\n    timezone_travelers: {\n      enabled: $env.BRAND_TIMEZONE_TRAVELERS_ENABLED === 'true',\n      primary_audience: 'travel_planners',\n      secondary_audiences: ['family_travelers', 'business_travelers', 'efficiency_seekers'],\n      content_themes: ['planning', 'efficiency', 'budget_optimization', 'time_management'],\n      platforms: ['blog', 'pinterest', 'linkedin'],\n      revenue_streams: ['digital_products', 'affiliate_marketing', 'consulting', 'courses'],\n      audience_overlap_potential: {\n        dax_traveler: 0.60, // 60% overlap (travel planning)\n        gods_vessel: 0.20, // 20% overlap (family travel)\n        ani_dax: 0.05 // 5% overlap (convention travel)\n      }\n    },\n    ani_dax: {\n      enabled: $env.BRAND_ANI_DAX_ENABLED === 'true',\n      primary_audience: 'anime_enthusiasts',\n      secondary_audiences: ['manga_readers', 'convention_goers', 'pop_culture_fans'],\n      content_themes: ['anime_culture', 'reviews', 'recommendations', 'community'],\n      platforms: ['tiktok', 'instagram', 'twitter', 'blog'],\n      revenue_streams: ['merchandise', 'affiliate_marketing', 'sponsorships', 'patreon'],\n      audience_overlap_potential: {\n        dax_traveler: 0.15, // 15% overlap (young travelers)\n        gods_vessel: 0.10, // 10% overlap (faith-based anime fans)\n        timezone_travelers: 0.05 // 5% overlap (convention travel)\n      }\n    }\n  },\n  \n  synergy_opportunities: {\n    content_collaboration: {\n      enabled: true,\n      types: ['cross_brand_mentions', 'collaborative_content', 'guest_appearances', 'shared_themes']\n    },\n    audience_cross_promotion: {\n      enabled: true,\n      strategies: ['strategic_mentions', 'audience_redirects', 'cross_platform_promotion', 'email_cross_promotion']\n    },\n    revenue_optimization: {\n      enabled: true,\n      methods: ['shared_affiliate_links', 'bundle_offerings', 'cross_brand_merchandise', 'joint_campaigns']\n    },\n    platform_synergy: {\n      enabled: true,\n      approaches: ['content_repurposing', 'platform_specific_adaptations', 'cross_posting_strategies']\n    }\n  },\n  \n  ai_recommendation_engine: {\n    content_analysis: {\n      provider: $env.AI_CONTENT_PROVIDER || 'openai',\n      model: $env.AI_CONTENT_MODEL || 'gpt-4',\n      api_key: $env.OPENAI_API_KEY\n    },\n    audience_analysis: {\n      provider: $env.AI_AUDIENCE_PROVIDER || 'claude',\n      model: $env.AI_AUDIENCE_MODEL || 'claude-3-sonnet',\n      api_key: $env.ANTHROPIC_API_KEY\n    }\n  },\n  \n  success_metrics: {\n    cross_promotion_effectiveness: {\n      target_click_through_rate: 0.05, // 5% CTR for cross-brand mentions\n      target_conversion_rate: 0.02, // 2% conversion to other brands\n      target_audience_growth: 0.15 // 15% monthly growth from cross-promotion\n    },\n    revenue_synergy: {\n      target_revenue_increase: 0.20, // 20% revenue increase from synergies\n      target_customer_lifetime_value: 150, // $150 CLV across brands\n      target_cross_brand_purchases: 0.10 // 10% customers purchase from multiple brands\n    }\n  }\n};\n\nconst analysisTimestamp = new Date().toISOString();\nconst enabledBrands = Object.keys(synergyConfig.brand_matrix).filter(\n  brand => synergyConfig.brand_matrix[brand].enabled\n);\n\n// Calculate potential synergy combinations\nconst synergyCombinations = [];\nfor (let i = 0; i < enabledBrands.length; i++) {\n  for (let j = i + 1; j < enabledBrands.length; j++) {\n    const brand1 = enabledBrands[i];\n    const brand2 = enabledBrands[j];\n    const overlapPotential = synergyConfig.brand_matrix[brand1].audience_overlap_potential[brand2] || 0;\n    \n    synergyCombinations.push({\n      brands: [brand1, brand2],\n      overlap_potential: overlapPotential,\n      priority: overlapPotential >= 0.4 ? 'high' : overlapPotential >= 0.2 ? 'medium' : 'low'\n    });\n  }\n}\n\n// Sort by overlap potential\nsynergyCombinations.sort((a, b) => b.overlap_potential - a.overlap_potential);\n\nreturn {\n  synergyConfig,\n  enabledBrands,\n  synergyCombinations,\n  analysisTimestamp,\n  totalCombinations: synergyCombinations.length\n};"
+      },
+      "id": "prepare-synergy-analysis",
+      "name": "Prepare Synergy Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-synergy-combinations",
+      "name": "Analyze Each Brand Combination",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Configure synergy analysis for specific brand combination\nconst synergyData = $('Prepare Synergy Analysis').first();\nconst currentCombination = synergyData.synergyCombinations[$('Analyze Each Brand Combination').itemIndex];\n\nif (!currentCombination) {\n  return null;\n}\n\nconst [brand1, brand2] = currentCombination.brands;\nconst brand1Config = synergyData.synergyConfig.brand_matrix[brand1];\nconst brand2Config = synergyData.synergyConfig.brand_matrix[brand2];\nconst aiConfig = synergyData.synergyConfig.ai_recommendation_engine;\n\n// Generate AI prompts for synergy analysis\nconst synergyPrompts = {\n  audience_overlap_analysis: `Analyze the audience overlap potential between ${brand1} and ${brand2}:\n  \n  Brand 1 (${brand1}):\n  - Primary audience: ${brand1Config.primary_audience}\n  - Secondary audiences: ${brand1Config.secondary_audiences.join(', ')}\n  - Content themes: ${brand1Config.content_themes.join(', ')}\n  - Platforms: ${brand1Config.platforms.join(', ')}\n  \n  Brand 2 (${brand2}):\n  - Primary audience: ${brand2Config.primary_audience}\n  - Secondary audiences: ${brand2Config.secondary_audiences.join(', ')}\n  - Content themes: ${brand2Config.content_themes.join(', ')}\n  - Platforms: ${brand2Config.platforms.join(', ')}\n  \n  Provide detailed analysis of:\n  1. Audience demographic overlap\n  2. Interest and behavior similarities\n  3. Platform usage patterns\n  4. Content consumption preferences\n  5. Cross-promotion opportunities`,\n  \n  content_collaboration_ideas: `Generate specific content collaboration ideas for ${brand1} and ${brand2}:\n  \n  Consider their themes and audiences to suggest:\n  1. Joint content series or episodes\n  2. Cross-brand mentions and features\n  3. Collaborative social media campaigns\n  4. Guest appearances and interviews\n  5. Shared storytelling opportunities\n  6. Cross-promotional content formats\n  \n  Focus on authentic, value-driven collaborations that benefit both audiences.`,\n  \n  revenue_synergy_strategies: `Develop revenue synergy strategies for ${brand1} and ${brand2}:\n  \n  Brand 1 revenue streams: ${brand1Config.revenue_streams.join(', ')}\n  Brand 2 revenue streams: ${brand2Config.revenue_streams.join(', ')}\n  \n  Suggest:\n  1. Shared affiliate marketing opportunities\n  2. Bundle product offerings\n  3. Cross-brand merchandise ideas\n  4. Joint campaign strategies\n  5. Customer journey optimization across brands\n  6. Lifetime value maximization tactics`,\n  \n  platform_optimization: `Optimize platform strategy for ${brand1} and ${brand2} synergy:\n  \n  Shared platforms: ${brand1Config.platforms.filter(p => brand2Config.platforms.includes(p)).join(', ')}\n  Brand 1 unique platforms: ${brand1Config.platforms.filter(p => !brand2Config.platforms.includes(p)).join(', ')}\n  Brand 2 unique platforms: ${brand2Config.platforms.filter(p => !brand1Config.platforms.includes(p)).join(', ')}\n  \n  Recommend:\n  1. Cross-platform content adaptation strategies\n  2. Audience migration tactics\n  3. Platform-specific collaboration formats\n  4. Content repurposing opportunities\n  5. Unified brand presence strategies`\n};\n\n// Calculate synergy potential score\nconst synergyScore = {\n  audience_overlap: currentCombination.overlap_potential * 100,\n  platform_overlap: (brand1Config.platforms.filter(p => brand2Config.platforms.includes(p)).length / \n                    Math.max(brand1Config.platforms.length, brand2Config.platforms.length)) * 100,\n  theme_compatibility: calculateThemeCompatibility(brand1Config.content_themes, brand2Config.content_themes),\n  revenue_synergy: calculateRevenueSynergy(brand1Config.revenue_streams, brand2Config.revenue_streams)\n};\n\nfunction calculateThemeCompatibility(themes1, themes2) {\n  const commonThemes = themes1.filter(theme => \n    themes2.some(t2 => t2.includes(theme) || theme.includes(t2))\n  );\n  return (commonThemes.length / Math.max(themes1.length, themes2.length)) * 100;\n}\n\nfunction calculateRevenueSynergy(streams1, streams2) {\n  const commonStreams = streams1.filter(stream => streams2.includes(stream));\n  const complementaryStreams = streams1.filter(stream => !streams2.includes(stream)).length +\n                              streams2.filter(stream => !streams1.includes(stream)).length;\n  return ((commonStreams.length * 2 + complementaryStreams) / (streams1.length + streams2.length)) * 100;\n}\n\nconst overallSynergyScore = Object.values(synergyScore).reduce((a, b) => a + b, 0) / 4;\n\nreturn {\n  brand_combination: currentCombination,\n  brand1_config: brand1Config,\n  brand2_config: brand2Config,\n  synergy_prompts: synergyPrompts,\n  synergy_score: {\n    individual_scores: synergyScore,\n    overall_score: overallSynergyScore,\n    priority: overallSynergyScore >= 70 ? 'high' : overallSynergyScore >= 50 ? 'medium' : 'low'\n  },\n  ai_config: aiConfig,\n  analysis_timestamp: synergyData.analysisTimestamp\n};"
+      },
+      "id": "configure-combination-analysis",
+      "name": "Configure Combination Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $json.ai_config.content_analysis.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"{{ $json.ai_config.content_analysis.model }}\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an expert brand strategist specializing in cross-brand synergies and audience development. Provide detailed, actionable recommendations for brand collaboration.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.synergy_prompts.audience_overlap_analysis }}\"\n    }\n  ],\n  \"max_tokens\": 2000,\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "id": "analyze-audience-overlap",
+      "name": "Analyze Audience Overlap",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "{{ $('Configure Combination Analysis').first().ai_config.audience_analysis.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"{{ $('Configure Combination Analysis').first().ai_config.audience_analysis.model }}\",\n  \"max_tokens\": 2000,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $('Configure Combination Analysis').first().synergy_prompts.content_collaboration_ideas }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "generate-collaboration-ideas",
+      "name": "Generate Collaboration Ideas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $('Configure Combination Analysis').first().ai_config.content_analysis.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"{{ $('Configure Combination Analysis').first().ai_config.content_analysis.model }}\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a revenue optimization expert specializing in multi-brand monetization strategies. Focus on practical, implementable revenue synergy tactics.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $('Configure Combination Analysis').first().synergy_prompts.revenue_synergy_strategies }}\"\n    }\n  ],\n  \"max_tokens\": 2000,\n  \"temperature\": 0.6\n}",
+        "options": {}
+      },
+      "id": "develop-revenue-strategies",
+      "name": "Develop Revenue Strategies",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-synergy-analysis",
+      "name": "Merge Synergy Analysis",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process synergy analysis and generate comprehensive recommendations\nconst combinationConfig = $('Configure Combination Analysis').first();\nconst audienceAnalysis = $('Analyze Audience Overlap').first();\nconst collaborationIdeas = $('Generate Collaboration Ideas').first();\nconst revenueStrategies = $('Develop Revenue Strategies').first();\n\n// Extract AI responses\nconst audienceInsights = audienceAnalysis.choices?.[0]?.message?.content || '';\nconst collaborationSuggestions = collaborationIdeas.content?.[0]?.text || '';\nconst revenueRecommendations = revenueStrategies.choices?.[0]?.message?.content || '';\n\n// Parse recommendations into structured format\nfunction parseRecommendations(text, category) {\n  const lines = text.split('\\n').filter(line => line.trim());\n  const recommendations = [];\n  \n  lines.forEach(line => {\n    if (line.includes('•') || line.includes('-') || /^\\d+\\./.test(line.trim())) {\n      const cleanLine = line.replace(/^[•\\-\\d\\.\\s]+/, '').trim();\n      if (cleanLine.length > 10) {\n        recommendations.push({\n          category,\n          recommendation: cleanLine,\n          priority: line.toLowerCase().includes('high') || line.toLowerCase().includes('priority') ? 'high' : 'medium',\n          implementation_effort: estimateImplementationEffort(cleanLine),\n          expected_impact: estimateExpectedImpact(cleanLine, category)\n        });\n      }\n    }\n  });\n  \n  return recommendations;\n}\n\nfunction estimateImplementationEffort(recommendation) {\n  const lowEffortKeywords = ['mention', 'share', 'post', 'link', 'tag'];\n  const highEffortKeywords = ['develop', 'create', 'build', 'design', 'launch'];\n  \n  const text = recommendation.toLowerCase();\n  if (lowEffortKeywords.some(keyword => text.includes(keyword))) return 'low';\n  if (highEffortKeywords.some(keyword => text.includes(keyword))) return 'high';\n  return 'medium';\n}\n\nfunction estimateExpectedImpact(recommendation, category) {\n  const impactMap = {\n    audience: { high: 0.25, medium: 0.15, low: 0.05 },\n    collaboration: { high: 0.20, medium: 0.12, low: 0.08 },\n    revenue: { high: 0.30, medium: 0.18, low: 0.10 }\n  };\n  \n  const text = recommendation.toLowerCase();\n  const categoryKey = category.includes('audience') ? 'audience' : \n                     category.includes('collaboration') ? 'collaboration' : 'revenue';\n  \n  if (text.includes('significant') || text.includes('major') || text.includes('substantial')) {\n    return impactMap[categoryKey].high;\n  } else if (text.includes('moderate') || text.includes('good') || text.includes('solid')) {\n    return impactMap[categoryKey].medium;\n  }\n  return impactMap[categoryKey].low;\n}\n\n// Parse all recommendations\nconst allRecommendations = [\n  ...parseRecommendations(audienceInsights, 'audience_development'),\n  ...parseRecommendations(collaborationSuggestions, 'content_collaboration'),\n  ...parseRecommendations(revenueRecommendations, 'revenue_optimization')\n];\n\n// Prioritize recommendations\nconst prioritizedRecommendations = allRecommendations\n  .sort((a, b) => {\n    // Sort by priority first, then by expected impact\n    if (a.priority !== b.priority) {\n      return a.priority === 'high' ? -1 : 1;\n    }\n    return b.expected_impact - a.expected_impact;\n  })\n  .slice(0, 10); // Top 10 recommendations\n\n// Generate implementation roadmap\nconst implementationRoadmap = {\n  immediate_actions: prioritizedRecommendations\n    .filter(r => r.implementation_effort === 'low' && r.priority === 'high')\n    .slice(0, 3),\n  short_term_goals: prioritizedRecommendations\n    .filter(r => r.implementation_effort === 'medium')\n    .slice(0, 4),\n  long_term_projects: prioritizedRecommendations\n    .filter(r => r.implementation_effort === 'high')\n    .slice(0, 3)\n};\n\n// Calculate synergy potential metrics\nconst synergyMetrics = {\n  audience_growth_potential: Math.round(combinationConfig.synergy_score.individual_scores.audience_overlap * 0.3),\n  revenue_increase_potential: Math.round(combinationConfig.synergy_score.individual_scores.revenue_synergy * 0.25),\n  content_efficiency_gain: Math.round(combinationConfig.synergy_score.individual_scores.platform_overlap * 0.4),\n  overall_synergy_value: combinationConfig.synergy_score.overall_score\n};\n\n// Generate success tracking KPIs\nconst trackingKPIs = {\n  audience_metrics: {\n    cross_brand_traffic: { target: '15%', timeframe: '30 days' },\n    audience_overlap_growth: { target: '25%', timeframe: '60 days' },\n    cross_platform_engagement: { target: '20%', timeframe: '30 days' }\n  },\n  content_metrics: {\n    collaboration_content_performance: { target: '30% above average', timeframe: '30 days' },\n    cross_mention_engagement: { target: '5% CTR', timeframe: 'ongoing' },\n    shared_content_reach: { target: '40% increase', timeframe: '45 days' }\n  },\n  revenue_metrics: {\n    cross_brand_conversions: { target: '2%', timeframe: '60 days' },\n    shared_affiliate_revenue: { target: '20% increase', timeframe: '90 days' },\n    customer_lifetime_value: { target: '$150', timeframe: '180 days' }\n  }\n};\n\nreturn {\n  brand_combination: {\n    brands: combinationConfig.brand_combination.brands,\n    overlap_potential: combinationConfig.brand_combination.overlap_potential,\n    priority: combinationConfig.brand_combination.priority\n  },\n  synergy_analysis: {\n    audience_insights: audienceInsights.substring(0, 500),\n    collaboration_suggestions: collaborationSuggestions.substring(0, 500),\n    revenue_recommendations: revenueRecommendations.substring(0, 500)\n  },\n  synergy_score: combinationConfig.synergy_score,\n  synergy_metrics: synergyMetrics,\n  recommendations: {\n    all_recommendations: allRecommendations,\n    prioritized_recommendations: prioritizedRecommendations,\n    implementation_roadmap: implementationRoadmap\n  },\n  tracking_kpis: trackingKPIs,\n  analysis_timestamp: combinationConfig.analysis_timestamp,\n  next_review_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // Review in 7 days\n};"
+      },
+      "id": "compile-synergy-recommendations",
+      "name": "Compile Synergy Recommendations",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.CROSS_BRAND_SYNERGY_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Synergy_Analysis",
+        "columnToMatchOn": "analysis_id",
+        "valueToMatchOn": "={{ $json.brand_combination.brands.join('_') }}_{{ $json.analysis_timestamp }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "analysis_id",
+              "value": "={{ $json.brand_combination.brands.join('_') }}_{{ $json.analysis_timestamp }}"
+            },
+            {
+              "column": "brand_1",
+              "value": "={{ $json.brand_combination.brands[0] }}"
+            },
+            {
+              "column": "brand_2",
+              "value": "={{ $json.brand_combination.brands[1] }}"
+            },
+            {
+              "column": "overlap_potential",
+              "value": "={{ $json.brand_combination.overlap_potential }}"
+            },
+            {
+              "column": "overall_synergy_score",
+              "value": "={{ $json.synergy_score.overall_score }}"
+            },
+            {
+              "column": "audience_overlap_score",
+              "value": "={{ $json.synergy_score.individual_scores.audience_overlap }}"
+            },
+            {
+              "column": "platform_overlap_score",
+              "value": "={{ $json.synergy_score.individual_scores.platform_overlap }}"
+            },
+            {
+              "column": "theme_compatibility_score",
+              "value": "={{ $json.synergy_score.individual_scores.theme_compatibility }}"
+            },
+            {
+              "column": "revenue_synergy_score",
+              "value": "={{ $json.synergy_score.individual_scores.revenue_synergy }}"
+            },
+            {
+              "column": "priority",
+              "value": "={{ $json.synergy_score.priority }}"
+            },
+            {
+              "column": "total_recommendations",
+              "value": "={{ $json.recommendations.all_recommendations.length }}"
+            },
+            {
+              "column": "high_priority_recommendations",
+              "value": "={{ $json.recommendations.prioritized_recommendations.filter(r => r.priority === 'high').length }}"
+            },
+            {
+              "column": "immediate_actions",
+              "value": "={{ $json.recommendations.implementation_roadmap.immediate_actions.length }}"
+            },
+            {
+              "column": "audience_growth_potential",
+              "value": "={{ $json.synergy_metrics.audience_growth_potential }}"
+            },
+            {
+              "column": "revenue_increase_potential",
+              "value": "={{ $json.synergy_metrics.revenue_increase_potential }}"
+            },
+            {
+              "column": "analysis_timestamp",
+              "value": "={{ $json.analysis_timestamp }}"
+            },
+            {
+              "column": "next_review_date",
+              "value": "={{ $json.next_review_date }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-synergy-analysis",
+      "name": "Save Synergy Analysis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1780,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "synergy-report",
+              "name": "synergyReport",
+              "value": "🤝 *Cross-Brand Synergy Report*\\n\\n*Brand Combination:* {{ $json.brand_combination.brands[0].toUpperCase() }} ↔ {{ $json.brand_combination.brands[1].toUpperCase() }}\\n\\n*Synergy Score:* {{ $json.synergy_score.overall_score.toFixed(1) }}% ({{ $json.synergy_score.priority.toUpperCase() }} Priority)\\n\\n*Score Breakdown:*\\n• Audience Overlap: {{ $json.synergy_score.individual_scores.audience_overlap.toFixed(0) }}%\\n• Platform Overlap: {{ $json.synergy_score.individual_scores.platform_overlap.toFixed(0) }}%\\n• Theme Compatibility: {{ $json.synergy_score.individual_scores.theme_compatibility.toFixed(0) }}%\\n• Revenue Synergy: {{ $json.synergy_score.individual_scores.revenue_synergy.toFixed(0) }}%\\n\\n*Growth Potential:*\\n• Audience Growth: +{{ $json.synergy_metrics.audience_growth_potential }}%\\n• Revenue Increase: +{{ $json.synergy_metrics.revenue_increase_potential }}%\\n• Content Efficiency: +{{ $json.synergy_metrics.content_efficiency_gain }}%\\n\\n*Immediate Actions ({{ $json.recommendations.implementation_roadmap.immediate_actions.length }}):*\\n{{ $json.recommendations.implementation_roadmap.immediate_actions.map((action, i) => `${i+1}. ${action.recommendation.substring(0, 60)}...`).join('\\n') }}\\n\\n*Next Review:* {{ new Date($json.next_review_date).toLocaleDateString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-synergy-report",
+      "name": "Format Synergy Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2000,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.synergyReport }}\",\n  \"username\": \"Cross-Brand Synergy Agent\",\n  \"icon_emoji\": \":handshake:\"\n}",
+        "options": {}
+      },
+      "id": "send-synergy-report",
+      "name": "Send Synergy Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2220,
+        350
+      ]
+    }
+  ],
+  "connections": {
+    "Daily Synergy Analysis at 10 AM": {
+      "main": [
+        [
+          {
+            "node": "Prepare Synergy Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Synergy Analysis": {
+      "main": [
+        [
+          {
+            "node": "Analyze Each Brand Combination",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Each Brand Combination": {
+      "main": [
+        [
+          {
+            "node": "Configure Combination Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure Combination Analysis": {
+      "main": [
+        [
+          {
+            "node": "Analyze Audience Overlap",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Collaboration Ideas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Develop Revenue Strategies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Audience Overlap": {
+      "main": [
+        [
+          {
+            "node": "Merge Synergy Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Collaboration Ideas": {
+      "main": [
+        [
+          {
+            "node": "Merge Synergy Analysis",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Develop Revenue Strategies": {
+      "main": [
+        [
+          {
+            "node": "Merge Synergy Analysis",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge Synergy Analysis": {
+      "main": [
+        [
+          {
+            "node": "Compile Synergy Recommendations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compile Synergy Recommendations": {
+      "main": [
+        [
+          {
+            "node": "Save Synergy Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Synergy Analysis": {
+      "main": [
+        [
+          {
+            "node": "Format Synergy Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Synergy Report": {
+      "main": [
+        [
+          {
+            "node": "Send Synergy Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "cross-brand-synergy",
+      "name": "Cross-Brand Synergy"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "audience-optimization",
+      "name": "Audience Optimization"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

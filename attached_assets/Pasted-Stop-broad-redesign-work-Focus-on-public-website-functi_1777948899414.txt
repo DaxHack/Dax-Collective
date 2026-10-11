@@ -1,0 +1,174 @@
+Stop broad redesign work.
+
+Focus on public website functionality while preserving the existing visual identity.
+
+Goal:
+Make The Dax Collective public site more functional without changing the overall design direction.
+
+Rules:
+- Do not redesign the homepage.
+- Preserve current homepage identity unless a section is broken.
+- Keep only selective visual refinements.
+- Prioritize routes, data structure, content pages, CTAs, and working links.
+- Do not connect live APIs yet.
+- Do not touch credentials.
+- Use local/static seed data first.
+- Ask before replacing large visual sections.
+
+Build/fix these:
+
+1. Visual Change Review
+Create a report of visual changes already made:
+- keep
+- revert
+- refine
+- undecided
+Do not edit until approved.
+
+2. Routes
+Ensure these routes render:
+- /
+- /about
+- /brands
+- /dax-the-traveler
+- /time-zone-travelers
+- /anidax
+- /gods-vessel
+- /blog
+- /blog/:slug
+- /resources
+- /disclosure
+- /privacy
+- /contact
+- /*
+Add a clean 404 page.
+
+3. Blog system
+Create local/static blog data first.
+Support blog categories:
+- From the Vlog
+- Wanderlost with Dax
+- Quick Blips
+- Quick Jumps
+- Zone Guides
+- Travel Dispatches
+- Time-Zone Tips
+- Anime Files
+- AniDax Pulse
+- Character Files
+- Names of God: The Dictionary Series
+- Archive Notes
+
+Each blog record:
+- title
+- slug
+- brand
+- category
+- excerpt
+- body
+- hero image
+- tags
+- CTA
+- related resources
+- published date
+
+4. Dax the Traveler
+Create sections:
+- From the Vlog
+- Wanderlost with Dax
+- Quick Blips
+- Quick Jumps
+- Dax Travel Kit
+- Seen in the Vlog
+- Side Quests
+
+Use static approved media placeholders for now.
+Do not pretend the app has access to my Facebook/photos unless I provide files.
+
+5. Time-Zone Travelers
+Create:
+- Zone Guides
+- Travel Dispatches
+- Time-Zone Tips
+- Travel Toolkits
+- Route Packs
+- Travel Perks
+- Time Packs
+- Side Quests
+
+Add a functional itinerary builder form with local output:
+- destination
+- trip length
+- budget
+- travel style
+- interests
+- pace
+- food preferences
+- must avoid
+Then generate a simple itinerary preview on the page.
+
+6. AniDax
+Rename public references from SaupremeAnimeTastes to AniDax.
+Create static anime content structure:
+- Anime Files
+- AniDax Pulse
+- Character Files
+- Theory Board
+- Ranking Runs
+- Arc Review
+- Lore Check
+- Watch Queue
+- Power Scale
+- Episode Notes
+
+Use approved/static placeholder images only.
+Do not pull copyrighted images or anime artwork automatically yet.
+Add a copyright-safe notice for commentary pages.
+
+7. God’s Vessel
+Build product-card rendering for:
+- Names of God: The Dictionary Series
+- A God’s Vessel Archive Collection
+- Archive Notes
+- Study Cards
+- Scripture Threads
+- The Drop
+- The Collection
+
+Use seed product data:
+- El Shaddai
+- Adonai
+- Elohim
+- Yahweh
+- Jehovah Jireh
+- El Roi
+
+Each product:
+- archive number
+- name
+- pronunciation
+- meaning
+- scripture reference
+- short definition
+- product type
+- status
+- CTA
+
+8. Legal and monetization
+Add:
+- affiliate disclosure page
+- privacy page
+- basic newsletter placeholder CTA
+- resource cards with disclosure reminders
+
+9. SEO basics
+Add page titles and meta descriptions where easy.
+Add robots.txt and placeholder sitemap.xml if missing.
+
+10. Final output
+After building, report:
+- files changed
+- routes tested
+- what works
+- what still needs manual approval
+- what should be built next

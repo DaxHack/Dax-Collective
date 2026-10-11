@@ -1,0 +1,228 @@
+This is a new, real-app build task.
+
+Do not work on Canvas, mockup routes, concept previews, Reimagine, `__mockup`, or the prior 404 task.
+
+Before editing, state clearly:
+
+1. the active task title;
+2. the exact real app folder you will edit;
+3. whether `gsap`, `embla-carousel-react`, `framer-motion`, and `react-parallax-tilt` are installed inside `dax-main`;
+4. which files you will change.
+
+The target is the real React app in:
+
+`dax-main/`
+
+Build the real pages, not a demo.
+
+## Scope
+
+Rebuild these four pages to God’s Vessel-level visual quality:
+
+* `dax-main/src/pages/Home.jsx`
+* `dax-main/src/pages/DaxTheTravelerPage.jsx`
+* `dax-main/src/pages/AniDaxPage.jsx`
+* `dax-main/src/pages/TimeZoneTravelersPage.jsx`
+
+God’s Vessel must remain untouched:
+
+* Do not edit `dax-main/src/pages/GodsVesselPage.jsx`
+
+You may update `dax-main/src/components/Navbar.jsx` only to create the branded hamburger drawer/menu behavior described below.
+
+Do not touch backend, Firebase, auth, API routes, n8n, Docker, environment files, secrets, deployment configuration, or package versions.
+
+Do not create fake stats, testimonials, reviews, client logos, partnerships, bookings, pricing claims, or dashboard UI.
+
+## Dependencies
+
+First verify whether these are installed inside `dax-main`:
+
+* `gsap`
+* `embla-carousel-react`
+
+If missing, install only those two packages in `dax-main`.
+
+Do not add any other packages without stopping and asking.
+
+## Shared visual direction
+
+The design target is:
+
+**cinematic scrollytelling × premium spatial depth × interactive creator-brand worlds**
+
+This must feel more like entering a visual experience than reading a generic page.
+
+Use:
+
+* CSS perspective and layered depth;
+* GSAP ScrollTrigger for targeted pinned storytelling and route motion;
+* Embla for swipeable mobile rails;
+* image masks;
+* controlled glow;
+* reflections;
+* haze;
+* grain;
+* visual light sweeps;
+* crisp typography;
+* one major visual idea per section;
+* `prefers-reduced-motion` fallbacks.
+
+Do not make everything animate. No particle overload, spinning, empty black sections, generic card grids, or fake “AI website” effects.
+
+## Shared navigation
+
+Build a polished hamburger-triggered vertical drawer:
+
+* dark glass/blur treatment;
+* vertical brand links;
+* smooth open/close;
+* each page subtly tinted by its own palette;
+* preserve existing routes;
+* no generic white mobile menu.
+
+# Dax the Traveler — highest priority
+
+Target:
+
+**interactive travel film × cinematic travel journal × premium creator portfolio**
+
+Palette:
+
+* navy and charcoal;
+* ocean blue;
+* sky blue;
+* sunset orange;
+* destination gold;
+* restrained electric-blue interaction accents.
+
+Required:
+
+1. **Layered cinematic travel hero**
+
+   * Use only 1–3 real travel photos.
+   * Make the hero feel like a scene, not a banner.
+   * Background image, foreground image, travel metadata/passport detail, shallow depth, haze, reflection, controlled parallax.
+   * Mobile becomes one main image plus one inset detail.
+
+2. **Scroll-linked destination chapters**
+
+   * Use a sticky visual scene with 3–5 real destination/story chapters.
+   * The visual focus changes as users scroll.
+   * No generic article grid.
+
+3. **Animated SVG route**
+
+   * Use a lightweight route line between real locations.
+   * Use SVG draw behavior only.
+   * Do not create a complex map.
+
+4. **Interactive travel-memory rail**
+
+   * Desktop: overlapping/fanning cards with subtle tilt and expand-to-story behavior.
+   * Mobile: Embla swipe rail with scroll snap.
+   * Replace generic cards with travel memories.
+
+5. **Remove testimonial/quote-card feeling**
+
+   * Use “Passport Pieces,” “Scene Notes,” or “Field Notes.”
+   * Include location, coordinates, date/season if known, and an honest memory line.
+   * No social proof.
+
+6. **Work With Dax**
+
+   * Honest UGC/collaboration section.
+   * No fabricated sponsors or clients.
+
+# Ani-Dax
+
+Target:
+
+**Urban Neon Editorial Anime Commentary**
+
+Palette:
+
+* near-black;
+* electric blue;
+* violet;
+* cyan;
+* controlled magenta;
+* neon-city atmosphere;
+* grain and scanline texture.
+
+Required:
+
+* oversized editorial hero;
+* visually rich but spacious layout;
+* one genre/topic rail;
+* one featured commentary story;
+* maximum three latest-take cards;
+* one clearly labeled In Development section;
+* abstract original-safe panels, silhouettes, or safe existing assets.
+
+No official anime art, character likenesses, screenshots, fake rankings, fake view counts, fake chat, fake schedules, or fake merchandise.
+
+# Time-Zone Travelers
+
+Target:
+
+**Global Travel Discovery Clubhouse**
+
+Palette:
+
+* orange;
+* coral;
+* red-pink;
+* warm sunset gradients;
+* navy/charcoal support;
+* coordinates, passports, routes, airport-board microtype.
+
+Required:
+
+* cinematic sunset hero;
+* destination/culture discovery rail;
+* simple route or waypoint scene;
+* curated story cards;
+* global-exploration atmosphere.
+
+Do not make a booking engine, airline UI, fake travel agency, fake fares, fake reviews, or fake statistics.
+
+# Dax Collective Home
+
+Target:
+
+**premium creative universe × colorful multi-brand portal × future-facing creator studio**
+
+Palette:
+
+* floating white orbs/bubbles;
+* cobalt blue;
+* indigo;
+* purple;
+* pink/magenta;
+* restrained prismatic highlights.
+
+Required:
+
+* orb-lit portal hero;
+* one strong featured brand world;
+* gateway cards that feel like entering each brand’s universe;
+* dimensional hover/tap movement;
+* light sweeps, reflection, glow, and depth.
+
+No generic agency portfolio grid, fake metrics, flat dark cards, or dead black space.
+
+## Required final output
+
+Do not say the task is finished until you have:
+
+1. run available build/lint checks;
+2. tested all four real routes;
+3. checked a mobile viewport;
+4. confirmed God’s Vessel was untouched;
+5. shown screenshots or a real app preview of every finished page;
+6. listed every changed file;
+7. stated whether the final visuals are real app changes rather than mockups;
+8. committed the work with a clear visual-rebuild commit message.
+
+Do not switch to another task until this task is complete.

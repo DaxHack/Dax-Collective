@@ -1,0 +1,27 @@
+# ──────── dax-collective/functions/.gitignore ─────────────────────
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Firebase service account keys
+serviceAccountKey.json
+
+# Build output (if using TypeScript)
+lib/
+
+# Logs
+firebase-debug.log*
+npm-debug.log*
+yarn-error.log*
+
+# Runtime files
+*.pid
+*.seed
+
+# Temporary files
+*.tmp
+*.bak
+

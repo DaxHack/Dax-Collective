@@ -1,0 +1,5 @@
+- [Local preview approval](local-preview-approval.md) — keep experimental visual work local until explicit approval; preserve immutable backups and authentic photo context.
+- [Immersive overlay layering](immersive-overlay-layering.md) — portal above navigation; capture nested-overlay openers before inert clears browser focus.
+- [Scroll scene tracking](scroll-scene-tracking.md) — vertical observer percentages use width; choose scenes from complete geometry below the responsive sticky stack.
+- [Execution and ownership](execution-and-ownership.md) — batch approved implementation; avoid repeated planning; GitHub portability is the finish line.
+- [Safe portable branch](v3-portability.md) — exclude secret-bearing legacy history; prove clean locked installs and remove workspace-only package URLs.

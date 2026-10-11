@@ -1,0 +1,72 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "6Vz0Pp_WZCaAS7th5QTMI"
+uri = "file://backups/dax-collective-pre-immersive-redesign-2026-09-30-part-1.zip"
+type = "unspecified"
+title = "Saved version — Part 1 of 2"
+description = "Frontend source, configurations, approved media, and restore instructions. Extract BOTH ZIPs into the same directory."
+logical_id = "e717a16f-f543-4061-87ef-52fd9e001252"
+content_hash = "sha256:cb37f78da55d333f15f31b8f8dcd5a706285a049caf86fdc073b432b0b28731d"
+size = 49426148
+mtime_ms = 1790809415575
+storage_uri = "gcs://replit-rams-assets-janeway/rams/assets/repl:2bcc0238-0719-46b5-a739-276e9b2e3687/e717a16f-f543-4061-87ef-52fd9e001252/f917f483-132d-4222-8aed-b03e1b305167"
+storage_version_token = "1790809465014163"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "soEinDH1hfNZDqhqdTW4m"
+uri = "file://backups/dax-collective-pre-immersive-redesign-2026-09-30-part-2.zip"
+type = "unspecified"
+title = "Saved version — Part 2 of 2"
+description = "Original local image library. Extract alongside Part 1 into the same directory; together they reproduce the full saved snapshot."
+logical_id = "d63a466b-8e63-4182-8aca-344f24b0f27c"
+content_hash = "sha256:068a46c5a62e489b9244d8b031b6aed0290027ce8258b55fab9b43be1a8e3b17"
+size = 100046333
+mtime_ms = 1790809418151
+storage_uri = "gcs://replit-rams-assets-janeway/rams/assets/repl:2bcc0238-0719-46b5-a739-276e9b2e3687/d63a466b-8e63-4182-8aca-344f24b0f27c/bfb9a6ab-ce71-47c6-a397-7637e251459e"
+storage_version_token = "1790809466567754"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "rurtNZR2cF8yac3zh_Zzl"
+uri = "file://backups/dax-site-v1-current-working-version-2026-10-01-part-1.zip"
+type = "unspecified"
+title = "Dax Site V1 - Current Working Version — Part 1 of 3"
+description = "Restorable current frontend plus unchanged uploaded originals. Download all three parts and extract into the same directory."
+logical_id = "7ce7f90c-1585-4990-9b6d-ea9db3c0559e"
+content_hash = "sha256:7b5f5457ab4b53810d42ab9baf6b78158beea4db23b10df2105f8280aae76cf8"
+size = 81509464
+mtime_ms = 1790855282413
+storage_uri = "gcs://replit-rams-assets-janeway/rams/assets/repl:2bcc0238-0719-46b5-a739-276e9b2e3687/7ce7f90c-1585-4990-9b6d-ea9db3c0559e/62f18812-8dd2-4064-82ce-5a8629d72761"
+storage_version_token = "1790855299196629"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "LEI3uQuy5AoMYNbUyO_qq"
+uri = "file://backups/dax-site-v1-current-working-version-2026-10-01-part-2.zip"
+type = "unspecified"
+title = "Dax Site V1 - Current Working Version — Part 2 of 3"
+description = "Restorable current frontend plus unchanged uploaded originals. Download all three parts and extract into the same directory."
+logical_id = "ea8816bf-721d-469d-bfff-26a7e7b2e142"
+content_hash = "sha256:bfefc350779563fc806428b51875955f5d71ba1d3b4f26715c775fa04809a95d"
+size = 88719805
+mtime_ms = 1790855286701
+storage_uri = "gcs://replit-rams-assets-janeway/rams/assets/repl:2bcc0238-0719-46b5-a739-276e9b2e3687/ea8816bf-721d-469d-bfff-26a7e7b2e142/6003d5e9-871c-44cb-bcff-8981cdcef441"
+storage_version_token = "1790855301001337"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "AtVeole1U73kgS2P32SoD"
+uri = "file://backups/dax-site-v1-current-working-version-2026-10-01-part-3.zip"
+type = "unspecified"
+title = "Dax Site V1 - Current Working Version — Part 3 of 3"
+description = "Restorable current frontend plus unchanged uploaded originals. Download all three parts and extract into the same directory."
+logical_id = "3e4fff3a-9db4-419c-a29e-3f671d41f5fb"
+content_hash = "sha256:023a9ce00995aed1621819a4972cf8304e0efd8fdb02071bd104fddd904c80f8"
+size = 15858005
+mtime_ms = 1790855287521
+storage_uri = "gcs://replit-rams-assets-janeway/rams/assets/repl:2bcc0238-0719-46b5-a739-276e9b2e3687/3e4fff3a-9db4-419c-a29e-3f671d41f5fb/b8c198f4-1193-4aa3-a1d3-7f80f2ab4824"
+storage_version_token = "1790855302203937"
+content_type = "application/octet-stream"

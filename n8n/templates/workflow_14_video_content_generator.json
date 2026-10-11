@@ -1,0 +1,301 @@
+{
+  "name": "Video Content Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Daily Video Generation Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "messages": {
+          "messageType": "multipleMessages",
+          "messages": [
+            {
+              "role": "system",
+              "message": "You are a video content strategist for {{ $env.CURRENT_BRAND }}. Generate engaging video concepts that align with the brand voice and audience interests. Consider trending topics, seasonal relevance, and revenue opportunities."
+            },
+            {
+              "role": "user", 
+              "message": "Generate a compelling video concept for {{ $env.CURRENT_BRAND }} including:\n1. Video title (SEO optimized)\n2. Video description (2-3 paragraphs)\n3. Key talking points (5-7 points)\n4. Call-to-action strategy\n5. Thumbnail concept\n6. Target video length\n7. Revenue integration opportunities\n\nBrand context: {{ $env.BRAND_CONTEXT }}\nCurrent trends: {{ $json.trends }}\nSeason: {{ $now.format('MMMM YYYY') }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 1500
+        }
+      },
+      "id": "2",
+      "name": "Generate Video Concept",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "messages": {
+          "messageType": "multipleMessages", 
+          "messages": [
+            {
+              "role": "system",
+              "message": "You are a professional scriptwriter specializing in {{ $env.CURRENT_BRAND }} content. Create engaging, conversational scripts that feel natural and authentic while incorporating revenue opportunities seamlessly."
+            },
+            {
+              "role": "user",
+              "message": "Create a detailed video script based on this concept:\n\n{{ $json.video_concept }}\n\nScript requirements:\n- Natural, conversational tone\n- Strong hook in first 15 seconds\n- Clear structure with smooth transitions\n- Integrated CTAs for Patreon, affiliate products, merchandise\n- Engaging conclusion with subscribe reminder\n- Include [PAUSE], [EMPHASIS], [VISUAL CUE] markers\n- Target length: {{ $json.target_length }} minutes\n\nBrand voice: {{ $env.BRAND_VOICE }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 2500
+        }
+      },
+      "id": "3", 
+      "name": "Generate Video Script",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "voice": "{{ $env.VOICE_SELECTION }}",
+        "text": "{{ $json.script_clean }}",
+        "model": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.75,
+          "similarity_boost": 0.8,
+          "style": 0.2
+        }
+      },
+      "id": "4",
+      "name": "Generate Voice Audio",
+      "type": "n8n-nodes-base.elevenLabs",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "query": "{{ $json.visual_keywords }} stock footage 4K",
+        "count": 10,
+        "license": "free",
+        "orientation": "landscape"
+      },
+      "id": "5",
+      "name": "Search Stock Footage",
+      "type": "n8n-nodes-base.unsplash",
+      "typeVersion": 1,
+      "position": [900, 480]
+    },
+    {
+      "parameters": {
+        "command": "python3 /home/ubuntu/scripts/video_generator.py",
+        "additionalFields": {
+          "workingDirectory": "/home/ubuntu/video_production"
+        }
+      },
+      "id": "6",
+      "name": "Generate Video with FFmpeg",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "model": "dall-e-3",
+        "prompt": "{{ $json.thumbnail_concept }} - YouTube thumbnail style, bright colors, clear text overlay, engaging composition, {{ $env.BRAND_COLORS }}",
+        "size": "1792x1024",
+        "quality": "hd"
+      },
+      "id": "7",
+      "name": "Generate Thumbnail",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [1120, 480]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "title": "{{ $json.video_title }}",
+        "description": "{{ $json.video_description }}\n\n🔔 Subscribe for more {{ $env.BRAND_CONTENT_TYPE }}!\n\n💰 Support on Patreon: {{ $env.PATREON_URL }}\n🛒 Shop merchandise: {{ $env.SHOP_URL }}\n\n{{ $json.affiliate_links }}\n\n#{{ $env.BRAND_HASHTAGS }}",
+        "tags": "{{ $json.video_tags }}",
+        "categoryId": "{{ $env.YOUTUBE_CATEGORY }}",
+        "privacyStatus": "private",
+        "videoFilename": "{{ $json.video_file_path }}",
+        "thumbnailFilename": "{{ $json.thumbnail_file_path }}"
+      },
+      "id": "8",
+      "name": "Upload to YouTube",
+      "type": "n8n-nodes-base.youtube",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": "{{ $env.VIDEO_TRACKING_SHEET_ID }}",
+        "sheetName": "Video Production Log",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "{{ $now.format('YYYY-MM-DD') }}",
+            "Brand": "{{ $env.CURRENT_BRAND }}",
+            "Video Title": "{{ $json.video_title }}",
+            "YouTube URL": "{{ $json.youtube_url }}",
+            "Status": "Uploaded - Private",
+            "Script Length": "{{ $json.script_word_count }}",
+            "Audio Duration": "{{ $json.audio_duration }}",
+            "Thumbnail Generated": "Yes",
+            "Revenue Integrations": "{{ $json.revenue_elements }}",
+            "Next Actions": "Review and publish"
+          }
+        }
+      },
+      "id": "9",
+      "name": "Log Video Production",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "channel": "{{ $env.SLACK_VIDEO_CHANNEL }}",
+        "text": "🎬 New video generated for {{ $env.CURRENT_BRAND }}!\n\n📹 Title: {{ $json.video_title }}\n🔗 YouTube: {{ $json.youtube_url }}\n⏱️ Duration: {{ $json.audio_duration }}\n📊 Status: Uploaded as private - ready for review\n\n✅ Next steps:\n1. Review video quality\n2. Adjust thumbnail if needed\n3. Set publish schedule\n4. Activate cross-platform promotion"
+      },
+      "id": "10",
+      "name": "Notify Video Ready",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [1780, 300]
+    }
+  ],
+  "connections": {
+    "Daily Video Generation Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate Video Concept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video Concept": {
+      "main": [
+        [
+          {
+            "node": "Generate Video Script", 
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video Script": {
+      "main": [
+        [
+          {
+            "node": "Generate Voice Audio",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Search Stock Footage",
+            "type": "main", 
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voice Audio": {
+      "main": [
+        [
+          {
+            "node": "Generate Video with FFmpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Stock Footage": {
+      "main": [
+        [
+          {
+            "node": "Generate Video with FFmpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video with FFmpeg": {
+      "main": [
+        [
+          {
+            "node": "Generate Thumbnail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Thumbnail": {
+      "main": [
+        [
+          {
+            "node": "Upload to YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to YouTube": {
+      "main": [
+        [
+          {
+            "node": "Log Video Production",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Video Production": {
+      "main": [
+        [
+          {
+            "node": "Notify Video Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

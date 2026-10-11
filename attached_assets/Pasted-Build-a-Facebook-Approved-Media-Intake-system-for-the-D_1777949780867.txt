@@ -1,0 +1,76 @@
+Build a Facebook Approved Media Intake system for the Dax Collective website.
+
+Important:
+Do NOT directly connect to Facebook yet.
+Do NOT ask for Facebook passwords.
+Do NOT scrape Facebook.
+Do NOT use unofficial Facebook scraping tools.
+Do NOT auto-download or auto-publish anything.
+
+Goal:
+I want to eventually use approved images from my Daniel/R. Daniel Rollins Facebook page for Dax the Traveler, but for now the system should support safe manual intake and future API integration.
+
+Build this as a controlled media system.
+
+Add:
+1. A Media Intake / Approved Assets page or section.
+2. A data structure for approved social media assets.
+3. Fields:
+   - Asset title
+   - Brand
+   - Source platform: Facebook, Instagram, Google Drive, Local Upload, Other
+   - Source URL
+   - Local file path or hosted URL
+   - Asset type: Photo, Video, Thumbnail, Banner, Product Mockup, Other
+   - Related trip/location
+   - Related content series:
+     - From the Vlog
+     - Wanderlost with Dax
+     - Quick Blips
+     - Quick Jumps
+     - Seen in the Vlog
+     - Dax Travel Kit
+     - Side Quests
+   - Usage status: Needs Review, Approved, Rejected, Needs Crop, Needs Caption, Published
+   - Permission status: Owned by me, Approved for use, Unknown, Do not use
+   - Notes
+   - Tags
+
+4. Allow filtering by:
+   - Brand
+   - Source platform
+   - Asset type
+   - Usage status
+   - Related trip/location
+
+5. Add a placeholder “Facebook Connection Setup” panel that explains:
+   - Facebook API connection is not active yet
+   - Future setup will require a Meta Developer App
+   - Future setup will require Page permissions
+   - Assets must still be manually approved before use
+
+6. On Dax the Traveler page:
+   - Add a section that can later display approved Facebook/Google Drive/local travel images
+   - Use placeholder approved media data for now
+   - Do not change the overall visual identity heavily
+
+7. For blog pages:
+   - Allow a blog post record to reference approved media assets
+   - Do not auto-select personal images without approval
+
+Technical rules:
+- Keep this simple.
+- No Facebook API calls yet.
+- No OAuth yet.
+- No credentials.
+- No scraping.
+- No auto-posting.
+- No destructive changes.
+- Preserve current website style as much as possible.
+- Focus on functionality and future readiness.
+
+After building:
+- List changed files
+- Explain how approved assets are stored
+- Explain how this can later connect to the Meta/Facebook API safely
+- Confirm no live Facebook connection was made

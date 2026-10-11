@@ -1,0 +1,89 @@
+Update the Dax Collective public website links and approved media structure.
+
+Important:
+Do NOT connect to the Facebook API yet.
+Do NOT scrape Facebook.
+Do NOT ask for Facebook login.
+Do NOT auto-download images.
+Do NOT auto-publish anything.
+
+Goal:
+I want my Dax the Traveler / Dax Collective website to include a visible link to my Facebook page now, and later support approved Facebook images/media after I manually approve them.
+
+Add this Facebook page link wherever appropriate:
+FACEBOOK_PAGE_URL = "[PASTE_MY_FACEBOOK_PAGE_URL_HERE]"
+
+If the exact URL is not available yet, create a config placeholder named facebookPageUrl and use "#facebook-page-url-needed" temporarily.
+
+Tasks:
+
+1. Add Facebook to the “Seen in the Vlog” social link section
+Current links show:
+- YouTube
+- Instagram
+- TikTok
+
+Add:
+- Facebook
+
+2. Add Facebook to the footer/social links
+Include it near YouTube, Instagram, TikTok, and other public social links.
+
+3. Create or update a central socialLinks config file if one already exists
+Preferred structure:
+{
+  youtube: "...",
+  instagram: "...",
+  tiktok: "...",
+  facebook: "..."
+}
+
+If social links are hardcoded in multiple files, centralize them into one file and import them.
+
+4. Add a “Facebook Approved Media” placeholder section for Dax the Traveler
+Purpose:
+This section should explain that Facebook photos/media will be added after manual approval.
+
+Suggested copy:
+“Facebook travel photos and behind-the-scenes moments will appear here once approved for use.”
+
+5. Keep the visual style consistent with the current site
+Do not redesign the page.
+Do not change the overall homepage identity.
+Only add the Facebook link and future-ready approved media structure.
+
+6. Add a simple approved media data file if one does not exist
+Example fields:
+- id
+- title
+- brand
+- sourcePlatform
+- sourceUrl
+- assetType
+- relatedTrip
+- relatedSeries
+- usageStatus
+- permissionStatus
+- notes
+- tags
+
+Seed one placeholder Facebook asset:
+{
+  title: "Facebook travel media placeholder",
+  brand: "Dax the Traveler",
+  sourcePlatform: "Facebook",
+  sourceUrl: "[PASTE_MY_FACEBOOK_PAGE_URL_HERE]",
+  assetType: "Photo",
+  relatedTrip: "",
+  relatedSeries: "Seen in the Vlog",
+  usageStatus: "Needs Review",
+  permissionStatus: "Owned by me",
+  notes: "Placeholder record. Do not display as final image until manually approved.",
+  tags: ["facebook", "travel", "approved-media-needed"]
+}
+
+7. After building:
+- List changed files
+- Show where the Facebook link appears
+- Confirm no Facebook API, OAuth, scraping, or auto-download was added
+- Confirm the site still runs without errors

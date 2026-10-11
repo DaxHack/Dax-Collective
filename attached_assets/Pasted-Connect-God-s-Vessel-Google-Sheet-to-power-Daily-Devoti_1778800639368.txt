@@ -1,0 +1,42 @@
+Connect God's Vessel Google Sheet to power Daily Devotional section
+Task: #12 - Connect God's Vessel Google Sheet to power the Daily Devotional section
+
+What was done:
+1. Added actual REACT_APP_SHEET_GODS_VESSEL_QUOTES value to dax-main/.env (also mirrored in dax-backend/.env for proxy allowlist).
+2. Rewrote dax-main/src/services/sheetsApi.js to route ALL sheet reads exclusively through the backend proxy (GET /api/sheets). Removed the direct Google API key fallback so the frontend never exposes or uses a Google API key. The proxy is the single auth point (service-account JWT).
+3. Added /api/sheets proxy endpoint to dax-backend/server.js with:
+- Approved sheet ID allowlist (reads SHEET_* with REACT_APP_SHEET_* fallback)
+- JWT service account auth via google-auth-library
+- 403 for unauthorized spreadsheet access
+4. Added google-auth-library explicitly to dax-backend/package.json dependencies (was previously only a transitive dependency via googleapis).
+5. The devotional section gracefully falls back to on-brand placeholder content when the proxy returns 500 (auth failure), so visitors never see an error.
+6. Cleaned up the corrupted dax-main/.env.example (had git merge conflict markers + leaked key prefixes) into a safe template with no real values.
+7. Created dax-backend/.env.example safe template (now includes SHEET_* variables).
+8. Created docs/ENVIRONMENT_SETUP.md with complete secret naming conventions, Google Cloud project requirements, and security rules.
+9. Removed AI provider key placeholders from dax-main/.env.example and added explicit warnings: AI keys (OpenAI, ElevenLabs, Claude, etc.) must NEVER be exposed to the frontend.
+10. Marked REACT_APP_GOOGLE_API_KEY as unused in dax-main/.env (all Google API calls go through the backend proxy).
+
+Blocked by external issue:
+The existing Google Cloud project (891150375514 / dax-collective) has a suspended API key and service account. All JWT-based authentication to Google APIs returns "invalid_grant: Invalid JWT Signature". The proxy code is fully ready — it will return 200 with live sheet data immediately once a non-suspended Google Cloud credential set is provided.
+
+Files changed:
+- dax-main/.env (added REACT_APP_SHEET_GODS_VESSEL_QUOTES with actual sheet ID)
+- dax-backend/.env (mirrored sheet ID for backend allowlist)
+- dax-main/.env.example (rewrote from corrupted state, no real values, AI key warnings)
+- dax-backend/.env.example (new safe template with SHEET_* vars)
+- dax-main/src/services/sheetsApi.js (proxy-only sheet fetching, no direct API fallback)
+- dax-backend/server.js (sheets proxy endpoint with dual-prefix allowlist)
+- dax-backend/package.json (added google-auth-library explicit dependency)
+- docs/ENVIRONMENT_SETUP.md (new documentation with AI key security warnings)
+
+Files inspected (not modified):
+- dax-main/src/components/GodsVesselQuotes.jsx
+- dax-main/src/pages/GodsVesselPage.jsx
+- dax-main/src/config/apiConfig.js
+- dax-main/src/config/firebase.js
+- dax-main/src/config/driveFolder.js
+- dax-backend/routes/uploadApi.js
+- dax-backend/credentials/firebase-adminsdk.json
+- functions/index.js
+- functions/refreshGoogleToken.js
+- dax-main/getGoogleToken.js (flagged: hardcoded OAuth secrets)

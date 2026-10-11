@@ -1,0 +1,428 @@
+{
+  "name": "Revenue Optimization Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 */6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "revenue-analysis-trigger",
+      "name": "Analyze Revenue Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Revenue Optimization Agent\n// Analyzes revenue streams and optimizes pricing, affiliate links, and monetization strategies\n\nconst revenueSources = {\n  patreon: {\n    enabled: $env.PATREON_ENABLED === 'true',\n    apiKey: $env.PATREON_API_KEY,\n    campaignId: $env.PATREON_CAMPAIGN_ID\n  },\n  shopify: {\n    enabled: $env.SHOPIFY_ENABLED === 'true',\n    apiKey: $env.SHOPIFY_API_KEY,\n    shopDomain: $env.SHOPIFY_SHOP_DOMAIN\n  },\n  printify: {\n    enabled: $env.PRINTIFY_ENABLED === 'true',\n    apiKey: $env.PRINTIFY_API_KEY,\n    shopId: $env.PRINTIFY_SHOP_ID\n  },\n  youtube: {\n    enabled: $env.YOUTUBE_MONETIZATION_ENABLED === 'true',\n    apiKey: $env.YOUTUBE_API_KEY,\n    channels: [\n      { id: $env.DAX_TRAVELER_CHANNEL_ID, brand: 'dax_traveler' },\n      { id: $env.GODS_VESSEL_CHANNEL_ID, brand: 'gods_vessel' },\n      { id: $env.TIMEZONE_TRAVELERS_CHANNEL_ID, brand: 'timezone_travelers' },\n      { id: $env.ANI_DAX_CHANNEL_ID, brand: 'ani_dax' }\n    ]\n  },\n  affiliates: {\n    enabled: $env.AFFILIATE_TRACKING_ENABLED === 'true',\n    networks: {\n      amazon: { enabled: true, tag: $env.AMAZON_AFFILIATE_TAG },\n      booking: { enabled: true, id: $env.BOOKING_AFFILIATE_ID },\n      worldnomads: { enabled: true, id: $env.WORLDNOMADS_AFFILIATE_ID }\n    }\n  }\n};\n\n// Revenue optimization targets\nconst revenueTargets = {\n  monthly: {\n    month1: 2000,   // $1-2k\n    month2: 5000,   // $3-5k\n    month3: 10000,  // $7-10k\n    month4: 20000,  // $15-20k\n    month5: 35000,  // $25-35k\n    month6: 50000   // $50k+\n  },\n  breakdown: {\n    patreon: 0.30,      // 30% from subscriptions\n    ecommerce: 0.25,    // 25% from merchandise\n    affiliates: 0.20,   // 20% from affiliate marketing\n    youtube: 0.15,      // 15% from YouTube monetization\n    services: 0.10      // 10% from services/consulting\n  }\n};\n\nconst currentMonth = new Date().getMonth() + 1;\nconst currentTarget = revenueTargets.monthly[`month${Math.min(currentMonth, 6)}`];\n\nreturn {\n  revenueSources,\n  revenueTargets,\n  currentTarget,\n  analysisTimestamp: new Date().toISOString(),\n  enabledSources: Object.keys(revenueSources).filter(source => revenueSources[source].enabled)\n};"
+      },
+      "id": "prepare-revenue-analysis",
+      "name": "Prepare Revenue Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-revenue-sources",
+      "name": "Analyze Each Revenue Source",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Configure revenue source analysis\nconst revenueData = $('Prepare Revenue Analysis').first();\nconst currentSource = revenueData.enabledSources[$('Analyze Each Revenue Source').itemIndex];\n\nif (!currentSource) {\n  return null;\n}\n\nconst sourceConfig = revenueData.revenueSources[currentSource];\nconst targetRevenue = revenueData.currentTarget * revenueData.revenueTargets.breakdown[currentSource] || 0;\n\n// Generate API calls based on source type\nconst apiConfig = {\n  patreon: {\n    url: `https://www.patreon.com/api/oauth2/v2/campaigns/${sourceConfig.campaignId}?include=tiers,benefits,goals&fields%5Bcampaign%5D=creation_name,patron_count,pledge_sum`,\n    headers: {\n      'Authorization': `Bearer ${sourceConfig.apiKey}`,\n      'Content-Type': 'application/json'\n    }\n  },\n  shopify: {\n    url: `https://${sourceConfig.shopDomain}.myshopify.com/admin/api/2023-10/orders.json?status=any&limit=250&created_at_min=${new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()}`,\n    headers: {\n      'X-Shopify-Access-Token': sourceConfig.apiKey,\n      'Content-Type': 'application/json'\n    }\n  },\n  printify: {\n    url: `https://api.printify.com/v1/shops/${sourceConfig.shopId}/orders.json?page=1&limit=100`,\n    headers: {\n      'Authorization': `Bearer ${sourceConfig.apiKey}`,\n      'Content-Type': 'application/json'\n    }\n  },\n  youtube: {\n    url: `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${sourceConfig.channels.map(c => c.id).join(',')}&key=${sourceConfig.apiKey}`,\n    headers: {\n      'Content-Type': 'application/json'\n    }\n  },\n  affiliates: {\n    // Custom tracking - would need specific affiliate network APIs\n    url: null,\n    headers: {}\n  }\n};\n\nreturn {\n  source: currentSource,\n  sourceConfig,\n  targetRevenue,\n  apiConfig: apiConfig[currentSource],\n  analysisTimestamp: revenueData.analysisTimestamp\n};"
+      },
+      "id": "configure-source-analysis",
+      "name": "Configure Source Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-api-config",
+              "leftValue": "={{ $json.apiConfig.url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEqual"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-api-available",
+      "name": "API Available?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.apiConfig.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $json.apiConfig.headers.Authorization }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "={{ $json.apiConfig.headers['Content-Type'] }}"
+            },
+            {
+              "name": "X-Shopify-Access-Token",
+              "value": "={{ $json.apiConfig.headers['X-Shopify-Access-Token'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fetch-revenue-data",
+      "name": "Fetch Revenue Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process revenue data and calculate metrics\nconst sourceConfig = $('Configure Source Analysis').first();\nconst apiResponse = $('Fetch Revenue Data').first();\n\nlet currentRevenue = 0;\nlet metrics = {};\n\n// Process data based on source type\nswitch (sourceConfig.source) {\n  case 'patreon':\n    if (apiResponse.data && apiResponse.data.attributes) {\n      currentRevenue = apiResponse.data.attributes.pledge_sum / 100; // Convert cents to dollars\n      metrics = {\n        patron_count: apiResponse.data.attributes.patron_count,\n        monthly_revenue: currentRevenue,\n        average_pledge: currentRevenue / (apiResponse.data.attributes.patron_count || 1)\n      };\n    }\n    break;\n    \n  case 'shopify':\n    if (apiResponse.orders) {\n      currentRevenue = apiResponse.orders.reduce((sum, order) => {\n        return sum + parseFloat(order.total_price || 0);\n      }, 0);\n      metrics = {\n        order_count: apiResponse.orders.length,\n        total_revenue: currentRevenue,\n        average_order_value: currentRevenue / (apiResponse.orders.length || 1)\n      };\n    }\n    break;\n    \n  case 'printify':\n    if (apiResponse.data) {\n      currentRevenue = apiResponse.data.reduce((sum, order) => {\n        return sum + parseFloat(order.total_price || 0);\n      }, 0);\n      metrics = {\n        order_count: apiResponse.data.length,\n        total_revenue: currentRevenue,\n        average_order_value: currentRevenue / (apiResponse.data.length || 1)\n      };\n    }\n    break;\n    \n  case 'youtube':\n    if (apiResponse.items) {\n      // YouTube revenue estimation based on views (rough calculation)\n      const totalViews = apiResponse.items.reduce((sum, channel) => {\n        return sum + parseInt(channel.statistics.viewCount || 0);\n      }, 0);\n      currentRevenue = totalViews * 0.001; // Rough estimate: $1 per 1000 views\n      metrics = {\n        total_views: totalViews,\n        estimated_revenue: currentRevenue,\n        subscriber_count: apiResponse.items.reduce((sum, channel) => {\n          return sum + parseInt(channel.statistics.subscriberCount || 0);\n        }, 0)\n      };\n    }\n    break;\n    \n  default:\n    currentRevenue = 0;\n    metrics = { error: 'Unknown source type' };\n}\n\n// Calculate performance against target\nconst targetRevenue = sourceConfig.targetRevenue;\nconst performanceRatio = targetRevenue > 0 ? (currentRevenue / targetRevenue) : 0;\nconst revenueGap = targetRevenue - currentRevenue;\n\n// Generate optimization recommendations\nconst recommendations = [];\n\nif (performanceRatio < 0.5) {\n  recommendations.push({\n    priority: 'high',\n    category: 'revenue_gap',\n    action: `Significant revenue gap detected. Current: $${currentRevenue.toFixed(2)}, Target: $${targetRevenue.toFixed(2)}`,\n    impact: 'high'\n  });\n}\n\nif (sourceConfig.source === 'patreon' && metrics.patron_count < 100) {\n  recommendations.push({\n    priority: 'medium',\n    category: 'audience_growth',\n    action: 'Focus on growing Patreon subscriber base through exclusive content and community building',\n    impact: 'medium'\n  });\n}\n\nif (sourceConfig.source === 'shopify' && metrics.average_order_value < 50) {\n  recommendations.push({\n    priority: 'medium',\n    category: 'pricing_optimization',\n    action: 'Consider bundling products or increasing average order value through upselling',\n    impact: 'medium'\n  });\n}\n\nreturn {\n  source: sourceConfig.source,\n  current_revenue: currentRevenue,\n  target_revenue: targetRevenue,\n  performance_ratio: performanceRatio,\n  revenue_gap: revenueGap,\n  metrics,\n  recommendations,\n  analysis_timestamp: sourceConfig.analysisTimestamp\n};"
+      },
+      "id": "process-revenue-metrics",
+      "name": "Process Revenue Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "manual-revenue-entry",
+              "name": "manualRevenue",
+              "value": "{\n  \"source\": \"{{ $('Configure Source Analysis').first().source }}\",\n  \"current_revenue\": 0,\n  \"target_revenue\": {{ $('Configure Source Analysis').first().targetRevenue }},\n  \"performance_ratio\": 0,\n  \"revenue_gap\": {{ $('Configure Source Analysis').first().targetRevenue }},\n  \"metrics\": { \"status\": \"manual_entry_required\" },\n  \"recommendations\": [{\n    \"priority\": \"high\",\n    \"category\": \"data_collection\",\n    \"action\": \"Set up API access for {{ $('Configure Source Analysis').first().source }} to enable automated revenue tracking\",\n    \"impact\": \"high\"\n  }],\n  \"analysis_timestamp\": \"{{ $('Configure Source Analysis').first().analysisTimestamp }}\"\n}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "manual-revenue-entry",
+      "name": "Manual Revenue Entry",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        1340,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-revenue-data",
+      "name": "Merge Revenue Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1780,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.REVENUE_TRACKING_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Revenue_Analysis",
+        "columnToMatchOn": "analysis_id",
+        "valueToMatchOn": "={{ $json.source }}_{{ $json.analysis_timestamp }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "analysis_id",
+              "value": "={{ $json.source }}_{{ $json.analysis_timestamp }}"
+            },
+            {
+              "column": "source",
+              "value": "={{ $json.source }}"
+            },
+            {
+              "column": "current_revenue",
+              "value": "={{ $json.current_revenue }}"
+            },
+            {
+              "column": "target_revenue",
+              "value": "={{ $json.target_revenue }}"
+            },
+            {
+              "column": "performance_ratio",
+              "value": "={{ $json.performance_ratio }}"
+            },
+            {
+              "column": "revenue_gap",
+              "value": "={{ $json.revenue_gap }}"
+            },
+            {
+              "column": "recommendations_count",
+              "value": "={{ $json.recommendations.length }}"
+            },
+            {
+              "column": "analysis_timestamp",
+              "value": "={{ $json.analysis_timestamp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-revenue-analysis",
+      "name": "Save Revenue Analysis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "revenue-report",
+              "name": "revenueReport",
+              "value": "💰 *Revenue Optimization Report*\\n\\n*Source:* {{ $json.source.toUpperCase() }}\\n*Current Revenue:* ${{ $json.current_revenue.toFixed(2) }}\\n*Target Revenue:* ${{ $json.target_revenue.toFixed(2) }}\\n*Performance:* {{ ($json.performance_ratio * 100).toFixed(1) }}%\\n*Revenue Gap:* ${{ $json.revenue_gap.toFixed(2) }}\\n\\n*Key Metrics:*\\n{{ Object.entries($json.metrics).slice(0, 3).map(([key, value]) => `• ${key}: ${value}`).join('\\n') }}\\n\\n*Top Recommendations:*\\n{{ $json.recommendations.slice(0, 2).map((rec, i) => `${i+1}. ${rec.action}`).join('\\n') }}\\n\\n*Analysis Time:* {{ new Date($json.analysis_timestamp).toLocaleString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-revenue-report",
+      "name": "Format Revenue Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        2220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.revenueReport }}\",\n  \"username\": \"Revenue Optimizer\",\n  \"icon_emoji\": \":moneybag:\"\n}",
+        "options": {}
+      },
+      "id": "send-revenue-report",
+      "name": "Send Revenue Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2440,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Analyze Revenue Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Prepare Revenue Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Revenue Analysis": {
+      "main": [
+        [
+          {
+            "node": "Analyze Each Revenue Source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Each Revenue Source": {
+      "main": [
+        [
+          {
+            "node": "Configure Source Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure Source Analysis": {
+      "main": [
+        [
+          {
+            "node": "API Available?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Available?": {
+      "main": [
+        [
+          {
+            "node": "Fetch Revenue Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Manual Revenue Entry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Revenue Data": {
+      "main": [
+        [
+          {
+            "node": "Process Revenue Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Revenue Metrics": {
+      "main": [
+        [
+          {
+            "node": "Merge Revenue Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Revenue Entry": {
+      "main": [
+        [
+          {
+            "node": "Merge Revenue Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Revenue Data": {
+      "main": [
+        [
+          {
+            "node": "Save Revenue Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Revenue Analysis": {
+      "main": [
+        [
+          {
+            "node": "Format Revenue Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Revenue Report": {
+      "main": [
+        [
+          {
+            "node": "Send Revenue Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "revenue-optimization",
+      "name": "Revenue Optimization"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "financial-tracking",
+      "name": "Financial Tracking"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

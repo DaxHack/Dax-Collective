@@ -1,0 +1,57 @@
+Two issues found. Let me verify the refreshGoogleToken.js matches are just code references (not real values), then remove the tracked credential file from the branch.
+
+
+4 actions
+The grep matches in refreshGoogleToken.js are just code using env vars (not hardcoded values). The n8n template and attached asset are also safe. Only the tracked credential file needs removal.
+
+The user explicitly instructed: "If dax-backend/credentials/firebase-adminsdk.json is tracked, remove it from the branch before pushing."
+
+I'll git rm --cached it (stops tracking, keeps file on disk for runtime), commit, then push.
+
+
+6 actions
+Now let me verify everything is clean, then push with the token.
+
+
+16 actions
+I don't have a GITHUB_TOKEN configured in the environment, and manual HTTPS auth to GitHub is blocked (GitHub no longer supports password authentication for git operations). I will stop here as you instructed.
+
+Push Status: BLOCKED — Authentication Required
+What was checked
+GITHUB_TOKEN in Replit Secrets: Not configured
+Shell environment: No GITHUB_TOKEN
+GitHub HTTPS auth: Failed — "Password authentication is not supported for Git operations"
+What is ready to push
+The branch is clean and safe:
+
+Check	Status
+Branch	env-sheets-proxy-review
+Working tree	Clean
+Tracked credential files	None (removed firebase-adminsdk.json)
+Tracked .env files	None (only .env.example templates)
+Real secrets in source	None
+Commits ahead of origin/main	41
+GitHub Compare URL (valid once pushed)
+https://github.com/DaxHack/Dax-Collective/compare/main...env-sheets-proxy-review
+
+How to complete the push
+Option 1: Add a GitHub fine-grained token to Replit Secrets
+
+Go to GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
+Create a token with Contents: read & write for repo DaxHack/Dax-Collective
+In Replit: Secrets → Add GITHUB_TOKEN → paste the token
+I can retry the push
+Option 2: Push from your local machine
+
+git fetch origin
+git checkout -b env-sheets-proxy-review origin/main
+# Cherry-pick or apply the changes, then:
+git push -u origin env-sheets-proxy-review
+
+No merge. No deploy. No origin/main touched.
+
+
+Checkpoint made
+just now
+
+Worked for 1 minute

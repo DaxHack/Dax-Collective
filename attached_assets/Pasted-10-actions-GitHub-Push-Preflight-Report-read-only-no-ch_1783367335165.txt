@@ -1,0 +1,100 @@
+10 actions
+GitHub Push Preflight Report (read-only — no changes made)
+1–2. git status / pending range
+On branch main
+Your branch is ahead of 'origin/main' by 50 commits.
+nothing to commit, working tree clean
+
+git log --oneline origin/main..main returns exactly 50 commits, confirming the count you were told.
+
+3. All 50 pending commits, chronological (oldest → newest)
+#	Hash	Message
+1	8f839df	Make Firebase initialization more graceful and update documentation
+2	b3c5b23	Add feature to create content packages from ideas
+3	bce94c1	Create a comprehensive website audit report
+4	65dbb10	Update audit document to reflect import and launch readiness findings
+5	8e097bb	Build personal travel and faith product landing pages
+6	dc96691	Add visual previews of website pages to documentation
+7	0f91b2d	Update brand naming and references across website pages
+8	872dd03	Add visual audit screenshots for website redesign comparison
+9	06f465d	Add organized folders and a manifest for Canva asset uploads
+10	b58d366	Add new content sections and site structure updates
+11	1e6863b	Add an AI department command center to the automation dashboard
+12	fd7b15b	Add a new section for reviewing and managing brand assets
+13	f00c1ae	Add controlled media intake and approval system for website assets
+14	4f2a1da	Add Facebook links and placeholder media to travel page and footer
+15	f09f5a3	Git commit prior to merge
+16	2826257	Task #1: Approved Media Library — data, components, folder structure, brand page integration
+17	7fd35f7	Saved progress at the end of the loop
+18	07fa825	Task #7: Upgrade God's Vessel page to premium faith streetwear and devotional content design
+19	4449168	Improve website forms and add archive number visual
+20	bcc8cbf	feat: populate approved media library with real images for all four brands
+21	104cd1d	Post-merge setup completed successfully
+22	29d66b2	Add Admin Studio Media Intake tab with approval workflow
+23	68d71e3	Add lightbox viewer to ApprovedMediaGallery for full-screen media viewing
+24	3337607	Add guidelines for visual polishing and controlled branching
+25	0c793cc	Fill in all remaining gallery sections with real images (Task #8)
+26	2ade970	feat: add location/tag filter chips to ApprovedMediaGallery
+27	a998f0e	Add real product mockup images to God's Vessel merch and drop sections
+28	62ac950	Task #20: Add keyword search to ApprovedMediaGallery
+29	8d3320e	Task #11: Wire God's Vessel waitlist forms to real backend endpoint
+30	40609c3	Task #22: Add hero mockup image to God's Vessel page banner
+31	2a6c60c	Add a hero mockup image to the God's Vessel page banner
+32	a1d7997	Task #18: Show gallery image counts per brand section
+33	c342346	Update page counts to dynamically pull from media data
+34	d143815	Update page content and fix import issues
+35	a536576	Create checklist for replacing placeholder images with real photos
+36	0af9cdf	Connect God's Vessel Google Sheet to power Daily Devotional section
+37	4241ae9	Enhance website visual experience with cinematic and interactive brand elements
+38	57584ef	feat: restore interactive multi-brand visual experience (Task #31)
+39	323bcf2	feat: restore interactive multi-brand visual experience (Task #31)
+40	4705d75	feat: restore interactive multi-brand visual experience (Task #31)
+41	aaca3f6	feat: restore interactive multi-brand visual experience (Task #31)
+42	2b9f93a	Update the AniDax page with an urban neon editorial commentary style
+43	2f9fc30	Add interactive cinematic travel journal page for Dax the Traveler
+44	6270d47	Add individual components for each section of the travel page
+45	f24229a	Update app navigation to use a drawer-style menu
+46	8ab3084	Task start baseline checkpoint for code review
+47	553046d	Add default export to concept sections component
+48	6d85baf	Visual rebuild of 4 Dax Collective pages (Home, Dax the Traveler, Ani-Dax, Time-Zone Travelers)
+49	59e88f3	Fix concept review 404 on canvas (task-38) + revert out-of-scope real-app edits
+50	b3c9a40	Update website pages with new visual designs and features
+4. Where b3c9a40 sits
+It is commit #50 of 50 — the current HEAD (git rev-parse HEAD → b3c9a401c8637513c5103d41ce135b15770c0b07, matches HEAD -> main). It's the last/newest commit in the pending range.
+
+5–6. Files changed across all 50 commits, with flags
+The full range touches ~150 files, spanning far beyond the 4-page visual rebuild. Flagged categories:
+
+Flag	Files	Notes
+.env / secrets	dax-main/.env.example, dax-backend/.env.example (134 new lines)	Both are .env.example templates only — no real .env file or credentials file is in the range (verified: zero matches for \.env$ or credential).
+Firebase	dax-main/src/config/firebase.js, .firebaserc, .firebase/hosting.*.cache (×4), dax-main/.firebase/hosting.*.cache	Includes generated hosting cache files, not just source.
+Backend	dax-backend/server.js (+143 lines), dax-backend/package.json, dax-backend/data/waitlist.csv (real data file), dax-backend/.env.example	Backend logic + a data file are in scope of this push.
+n8n	none	Confirmed — no n8n/ files in the range.
+GitHub Actions	none	Confirmed — no .github/ files in the range.
+Deployment	.replit (+73 lines), scripts/post-merge.sh (new), .firebaserc, .firebase/*.cache	.replit changes affect workflow/deploy config.
+Attached assets	17 files under attached_assets/ (pasted prompts, one SVG)	Includes the stray .txt file (see #7).
+Generated build files	dax-main/build/favicon.ico, build/images/*.jpg, build/logo192.png, build/logo512.png, build/manifest.json, build/robots.txt	Build output committed to source control — normally shouldn't be tracked.
+Unrelated/experimental pages	AboutPage.jsx, BlogPage.jsx, BlogPostPage.jsx, BrandsPage.jsx, ContactPage.jsx, DisclosurePage.jsx, NotFoundPage.jsx, PrivacyPage.jsx, ResourcesPage.jsx, and GodsVesselPage.jsx (955 insertions / 287 deletions across 14 commits)	God's Vessel was substantially rewritten in this range — it's pre-existing history, not new work from this session, but it is included in what a push would publish.
+Workflow JSON files	none (only UI-tooling json like tsconfig.json, components.json, canva-manifest.json — no automation/workflow JSON)	
+7. Stray attached_assets file
+Confirmed: attached_assets/Pasted-This-is-a-new-real-app-build-task-Do-not-work-on-Canvas_1783286756054.txt is inside b3c9a40 (the HEAD commit), not a separate commit.
+
+8. Recommendation
+Do not push until specific issues are resolved. Reasoning:
+
+The 50-commit range is far broader than "the four brand pages" — it carries the entire God's Vessel redesign, backend server code, a real data file (waitlist.csv), generated build artifacts, and Firebase hosting cache files that normally shouldn't be version-controlled.
+No secrets/credentials/n8n/GitHub Actions files are present — that risk is clear.
+If your intent is strictly to publish "the four-brand cinematic visual rebuild," pushing all 50 commits publishes substantially more than that, including the untouched-by-you-today GodsVesselPage.jsx history and build/cache noise.
+Two reasonable paths forward once you decide:
+
+Push everything — acceptable only if you're fine publishing the full project history (God's Vessel changes, backend, build artifacts included), since it's all local/private today.
+Create a new clean branch with only the approved website changes — safer if you want GitHub to reflect just the visual rebuild without the build artifacts/cache noise and the broader God's Vessel history bundled in.
+No action taken — awaiting your decision.
+
+
+Worked for 1 minute
+
+Scroll to latest
+
+Task updates
+

@@ -1,0 +1,89 @@
+Visual Sprint Phase 1 — controlled branch and polish pass.
+
+Important repo rules:
+- Do NOT use origin/main.
+- Do NOT push to origin/main.
+- Do NOT merge origin/main.
+- Do NOT force push.
+- Do NOT delete branches.
+- Base all work from origin/clean-local-main-baseline.
+- If I am not already on a visual sprint branch, create one named:
+  visual/brand-page-polish-v1
+
+First inspect and report:
+git branch --show-current
+git status --short
+git log --oneline -5
+git branch -r
+
+If current branch is not based on origin/clean-local-main-baseline, ask me before changing branches.
+
+Goal:
+Improve current website visuals without rebuilding the whole app.
+
+Current visual direction:
+1. God’s Vessel
+- Keep the more heavenly, reverent, archive-inspired design direction.
+- Bring back or incorporate the black velvet / premium dark fabric feel from the earlier design.
+- Make it feel like premium faith streetwear + sacred archive, not generic purple cards.
+- Keep it elegant, mature, reverent, minimal, and premium.
+
+2. Time-Zone Travelers
+- Shift the look toward “Uncharted meets rainforest expedition.”
+- More adventure, rainforest, map, old-world travel, route planning, tropical exploration energy.
+- Keep it useful and travel-hack focused, but make the visual world feel more immersive.
+- Do not overdo cartoon/gimmick styling.
+
+3. Dax the Traveler
+- Keep the large background/personal image approach.
+- Stop overusing the same one or two photos.
+- Use more existing images of me from the project assets if available.
+- Keep the page personal, cinematic, real, and story-driven.
+- If only a few good photos exist, create a clean image rotation/gallery structure and tell me exactly what new photos are needed.
+
+4. Ani-Dax
+- Add more spice, motion, excitement, anime energy, and stronger visual contrast.
+- Keep it stylish and not childish.
+- Make it feel more like a high-energy anime/media brand.
+- Use existing Ani-Dax assets where available.
+
+Hard limits:
+- Do not add paid APIs.
+- Do not add Firebase/service-layer complexity.
+- Do not import origin/main.
+- Do not touch backend credentials, .env files, Firebase admin SDK files, build folders, cache folders, node_modules, or generated deployment files.
+- Do not change app architecture unless required.
+- Do not create a huge redesign. This is a visual polish sprint.
+
+Tasks:
+1. Find the current page files for:
+   - DaxTheTravelerPage
+   - AniDaxPage
+   - TimeZoneTravelersPage
+   - GodsVesselPage
+   - Home
+   - Navbar if needed
+2. Find current image assets under:
+   - dax-main/public/images
+   - dax-main/public/images/brands
+   - attached_assets if used by Replit
+3. Make focused visual changes to brand pages using existing local assets.
+4. Fix broken image references if any.
+5. Avoid using the same Dax photo repeatedly if other valid Dax images exist.
+6. Keep mobile layout clean.
+7. Run:
+   cd dax-main
+   npm run build
+
+After changes:
+- Show changed files.
+- Summarize each visual change by brand.
+- Confirm build result.
+- Do not push until I approve.
+
+When I approve, push only the visual sprint branch:
+git push -u origin visual/brand-page-polish-v1
+
+Then give me a GitHub compare URL with:
+base: clean-local-main-baseline
+compare: visual/brand-page-polish-v1

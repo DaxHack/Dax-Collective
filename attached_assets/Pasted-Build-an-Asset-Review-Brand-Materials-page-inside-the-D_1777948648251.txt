@@ -1,0 +1,106 @@
+Build an Asset Review & Brand Materials page inside the Dax Collective Admin Studio.
+
+Goal:
+Help me review assets I already created in Canva, Google files, local folders, or exported images before using them on the website, merch, stickers, content, or product pages.
+
+Do not connect directly to Canva yet.
+Do not use Canva API.
+Do not touch credentials.
+Do not upload or publish anything.
+
+Create page:
+Asset Review & Brand Materials
+
+Each asset record should include:
+- Asset name
+- Brand
+- Asset type:
+  - Canva Export
+  - Shirt Mockup
+  - Sticker Design
+  - Travel Photo
+  - Video Thumbnail
+  - Logo
+  - Background
+  - Product Mockup
+  - Anime-Safe Graphic
+  - Website Image
+  - Other
+- File path or link
+- Source:
+  - Canva
+  - Google Drive
+  - Facebook Export
+  - Local Upload
+  - Replit Asset
+  - Other
+- Intended use:
+  - Website
+  - Merch
+  - Sticker
+  - Social Post
+  - Blog
+  - Product Page
+  - Thumbnail
+  - Brand Kit
+  - Other
+- Usage status:
+  - New
+  - Approved
+  - Needs Review
+  - Needs Redesign
+  - Rejected
+  - Archived
+- Visual fit:
+  - Strong
+  - Good
+  - Maybe
+  - Weak
+- Notes
+- Next action
+
+Features:
+- Create/edit/delete asset records
+- Filter by brand, asset type, source, usage status, visual fit
+- Search assets
+- Show approved assets separately
+- Show “Needs Review” assets separately
+- Copy asset brief as Markdown
+- Export asset list by brand
+- Add a “Visual Decision” field:
+  - Keep
+  - Revert
+  - Refine
+  - Replace
+  - Undecided
+
+Seed starter categories:
+God’s Vessel:
+- Names of God shirt mockups
+- Moody editorial backgrounds
+- Neutral apparel mockups
+- Product-first mockups
+
+Time-Zone Travelers:
+- Travel sticker concepts
+- Chibi travel character concepts
+- Destination card visuals
+- Travel toolkit graphics
+
+Dax the Traveler:
+- Approved travel photos
+- Vlog thumbnails
+- From the Vlog images
+- Dax Travel Kit product visuals
+
+AniDax:
+- Anime-safe graphics
+- Character Files thumbnails
+- Watch Queue graphics
+- Theory Board graphics
+
+Navigation:
+Add Asset Review & Brand Materials to sidebar.
+
+After building:
+Test CRUD, filters, asset status, visual decision field, and Markdown export.

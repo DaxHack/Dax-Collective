@@ -1,0 +1,91 @@
+Add this visual-experience standard to the implementation task.
+
+The goal is not merely prettier pages. Each brand should feel like a distinct interactive digital world with intentional motion, depth, visual anchors, and memorable transitions.
+
+Use lightweight CSS, SVG, existing Framer Motion capability, transforms, masks, blur, layered images, scroll-driven reveals, and responsive hover/tap states. Do not add heavy WebGL, large new libraries, or effects that hurt mobile performance.
+
+Dax the Traveler — flagship interaction standard
+
+This is the highest-priority experience and should feel like a cinematic, future-facing travel journal rather than a normal creator portfolio.
+
+Build these interactions where supported by existing assets:
+
+- Layered travel hero: real trip imagery arranged in depth planes with subtle pointer/parallax movement on desktop and scroll-depth movement on mobile.
+- Destination story chapters: a horizontal, swipe-friendly trip chapter rail; each chapter expands or reveals a short visual story, location label, and real travel context.
+- Route experience: an animated SVG route line or travel-path system that connects real destinations only. It should feel like a living journey, not a booking map.
+- Photo-card depth: tasteful perspective tilt, image zoom, reflection/light sweep, and layered metadata on hover; tap should work cleanly on mobile.
+- Scroll choreography: sections should reveal with different depths and pacing, not all fade in identically.
+- Travel memory timeline: a visual timeline or coordinate-based archive using actual places/trips, with unfinished trips clearly labeled.
+- Immersive gallery: editorial image stacking, asymmetric layout, and focus states that make real photos feel premium.
+- UGC/collaboration portal: polished creator-services section with an interactive “work with Dax” pathway, but no implied past paid partnerships or fake client logos.
+- Motion restraint: honor "prefers-reduced-motion"; no autoplay video required; keep page responsive and fast.
+
+Visual personality:
+
+- cinematic dark/navy foundation;
+- warm destination light, ocean/sky tones, sunset accents, and controlled electric blue;
+- premium travel-editorial type;
+- subtle coordinates, passport-stamp labels, route markers, and boarding-pass details;
+- no generic stock imagery, fake airline UI, fake bookings, or dashboard clutter.
+
+Home
+
+Keep the colorful bubble/orb baseline and expressive brand tiles. Do not return to operational grids, dark SaaS cards, fake metrics, or large empty black regions.
+
+Give the brand tiles:
+
+- layered hover depth;
+- subtle light sweep or edge glow;
+- differentiated motion based on each brand’s identity;
+- a more playful “enter this world” feeling.
+
+God’s Vessel
+
+The warm brown/tan/gold/cream archive direction is the source of truth.
+
+Make it feel tactile and premium:
+
+- paper/linen grain;
+- soft gold light;
+- editorial product spacing;
+- devotional-card interactions that reveal meaning gently;
+- warm, restrained motion rather than neon/glass-tech effects.
+
+Keep hoodies, tees, and devotional cards as honest collection concepts unless a real product is available. Do not surface Hebrew apparel in active UI.
+
+Ani-Dax
+
+Use original abstract editorial energy:
+
+- neon city-light atmosphere;
+- scanline/grain;
+- layered abstract panels;
+- subtle manga-frame geometry;
+- electric blue/violet/cyan/magenta controlled lighting;
+- interactive article/topic cards with visual depth.
+
+No official anime imagery, logos, screenshots, cover art, or fake view counts.
+
+Time-Zone Travelers
+
+Make it feel like a global discovery clubhouse:
+
+- orange/coral/red-pink energy;
+- animated route/airport-board details;
+- destination cards with a sense of movement and discovery;
+- map/timeline cues without pretending it is a booking product.
+
+Interaction quality bar
+
+Avoid applying the same fade-in animation to every section. Build varied but coherent motion:
+
+- parallax depth;
+- card tilt;
+- staggered entrances;
+- section masking/reveals;
+- route drawing;
+- light sweeps;
+- hover/tap expansion;
+- layered image movement.
+
+Every interaction must clarify exploration, create atmosphere, or reward curiosity. No motion just for decoration.

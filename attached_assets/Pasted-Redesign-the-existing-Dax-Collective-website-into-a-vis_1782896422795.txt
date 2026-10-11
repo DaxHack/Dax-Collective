@@ -1,0 +1,170 @@
+Redesign the existing Dax Collective website into a visually striking, interactive, polished multi-brand experience.
+
+Hard budget rule: keep total Agent work under approximately $10 of Replit credits. Reuse existing components, CSS, assets, motion systems, and page structures. Do not install large libraries, generate AI images, create heavy 3D/WebGL scenes, or repeatedly rebuild the same page.
+
+Start implementing immediately. Do not give me an audit or planning response first.
+
+Use the UI/UX reference videos I shared as inspiration for interaction quality, layered motion, cinematic depth, intuitive exploration, and visual polish only. Do not copy their layouts, branding, assets, or code.
+
+Non-negotiable safety rules
+
+- Do not touch backend logic, API routes, Firebase configuration, admin/upload security, Docker, n8n, deployment settings, environment files, secrets, social connections, or existing integrations.
+- Preserve all existing navigation, routes, working links, authentication behavior, forms, upload flows, and external connections.
+- Do not remove working code merely because it is not visually relevant.
+- Do not add fake metrics, fake testimonials, fake inventory, fake sponsors, fake views, fake checkout, fake social proof, or fake booking functionality.
+- Do not deploy live automatically.
+- Do not overwrite the existing main branch.
+
+Asset rules
+
+- Keep all existing shirt and hoodie assets in the repository.
+- Keep existing non-Hebrew shirt/hoodie visuals available for use where appropriate.
+- Do not display, feature, delete, or alter Hebrew apparel designs for now. Leave those source assets intact but hidden from the active UI.
+- Use real existing travel photos only for Dax the Traveler.
+- Do not generate fake product photography.
+
+Visual direction by brand
+
+The Dax Collective
+
+Keep the colorful, expressive, floating visual energy.
+
+It should feel like:
+premium creative universe × interactive brand hub × modern creator studio
+
+Use:
+
+- floating white bubbles/orbs
+- blue, purple, and pink focal lighting
+- layered gradients
+- expressive brand pathways
+- motion, depth, glow, and rich hover behavior
+
+Avoid:
+
+- empty black space
+- generic SaaS dashboards
+- flat uniform charcoal cards
+- fake stats
+
+God’s Vessel
+
+Recover or recreate the strongest earlier brown / tan / gold / cream warm-neutral design direction where possible.
+
+It should feel like:
+modern devotional lifestyle brand × premium faithwear studio × collectible archive experience
+
+Keep or add honest future collection sections for:
+
+- hoodies
+- heavyweight / washed tees
+- Phase One: Six Entries
+- devotional study-card deck
+
+Use the approved entries:
+
+- Adonai
+- El Shaddai
+- Grace
+- Hope
+- Faith
+- Peace
+
+Anything not available must say:
+
+- Coming Soon
+- Sample Phase
+- Collection in Development
+- In Development
+
+No fake prices, fake checkout, fake product inventory, or fake customer reviews.
+
+Ani-Dax
+
+It should feel like:
+neon urban editorial anime-commentary world
+
+Use:
+
+- near-black base
+- electric blue, violet, cyan, controlled magenta
+- scanline/noise/grid texture
+- abstract manga-panel geometry
+- glowing UI moments
+- animated editorial cards
+
+Do not use official anime art, logos, character likenesses, screenshots, cover art, fake thumbnails, or fake views.
+
+Time-Zone Travelers
+
+It should feel like:
+global travel discovery clubhouse
+
+Use:
+
+- orange/red/pink energy with navy/charcoal support
+- travel routes, maps, airport-board details, destination storytelling
+- richer photo treatment and lightweight motion
+
+Do not make it a fake booking engine or travel dashboard.
+
+Dax the Traveler — highest priority
+
+It should feel like:
+cinematic personal travel journal × immersive portfolio × UGC-ready creator hub
+
+Use real existing travel photos and add lightweight, high-impact interaction:
+
+- layered hero imagery with subtle cursor/scroll depth
+- animated route lines
+- destination/trip cards with hover depth
+- horizontal trip chapters
+- real-location travel timeline or map section
+- smooth visual transitions
+- gallery cards with tilt, zoom, or reveal behavior
+- polished UGC/collaboration section without pretending existing paid partnerships
+
+Do not make it a plain static card grid.
+Do not use stock travel imagery.
+Do not build heavy WebGL.
+
+Execution order
+
+1. Preserve and improve the strongest existing visual foundation.
+2. Prioritize Dax the Traveler, God’s Vessel, and Home.
+3. Use reusable visual systems to make Ani-Dax and Time-Zone Travelers distinctive without wasting credits.
+4. Keep everything responsive and respect reduced-motion preferences.
+
+End-of-task audit only
+
+After implementation is complete, perform one final audit:
+
+1. Confirm existing connections, routes, API usage, navigation, authentication, upload/admin flows, and external integrations were not broken.
+2. Run the available build/lint checks.
+3. Confirm Hebrew apparel assets remain in the repo but are not displayed in the active UI.
+4. Confirm no fake claims or broken/dead primary CTA buttons were introduced.
+5. List all changed files and any remaining issues.
+
+Git delivery
+
+When the audit passes:
+
+1. Create a new branch named:
+   "replit/visual-rebuild-best-version"
+
+2. Commit only the visual/UI changes with:
+   "feat: restore interactive multi-brand visual experience"
+
+3. Push that branch to the connected Git remote.
+
+4. Do not merge into "main".
+
+Return:
+
+- branch name
+- commit hash
+- files changed
+- audit results
+- estimated Replit credits used
+- preview URL
+- any page that needs real assets later for final polish

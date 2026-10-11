@@ -1,0 +1,618 @@
+{
+  "name": "Master Control Dashboard",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Dashboard Update Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_MASTER_SHEET_ID}}",
+        "sheetName": "Master Control",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Read Master Control Data",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.4,
+          "maxTokens": 800
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are the AI Operations Director for Dax Collective. Analyze all brand performance data and provide strategic insights for revenue optimization and content strategy."
+            },
+            {
+              "role": "user",
+              "content": "Analyze the current state of Dax Collective operations:\n\nTotal Content Items: {{$json.length}}\nPublished Content: {{$json.filter(item => item['Upload Status'] === 'Published').length}}\nPending Content: {{$json.filter(item => item['Upload Status'] === 'Generated').length}}\nHigh Viral Score Content: {{$json.filter(item => item['Viral Score'] >= 85).length}}\nHigh Revenue Potential: {{$json.filter(item => item['Revenue Potential'] === 'High').length}}\n\nBrand Breakdown:\nAni-Dax: {{$json.filter(item => item['Brand'] === 'Ani-Dax').length}} items\nTime-Zone Travelers: {{$json.filter(item => item['Brand'] === 'Time-Zone Travelers').length}} items\nGod's Vessel: {{$json.filter(item => item['Brand'] === 'God\\'s Vessel').length}} items\n\nProvide:\n1. Performance analysis\n2. Revenue optimization recommendations\n3. Content strategy adjustments\n4. Brand priority recommendations\n5. Immediate action items\n6. Weekly revenue projections\n7. Scaling opportunities\n\nFocus on achieving $500 first week, $1000 first month, $2-5k in 2 months, and $50k/month by 6 months."
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Generate Strategic Analysis",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        680,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Generated').length}}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "Check Content Backlog",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        900,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$('Read Master Control Data').all().filter(item => item['Viral Score'] >= 90).length}}",
+              "rightValue": 3,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5",
+      "name": "Check Viral Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High' && item['Upload Status'] === 'Published').length}}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6",
+      "name": "Check Revenue Opportunities",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        900,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an automated publishing strategist. Create immediate action plans to clear content backlogs and maximize publishing efficiency."
+            },
+            {
+              "role": "user",
+              "content": "CONTENT BACKLOG ALERT: {{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Generated').length}} items ready for publishing.\n\nBacklog items:\n{{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Generated').map(item => `- ${item['Brand']}: ${item['Video Title']} (Viral Score: ${item['Viral Score']})`).join('\\n')}}\n\nCreate an immediate publishing strategy:\n1. Priority order based on viral potential\n2. Platform optimization recommendations\n3. Timing strategy for maximum impact\n4. Cross-promotion opportunities\n5. Revenue maximization tactics\n\nFocus on clearing the backlog while maximizing revenue impact."
+            }
+          ]
+        }
+      },
+      "id": "7",
+      "name": "Generate Backlog Strategy",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        200
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.9,
+          "maxTokens": 600
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a viral content amplification expert. Create aggressive strategies to maximize the viral potential of high-scoring content."
+            },
+            {
+              "role": "user",
+              "content": "VIRAL CONTENT DETECTED: {{$('Read Master Control Data').all().filter(item => item['Viral Score'] >= 90).length}} items with 90+ viral scores!\n\nViral content:\n{{$('Read Master Control Data').all().filter(item => item['Viral Score'] >= 90).map(item => `- ${item['Brand']}: ${item['Video Title']} (Score: ${item['Viral Score']})`).join('\\n')}}\n\nCreate an aggressive viral amplification strategy:\n1. Immediate cross-platform distribution\n2. Community engagement tactics\n3. Influencer outreach opportunities\n4. Paid promotion recommendations\n5. Revenue capture strategies\n6. Follow-up content planning\n\nThis is our chance to break through to viral success!"
+            }
+          ]
+        }
+      },
+      "id": "8",
+      "name": "Generate Viral Strategy",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.6,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a revenue optimization specialist. Create immediate monetization strategies for high-revenue content."
+            },
+            {
+              "role": "user",
+              "content": "REVENUE OPPORTUNITY ALERT: {{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High' && item['Upload Status'] === 'Published').length}} high-revenue content items are live!\n\nRevenue content:\n{{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High' && item['Upload Status'] === 'Published').map(item => `- ${item['Brand']}: ${item['Video Title']} (Viral Score: ${item['Viral Score']})`).join('\\n')}}\n\nCreate immediate revenue optimization actions:\n1. Affiliate link optimization\n2. Patreon conversion strategies\n3. Merchandise tie-ins\n4. Email list building\n5. Premium content upsells\n6. Revenue tracking setup\n\nMaximize revenue from these high-potential pieces!"
+            }
+          ]
+        }
+      },
+      "id": "9",
+      "name": "Generate Revenue Strategy",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://hooks.slack.com/services/{{$env.SLACK_WEBHOOK_URL}}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🚨 **CONTENT BACKLOG ALERT** 🚨\n\n{{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Generated').length}} items ready for publishing!\n\n**IMMEDIATE ACTION STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**PRIORITY ACTIONS:**\n⚡ Activate automated publishing workflows\n🎯 Focus on highest viral score content first\n💰 Optimize for maximum revenue impact\n📊 Monitor performance metrics closely\n\n*Clear the backlog and maximize impact!*"
+            }
+          ]
+        }
+      },
+      "id": "10",
+      "name": "Backlog Alert to Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_VIRAL_CHANNEL_ID}}",
+        "text": "🔥 **VIRAL CONTENT EMERGENCY!** 🔥\n\n{{$('Read Master Control Data').all().filter(item => item['Viral Score'] >= 90).length}} pieces of content with 90+ viral scores detected!\n\n**VIRAL AMPLIFICATION STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**IMMEDIATE ACTIONS:**\n🚀 Launch cross-platform distribution NOW\n📢 Activate all community channels\n💸 Implement revenue capture systems\n📊 Monitor viral metrics in real-time\n🔄 Prepare follow-up content pipeline\n\n**POTENTIAL IMPACT:** This could be our viral breakthrough moment!\n\n*All hands on deck - let's make this content explode!* 💥"
+      },
+      "id": "11",
+      "name": "Viral Alert to Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        300
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_REVENUE_CHANNEL_ID}}",
+        "text": "💰 **REVENUE OPTIMIZATION ALERT!** 💰\n\n{{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High' && item['Upload Status'] === 'Published').length}} high-revenue content pieces are live and ready for monetization!\n\n**REVENUE STRATEGY:**\n{{$json.choices[0].message.content}}\n\n**IMMEDIATE REVENUE ACTIONS:**\n💳 Optimize all affiliate links\n🎯 Launch Patreon conversion campaigns\n🛍️ Activate merchandise promotions\n📧 Capture email subscribers\n📊 Track revenue metrics\n🔄 Set up automated upsells\n\n**REVENUE PROJECTION:** ${{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High' && item['Upload Status'] === 'Published').length * 150}}-${{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High' && item['Upload Status'] === 'Published').length * 500}} potential this week\n\n*Strike while the iron is hot - maximize revenue NOW!* 🤑"
+      },
+      "id": "12",
+      "name": "Revenue Alert to Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        400
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_DASHBOARD_SHEET_ID}}",
+        "sheetName": "Dashboard Metrics",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": true
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Timestamp",
+              "fieldValue": "={{$now.format('yyyy-MM-dd HH:mm')}}"
+            },
+            {
+              "column": "Total Content",
+              "fieldValue": "={{$('Read Master Control Data').all().length}}"
+            },
+            {
+              "column": "Published",
+              "fieldValue": "={{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Published').length}}"
+            },
+            {
+              "column": "Pending",
+              "fieldValue": "={{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Generated').length}}"
+            },
+            {
+              "column": "High Viral Score",
+              "fieldValue": "={{$('Read Master Control Data').all().filter(item => item['Viral Score'] >= 85).length}}"
+            },
+            {
+              "column": "High Revenue Potential",
+              "fieldValue": "={{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High').length}}"
+            },
+            {
+              "column": "Ani-Dax Content",
+              "fieldValue": "={{$('Read Master Control Data').all().filter(item => item['Brand'] === 'Ani-Dax').length}}"
+            },
+            {
+              "column": "Travel Content",
+              "fieldValue": "={{$('Read Master Control Data').all().filter(item => item['Brand'] === 'Time-Zone Travelers').length}}"
+            },
+            {
+              "column": "Faith Content",
+              "fieldValue": "={{$('Read Master Control Data').all().filter(item => item['Brand'] === 'God\\'s Vessel').length}}"
+            },
+            {
+              "column": "Strategic Analysis",
+              "fieldValue": "={{$('Generate Strategic Analysis').item.json.choices[0].message.content}}"
+            }
+          ]
+        }
+      },
+      "id": "13",
+      "name": "Log Dashboard Metrics",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1560,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.5,
+          "maxTokens": 400
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a predictive analytics AI. Analyze current performance trends and predict future revenue and growth patterns."
+            },
+            {
+              "role": "user",
+              "content": "Based on current Dax Collective performance:\n\nTotal Content: {{$('Read Master Control Data').all().length}}\nPublished: {{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Published').length}}\nHigh Viral: {{$('Read Master Control Data').all().filter(item => item['Viral Score'] >= 85).length}}\nHigh Revenue: {{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High').length}}\n\nPredict:\n1. Weekly revenue projection\n2. Monthly growth trajectory\n3. 6-month revenue forecast\n4. Content scaling requirements\n5. Brand performance predictions\n6. Risk factors and mitigation\n\nProvide specific numbers and actionable insights for reaching $50k/month by 6 months."
+            }
+          ]
+        }
+      },
+      "id": "14",
+      "name": "Generate Revenue Predictions",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1780,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_STRATEGY_CHANNEL_ID}}",
+        "text": "📊 **MASTER CONTROL DASHBOARD UPDATE** 📊\n\n**CURRENT METRICS:**\n📈 Total Content: {{$('Read Master Control Data').all().length}}\n✅ Published: {{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Published').length}}\n⏳ Pending: {{$('Read Master Control Data').all().filter(item => item['Upload Status'] === 'Generated').length}}\n🔥 High Viral: {{$('Read Master Control Data').all().filter(item => item['Viral Score'] >= 85).length}}\n💰 High Revenue: {{$('Read Master Control Data').all().filter(item => item['Revenue Potential'] === 'High').length}}\n\n**BRAND BREAKDOWN:**\n🎌 Ani-Dax: {{$('Read Master Control Data').all().filter(item => item['Brand'] === 'Ani-Dax').length}}\n🌍 Travel: {{$('Read Master Control Data').all().filter(item => item['Brand'] === 'Time-Zone Travelers').length}}\n✝️ Faith: {{$('Read Master Control Data').all().filter(item => item['Brand'] === 'God\\'s Vessel').length}}\n\n**STRATEGIC ANALYSIS:**\n{{$('Generate Strategic Analysis').item.json.choices[0].message.content}}\n\n**REVENUE PREDICTIONS:**\n{{$json.choices[0].message.content}}\n\n*Dashboard updated - empire status monitored and optimized!* 🚀"
+      },
+      "id": "15",
+      "name": "Dashboard Status Report",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        300
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Dashboard Update Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Master Control Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Master Control Data": {
+      "main": [
+        [
+          {
+            "node": "Generate Strategic Analysis",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Content Backlog",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Viral Content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Revenue Opportunities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Strategic Analysis": {
+      "main": [
+        [
+          {
+            "node": "Log Dashboard Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Content Backlog": {
+      "main": [
+        [
+          {
+            "node": "Generate Backlog Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Viral Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Viral Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Revenue Opportunities": {
+      "main": [
+        [
+          {
+            "node": "Generate Revenue Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Backlog Strategy": {
+      "main": [
+        [
+          {
+            "node": "Backlog Alert to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Viral Strategy": {
+      "main": [
+        [
+          {
+            "node": "Viral Alert to Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Revenue Strategy": {
+      "main": [
+        [
+          {
+            "node": "Revenue Alert to Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Dashboard Metrics": {
+      "main": [
+        [
+          {
+            "node": "Generate Revenue Predictions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Revenue Predictions": {
+      "main": [
+        [
+          {
+            "node": "Dashboard Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "master-control-dashboard"
+  },
+  "id": "master-control-dashboard",
+  "tags": []
+}
+

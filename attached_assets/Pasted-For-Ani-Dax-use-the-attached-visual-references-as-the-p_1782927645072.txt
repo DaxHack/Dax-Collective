@@ -1,0 +1,62 @@
+For Ani-Dax, use the attached visual references as the primary composition and energy reference.
+
+I want Urban Neon Editorial Anime Commentary, not a dense arcade dashboard and not a plain dark text page.
+
+The target is closest to the “Urban Neon Editorial” reference:
+
+- oversized editorial hero headline;
+- original Black male Ani-Dax host with black hair and blue tips;
+- original female explorer/co-host guide;
+- original chibi sidekick;
+- neon Tokyo/city-light atmosphere;
+- electric blue, violet, cyan, and controlled magenta;
+- layered glass/panel depth;
+- premium anime-adjacent visual rhythm.
+
+However, make it substantially less busy than the references.
+
+Required page hierarchy
+
+1. Hero only
+   
+   - large editorial headline and short commentary-first positioning;
+   - one strong original visual composition or safe placeholder frame for the host/co-host/chibi system;
+   - one primary CTA and one secondary CTA;
+   - subtle city-light, scanline, grain, neon-grid, and motion atmosphere;
+   - no fake member counts, levels, reaction totals, or stats panel.
+
+2. Genre / topic rail
+   
+   - a clean horizontal selector or chip rail;
+   - use commentary topics/genres, not fake title counts;
+   - mobile swipe-friendly.
+
+3. One featured editorial story
+   
+   - one large premium feature card;
+   - can use “Re:Zero” only as a text discussion topic;
+   - no official art, logos, screenshots, episode thumbnails, or borrowed character imagery.
+
+4. Latest takes
+   
+   - only 3 editorial cards maximum in the first visible content section;
+   - strong image-like abstract panels or original-safe assets;
+   - no fake comments, fake views, fake discussion numbers, or fake upload dates.
+
+5. Optional lower section
+   
+   - one “The Ani-Dax World” / “Coming Soon” module for future reactions, community, co-host content, or merch;
+   - clearly label unfinished areas as In Development;
+   - do not build a fake live community lounge, ranking board, schedule, watchlist, merch store, or reaction vault.
+
+Visual rules
+
+- Preserve the rich neon visual impact from the references.
+- Use whitespace and fewer modules so the site feels intentional, expensive, and readable.
+- The hero should be the visual centerpiece, not a wall of widgets.
+- Use varied motion: subtle parallax, light sweeps, card tilt, masked reveals, and staggered entrance timing.
+- Do not apply the same fade-in to every section.
+- Respect reduced-motion preferences and keep mobile smooth.
+- Use existing original-safe assets only. If the host/co-host/chibi art is not available, create framed art-direction placeholders or abstract silhouettes—not copyrighted anime lookalikes and not generic official anime images.
+
+Do not alter Dax the Traveler, God’s Vessel, Home, Time-Zone Travelers, backend, or integrations while applying this Ani-Dax direction.

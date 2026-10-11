@@ -1,0 +1,96 @@
+Create a clean website design system for the public Dax Collective website.
+
+Do not redesign the whole site yet.
+Create the reusable design foundation first.
+
+Design goal:
+The Dax Collective public website should feel like a modern multi-brand creator ecosystem hub with premium travel-card energy, clean app-like navigation, and strong brand portals.
+
+Visual direction:
+- Modern
+- Clean
+- Mobile-first
+- Premium but not corporate
+- Image-led
+- Spacious
+- Not cluttered
+- Not childish
+- Functional and intuitive
+- White/off-white base
+- Soft gray sections
+- Seafoam/turquoise highlights
+- Muted gold premium accents
+- Charcoal text
+- Optional restrained dark sections for media/anime/build-in-public moments
+
+Brand style direction:
+1. Dax the Traveler
+- Cinematic travel
+- Real photos/videos
+- Journey cards
+- Personal storytelling
+- Turquoise/blue travel accents
+
+2. Time-Zone Travelers
+- Clean travel utility
+- Destination/resource cards
+- Itinerary blocks
+- Affiliate/resource clarity
+- Practical, trustworthy, SEO-friendly
+
+3. Ani-Dax
+- Darker media-card energy
+- Commentary/community feel
+- Anime-inspired without copying IP
+- Ranking/topic/watchlist cards
+- Copyright-safe visual language
+
+4. God’s Vessel
+- Premium archive typography
+- Cream, charcoal, muted gold
+- Product-drop polish
+- Reverent, minimal, mature
+- No cheesy POD look
+
+5. The Dax Collective
+- Umbrella hub
+- Brand portal
+- Build-in-public timeline
+- Operating-system polish
+
+Create reusable components:
+- SectionWrapper
+- BrandPortalCard
+- JourneyCard
+- DestinationCard
+- ResourceCard
+- ProductDropCard
+- ArchiveProductCard
+- ContentCarousel
+- NewsletterCTA
+- StickyMobileCTA
+- BuildTimeline
+- SectionHeader
+- Badge
+- CTAButton
+
+Create or update global styles/tokens:
+- colors
+- typography
+- spacing
+- border radius
+- shadows
+- card hover states
+- mobile spacing
+- simple transitions
+
+Rules:
+- Do not overuse animations
+- Do not use heavy gradients everywhere
+- Do not copy exact Dribbble designs
+- Use references only as inspiration
+- Keep accessibility and readability strong
+- Keep performance light
+
+After creating the design system:
+Tell me what files changed and how components should be used on the homepage.

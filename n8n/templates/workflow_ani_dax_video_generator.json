@@ -1,0 +1,524 @@
+{
+  "name": "Ani-Dax Video Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.ANI_DAX_SHEET_ID}}",
+        "sheetName": "Video Queue",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Read Ani-Dax Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$json['Upload Status']}}",
+              "rightValue": "Not Started",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{$json['Viral Score']}}",
+              "rightValue": 80,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Filter High Priority Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 1000
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an expert anime content creator specializing in Re:Zero and viral anime content. Create engaging, accurate scripts that hook viewers immediately and maintain engagement throughout."
+            },
+            {
+              "role": "user",
+              "content": "Create a detailed video script based on this prompt: {{$json['Script Prompt']}}\n\nTarget platform: {{$json['Target Platform']}}\nContent type: {{$json['Content Type']}}\nTarget length: {{$json['Output Type']}}\n\nMake it engaging, accurate to anime lore, and include natural CTAs for Patreon and affiliate links. Start with a strong hook in the first 3 seconds."
+            }
+          ]
+        }
+      },
+      "id": "4",
+      "name": "Generate Script with DeepSeek",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        900,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "eleven_multilingual_v2",
+        "text": "={{$json.choices[0].message.content}}",
+        "voice": "={{$('Read Ani-Dax Sheet').item.json['Audio Style']}}",
+        "options": {
+          "stability": 0.5,
+          "similarityBoost": 0.8,
+          "style": 0.3
+        }
+      },
+      "id": "5",
+      "name": "Generate Voice with ElevenLabs",
+      "type": "n8n-nodes-base.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "3",
+          "name": "ElevenLabs API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{$('Read Ani-Dax Sheet').item.json['Character Focus']}} anime character high quality",
+        "per_page": 5,
+        "orientation": "portrait"
+      },
+      "id": "6",
+      "name": "Search Pexels for Visuals",
+      "type": "n8n-nodes-base.pexels",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        480
+      ],
+      "credentials": {
+        "pexelsApi": {
+          "id": "4",
+          "name": "Pexels API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "dall-e-3",
+        "prompt": "Anime thumbnail for {{$('Read Ani-Dax Sheet').item.json['Video Title']}} - {{$('Read Ani-Dax Sheet').item.json['Thumbnail Prompt']}} - high quality, vibrant colors, YouTube thumbnail style",
+        "options": {
+          "size": "1024x1024",
+          "quality": "hd"
+        }
+      },
+      "id": "7",
+      "name": "Generate Thumbnail",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        1340,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -loop 1 -i {{$json.data[0].url}} -i {{$('Generate Voice with ElevenLabs').item.binary.data}} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest /tmp/ani_dax_{{$('Read Ani-Dax Sheet').item.json['Video Title'].replace(/[^a-zA-Z0-9]/g, '_')}}.mp4"
+      },
+      "id": "8",
+      "name": "Create Video with FFmpeg",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.ANI_DAX_SHEET_ID}}",
+        "sheetName": "Video Queue",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": false
+        },
+        "columnToMatchOn": "Video Title",
+        "valueToMatchOn": "={{$('Read Ani-Dax Sheet').item.json['Video Title']}}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Full Script",
+              "fieldValue": "={{$('Generate Script with DeepSeek').item.json.choices[0].message.content}}"
+            },
+            {
+              "column": "Upload Status",
+              "fieldValue": "Generated"
+            },
+            {
+              "column": "Generated By",
+              "fieldValue": "n8n Automation"
+            }
+          ]
+        }
+      },
+      "id": "9",
+      "name": "Update Sheet Status",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1780,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.DISCORD_CHANNEL_ID}}",
+        "text": "🎬 New Ani-Dax video generated!\n\n**Title:** {{$('Read Ani-Dax Sheet').item.json['Video Title']}}\n**Viral Score:** {{$('Read Ani-Dax Sheet').item.json['Viral Score']}}\n**Platform:** {{$('Read Ani-Dax Sheet').item.json['Target Platform']}}\n**Status:** Ready for review and upload\n\nCheck the video queue for details!"
+      },
+      "id": "10",
+      "name": "Discord Notification",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        300
+      ],
+      "credentials": {
+        "discordApi": {
+          "id": "5",
+          "name": "Discord Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{$('Read Ani-Dax Sheet').item.json['Viral Score']}}",
+              "rightValue": 90,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "11",
+      "name": "Check if Viral Content",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek-chat",
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 500
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a content strategy expert. Analyze viral content and suggest follow-up content ideas that can capitalize on the success."
+            },
+            {
+              "role": "user",
+              "content": "This video has a viral score of {{$('Read Ani-Dax Sheet').item.json['Viral Score']}}:\n\nTitle: {{$('Read Ani-Dax Sheet').item.json['Video Title']}}\nContent Type: {{$('Read Ani-Dax Sheet').item.json['Content Type']}}\n\nSuggest 3 follow-up video ideas that could capitalize on this viral potential. Focus on related anime content that would appeal to the same audience."
+            }
+          ]
+        }
+      },
+      "id": "12",
+      "name": "Generate Follow-up Ideas",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        2000,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "2",
+          "name": "DeepSeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": "={{$env.DAX_COLLECTIVE_MASTER_SHEET_ID}}",
+        "sheetName": "Master Control",
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": false
+        },
+        "columnToMatchOn": "Video Title",
+        "valueToMatchOn": "={{$('Read Ani-Dax Sheet').item.json['Video Title']}}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Auto-Suggestions",
+              "fieldValue": "={{$json.choices[0].message.content}}"
+            },
+            {
+              "column": "Last Updated",
+              "fieldValue": "={{$now.format('yyyy-MM-dd HH:mm')}}"
+            }
+          ]
+        }
+      },
+      "id": "13",
+      "name": "Update Master Control",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2220,
+        480
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Ani-Dax Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Ani-Dax Sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter High Priority Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter High Priority Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Script with DeepSeek",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Search Pexels for Visuals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Script with DeepSeek": {
+      "main": [
+        [
+          {
+            "node": "Generate Voice with ElevenLabs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Thumbnail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voice with ElevenLabs": {
+      "main": [
+        [
+          {
+            "node": "Create Video with FFmpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Pexels for Visuals": {
+      "main": [
+        [
+          {
+            "node": "Create Video with FFmpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Thumbnail": {
+      "main": [
+        [
+          {
+            "node": "Create Video with FFmpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Video with FFmpeg": {
+      "main": [
+        [
+          {
+            "node": "Update Sheet Status",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check if Viral Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Sheet Status": {
+      "main": [
+        [
+          {
+            "node": "Discord Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Viral Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Follow-up Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Follow-up Ideas": {
+      "main": [
+        [
+          {
+            "node": "Update Master Control",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ani-dax-video-generator"
+  },
+  "id": "ani-dax-video-generator",
+  "tags": []
+}
+

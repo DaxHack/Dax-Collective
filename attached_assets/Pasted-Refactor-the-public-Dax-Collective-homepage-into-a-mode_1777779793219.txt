@@ -1,0 +1,105 @@
+Refactor the public Dax Collective homepage into a modern multi-brand creator ecosystem hub.
+
+Use the new design system and reusable components.
+Do not rebuild every brand page yet.
+
+Homepage goal:
+The homepage should quickly explain what The Dax Collective is and route users to the right brand, content, resource, or offer.
+
+Required homepage sections:
+
+1. Hero Section
+- Strong headline explaining The Dax Collective as a multi-brand creator ecosystem
+- Subheadline explaining travel, anime, faith, and AI-powered content/building
+- Primary CTA: Explore the Brands
+- Secondary CTA: Join the Newsletter
+- Use clean modern layout with image/card accents
+- Avoid clutter
+
+Possible headline direction:
+“The Dax Collective is where travel stories, anime culture, faith-driven design, and AI-powered creation meet.”
+
+2. Brand Portal Cards
+Create 4 main brand cards:
+- Dax the Traveler
+- Time-Zone Travelers
+- Ani-Dax
+- God’s Vessel
+
+Each card should include:
+- Brand name
+- One-line tagline
+- Role
+- Main CTA
+- Visual style cue
+- Link target
+
+3. Featured Journeys / Travel Cards
+Show 3 travel-inspired cards using placeholder or existing available images.
+Cards should feel like premium travel app cards:
+- large image
+- destination/title
+- short description
+- tag/badge
+- CTA: Read / Watch / Explore
+
+4. Product & Resource Highlights
+Show:
+- God’s Vessel Names of God collection teaser
+- Time-Zone Travelers travel resource/guide teaser
+- Dax the Traveler travel resources teaser
+
+5. Latest Content / Coming Soon
+Show a clean content grid for:
+- Travel story
+- Travel guide
+- Anime commentary
+- God’s Vessel product/story post
+- Build-in-public update
+
+Use placeholders if real content is not connected yet.
+
+6. Build-in-Public Timeline
+Add a simple timeline showing:
+- Building the Dax Collective
+- Organizing brands
+- Building Admin Studio
+- Launching resources/products
+- Growing audience and revenue systems
+
+7. Newsletter CTA
+Add a strong email capture section:
+- “Join the Dax Collective Dispatch”
+- Explain users can follow travel stories, resources, drops, and build-in-public updates
+- No backend email integration yet unless already available
+- Use placeholder form or nonfunctional safe form with clear TODO
+
+8. Footer
+Include:
+- Brand links
+- Social placeholders
+- Contact/Sponsorship
+- Affiliate Disclosure
+- Privacy Policy
+- Copyright year
+
+Design requirements:
+- Mobile-first
+- Smooth card hover/tap states
+- Clear hierarchy
+- Modern and polished
+- Not busy
+- Strong image cards
+- Seafoam/turquoise and muted gold accents
+- White/off-white base with selective dark sections
+
+Important:
+- Do not add user accounts
+- Do not add comments/social feeds
+- Do not add external APIs
+- Do not add anime copyrighted images
+- Do not break existing routes
+- Use existing assets where available; otherwise use tasteful placeholders
+
+After building:
+Test homepage loads, mobile layout works, nav links work, and no console errors appear.
