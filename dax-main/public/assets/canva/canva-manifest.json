@@ -1,0 +1,26 @@
+{
+  "gods-vessel": {
+    "label": "God's Vessel",
+    "description": "Archive mockups, hoodie designs, study card layouts, product art",
+    "folder": "/assets/canva/gods-vessel/",
+    "assets": []
+  },
+  "dax-the-traveler": {
+    "label": "Dax the Traveler",
+    "description": "Trip graphics, hero images, thumbnails, brand assets",
+    "folder": "/assets/canva/dax-the-traveler/",
+    "assets": []
+  },
+  "time-zone-travelers": {
+    "label": "Time-Zone Travelers",
+    "description": "Zone guide covers, travel toolkit graphics, route pack art",
+    "folder": "/assets/canva/time-zone-travelers/",
+    "assets": []
+  },
+  "anidax": {
+    "label": "Ani-Dax",
+    "description": "Character file cards, arc review thumbnails, anime graphics",
+    "folder": "/assets/canva/anidax/",
+    "assets": []
+  }
+}

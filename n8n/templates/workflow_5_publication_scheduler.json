@@ -1,0 +1,278 @@
+{
+  "name": "Publication Scheduler & Optimizer",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 */30 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "scheduler-trigger",
+      "name": "Check Every 30 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.CONTENT_QUEUE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Generated_Content",
+        "options": {}
+      },
+      "id": "fetch-content-queue",
+      "name": "Fetch Content Queue",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Publication Scheduler & Optimizer\n// Analyzes content queue and schedules optimal publishing times\n\nconst contentQueue = $input.all();\nconst now = new Date();\n\n// Brand-specific posting schedules and limits\nconst brandSchedules = {\n  dax_traveler: {\n    platforms: {\n      instagram: { times: ['08:00', '12:00', '18:00'], dailyLimit: 2, timezone: 'UTC' },\n      facebook: { times: ['09:00', '15:00', '20:00'], dailyLimit: 2, timezone: 'UTC' },\n      twitter: { times: ['07:00', '11:00', '15:00', '19:00'], dailyLimit: 4, timezone: 'UTC' },\n      linkedin: { times: ['08:00', '17:00'], dailyLimit: 1, timezone: 'UTC' },\n      tiktok: { times: ['12:00', '18:00', '21:00'], dailyLimit: 2, timezone: 'UTC' }\n    },\n    enabled: $env.BRAND_DAX_TRAVELER_ENABLED === 'true'\n  },\n  timezone_travelers: {\n    platforms: {\n      instagram: { times: ['10:00', '14:00', '19:00'], dailyLimit: 2, timezone: 'UTC' },\n      facebook: { times: ['11:00', '16:00'], dailyLimit: 1, timezone: 'UTC' },\n      twitter: { times: ['08:00', '12:00', '16:00', '20:00'], dailyLimit: 3, timezone: 'UTC' },\n      pinterest: { times: ['09:00', '13:00', '17:00'], dailyLimit: 3, timezone: 'UTC' }\n    },\n    enabled: $env.BRAND_TIMEZONE_TRAVELERS_ENABLED === 'true'\n  },\n  gods_vessel: {\n    platforms: {\n      instagram: { times: ['06:00', '12:00', '18:00'], dailyLimit: 2, timezone: 'UTC' },\n      facebook: { times: ['07:00', '19:00'], dailyLimit: 2, timezone: 'UTC' },\n      twitter: { times: ['06:00', '12:00', '18:00'], dailyLimit: 3, timezone: 'UTC' },\n      pinterest: { times: ['08:00', '14:00', '20:00'], dailyLimit: 2, timezone: 'UTC' }\n    },\n    enabled: $env.BRAND_GODS_VESSEL_ENABLED === 'true'\n  },\n  ani_dax: {\n    platforms: {\n      instagram: { times: ['14:00', '20:00', '22:00'], dailyLimit: 2, timezone: 'UTC' },\n      facebook: { times: ['15:00', '21:00'], dailyLimit: 1, timezone: 'UTC' },\n      twitter: { times: ['13:00', '17:00', '21:00'], dailyLimit: 3, timezone: 'UTC' },\n      tiktok: { times: ['16:00', '20:00', '23:00'], dailyLimit: 2, timezone: 'UTC' },\n      reddit: { times: ['19:00', '22:00'], dailyLimit: 1, timezone: 'UTC' }\n    },\n    enabled: $env.BRAND_ANI_DAX_ENABLED === 'true'\n  }\n};\n\n// Filter content ready for publishing\nconst readyContent = contentQueue.filter(item => \n  item.ready_for_publishing === true && \n  item.status === 'generated' && \n  !item.scheduled_time\n);\n\nif (readyContent.length === 0) {\n  return { message: 'No content ready for scheduling', scheduledCount: 0 };\n}\n\n// Get today's already scheduled posts to respect daily limits\nconst today = now.toISOString().split('T')[0];\nconst todayScheduled = contentQueue.filter(item => \n  item.scheduled_time && \n  item.scheduled_time.startsWith(today)\n);\n\n// Count scheduled posts by brand and platform for today\nconst todayCounts = {};\ntodayScheduled.forEach(item => {\n  const key = `${item.brand}_${item.platform}`;\n  todayCounts[key] = (todayCounts[key] || 0) + 1;\n});\n\n// Schedule content based on optimal times and limits\nconst scheduledContent = [];\n\nreadyContent.forEach(content => {\n  const brand = content.brand;\n  const platform = content.platform;\n  \n  if (!brandSchedules[brand] || !brandSchedules[brand].enabled) {\n    return;\n  }\n  \n  const platformConfig = brandSchedules[brand].platforms[platform];\n  if (!platformConfig) {\n    return;\n  }\n  \n  const countKey = `${brand}_${platform}`;\n  const currentCount = todayCounts[countKey] || 0;\n  \n  if (currentCount >= platformConfig.dailyLimit) {\n    return; // Daily limit reached\n  }\n  \n  // Find next available time slot\n  const availableTimes = platformConfig.times;\n  let scheduledTime = null;\n  \n  for (const timeSlot of availableTimes) {\n    const [hours, minutes] = timeSlot.split(':').map(Number);\n    const candidateTime = new Date(now);\n    candidateTime.setHours(hours, minutes, 0, 0);\n    \n    // If time has passed today, schedule for tomorrow\n    if (candidateTime <= now) {\n      candidateTime.setDate(candidateTime.getDate() + 1);\n    }\n    \n    // Check if this time slot is already taken\n    const timeString = candidateTime.toISOString();\n    const isSlotTaken = scheduledContent.some(item => \n      item.scheduled_time === timeString && \n      item.brand === brand && \n      item.platform === platform\n    );\n    \n    if (!isSlotTaken) {\n      scheduledTime = timeString;\n      break;\n    }\n  }\n  \n  if (scheduledTime) {\n    scheduledContent.push({\n      ...content,\n      scheduled_time: scheduledTime,\n      status: 'scheduled'\n    });\n    \n    // Update count for this brand/platform\n    todayCounts[countKey] = currentCount + 1;\n  }\n});\n\nreturn {\n  scheduledContent,\n  scheduledCount: scheduledContent.length,\n  totalReady: readyContent.length,\n  timestamp: now.toISOString()\n};"
+      },
+      "id": "analyze-and-schedule",
+      "name": "Analyze & Schedule Content",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-scheduled-content",
+              "leftValue": "={{ $json.scheduledCount }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-scheduled-content",
+      "name": "Has Scheduled Content?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-scheduled-content",
+      "name": "Process Each Scheduled Item",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.CONTENT_QUEUE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": "Generated_Content",
+        "columnToMatchOn": "content_id",
+        "valueToMatchOn": "={{ $('Analyze & Schedule Content').first().scheduledContent[$('Process Each Scheduled Item').itemIndex].content_id }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "scheduled_time",
+              "value": "={{ $('Analyze & Schedule Content').first().scheduledContent[$('Process Each Scheduled Item').itemIndex].scheduled_time }}"
+            },
+            {
+              "column": "status",
+              "value": "scheduled"
+            },
+            {
+              "column": "last_updated",
+              "value": "={{ $('Analyze & Schedule Content').first().timestamp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update-content-schedule",
+      "name": "Update Content Schedule",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "schedule-report",
+              "name": "scheduleReport",
+              "value": "📅 *Content Scheduling Report*\\n\\n*Scheduled:* {{ $('Analyze & Schedule Content').first().scheduledCount }} items\\n*Ready for Scheduling:* {{ $('Analyze & Schedule Content').first().totalReady }} items\\n\\n*Next Publishing Times:*\\n{{ $('Analyze & Schedule Content').first().scheduledContent.slice(0, 5).map(item => `• ${item.brand} (${item.platform}): ${new Date(item.scheduled_time).toLocaleString()}`).join('\\n') }}\\n\\n*Timestamp:* {{ $('Analyze & Schedule Content').first().timestamp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-schedule-report",
+      "name": "Format Schedule Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"text\": \"{{ $json.scheduleReport }}\",\n  \"username\": \"Publication Scheduler\",\n  \"icon_emoji\": \":calendar:\"\n}",
+        "options": {}
+      },
+      "id": "send-schedule-report",
+      "name": "Send Schedule Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Check Every 30 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Fetch Content Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Content Queue": {
+      "main": [
+        [
+          {
+            "node": "Analyze & Schedule Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze & Schedule Content": {
+      "main": [
+        [
+          {
+            "node": "Has Scheduled Content?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Scheduled Content?": {
+      "main": [
+        [
+          {
+            "node": "Process Each Scheduled Item",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Format Schedule Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Scheduled Item": {
+      "main": [
+        [
+          {
+            "node": "Update Content Schedule",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Schedule Report": {
+      "main": [
+        [
+          {
+            "node": "Send Schedule Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "content-scheduling",
+      "name": "Content Scheduling"
+    },
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "publication-optimization",
+      "name": "Publication Optimization"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}
