@@ -22,8 +22,12 @@ const crypto = require("crypto");
 const sharp = require("sharp");
 const config = require("../config/env");
 const {getAdmin} = require("../services/firebaseAdmin");
+const {safeDownload, DownloadError} = require("../services/safeDownload");
 
 const router = express.Router(); // eslint-disable-line new-cap
+
+// Upper bound on URLs accepted by one /drive/batch-from-urls request.
+const MAX_BATCH_URLS = 10;
 
 // --- Google Drive API Setup (lazy — only constructed if Drive automation is enabled) ---
 let driveOauth2Client = null;
@@ -453,6 +457,12 @@ router.post("/drive/batch-from-urls", ensureDriveEnabled, async (req, res) => {
     if (!urls || !Array.isArray(urls) || urls.length === 0) {
       return res.status(400).json({error: "No URLs provided"});
     }
+    if (urls.length > MAX_BATCH_URLS) {
+      return res.status(400).json({error: `Too many URLs. Maximum is ${MAX_BATCH_URLS} per request.`});
+    }
+    if (!urls.every((url) => typeof url === "string" && url.length <= 2048)) {
+      return res.status(400).json({error: "Each URL must be a string of at most 2048 characters"});
+    }
 
     const targetFolderId = FOLDER_MAPPING[category] || FOLDER_MAPPING["collective"];
     if (!targetFolderId) {
@@ -466,16 +476,8 @@ router.post("/drive/batch-from-urls", ensureDriveEnabled, async (req, res) => {
     for (let i = 0; i < urls.length; i++) {
       try {
         const url = urls[i];
-        if (!/^https?:$/.test(new URL(url).protocol)) {
-          throw new Error("Only http(s) URLs are allowed");
-        }
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch image from URL: ${response.statusText}`);
-        }
-
-        const buffer = Buffer.from(await response.arrayBuffer());
+        // SSRF-guarded, time- and size-limited download (services/safeDownload.js)
+        const buffer = await safeDownload(url);
         const optimizedBuffer = await optimizeImage(buffer);
 
         const urlPath = new URL(url).pathname;
@@ -515,8 +517,10 @@ router.post("/drive/batch-from-urls", ensureDriveEnabled, async (req, res) => {
           public: madePublic,
         });
       } catch (error) {
-        console.error(`Error uploading from URL ${urls[i]}:`, error);
-        errors.push({url: urls[i], error: error.message});
+        // Only fixed, non-sensitive messages go back to the caller.
+        const isDownloadError = error instanceof DownloadError;
+        console.error(`Batch URL upload failed for item ${i + 1}:`, isDownloadError ? error.code : error.message);
+        errors.push({url: urls[i], error: isDownloadError ? error.message : "Upload failed"});
       }
     }
 
