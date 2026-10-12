@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Camera, MapPin } from 'lucide-react';
-import { daxTravelerSocialLinks } from '../config/socialLinks';
+import { daxTravelerSocialLinks, publicSocialLinks } from '../config/socialLinks';
 import ApprovedMediaGallery from '../components/ApprovedMediaGallery';
 import TravelerPhotoViewer from './TravelerPhotoViewer';
 import './TravelerPage.css';
@@ -15,7 +15,7 @@ const photos = [
   { src: '/images/dax-personal/open-air-portrait.webp', alt: 'Dax seated outdoors on a terrace', caption: 'An open-air portrait', location: 'UNPLACED FRAME' },
   { src: '/images/dax-personal/dax-smiling.webp', alt: 'Dax smiling for a selfie', caption: 'A moment between frames', location: 'UNPLACED FRAME' },
 ];
-const socialLinks = daxTravelerSocialLinks.filter(link => link.href && link.href.startsWith('http'));
+const socialLinks = publicSocialLinks(daxTravelerSocialLinks);
 
 function Hero({ reduceMotion, onOpenPhoto }) {
   const pointerX = useMotionValue(0);

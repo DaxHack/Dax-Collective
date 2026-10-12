@@ -96,11 +96,12 @@ const ContactPage = () => {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                  <label htmlFor="contact-name" className="block text-sm font-medium text-gray-300 mb-1.5">
                     Name <span className="text-gray-500">(optional)</span>
                   </label>
                   <input
                     type="text"
+                    id="contact-name"
                     name="name"
                     value={form.name}
                     onChange={handleChange}
@@ -109,11 +110,12 @@ const ContactPage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                  <label htmlFor="contact-email" className="block text-sm font-medium text-gray-300 mb-1.5">
                     Email <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="email"
+                    id="contact-email"
                     name="email"
                     value={form.email}
                     onChange={handleChange}
@@ -125,8 +127,9 @@ const ContactPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1.5">Topic</label>
+                <label htmlFor="contact-topic" className="block text-sm font-medium text-gray-300 mb-1.5">Topic</label>
                 <select
+                  id="contact-topic"
                   name="topic"
                   value={form.topic}
                   onChange={handleChange}
@@ -140,10 +143,11 @@ const ContactPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                <label htmlFor="contact-message" className="block text-sm font-medium text-gray-300 mb-1.5">
                   Message <span className="text-red-400">*</span>
                 </label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   value={form.message}
                   onChange={handleChange}

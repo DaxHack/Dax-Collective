@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { daxCollectiveSocialLinks } from '../config/socialLinks';
+import { daxCollectiveSocialLinks, publicSocialLinks } from '../config/socialLinks';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -24,7 +24,8 @@ const Footer = () => {
       { name: 'Terms of Service', to: '/terms' },
       { name: 'Affiliate Disclosure', to: '/disclosure' },
     ],
-    social: daxCollectiveSocialLinks,
+    // Verified links only; unconfirmed handles and placeholders are omitted.
+    social: publicSocialLinks(daxCollectiveSocialLinks),
   };
 
   return (
@@ -40,19 +41,21 @@ const Footer = () => {
               Building a multi-brand content platform across travel, anime, faith, and lifestyle.
               Honest stories, real guides, purpose-driven content.
             </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-2">
-              {footerLinks.social.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-gray-500 hover:text-blue-400 transition-colors duration-300"
-                >
-                  {social.name}
-                </a>
-              ))}
-            </div>
+            {footerLinks.social.length > 0 && (
+              <div className="flex flex-wrap gap-x-3 gap-y-2">
+                {footerLinks.social.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gray-500 hover:text-blue-400 transition-colors duration-300"
+                  >
+                    {social.name}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Brands */}
