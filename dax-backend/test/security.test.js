@@ -1,92 +1,18 @@
 // dax-backend/test/security.test.js
 //
 // Security-foundation checks, run with `npm test` (node:test, no extra
-// dependencies). No real Firebase project, credential, or network call is
-// used: where a verified token is needed, services/firebaseAdmin is replaced
-// in the require cache with a stub that only knows the fake tokens below.
+// dependencies). Helpers and stubs live in test-support/harness.js.
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const path = require("node:path");
-const {spawnSync} = require("node:child_process");
-
-const BACKEND_ROOT = path.join(__dirname, "..");
-const FIREBASE_ADMIN_PATH = path.join(BACKEND_ROOT, "services", "firebaseAdmin.js");
-
-const BASE_ENV = {
-  NODE_ENV: "test",
-  ENABLE_ADMIN_UPLOADS: "false",
-  ENABLE_DRIVE_AUTOMATION: "false",
-  ALLOW_PUBLIC_DRIVE_FILES: "false",
-  ADMIN_UIDS: "",
-  RATE_LIMIT_MAX: "1000",
-  RATE_LIMIT_WINDOW_MS: "60000",
-  TRUST_PROXY: "",
-  FIREBASE_SERVICE_ACCOUNT_JSON: "",
-  FIREBASE_SERVICE_ACCOUNT_PATH: "",
-  FIREBASE_STORAGE_BUCKET: "",
-};
-
-const FAKE_TOKENS = {
-  "token-regular-user": {uid: "user-1"},
-  "token-allowlisted": {uid: "admin-uid-1"},
-  "token-admin-claim": {uid: "user-2", admin: true},
-};
-
-function clearBackendModules() {
-  for (const key of Object.keys(require.cache)) {
-    if (key.startsWith(BACKEND_ROOT) && !key.includes("node_modules")) {
-      delete require.cache[key];
-    }
-  }
-}
-
-function stubFirebaseAdmin() {
-  const stub = {
-    initFirebaseAdmin: () => true,
-    isInitialized: () => true,
-    getServiceAccount: () => null,
-    getAdmin: () => ({
-      auth: () => ({
-        verifyIdToken: async (token) => {
-          if (!FAKE_TOKENS[token]) throw new Error("invalid token");
-          return FAKE_TOKENS[token];
-        },
-      }),
-    }),
-  };
-  require.cache[FIREBASE_ADMIN_PATH] = {
-    id: FIREBASE_ADMIN_PATH,
-    filename: FIREBASE_ADMIN_PATH,
-    loaded: true,
-    exports: stub,
-  };
-}
-
-// Loads a fresh app with the given env and serves it on an ephemeral port.
-async function startApp(env, {stubFirebase = false} = {}) {
-  Object.assign(process.env, BASE_ENV, env);
-  clearBackendModules();
-  if (stubFirebase) stubFirebaseAdmin();
-  const app = require(path.join(BACKEND_ROOT, "server.js"));
-  const server = await new Promise((resolve) => {
-    const s = app.listen(0, "127.0.0.1", () => resolve(s));
-  });
-  const base = `http://127.0.0.1:${server.address().port}`;
-  return {
-    base,
-    close: () => new Promise((resolve) => server.close(resolve)),
-  };
-}
-
-function runServer(env) {
-  return spawnSync(process.execPath, ["server.js"], {
-    cwd: BACKEND_ROOT,
-    env: {...process.env, ...BASE_ENV, ...env},
-    encoding: "utf8",
-    timeout: 20000,
-  });
-}
+const {
+  BACKEND_ROOT,
+  BASE_ENV,
+  clearBackendModules,
+  startApp,
+  runServer,
+} = require("../test-support/harness");
 
 test("public baseline boots without Firebase or admin configuration", async (t) => {
   const app = await startApp({});
