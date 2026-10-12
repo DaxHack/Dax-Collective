@@ -1,0 +1,59 @@
+{
+  "name": "DAX-02 Company Operations Agents - Daily Brief",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-start",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 280]
+    },
+    {
+      "parameters": {
+        "jsCode": "const agents = [\n  ['operations_director_agent', 'Coordinate daily priorities and blockers.'],\n  ['content_strategy_agent', 'Choose topics and output mix across posts, videos, itineraries, merch, stickers, and designs.'],\n  ['scriptwriting_agent', 'Create scripts, captions, CTAs, carousel copy, and product copy.'],\n  ['video_production_agent', 'Package scripts, scenes, metadata, thumbnails, and video jobs for review.'],\n  ['asset_management_agent', 'Track logos, images, videos, merch art, sticker art, and missing assets.'],\n  ['publishing_scheduler_agent', 'Plan schedules only after manual approval and connected accounts.'],\n  ['analytics_agent', 'Summarize performance and next tests.'],\n  ['revenue_agent', 'Track affiliate, sponsorship, merch, and sticker revenue opportunities.'],\n  ['community_agent', 'Plan replies, community prompts, and audience feedback loops.'],\n  ['compliance_qa_agent', 'Check copyright, claims, safety, brand fit, and publishing readiness.'],\n  ['platform_setup_agent', 'Track OAuth, domains, API scopes, policy pages, and account blockers.'],\n  ['error_handler_agent', 'Record incidents, retry plans, and human escalations.']\n];\n\nreturn agents.map(([agentId, mission]) => ({\n  json: {\n    agentId,\n    mission,\n    status: 'ready_for_manual_use',\n    publishAllowed: false,\n    reviewStatus: 'manual_review_required',\n    dailyQuestions: [\n      'What is blocked?',\n      'What can be safely produced today?',\n      'What requires account login or approval?',\n      'What needs QA before public release?'\n    ],\n    createdAt: new Date().toISOString()\n  }\n}));"
+      },
+      "id": "build-briefs",
+      "name": "Build Operations Agent Briefs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [360, 280]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst outputCoverage = ['posts', 'videos', 'itineraries', 'merch', 'stickers', 'designs'];\nconst requiredGates = ['manual_review_required', 'no_secret_exposure', 'no_auto_publish', 'brand_fit_check', 'copyright_check'];\n\nreturn [{\n  json: {\n    workflow: 'DAX-02 Company Operations Agents - Daily Brief',\n    agentCount: items.length,\n    outputCoverage,\n    requiredGates,\n    publishingEnabled: false,\n    recommendedNextActions: [\n      'Run DAX-00 to choose a brand/output route.',\n      'Run DAX-01 to create review video packages for all brands.',\n      'Use Compliance and QA Agent before any public post, upload, itinerary, merch, sticker, or design release.',\n      'Connect platform accounts only through OAuth/n8n credentials, never by pasting secrets into workflow JSON.'\n    ],\n    generatedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "build-company-summary",
+      "name": "Build Company Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [620, 280]
+    },
+    {
+      "parameters": {
+        "content": "Company operations agents for daily control. Produces briefs and gates only. No credentials. No publishing.",
+        "height": 180,
+        "width": 360,
+        "color": 5
+      },
+      "id": "safety-note",
+      "name": "Safety Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [300, 20]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [[{ "node": "Build Operations Agent Briefs", "type": "main", "index": 0 }]]
+    },
+    "Build Operations Agent Briefs": {
+      "main": [[{ "node": "Build Company Summary", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "versionId": "1",
+  "tags": []
+}

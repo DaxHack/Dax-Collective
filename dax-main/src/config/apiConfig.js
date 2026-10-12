@@ -71,17 +71,18 @@ export const externalApis = {
     baseUrl: "https://pixabay.com/api",
     enabled: !!process.env.REACT_APP_PIXABAY_API_KEY
   },
+  // AI requests must be proxied through dax-backend. Never expose provider
+  // credentials through a REACT_APP_ variable.
   openai: {
-    apiKey: process.env.REACT_APP_OPENAI_API_KEY || "",
     baseUrl: "https://api.openai.com/v1",
-    enabled: !!process.env.REACT_APP_OPENAI_API_KEY
+    enabled: false
   }
 };
 
-// FIXED: N8N automation configuration
+// Only public webhook URLs belong in the browser. Authenticated n8n API calls
+// must be made by dax-backend or configured directly inside n8n.
 export const n8nConfig = {
   baseUrl: process.env.REACT_APP_N8N_WEBHOOK_URL || "http://localhost:5678",
-  apiKey: process.env.REACT_APP_N8N_API_KEY || "",
   enabled: !!process.env.REACT_APP_N8N_WEBHOOK_URL,
   webhooks: {
     contentGeneration: process.env.REACT_APP_N8N_WEBHOOK_CONTENT_GENERATION || "",
@@ -119,13 +120,12 @@ export const socialConfig = {
       godsVessel: (process.env.REACT_APP_REDDIT_SUBREDDIT_GODS_VESSEL || "").split(",").filter(Boolean)
     }
   },
+  // Social publishing credentials are server-only.
   twitter: {
-    apiKey: process.env.REACT_APP_TWITTER_API_KEY || "",
-    enabled: !!process.env.REACT_APP_TWITTER_API_KEY
+    enabled: false
   },
   instagram: {
-    accessToken: process.env.REACT_APP_INSTAGRAM_ACCESS_TOKEN || "",
-    enabled: !!process.env.REACT_APP_INSTAGRAM_ACCESS_TOKEN
+    enabled: false
   }
 };
 
@@ -147,8 +147,8 @@ export const voiceConfig = {
   satiatedTaste: process.env.REACT_APP_VOICE_ID_SATIATED_TASTE || "",
   godsVessel: process.env.REACT_APP_VOICE_ID_GODS_VESSEL || "",
   elevenlabs: {
-    apiKey: process.env.REACT_APP_ELEVENLABS_API_KEY || "",
-    enabled: !!process.env.REACT_APP_ELEVENLABS_API_KEY
+    // Voice IDs are public identifiers, but the ElevenLabs API key is not.
+    enabled: false
   }
 };
 

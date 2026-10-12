@@ -1,0 +1,79 @@
+{
+  "name": "DAX-04 Company Startup Operator - Manual Review",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-start",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 220]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "daily-trigger",
+      "name": "Daily Startup Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [100, 420]
+    },
+    {
+      "parameters": {
+        "jsCode": "const today = new Date().toISOString().slice(0, 10);\nconst brands = ['dax-collective', 'dax-the-traveler', 'time-zone-travelers', 'ani-dax', 'gods-vessel'];\nconst outputTypes = ['posts', 'videos', 'itineraries', 'merch', 'stickers', 'designs'];\n\nconst brandOutputMap = {\n  'dax-collective': ['posts', 'videos', 'designs'],\n  'dax-the-traveler': ['posts', 'videos', 'itineraries', 'designs'],\n  'time-zone-travelers': ['posts', 'videos', 'itineraries', 'stickers', 'designs'],\n  'ani-dax': ['posts', 'videos', 'stickers', 'designs'],\n  'gods-vessel': ['posts', 'videos', 'merch', 'stickers', 'designs']\n};\n\nconst agentByOutput = {\n  posts: 'social_post_agent',\n  videos: 'video_concept_agent',\n  itineraries: 'itinerary_agent',\n  merch: 'merch_design_agent',\n  stickers: 'sticker_design_agent',\n  designs: 'brand_design_agent'\n};\n\nconst tasks = [];\nfor (const brand of brands) {\n  for (const outputType of brandOutputMap[brand]) {\n    tasks.push({\n      brand,\n      outputType,\n      primaryAgent: agentByOutput[outputType],\n      qaAgent: 'compliance_qa_agent',\n      publishAllowed: false,\n      reviewStatus: 'manual_review_required',\n      task: `Create one ${outputType} review package for ${brand}`,\n      blocker: outputType === 'videos' ? 'review video can be generated locally; public upload blocked until account credentials exist' : 'draft can be created now; public publishing blocked until account credentials exist'\n    });\n  }\n}\n\nreturn [{\n  json: {\n    date: today,\n    workflow: 'DAX-04 Company Startup Operator - Manual Review',\n    operatingMode: 'manual_review_first',\n    publishingEnabled: false,\n    activeCompanyAgents: [\n      'operations_director_agent',\n      'content_strategy_agent',\n      'social_post_agent',\n      'video_concept_agent',\n      'itinerary_agent',\n      'merch_design_agent',\n      'sticker_design_agent',\n      'brand_design_agent',\n      'asset_management_agent',\n      'publishing_scheduler_agent',\n      'analytics_agent',\n      'revenue_agent',\n      'community_agent',\n      'compliance_qa_agent',\n      'platform_setup_agent',\n      'error_handler_agent'\n    ],\n    dailyTasks: tasks,\n    immediateSafeRuns: [\n      'Run DAX-00 for routing map.',\n      'Run DAX-01 to create local review videos for all five brands.',\n      'Run DAX-02 for operations brief.',\n      'Run DAX-03 to track account blockers.'\n    ],\n    accountBlockers: [\n      'Create Facebook Pages for each brand under the existing Facebook account.',\n      'Create Instagram Business/Creator accounts and link each to the matching Facebook Page.',\n      'Create TikTok brand accounts and developer app if API posting is required.',\n      'Create/connect YouTube channels or Brand Accounts.',\n      'Set up public n8n HTTPS callback URL before OAuth publishing workflows.'\n    ],\n    websiteModernizationQueue: [\n      'Standardize Dax the Traveler page to the current modern layout language.',\n      'Standardize Ani-Dax page to the current modern layout language.',\n      'Standardize God\\'s Vessel page to the current modern layout language.',\n      'Add consistent hero/media/CTA sections and remove outdated placeholder patterns.',\n      'Keep brand-specific colors and assets from the planning docs.'\n    ],\n    createdAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "build-startup-brief",
+      "name": "Build Company Startup Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [390, 320]
+    },
+    {
+      "parameters": {
+        "jsCode": "const brief = $input.first().json;\nconst counts = brief.dailyTasks.reduce((acc, task) => {\n  acc.byBrand[task.brand] = (acc.byBrand[task.brand] || 0) + 1;\n  acc.byOutputType[task.outputType] = (acc.byOutputType[task.outputType] || 0) + 1;\n  return acc;\n}, { byBrand: {}, byOutputType: {} });\n\nreturn [{\n  json: {\n    ...brief,\n    taskCounts: counts,\n    status: 'company_operating_brief_ready',\n    nextAction: 'Review this brief, then run the safe workflows listed in immediateSafeRuns. Do not activate publisher workflows until account setup blockers are cleared.',\n    reviewStatus: 'manual_review_required'\n  }\n}];"
+      },
+      "id": "build-action-summary",
+      "name": "Build Action Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 320]
+    },
+    {
+      "parameters": {
+        "content": "Daily company operator. Safe to run manually now. If activated, it creates daily internal briefs only. No credentials. No publishing.",
+        "height": 200,
+        "width": 380,
+        "color": 5
+      },
+      "id": "safety-note",
+      "name": "Safety Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [310, 20]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [[{ "node": "Build Company Startup Brief", "type": "main", "index": 0 }]]
+    },
+    "Daily Startup Trigger": {
+      "main": [[{ "node": "Build Company Startup Brief", "type": "main", "index": 0 }]]
+    },
+    "Build Company Startup Brief": {
+      "main": [[{ "node": "Build Action Summary", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "versionId": "1",
+  "tags": []
+}

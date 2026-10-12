@@ -1,59 +1,74 @@
 // src/pages/Home.jsx
-// OPTIMIZED VERSION - Original styling preserved, improved functionality
+// Restored to the pre-redesign visual base per explicit instruction: no
+// operational grid, no route-line decoration, no flat charcoal dashboard
+// cards. Base recovered from git history (commit e4c5bad, the commit
+// before this session's redesign work) — floating bubbles, ambient
+// gradient orbs, gradient-text hero, per-brand gradient card tiles, and a
+// glow-behind-glass CTA. Fake stats (StatsSection) and the fake-image
+// gallery (BrandGallery) are intentionally NOT restored — those were fake
+// proof / placeholder content. CTA buttons keep their current honest,
+// working handlers rather than the old dead "Subscribe" button.
 
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import FloatingBubbles from '../components/FloatingBubbles';
-import StatsSection from '../components/StatsSection';
 import BrandCard from '../components/BrandCard';
-import BrandGallery from '../components/BrandGallery';
+import { analytics } from '../utils/analytics';
 
+// Per-brand gradient identity — restored from the pre-redesign version.
+// Descriptions kept as the current, honest copy (no fake claims either way).
 const brands = [
   {
     name: "Dax the Traveler",
-    description: "Epic personal adventures & chaos",
+    description: "Personal travel adventures, vlogs, and storytelling.",
     link: "/dax-the-traveler",
     icon: "Luggage",
     gradient: "from-blue-400 via-cyan-400 to-green-400"
   },
   {
     name: "Timezone Travelers",
-    description: "Interactive travel experiences & hacks",
+    description: "Faceless travel guides, itineraries, and travel tips.",
     link: "/timezone-travelers",
     icon: "Globe",
     gradient: "from-orange-500 via-red-500 to-orange-600"
   },
   {
     name: "Ani-Dax",
-    description: "Anime bios, voiceovers, AI vids",
+    description: "Anime commentary, character analysis, and editorial reviews.",
     link: "/ani-dax",
     icon: "Sparkles",
     gradient: "from-purple-500 via-pink-500 to-purple-600"
   },
   {
     name: "God's Vessel",
-    description: "Faith-based fashion, content, and power",
+    description: "Faith-based content, scripture, and apparel.",
     link: "/gods-vessel",
     icon: "Cross",
     gradient: "from-indigo-600 via-purple-600 to-indigo-700"
   }
 ];
 
+const handleSupportClick = () => {
+  analytics.trackDonation('home-cta', 'Support The Collective');
+  window.open('https://buymeacoffee.com/DaxCollective', '_blank', 'noopener,noreferrer');
+};
+
 export default function Home() {
   return (
     <>
       <Helmet>
-        <title>The Dax Collective – Creative Community & Storytelling Hub</title>
-        <meta 
-          name="description" 
-          content="Explore The Dax Collective — a hub for inspiring stories in travel, anime, lifestyle, and faith, built to connect and uplift through creativity." 
+        <title>The Dax Collective – Multi-Brand Creative Studio</title>
+        <meta
+          name="description"
+          content="The Dax Collective is the parent hub for Dax the Traveler, Timezone Travelers, Ani-Dax, and God's Vessel."
         />
-        <meta name="keywords" content="travel, anime, faith, lifestyle, community, content creation" />
-        <meta property="og:title" content="The Dax Collective – Creative Community & Storytelling Hub" />
-        <meta property="og:description" content="Multi-brand platform for storytelling, connection, and creative expression across anime, travel, and faith." />
+        <meta name="keywords" content="dax collective, travel, anime, faith, content studio, creator systems" />
+        <meta property="og:title" content="The Dax Collective – Multi-Brand Creative Studio" />
+        <meta property="og:description" content="Parent hub for Dax the Traveler, Timezone Travelers, Ani-Dax, and God's Vessel." />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://daxcollective.com" />
+        <link rel="canonical" href="https://dax-collective.web.app" />
       </Helmet>
 
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -105,9 +120,28 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
                 className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
               >
-                Building a creative community across travel, anime, faith, and lifestyle — 
-                inspiring connection through storytelling, culture, and purpose-driven experiences.
+                A multi-brand studio across travel, faith, and anime commentary.
               </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.35, ease: "easeInOut" }}
+                className="flex flex-wrap items-center justify-center gap-4 mt-10"
+              >
+                <a
+                  href="#brands"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-7 rounded-full text-base transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black"
+                >
+                  Explore the Brands
+                </a>
+                <button
+                  onClick={handleSupportClick}
+                  className="border border-white/20 hover:border-white/40 text-white/80 hover:text-white font-medium py-3 px-7 rounded-full text-base transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black"
+                >
+                  Support the Collective
+                </button>
+              </motion.div>
 
               {/* Decorative element */}
               <motion.div
@@ -120,18 +154,15 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Stats Section */}
-          <StatsSection />
-
           {/* Brands Section */}
-          <section className="px-4 py-20" aria-labelledby="brands-heading">
+          <section id="brands" className="px-4 py-20 scroll-mt-20" aria-labelledby="brands-heading">
             <div className="max-w-6xl mx-auto">
               <motion.h2
                 id="brands-heading"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="text-4xl md:text-5xl font-bold text-center mb-16 text-white"
+                className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent"
               >
                 Explore Our Brands
               </motion.h2>
@@ -144,33 +175,6 @@ export default function Home() {
                     index={index}
                   />
                 ))}
-              </div>
-            </div>
-          </section>
-
-          {/* OPTIMIZED BrandGallery Section */}
-          <section className="py-16 px-4">
-            <div className="max-w-7xl mx-auto">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="text-3xl font-bold text-white mb-6 text-center"
-              >
-                Dax Collective Gallery
-              </motion.h2>
-              
-              {/* OPTIMIZED: Use brand prop instead of folderId */}
-              <div className="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-                <BrandGallery 
-                  brand="dax-collective"
-                  category="homepage"
-                  maxImages={12}
-                  layout="grid"
-                  showControls={true}
-                  enableUpload={false}
-                  className="home-gallery"
-                />
               </div>
             </div>
           </section>
@@ -200,26 +204,34 @@ export default function Home() {
                     id="cta-heading"
                     className="text-3xl md:text-4xl font-bold text-white mb-6"
                   >
-                    Ready to Join the Journey?
+                    Start with a Brand
                   </h2>
 
                   <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Join our journey through stories that spark curiosity, celebrate identity, 
-                    and connect hearts across the globe.
+                    Each brand runs on its own — pick the one that fits what you're into,
+                    or support the studio behind all four.
                   </p>
 
-                  <motion.button
-                    whileHover={{
-                      scale: 1.05,
-                      boxShadow: "0 20px 40px rgba(139, 92, 246, 0.3)"
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                    aria-label="Subscribe to get updates from The Dax Collective"
-                  >
-                    Subscribe to get Updates
-                  </motion.button>
+                  <div className="flex flex-wrap items-center justify-center gap-4">
+                    <motion.a
+                      href="#brands"
+                      whileHover={{
+                        scale: 1.05,
+                        boxShadow: "0 20px 40px rgba(139, 92, 246, 0.3)"
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                    >
+                      View All Brands
+                    </motion.a>
+                    <Link
+                      to="/dax-the-traveler"
+                      className="border border-white/20 hover:border-white/40 text-white/80 hover:text-white font-medium py-4 px-8 rounded-full text-lg transition-colors duration-300"
+                    >
+                      Start with Dax the Traveler
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -229,4 +241,3 @@ export default function Home() {
     </>
   );
 }
-

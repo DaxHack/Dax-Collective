@@ -1,9 +1,11 @@
 // src/pages/Dashboard.jsx
 // OPTIMIZED VERSION - Enhanced with error handling and performance
 
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
+import driveApiService from '../services/enhanced-driveApi';
 
 // Lazy load AutomationDashboard for better performance
 const AutomationDashboard = lazy(() => import('../automation/AutomationDashboard'));
@@ -21,6 +23,18 @@ const DashboardLoading = () => (
       <h2 className="text-xl font-semibold text-white mb-2">Loading Dashboard...</h2>
       <p className="text-gray-400">Preparing your automation tools</p>
     </motion.div>
+  </div>
+);
+
+// Plain, minimal state shown while the backend admin-access check is
+// in flight, or when access isn't granted. No upload/Drive/automation
+// controls are ever rendered alongside this — the gate is all-or-nothing.
+const AdminGateMessage = ({ title, message }) => (
+  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center px-6">
+    <div className="text-center max-w-md mx-auto">
+      <h2 className="text-xl font-semibold text-white mb-2">{title}</h2>
+      <p className="text-gray-400">{message}</p>
+    </div>
   </div>
 );
 
@@ -83,26 +97,104 @@ class DashboardErrorBoundary extends React.Component {
   }
 }
 
+// Access is decided entirely by the backend (GET /api/admin/access, which
+// runs through requireAuth + requireAdmin). This component never makes its
+// own authorization decision from a UID, email, or any other client-side
+// value — it only renders whatever the backend says. That keeps the real
+// security boundary on the server; this gate exists purely so a non-admin
+// visitor sees a clean message instead of a flash of upload controls.
+const useAdminAccess = (user, authLoading) => {
+  const [state, setState] = useState('checking'); // checking | signed-out | forbidden | not-configured | authorized | error
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (authLoading) {
+      setState('checking');
+      return undefined;
+    }
+
+    if (!user) {
+      setState('signed-out');
+      return undefined;
+    }
+
+    setState('checking');
+    driveApiService.checkAdminAccess().then((result) => {
+      if (cancelled) return;
+      if (result.authorized) {
+        setState('authorized');
+        return;
+      }
+      switch (result.reason) {
+        case 'forbidden':
+        case 'unauthenticated':
+          setState('forbidden');
+          break;
+        case 'not_configured':
+        case 'unreachable':
+        case 'error':
+        default:
+          setState('not-configured');
+          break;
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, authLoading]);
+
+  return state;
+};
+
 const Dashboard = () => {
+  const { user, loading: authLoading } = useAuth();
+  const accessState = useAdminAccess(user, authLoading);
+
   return (
     <>
       <Helmet>
         <title>Dashboard – Dax Collective Automation</title>
-        <meta 
-          name="description" 
-          content="Manage your Dax Collective content automation, uploads, and brand management from one central dashboard." 
+        <meta
+          name="description"
+          content="Manage your Dax Collective content automation, uploads, and brand management from one central dashboard."
         />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <DashboardErrorBoundary>
-        <Suspense fallback={<DashboardLoading />}>
-          <AutomationDashboard />
-        </Suspense>
+        {accessState === 'checking' && <DashboardLoading />}
+
+        {accessState === 'signed-out' && (
+          <AdminGateMessage
+            title="Sign in required"
+            message="Sign in with an authorized account to access this dashboard."
+          />
+        )}
+
+        {accessState === 'forbidden' && (
+          <AdminGateMessage
+            title="Admin access required"
+            message="Your account is signed in but is not authorized to view this dashboard."
+          />
+        )}
+
+        {accessState === 'not-configured' && (
+          <AdminGateMessage
+            title="Admin services are not configured"
+            message="Admin features are currently disabled on this deployment."
+          />
+        )}
+
+        {accessState === 'authorized' && (
+          <Suspense fallback={<DashboardLoading />}>
+            <AutomationDashboard />
+          </Suspense>
+        )}
       </DashboardErrorBoundary>
     </>
   );
 };
 
 export default Dashboard;
-

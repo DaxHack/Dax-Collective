@@ -39,34 +39,21 @@ The DC monogram could still serve as a fallback handle identifier or watermark i
 
 ---
 
-## MAIN LOGO VERSION
+## LOGO COLORWAY SYSTEM
 
-**Primary (default everywhere):**
-- Geometric lion/guardian crest mark
-- Color: Blue-to-purple gradient OR blue-to-gold gradient on the mark
-- Background: Deep black (`#0A0A0F`)
-- Wordmark: "DAX COLLECTIVE" beneath, white or gradient-tinted
-- Use: All platform banners, cover images, website, merchandise
+The geometric lion/guardian crest mark is fixed. The mark shape, proportions, and structure never change between versions. What changes is the **colorway** — the gradient applied to the mark, the background, and the wordmark treatment. This separation of mark from colorway means the brand stays consistent while adapting to different contexts and surfaces.
 
-**Why blue-to-gold vs. blue-to-purple:**
-- Blue-to-purple: Matches the website hero exactly — best for digital/social platform use
-- Blue-to-gold: More premium/timeless — better for print, apparel, and merchandise
-- Pick ONE as primary and document it. Recommendation: **blue-to-purple gradient for digital** (website match), **blue-to-gold for physical** (merch, print)
+**The rule:** One mark. Many colorways. Never mix colorways in a single export (e.g., no blue mark on an orange background). Never alter the mark shape to match a colorway.
 
----
+| # | Colorway | Mark Gradient | Background | Wordmark | Primary Use |
+|---|----------|--------------|------------|---------|-------------|
+| 1 | **Blue/Purple Digital** | `#60A5FA` → `#A78BFA` → `#F472B6` | `#0A0A0F` | White | **Default — all digital platforms, website, social banners** |
+| 2 | **Blue/Gold Premium** | Deep blue `#1D4ED8` → gold `#F59E0B` → amber `#D97706` | `#0A0A0F` | White or gold | Merch, apparel tags, print, premium drops |
+| 3 | **Red/Orange Energy** | Deep red `#DC2626` → orange `#F97316` → amber `#D97706` | `#0A0A0F` | White | Stories, launch announcements, hype content |
+| 4 | **Black/White Minimal** | Flat white `#F8FAFC` (no gradient) | `#0A0A0F` or transparent | White | Embroidery, 1-color print, watermarks, overlays |
+| 5 | **White/Light Background** | Dark charcoal `#1A1A2E` or deep blue `#1E3A5F` | White `#F8F8FF` | Dark `#1A1A2E` | Press kits, email headers, collab decks, light-mode contexts |
 
-## ALTERNATE LOGO VERSIONS NEEDED
-
-Create all four versions in Canva. Each is a separate export.
-
-| Version | Background | Mark Color | Wordmark | When to Use |
-|---------|-----------|------------|---------|-------------|
-| **Primary Dark** | `#0A0A0F` black | Blue → Purple gradient | White | Default — all digital platforms |
-| **Energy / Social Variant** | `#0A0A0F` or transparent | Pink → Orange gradient | White | Social posts, Stories, energetic content |
-| **Light Mode Alternate** | White or `#F8F8FF` | Blue → Purple or dark charcoal | Dark (`#1A1A2E`) | Press kits, email headers, collabs |
-| **Textless Icon** | `#0A0A0F` black | Blue → Purple gradient | None | Profile images on all platforms |
-
-**Priority order to create:** Textless Icon first (needed for account setup) → Primary Dark → Energy Variant → Light Mode
+**Export priority order:** Blue/Purple Digital textless icon first (unblocks account setup) → Blue/Purple full logo → Blue/Gold → Red/Orange → Black/White → Light Background.
 
 ---
 
@@ -107,15 +94,16 @@ Export all files as PNG from Canva. Name them exactly as listed below for easy o
 
 ### The Dax Collective — Parent Logo Files
 
-| File Name | Canvas Size | Version | Priority |
+| File Name | Canvas Size | Colorway | Priority |
 |-----------|------------|---------|----------|
-| `TDC-icon-dark-1000px.png` | 1000 x 1000 px | Textless icon, dark BG | **FIRST** |
-| `TDC-logo-dark-primary.png` | 1000 x 500 px (approx) | Full logo, dark BG | High |
-| `TDC-logo-dark-primary-2x.png` | 2000 x 1000 px | Full logo, dark BG, retina | High |
-| `TDC-logo-energy-variant.png` | 1000 x 500 px | Pink/orange variant, dark BG | Medium |
-| `TDC-logo-light-alternate.png` | 1000 x 500 px | Full logo, light BG | Medium |
-| `TDC-youtube-banner.png` | 2560 x 1440 px | Banner with mark + wordmark | High |
-| `TDC-facebook-cover.png` | 820 x 312 px | Cover with mark + wordmark | High |
+| `TDC-icon-blue-purple-1000px.png` | 1000 x 1000 px | Blue/Purple Digital — textless icon | **FIRST** |
+| `TDC-logo-blue-purple.png` | 1000 x 500 px | Blue/Purple Digital — full logo | High |
+| `TDC-logo-blue-gold.png` | 1000 x 500 px | Blue/Gold Premium — full logo | High |
+| `TDC-logo-red-orange.png` | 1000 x 500 px | Red/Orange Energy — full logo | Medium |
+| `TDC-logo-black-white.png` | 1000 x 500 px | Black/White Minimal — full logo | Medium |
+| `TDC-logo-light-bg.png` | 1000 x 500 px | White/Light Background — full logo | Medium |
+| `TDC-youtube-banner.png` | 2560 x 1440 px | Blue/Purple Digital — banner | High |
+| `TDC-facebook-cover.png` | 820 x 312 px | Blue/Purple Digital — cover | High |
 
 ### Transparent PNG versions (for overlays and future use)
 
@@ -132,15 +120,17 @@ Export all files as PNG from Canva. Name them exactly as listed below for easy o
 
 | Platform | Version to use | File |
 |----------|---------------|------|
-| YouTube profile image | Textless icon, dark BG | `TDC-icon-dark-1000px.png` |
-| YouTube banner | Full logo + "Where Stories Live" tagline | `TDC-youtube-banner.png` |
-| Instagram profile | Textless icon, dark BG | `TDC-icon-dark-1000px.png` |
-| TikTok profile | Textless icon, dark BG | `TDC-icon-dark-1000px.png` |
-| Facebook profile (Page) | Textless icon, dark BG | `TDC-icon-dark-1000px.png` |
-| Facebook cover | Full logo + tagline | `TDC-facebook-cover.png` |
-| Website (if updated) | Full logo, transparent | `TDC-logo-transparent.png` |
-| Story posts / social energy content | Energy/pink variant | `TDC-logo-energy-variant.png` |
-| Press kit / collab decks | Light mode alternate | `TDC-logo-light-alternate.png` |
+| YouTube profile image | Blue/Purple Digital — textless icon | `TDC-icon-blue-purple-1000px.png` |
+| YouTube banner | Blue/Purple Digital — full logo + tagline | `TDC-youtube-banner.png` |
+| Instagram profile | Blue/Purple Digital — textless icon | `TDC-icon-blue-purple-1000px.png` |
+| TikTok profile | Blue/Purple Digital — textless icon | `TDC-icon-blue-purple-1000px.png` |
+| Facebook profile (Page) | Blue/Purple Digital — textless icon | `TDC-icon-blue-purple-1000px.png` |
+| Facebook cover | Blue/Purple Digital — full logo + tagline | `TDC-facebook-cover.png` |
+| Website (if updated) | Blue/Purple Digital — transparent | `TDC-logo-transparent.png` |
+| Merch, apparel, print | Blue/Gold Premium | `TDC-logo-blue-gold.png` |
+| Stories, launch posts, hype content | Red/Orange Energy | `TDC-logo-red-orange.png` |
+| Embroidery, 1-color print, overlays | Black/White Minimal | `TDC-logo-black-white.png` |
+| Press kits, email headers, collab decks | White/Light Background | `TDC-logo-light-bg.png` |
 
 **Universal rule:** Never use the full wordmark logo (mark + text) as a profile image. The text becomes unreadable at 32–64px. Always use the textless icon version for profile images.
 
@@ -148,91 +138,168 @@ Export all files as PNG from Canva. Name them exactly as listed below for easy o
 
 ## SUB-BRAND LOGO SYSTEM
 
-Each sub-brand logo should:
-- Feel related to The Dax Collective parent system (similar geometric quality, premium feel)
-- Have its own distinct icon/mark — NOT a generic clipart or stock icon
-- Use its own locked color palette (from the blueprint)
+Each sub-brand logo must:
+- Have a **distinct silhouette** from the parent lion mark — cover the wordmark and the mark alone should tell you which brand it is
+- Use its own locked color palette; never borrow the parent's gradient directly
 - Have a textless icon version AND a full logo version (mark + wordmark)
-- Be created AFTER the parent brand is finalized
+- Read clearly at 64px — if it loses meaning at that size, it needs to be simplified
+- Be created after the parent brand is finalized
 
 ### Sub-brand logo directions
 
 **1. Dax the Traveler**
-- Mark concept: Geometric compass rose OR simplified globe with coordinate lines
-- Style: Same angular faceted quality as parent, but warmer and more personal
-- Colors: Deep blue (`#1E40AF`) → purple (`#7C3AED`) → gray-white
-- Wordmark: "DAX THE TRAVELER" wide-tracked caps
-- Priority: HIGH — most content exists and accounts come online in Phase 1
-- Status: Logo file exists (`dax_the_traveler_logo.png`) — evaluate if it matches this system; may need refinement
+- Mark concept: A stylized coordinate crosshair or meridian intersection — the mark represents a specific point on the map, not "travel" in general. Not a globe. Not a plane. Not a generic compass rose.
+- Style: Angular faceted quality like the parent, but warmer and more personal — this is one person's perspective, not a tourism board
+- Colors: Deep navy `#1E3A5F` → slate blue `#3B82F6` → off-white
+- Wordmark: "DAX THE TRAVELER" in wide-tracked caps
+- Priority: HIGH — Phase 1 account setup; evaluate `dax_the_traveler_logo.png` against this direction first
+- Status: Existing logo file may need refinement to match the system
 
-**2. Ani-Dax**
-- Mark concept: Stylized "AD" letterform with anime-inspired geometric treatment OR abstract eye/katana-style icon
-- Style: Angular, energetic — same faceted quality but with more dynamic angles
-- Colors: Purple (`#7C3AED`) → pink (`#EC4899`) → blue (`#3B82F6`)
-- Wordmark: "ANI-DAX" in bold, punchy caps
+**2. Natsuki-Dax / Natsuki-Daniel**
+- Mark concept: An abstract geometric mask or visor form — angular facets, asymmetric but balanced. Reads as a guardian or observer. Not a character, not fan art, not a katana or cherry blossom.
+- Style: Angular like the parent system but with sharper, more dynamic angles and more compressed proportions — high energy, not regal
+- Colors: Deep purple `#6D28D9` → electric violet `#8B5CF6` → pink `#EC4899`
+- Wordmark: "NATSUKI-DAX" or "NATSUKI DANIEL" — final brand name to be confirmed
 - Priority: HIGH — create before Phase 2 account setup
-- Status: Needs to be created; custom anime avatar/mascot is the biggest differentiator here
+- Status: Needs to be created; the mask/visor form is the biggest differentiator in the anime content space
 
-**3. God's Vessel**
-- Mark concept: Geometric cross within a vessel/chalice silhouette OR radiant light-ray crest
-- Style: Same parent mark quality — heraldic, authoritative, but with divine/sacred energy
-- Colors: Deep indigo (`#3730A3`) → purple (`#4C1D95`) → soft white/gold light accent
-- Wordmark: "GOD'S VESSEL" or "GODS VESSEL" in medium-tracked caps
-- Priority: HIGH — create before Phase 2 account setup
-- Status: Needs to be created; must NOT look like a generic church graphic
+**3. God's Vessel — Two Style Lanes**
+
+This brand operates in two distinct visual contexts that require separate logo treatments. Both use the same brand name but communicate to different audiences.
+
+**Lane 1 — Official Label / Tag Style:**
+- Intent: The "brand house" version — used on the YouTube channel, official bios, press, and label-level collabs
+- Mark concept: A single refined vessel or amphora silhouette OR a cross reduced to its most essential geometry — ultra-minimal, symmetric, deliberate
+- Style: Premium sacred creative house. Think: Off-White meets devotional. Highsnobiety meets faith. Clean negative space, nothing accidental.
+- Colors: Deep indigo `#312E81` → purple `#7C3AED` → soft white/gold accent highlight
+- Wordmark: "GOD'S VESSEL" in elegant wide-tracked caps — optionally a hybrid serif/sans that reads luxurious
+- Background: Dark or transparent only
+- Feel: Something you'd see in a creative agency's brand book for a faith label
+
+**Lane 2 — Urban Faith Streetwear / Merch Style:**
+- Intent: The wearable version — goes on hoodies, tees, embroidery patches, hang tags, and sticker drops
+- Mark concept: Typography-driven rather than icon-driven. "GOD'S" stacked above "VESSEL" in heavy condensed caps. Optional: thin cross element between words, or a small deliberate accent mark.
+- Style: Archive urban faith. Corteiz, Rhude, Eric Emanuel energy applied to faith messaging. Bold, stencil-quality, no gradients, no glow.
+- Colors: Black background + white text — or all-black with texture — or black ink on cream
+- Wordmark IS the mark: The type treatment itself is the brand expression here
+- Feel: Screen-printed on a heavyweight 400gsm hoodie, sold for $80. The hang tag you want to keep.
+- Priority: HIGH — merch direction needs both lanes before any apparel drops
 
 **4. Time-Zone Travelers**
-- Mark concept: Clock face merged with globe/compass — clean geometric hybrid
-- Style: Bolder, more accessible than parent system — this brand is community/challenge-focused
-- Colors: Orange (`#F97316`) → deep red (`#DC2626`) → warm cream white
-- Wordmark: "TIME-ZONE TRAVELERS" — can be abbreviated to "TZT" in icon contexts
+- Mark concept: Two intersecting arcs representing timezone lines — rendered as clean angular vectors, not a cartographic illustration. The intersection point is the focal element. Not a clock with hands. Not a globe with latitude lines.
+- Style: Bolder and more accessible than the parent system — this is a community/challenge brand, energy should feel active and open
+- Colors: Deep orange `#EA580C` → red `#DC2626`
+- Wordmark: "TIME-ZONE TRAVELERS" — can be abbreviated to "TZT" in icon and merch contexts
 - Priority: MEDIUM — create before Phase 3 account setup
-- Status: Needs to be created from scratch — most work of all sub-brands
+- Status: Needs to be created from scratch — most original design work of all sub-brands
+
+---
+
+## AVOID AI SLOP RULES
+
+These rules apply any time you generate mark concepts using AI tools (ChatGPT image, DALL-E, Canva Magic Design, Midjourney) or build manually in Canva. A result that breaks any of these rules should be discarded and regenerated.
+
+1. **No generic globe icons.** A globe means nothing as a brand mark. If travel is the concept, the mark must be more specific — a route, a coordinate point, a horizon. Something with a point of view.
+2. **No random clipart.** If it looks like something from a stock icon pack, it's wrong. The mark must feel designed for this specific brand, not pulled from a library.
+3. **No overused neon cyberpunk aesthetics.** Purple + neon + glow does not equal premium. Neon is a texture, not an identity. Use it intentionally or not at all.
+4. **No fake 3D plastic logo effects** unless specifically requested for a specific surface. No bevel, no emboss, no specular highlight on letterforms.
+5. **No cluttered mark detail.** If an element disappears at 64px, it doesn't belong in the mark. Complexity lives in pattern or texture layers — not the core icon.
+6. **No copying the parent lion mark silhouette.** Sub-brand marks must have their own shape. If you cover the wordmark and can't identify which brand the mark belongs to, it failed.
+7. **No gradient circle with text.** A circle filled with gradient is not a logo. Every shape in the mark must mean something.
+8. **No overloaded lockups.** One mark. One wordmark. No taglines, no sub-text, no badges, no decorative borders squeezed into the logo file. Those elements belong in layout — not in the logo asset itself.
+9. **No AI-rendered wordmarks inside generated images.** Image AI tools hallucinate text. Generate the mark shape only — set all wordmarks manually in Canva afterward.
+10. **No derivative brand copies.** If the output looks like it belongs to a known existing brand, start over. The Dax Collective mark system must be original and ownable.
 
 ---
 
 ## CANVA REFINEMENT PROMPTS
 
-### For refining the existing geometric lion mark in Canva
+Use these prompts in **ChatGPT image tool** (DALL-E) to generate mark concept references, then bring results into Canva to refine, apply exact hex codes, and set wordmarks. Do not attempt to generate production-ready logos directly from AI — use AI for concept direction only.
 
-**If you want to test the gradient in Canva's Magic Edit:**
-```
-Geometric angular lion crest mark. Clean vector-style facets, no rounded edges. 
-Gradient color fill: blue (#60A5FA) to purple (#A78BFA) to pink (#F472B6), 
-applied left-to-right across the entire mark. 
-Dark background (#0A0A0F). 
-Premium, minimal, modern creative label aesthetic.
-```
+### Parent Brand — Lion Mark Gradient (Canva Magic Edit or ChatGPT image)
 
-**For generating sub-brand mark concepts (use in ChatGPT image tool):**
-
-Dax the Traveler:
 ```
-Geometric angular compass rose logo mark. Faceted vector style matching a geometric 
-lion crest parent brand. Dark navy blue to purple gradient. Clean, minimal, 
-premium travel brand. "DAX THE TRAVELER" wordmark beneath in wide-tracked caps.
+Geometric angular lion/guardian crest mark — same faceted structure as existing file.
+Apply a smooth linear gradient left to right: deep royal blue (#1D4ED8) 
+transitioning through gold (#F59E0B) to amber (#D97706).
+Dark near-black background (#0A0A0F). No glow. No outer stroke. No drop shadow.
+Every facet reads as a deliberate geometric plane — not a painting, not a photo.
+The mark should feel like the official seal of a premium creative label.
+Flat vector quality. Nothing soft or rounded.
 ```
 
-Ani-Dax:
+### Dax the Traveler (ChatGPT image → refine in Canva)
+
 ```
-Geometric angular anime-inspired logo mark. Stylized eye or blade motif, 
-faceted vector construction. Purple to pink gradient. Bold, energetic, 
-premium anime community brand. "ANI-DAX" wordmark beneath.
+Minimal geometric logo mark for a solo travel brand.
+Not a globe. Not a plane silhouette. Not a compass rose clipart.
+Concept: a stylized coordinate crosshair or meridian intersection — 
+two precise lines meeting at a point, rendered as angular geometric vectors.
+The mark represents a specific location, not "travel" in general.
+Colors: deep navy (#1E3A5F) fading to slate blue (#3B82F6) to off-white at the center point.
+Dark background. Single focal element — no border, no badge shape, no decorative ring.
+The mark communicates: I have been somewhere specific. I know exactly what I saw.
+Clean silhouette that reads at 64px.
 ```
 
-God's Vessel:
+### Time-Zone Travelers (ChatGPT image → refine in Canva)
+
 ```
-Geometric cross-vessel logo mark. Angular faceted construction, sacred but modern. 
-Deep indigo to purple gradient with soft gold-white accent light. 
-Not a traditional church cross — premium faith lifestyle brand aesthetic. 
-"GOD'S VESSEL" wordmark beneath in wide-tracked caps.
+Geometric logo mark for an interactive travel community brand.
+Concept: two intersecting arcs representing timezone meridians — 
+rendered as clean angular vectors, not a cartographic illustration.
+The intersection point is bold and centered — that is the focal element.
+Not a clock with hands. Not a globe with grid lines.
+Colors: deep orange (#EA580C) transitioning to dark red (#DC2626). Dark background.
+The mark communicates: we move across time and place together —
+this is a collective, not a solo channel.
+Bold enough to read as a distinct shape at 64px.
+No text rendered in the image — wordmark will be set in Canva separately.
 ```
 
-Time-Zone Travelers:
+### Natsuki-Dax / Natsuki-Daniel (ChatGPT image → refine in Canva)
+
 ```
-Geometric clock merged with globe logo mark. Angular faceted vector style. 
-Orange to deep red gradient. Bold, accessible, community challenge brand aesthetic. 
-"TIME-ZONE TRAVELERS" or "TZT" wordmark beneath.
+Geometric logo mark for an anime review and analysis brand.
+Not fan art. Not a character illustration. Not a katana, cherry blossom, or torii gate.
+Concept: an abstract geometric mask or visor form —
+angular facets, asymmetric in structure but visually balanced overall.
+Reads as a guardian or observer. Not a mascot — a presence.
+Colors: deep purple (#6D28D9) to electric violet (#8B5CF6) fading to pink (#EC4899).
+Dark background. Flat cel-shaded geometry — no painted or illustrated quality.
+The silhouette must be distinctive and ownable: readable as a unique shape at 32px.
+The mark communicates: I watch closely. I have opinions. I will defend every ranking.
+No text rendered in the image.
+```
+
+### God's Vessel — Official Label / Tag Style (ChatGPT image → refine in Canva)
+
+```
+Minimal luxury logo mark for a premium faith lifestyle brand.
+Concept: a single vessel or amphora silhouette — geometric, symmetric, refined.
+Or alternatively: a cross reduced to its most essential geometry —
+not a decorative cross, not a church cross — the absolute minimum form.
+Think: the logo of a sacred creative house. Between a record label and a luxury apparel brand.
+Colors: deep indigo (#312E81) to purple (#7C3AED) with a single white or pale gold accent highlight.
+Dark background. Ultra-clean negative space — every empty area is intentional.
+The mark communicates: this is serious, built with intention, and made to last.
+No text in the image. Wordmark "GOD'S VESSEL" will be set in Canva separately.
+```
+
+### God's Vessel — Urban Faith Streetwear / Merch Style (Canva only — manual build)
+
+This version is typography-driven. Do not use an AI image tool for this — build it entirely in Canva.
+
+```
+Layout: "GOD'S" stacked directly above "VESSEL" in heavy condensed caps.
+Font: Montserrat Black Italic OR Bebas Neue Condensed — maximum weight, maximum compression.
+Optional element: a thin horizontal cross mark between the two words, 
+or a small deliberate bullet/star accent — one element only, nothing more.
+Colors: white text on black background — or black ink on cream for hang tag print version.
+No gradients. No glow. No effects. No shadows.
+Letter spacing: tight (−50 to −100 tracking) — the words should almost touch.
+The type weight and spacing IS the design. Nothing else is needed.
+This version goes on hoodies, embroidery patches, hang tags, and sticker drops.
 ```
 
 ---

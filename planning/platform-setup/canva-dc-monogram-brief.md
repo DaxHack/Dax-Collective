@@ -5,6 +5,13 @@
 
 ---
 
+> ⚠️ DEPRECATED DESIGN DIRECTION — READ FIRST
+> The "DC monogram" logo direction in this document is no longer the official Dax Collective logo direction. The official parent logo is now the existing geometric lion/guardian crest mark documented in `logo-asset-system.md`.
+>
+> Keep this file only for reference on color palette, dark background treatment, platform image sizes, export specs, and Canva layout techniques. Do not use it to create or replace the main Dax Collective logo.
+
+---
+
 ## VERDICT
 
 One master 1000x1000px Canva file is all you need to unblock Phase 1 account creation. Build the DC monogram first — it becomes the profile image for all four platforms. Everything else (banner, cover, highlights) derives from the same visual system. This brief gives you the exact specs, prompts, layer order, and step-by-step instructions to build it in Canva in one session. Do not deviate from the color codes — they are locked to the website.

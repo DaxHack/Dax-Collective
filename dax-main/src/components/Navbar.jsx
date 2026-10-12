@@ -10,7 +10,8 @@ const navLinks = [
   { name: 'Dax the Traveler', to: '/dax-the-traveler' },
   { name: 'Ani-Dax', to: '/ani-dax' },
   { name: 'Timezone Travelers', to: '/timezone-travelers' },
-  { name: "God's Vessel", to: '/gods-vessel' }
+  { name: "God's Vessel", to: '/gods-vessel' },
+  { name: 'Dream Con', to: '/dream-con' }
 ]
 
 export default function Navbar() {
@@ -36,7 +37,7 @@ export default function Navbar() {
           <div className="text-2xl font-bold tracking-wide">Dax Collective</div>
 
           {/* DESKTOP NAV LINKS + CTA */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-5 text-sm">
             {navLinks.map((link, index) => (
               <Link
                 key={index}
@@ -67,7 +68,7 @@ export default function Navbar() {
           </div>
 
           {/* MOBILE TOGGLE BUTTON */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-white focus:outline-none"
@@ -92,7 +93,7 @@ export default function Navbar() {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         >
-          <div className="md:hidden flex flex-col space-y-4 pb-4">
+          <div className="lg:hidden flex flex-col space-y-4 pb-4">
             {navLinks.map((link, index) => (
               <Link
                 key={index}

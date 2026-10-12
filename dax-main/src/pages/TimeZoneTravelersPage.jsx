@@ -16,6 +16,10 @@ import {
   EyeIcon
 } from '@heroicons/react/24/outline';
 import BrandGallery from '../components/BrandGallery';
+import TravelMatchmaker from '../components/TravelMatchmaker';
+import { buildTimeZoneTravelersData, getTravelImage } from '../services/brandAssetSources';
+
+const TIMEZONE_HERO_IMAGE = getTravelImage('timezoneHero', 0);
 
 const TimeZoneTravelersPage = () => {
   const [activeSection, setActiveSection] = useState('hacks');
@@ -44,8 +48,9 @@ const TimeZoneTravelersPage = () => {
       const timeDiff = now - parseInt(cachedTimestamp);
       if (timeDiff < CACHE_DURATION) {
         const parsed = JSON.parse(cachedData);
-        setTravelData(parsed.travelData);
-        setTravelVideoData(parsed.videoData || []);
+        const sourcedTravelData = buildTimeZoneTravelersData(parsed.travelData || {});
+        setTravelData(sourcedTravelData);
+        setTravelVideoData(sourcedTravelData.videos || []);
         setLoading(false);
         return;
       }
@@ -83,7 +88,7 @@ const TimeZoneTravelersPage = () => {
   }, [loadTravelData]);
 
   // MOCK TRAVEL DATA (OPTIMIZED)
-  const getMockTravelData = useCallback(() => ({
+  const getMockTravelData = useCallback(() => buildTimeZoneTravelersData({
     travelHacks: [
       {
         id: 1,
@@ -189,7 +194,7 @@ const TimeZoneTravelersPage = () => {
           <div 
             className="h-96 bg-cover bg-center bg-no-repeat flex items-center justify-center"
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('/images/brands/timezone-travelers/hero/professional_travel_banner.png')`
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${TIMEZONE_HERO_IMAGE.url}')`
             }}
           >
             <div className="text-center max-w-4xl px-4 relative z-10">
@@ -329,6 +334,7 @@ const TimeZoneTravelersPage = () => {
               {[
                 { id: 'hacks', label: 'Travel Hacks' },
                 { id: 'itineraries', label: 'Quick Itineraries' },
+                { id: 'matchmaker', label: 'Find My Trip' },
                 { id: 'inspiration', label: 'Daily Inspiration' }
               ].map((tab) => (
                 <button
@@ -382,6 +388,17 @@ const TimeZoneTravelersPage = () => {
               </motion.div>
             )}
 
+            {/* Travel Matchmaker Section */}
+            {activeSection === 'matchmaker' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <TravelMatchmaker />
+              </motion.div>
+            )}
+
             {/* Quick Itineraries Section (ORIGINAL STYLING PRESERVED) */}
             {activeSection === 'itineraries' && travelData && (
               <motion.div
@@ -394,6 +411,18 @@ const TimeZoneTravelersPage = () => {
                   <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
                     <div className="grid md:grid-cols-3 gap-6">
                       <div>
+                        {itinerary.imageUrl && (
+                          <div className="relative h-36 mb-4 overflow-hidden rounded-lg bg-gray-900">
+                            <img
+                              src={itinerary.imageUrl}
+                              alt={itinerary.imageAlt || itinerary.destination}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-1 text-xs text-gray-200">
+                              {itinerary.imageSourceName}
+                            </div>
+                          </div>
+                        )}
                         <h3 className="text-2xl font-bold text-white mb-2">{itinerary.destination}</h3>
                         <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
                           <span>Budget: {itinerary.budget}</span>

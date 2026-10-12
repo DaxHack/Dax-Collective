@@ -1,0 +1,80 @@
+{
+  "production_id": "GV-001",
+  "brand": "Gods Vessel",
+  "title": "Strength in the Quiet",
+  "working_topic": "Trusting God when progress feels invisible",
+  "status": "script-approved-voice-pending-review",
+  "created": "2026-08-01",
+  "last_updated": "2026-08-01",
+
+  "target": {
+    "dimensions": "1080x1920",
+    "aspect_ratio": "9:16",
+    "duration_target_seconds": "40-55",
+    "format": "mp4"
+  },
+
+  "script": {
+    "path": "video-pipeline/productions/GV-001/02-script/canonical-script.md",
+    "word_count": 92,
+    "scripture": "Psalm 27:14",
+    "scripture_translation": "World English Bible (WEB)",
+    "scripture_source": "https://ebible.org/eng-web/PSA027.htm",
+    "scripture_verified": "2026-08-01",
+    "theology_review": "video-pipeline/productions/GV-001/02-script/theology-review.md",
+    "rubric_average": 4.8,
+    "rubric_passed": true
+  },
+
+  "audio": {
+    "engine": "edge-tts 7.2.8",
+    "engine_cost": "$0",
+    "recommended_voice": "en-US-GuyNeural",
+    "recommended_rate": "-25%",
+    "recommended_pitch": "-3Hz",
+    "estimated_duration": "54.5s",
+    "status": "pending-user-review",
+    "candidate_files": [
+      "video-pipeline/productions/GV-001/03-audio/voice-test-1-christopher-r-5pct.mp3",
+      "video-pipeline/productions/GV-001/03-audio/voice-test-2-guy-r-10pct-p-3hz.mp3",
+      "video-pipeline/productions/GV-001/03-audio/voice-test-3-jenny-r-5pct.mp3",
+      "video-pipeline/productions/GV-001/03-audio/full-guy-r25pct.mp3",
+      "video-pipeline/productions/GV-001/03-audio/CANDIDATE-christopher-r25pct.mp3",
+      "video-pipeline/productions/GV-001/03-audio/CANDIDATE-jenny-r25pct.mp3"
+    ]
+  },
+
+  "visuals": {
+    "status": "pending",
+    "approach": "cinematic-stills-ken-burns",
+    "source_types": ["public-domain", "existing-repo-assets"],
+    "asset_manifest": "video-pipeline/productions/GV-001/04-visuals/asset-manifest.md"
+  },
+
+  "cost_record": {
+    "edge_tts": "$0",
+    "python_packages": "$0",
+    "ffmpeg": "$0 (open-source)",
+    "visual_assets": "$0 (public-domain target)",
+    "total_to_date": "$0",
+    "estimated_per_video": "$0"
+  },
+
+  "pipeline_environment": {
+    "python_venv": ".venv-video/",
+    "edge_tts_version": "7.2.8",
+    "ffmpeg_path": "tools/ffmpeg/ (not yet installed)",
+    "os": "Windows 11"
+  },
+
+  "files": {
+    "source_manifest": "video-pipeline/productions/GV-001/01-source/source-manifest.md",
+    "draft_a": "video-pipeline/productions/GV-001/02-script/draft-A.md",
+    "draft_b": "video-pipeline/productions/GV-001/02-script/draft-B.md",
+    "draft_c": "video-pipeline/productions/GV-001/02-script/draft-C.md",
+    "theology_review": "video-pipeline/productions/GV-001/02-script/theology-review.md",
+    "canonical_script": "video-pipeline/productions/GV-001/02-script/canonical-script.md",
+    "voice_assessment": "video-pipeline/productions/GV-001/03-audio/voice-assessment.md",
+    "production_manifest": "video-pipeline/productions/GV-001/07-metadata/production-manifest.json"
+  }
+}

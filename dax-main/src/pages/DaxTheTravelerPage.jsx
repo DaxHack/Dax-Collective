@@ -24,6 +24,9 @@ import {
 } from '@heroicons/react/24/outline';
 import BrandGallery from '../components/BrandGallery';
 import YouTubeIntegration from '../components/YouTubeIntegration';
+import { getDaxTravelerDestinationAssets } from '../services/brandAssetSources';
+
+const DAX_TRAVELER_DESTINATION_ASSETS = getDaxTravelerDestinationAssets();
 
 const DAX_PHOTOS = {
   profile: '/images/brands/dax-the-traveler/hero/me smiling cuba.jpg',
@@ -40,7 +43,9 @@ const TRAVEL_DESTINATIONS = [
     name: 'Puerto Rico',
     description: 'Colorful streets and vibrant culture',
     image: '/images/destinations/puerto-rico.jpg',
-    fallbackImage: 'https://images.unsplash.com/photo-1579687196544-08ae8b3a6c1f?auto=format&fit=crop&w=1920&q=80',
+    fallbackImage: DAX_TRAVELER_DESTINATION_ASSETS[0].url,
+    imageSourceName: DAX_TRAVELER_DESTINATION_ASSETS[0].sourceName,
+    imageSourceUrl: DAX_TRAVELER_DESTINATION_ASSETS[0].sourceUrl,
     position: 'center 70%',
     color: 'from-blue-500 to-teal-400'
   },
@@ -48,7 +53,9 @@ const TRAVEL_DESTINATIONS = [
     name: 'Zipline Adventure',
     description: 'Thrilling heights and breathtaking views',
     image: '/images/destinations/zipline.jpg',
-    fallbackImage: 'https://images.unsplash.com/photo-1583766395091-2eb9994ed094?auto=format&fit=crop&w=1920&q=80',
+    fallbackImage: DAX_TRAVELER_DESTINATION_ASSETS[1].url,
+    imageSourceName: DAX_TRAVELER_DESTINATION_ASSETS[1].sourceName,
+    imageSourceUrl: DAX_TRAVELER_DESTINATION_ASSETS[1].sourceUrl,
     position: 'center 30%',
     color: 'from-green-500 to-emerald-400'
   },
@@ -56,7 +63,9 @@ const TRAVEL_DESTINATIONS = [
     name: 'Caribbean Exploration',
     description: 'Pristine beaches and historic architecture',
     image: '/images/destinations/caribbean.jpg',
-    fallbackImage: 'https://images.unsplash.com/photo-1580237072617-771c3ecc4a24?auto=format&fit=crop&w=1920&q=80',
+    fallbackImage: DAX_TRAVELER_DESTINATION_ASSETS[2].url,
+    imageSourceName: DAX_TRAVELER_DESTINATION_ASSETS[2].sourceName,
+    imageSourceUrl: DAX_TRAVELER_DESTINATION_ASSETS[2].sourceUrl,
     position: 'center center',
     color: 'from-purple-500 to-indigo-400'
   }
@@ -457,6 +466,16 @@ VideoCard.displayName = 'VideoCard';
             {destination.name}
           </h3>
           <p className="text-white/80 text-sm">{destination.description}</p>
+          {destination.imageSourceUrl && (
+            <a
+              href={destination.imageSourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-block text-xs text-blue-200 hover:text-blue-100"
+            >
+              Public fallback via {destination.imageSourceName}
+            </a>
+          )}
         </motion.div>
       )}
     </motion.div>

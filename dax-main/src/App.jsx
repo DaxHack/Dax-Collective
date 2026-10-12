@@ -12,6 +12,7 @@ import TimeZoneTravelersPage from './pages/TimeZoneTravelersPage'
 import GodsVesselPage from './pages/GodsVesselPage'
 import Dashboard from './pages/Dashboard'
 import DaxTheInvestorPage from './pages/DaxTheInvestorPage'
+import DreamConPage from './pages/DreamConPage'
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
                 <Route path="/ani-dax" element={<AniDaxPage />} />
                 <Route path="/timezone-travelers" element={<TimeZoneTravelersPage />} />
                 <Route path="/gods-vessel" element={<GodsVesselPage />} />
+                <Route path="/dream-con" element={<DreamConPage />} />
+                <Route path="/dreamcon" element={<DreamConPage />} />
                 <Route path="/automation" element={<Dashboard />} />
               </Routes>
             </main>

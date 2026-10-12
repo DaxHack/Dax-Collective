@@ -153,7 +153,7 @@ Contact
 
 Email: daxdaniel2013@gmail.com
 
-Website: https://daxcollective.com
+Website: https://dax-collective.web.app
 
 Social:
 

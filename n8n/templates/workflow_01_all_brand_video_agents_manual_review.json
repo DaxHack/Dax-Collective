@@ -1,0 +1,79 @@
+{
+  "name": "DAX-01 All Brand Video Agents - Manual Review",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-start",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const jobs = [\n  {\n    brand: 'dax-collective',\n    agentId: 'dax_collective_parent_hub_video_agent',\n    title: 'What The Dax Collective Is Building This Year',\n    script: 'The Dax Collective is the home base for travel, anime, faith, and creative systems. This is where the brands connect, the ideas get built, and the community sees the full story. Start here, then choose the brand that speaks to you first.',\n    cta: 'Explore every Dax Collective brand.',\n    tags: ['dax collective', 'creator hub', 'brand launch']\n  },\n  {\n    brand: 'dax-the-traveler',\n    agentId: 'dax_the_traveler_video_agent',\n    title: 'A Realistic First Day Travel Reset',\n    script: 'Do not try to conquer a new city on day one. Pick one walkable area, one easy meal, one grocery stop, and one calm activity. The first day is for orientation, not performance. Once the city feels usable, the real adventure starts.',\n    cta: 'Save this for your next arrival day.',\n    tags: ['travel', 'solo travel', 'arrival day']\n  },\n  {\n    brand: 'time-zone-travelers',\n    agentId: 'time_zone_travelers_video_agent',\n    title: 'The Carry-On Rule For Remote Work Travel',\n    script: 'Every item in your carry-on should solve a travel problem or a work problem. If it does neither, it stays home. Build around power, laundry, layers, and the time-zone reset day. That is how you keep the trip light and the workday protected.',\n    cta: 'Save the remote-work packing checklist.',\n    tags: ['travel hacks', 'remote work', 'packing']\n  },\n  {\n    brand: 'ani-dax',\n    agentId: 'ani_dax_video_agent',\n    title: 'Why Character Choices Matter More Than Power Levels',\n    script: 'Power scaling is fun, but character choices are what make an anime stay with you. The best moments are not always the biggest attacks. Sometimes they are the decision that reveals who a character really is.',\n    cta: 'Comment the anime decision that changed everything for you.',\n    tags: ['anime', 'anime analysis', 'ani dax']\n  },\n  {\n    brand: 'gods-vessel',\n    agentId: 'gods_vessel_video_agent',\n    title: 'One Small Faithful Step Today',\n    script: 'Faith does not always start with a loud breakthrough. Some days it starts with one honest prayer, one verse, one kind message, or one step back toward peace. Small obedience still counts.',\n    cta: 'Send this to someone who needs a steady reminder.',\n    tags: ['faith', 'encouragement', 'gods vessel']\n  }\n];\n\nreturn jobs.map((job) => ({\n  json: {\n    ...job,\n    videoServiceUrl: 'http://host.docker.internal:3001/create-video',\n    durationSeconds: 18,\n    scenes: ['Hook', 'Core idea', 'Practical takeaway', 'CTA'],\n    publishAllowed: false,\n    reviewStatus: 'manual_review_required',\n    notes: 'Local review video only. No upload or public publishing.'\n  }\n}));"
+      },
+      "id": "build-video-jobs",
+      "name": "Build Brand Video Jobs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [360, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.videoServiceUrl }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"brand\": $json.brand,\n  \"title\": $json.title,\n  \"script\": $json.script,\n  \"scenes\": $json.scenes,\n  \"cta\": $json.cta,\n  \"tags\": $json.tags,\n  \"durationSeconds\": $json.durationSeconds\n}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "create-review-videos",
+      "name": "Create Review Video Packages",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const sourceItems = $('Build Brand Video Jobs').all();\nconst resultItems = $input.all();\n\nreturn resultItems.map((item, index) => {\n  const source = sourceItems[index]?.json || {};\n  const result = item.json || {};\n  return {\n    json: {\n      agentId: source.agentId,\n      brand: source.brand,\n      title: source.title,\n      status: result.ok ? 'video_ready' : 'needs_repair',\n      reviewStatus: 'manual_review_required',\n      publishAllowed: false,\n      outputPath: result.outputPath || '',\n      metadataPath: result.metadataPath || '',\n      qaChecks: ['brand_voice', 'hook_present', 'cta_present', 'manual_review_required', 'no_public_upload'],\n      notes: 'Review the MP4 and metadata before any publishing workflow is enabled.',\n      createdAt: new Date().toISOString()\n    }\n  };\n});"
+      },
+      "id": "build-review-summary",
+      "name": "Build Video Review Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [920, 300]
+    },
+    {
+      "parameters": {
+        "content": "Runs all five brand video agents through the local review video service. Requires video service at localhost:3001 on Windows. No public publishing.",
+        "height": 200,
+        "width": 360,
+        "color": 5
+      },
+      "id": "safety-note",
+      "name": "Safety Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [320, 20]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [[{ "node": "Build Brand Video Jobs", "type": "main", "index": 0 }]]
+    },
+    "Build Brand Video Jobs": {
+      "main": [[{ "node": "Create Review Video Packages", "type": "main", "index": 0 }]]
+    },
+    "Create Review Video Packages": {
+      "main": [[{ "node": "Build Video Review Summary", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "versionId": "1",
+  "tags": []
+}

@@ -1,0 +1,31 @@
+/* src/pages/AniDaxPage.css
+   Page-local styles for Ani-Dax only — kept out of tailwind.config.js per
+   user instruction to prefer additive, component-local CSS over touching
+   the shared Tailwind config. Purely decorative (scanline texture), no
+   fake content, no external assets. */
+
+@keyframes ani-dax-scanline {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 48px;
+  }
+}
+
+.ani-dax-scanline {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(124, 92, 255, 0.05) 0px,
+    rgba(124, 92, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  animation: ani-dax-scanline 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ani-dax-scanline {
+    animation: none;
+  }
+}

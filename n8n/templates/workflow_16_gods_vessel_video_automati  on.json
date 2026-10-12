@@ -1,374 +1,477 @@
-{
-  "name": "God's Vessel Faith Video Automation",
-  "nodes": [
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "cronExpression",
-              "expression": "0 6 * * *"
-            }
-          ]
-        }
-      },
-      "id": "1",
-      "name": "Daily Faith Content Trigger",
-      "type": "n8n-nodes-base.cron",
-      "typeVersion": 1,
-      "position": [240, 300]
-    },
-    {
-      "parameters": {
-        "model": "gpt-4",
-        "messages": {
-          "messageType": "multipleMessages",
-          "messages": [
-            {
-              "role": "system",
-              "message": "You are a faith-based content creator for God's Vessel, focused on inspiring biblical content, daily devotionals, and Christian living guidance. Your content should be encouraging, biblically sound, and accessible to believers at all stages of their faith journey."
-            },
-            {
-              "role": "user",
-              "message": "Generate a faith-based video concept for today's devotional content. Consider:\n\nCurrent date: {{ $now.format('MMMM Do, YYYY') }}\nDay of week: {{ $now.format('dddd') }}\nSeason: {{ $now.format('MMMM') }}\nUpcoming Christian holidays: {{ $json.christian_calendar }}\n\nCreate:\n1. Inspiring video title (6-10 words, hope-focused)\n2. Video description with biblical foundation\n3. Key scripture passage and application points\n4. Practical faith application for daily life\n5. Prayer focus and call-to-action\n6. Merchandise integration opportunities (faith-based apparel)\n7. Target 5-8 minute inspirational format\n\nFocus on authentic encouragement that helps viewers grow in their relationship with God and live out their faith practically."
-            }
-          ]
-        },
-        "options": {
-          "temperature": 0.7,
-          "maxTokens": 1500
-        }
-      },
-      "id": "2",
-      "name": "Generate Faith Video Concept",
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1,
-      "position": [460, 300]
-    },
-    {
-      "parameters": {
-        "model": "gpt-4",
-        "messages": {
-          "messageType": "multipleMessages",
-          "messages": [
-            {
-              "role": "system",
-              "message": "You are creating a faith-based devotional script. Write with warmth, authenticity, and biblical wisdom. Include personal reflection, practical application, and encouragement that feels like a conversation with a trusted friend in faith."
-            },
-            {
-              "role": "user",
-              "message": "Create a devotional script for this faith concept:\n\n{{ $json.video_concept }}\n\nScript structure:\n1. Warm greeting and introduction (15-30 seconds)\n2. Scripture reading with context (1 minute)\n3. Biblical teaching and explanation (2-4 minutes)\n4. Personal application and reflection (1-2 minutes)\n5. Prayer and God's Vessel merchandise mention (30 seconds)\n6. Closing encouragement and subscribe reminder (30 seconds)\n\nInclude markers:\n- [PAUSE] for reflective moments\n- [EMPHASIS] for key biblical truths\n- [VISUAL: description] for scripture graphics or imagery\n- [PRAYER] for prayer segments\n- [MERCHANDISE] for natural product integration\n\nMaintain a conversational, encouraging tone that builds faith and provides practical guidance for Christian living."
-            }
-          ]
-        },
-        "options": {
-          "temperature": 0.6,
-          "maxTokens": 2500
-        }
-      },
-      "id": "3",
-      "name": "Create Faith Script",
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1,
-      "position": [680, 300]
-    },
-    {
-      "parameters": {
-        "jsCode": "// Process faith script for audio generation\nconst script = $input.first().json.script;\n\n// Clean script for text-to-speech\nlet cleanScript = script\n  .replace(/\\[PAUSE\\]/g, '... ')\n  .replace(/\\[EMPHASIS\\]/g, '')\n  .replace(/\\[VISUAL:.*?\\]/g, '')\n  .replace(/\\[PRAYER\\]/g, '')\n  .replace(/\\[MERCHANDISE\\]/g, '')\n  .replace(/\\[.*?\\]/g, '')\n  .replace(/\\s+/g, ' ')\n  .trim();\n\n// Extract scripture references\nconst scriptureRefs = [];\nconst scriptureMatches = script.match(/\\b\\d*\\s*[A-Za-z]+\\s+\\d+:\\d+(-\\d+)?\\b/g);\nif (scriptureMatches) {\n  scriptureRefs.push(...scriptureMatches);\n}\n\n// Extract visual cues for graphics\nconst visualCues = [];\nconst visualMatches = script.match(/\\[VISUAL:(.*?)\\]/g);\nif (visualMatches) {\n  visualMatches.forEach(match => {\n    const cue = match.replace(/\\[VISUAL:|\\]/g, '').trim();\n    visualCues.push(cue);\n  });\n}\n\n// Extract prayer segments\nconst prayerSegments = [];\nconst prayerMatches = script.match(/\\[PRAYER\\](.*?)(?=\\[|$)/gs);\nif (prayerMatches) {\n  prayerMatches.forEach(match => {\n    const prayer = match.replace(/\\[PRAYER\\]/g, '').trim();\n    if (prayer) prayerSegments.push(prayer);\n  });\n}\n\n// Generate keywords for faith-based imagery\nconst faithKeywords = [\n  'cross', 'bible', 'prayer', 'faith', 'hope', 'peace',\n  'worship', 'church', 'christian', 'spiritual', 'blessed',\n  'grace', 'salvation', 'jesus', 'god', 'holy'\n];\n\nreturn {\n  script_clean: cleanScript,\n  script_original: script,\n  scripture_references: scriptureRefs,\n  visual_cues: visualCues,\n  prayer_segments: prayerSegments,\n  visual_keywords: faithKeywords.join(' '),\n  word_count: cleanScript.split(' ').length\n};"
-      },
-      "id": "4",
-      "name": "Process Faith Script",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [900, 300]
-    },
-    {
-      "parameters": {
-        "voice": "{{ $env.GODS_VESSEL_VOICE_ID }}",
-        "text": "{{ $json.script_clean }}",
-        "model": "eleven_multilingual_v2",
-        "voice_settings": {
-          "stability": 0.85,
-          "similarity_boost": 0.8,
-          "style": 0.2
-        }
-      },
-      "id": "5",
-      "name": "Generate Faith Voice",
-      "type": "n8n-nodes-base.elevenLabs",
-      "typeVersion": 1,
-      "position": [1120, 300]
-    },
-    {
-      "parameters": {
-        "query": "{{ $json.visual_keywords }} christian faith inspirational peaceful",
-        "count": 12,
-        "license": "free",
-        "orientation": "landscape"
-      },
-      "id": "6",
-      "name": "Get Faith Stock Images",
-      "type": "n8n-nodes-base.unsplash",
-      "typeVersion": 1,
-      "position": [1120, 480]
-    },
-    {
-      "parameters": {
-        "model": "gpt-4",
-        "messages": {
-          "messageType": "multipleMessages",
-          "messages": [
-            {
-              "role": "system",
-              "message": "You are creating scripture graphics for a faith-based video. Generate clean, readable text overlays for key Bible verses and inspirational quotes."
-            },
-            {
-              "role": "user",
-              "message": "Create text overlay graphics for these scripture references and key points:\n\nScripture references: {{ $json.scripture_references }}\nVisual cues: {{ $json.visual_cues }}\n\nFor each, provide:\n1. Main text (scripture or quote)\n2. Reference (book, chapter, verse)\n3. Background color suggestion\n4. Font style recommendation\n5. Positioning guidance\n\nKeep text concise and readable for video overlay. Use encouraging, hope-filled language that complements the devotional message."
-            }
-          ]
-        },
-        "options": {
-          "temperature": 0.5,
-          "maxTokens": 1000
-        }
-      },
-      "id": "7",
-      "name": "Generate Scripture Graphics",
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1,
-      "position": [1120, 660]
-    },
-    {
-      "parameters": {
-        "command": "python3 /home/ubuntu/scripts/faith_video_generator.py",
-        "additionalFields": {
-          "workingDirectory": "/home/ubuntu/video_production/gods_vessel",
-          "env": {
-            "AUDIO_FILE": "{{ $json.audio_file_path }}",
-            "VISUAL_CUES": "{{ $json.visual_cues }}",
-            "STOCK_IMAGES": "{{ $json.stock_images }}",
-            "SCRIPTURE_GRAPHICS": "{{ $json.scripture_graphics }}",
-            "BRAND_COLORS": "#8B4513,#FFD700,#FFFFFF",
-            "LOGO_PATH": "/home/ubuntu/assets/gods_vessel_logo.png"
-          }
-        }
-      },
-      "id": "8",
-      "name": "Create Faith Video",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1340, 300]
-    },
-    {
-      "parameters": {
-        "model": "dall-e-3",
-        "prompt": "YouTube thumbnail for Christian devotional video: {{ $json.thumbnail_concept }}. Warm, peaceful style with God's Vessel branding. Include inspiring text overlay, cross or biblical imagery, and welcoming composition. Colors: warm browns, gold, and white theme.",
-        "size": "1792x1024",
-        "quality": "hd"
-      },
-      "id": "9",
-      "name": "Create Faith Thumbnail",
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1,
-      "position": [1340, 480]
-    },
-    {
-      "parameters": {
-        "authentication": "oAuth2",
-        "title": "{{ $json.video_title }}",
-        "description": "{{ $json.video_description }}\n\n🙏 Daily devotionals and faith encouragement!\n✝️ Shop God's Vessel faith apparel: {{ $env.GODS_VESSEL_SHOP_URL }}\n\n📖 Scripture references:\n{{ $json.scripture_references }}\n\n💝 Support our ministry:\n• Subscribe for daily encouragement\n• Share with fellow believers\n• Visit our shop for faith-inspired apparel\n\n📱 Connect with us:\n• Instagram: @gods_vessel_faith\n• Facebook: God's Vessel Ministry\n• Website: {{ $env.GODS_VESSEL_WEBSITE }}\n\n🔔 Subscribe for daily faith content!\n\n#Faith #Christian #Devotional #Bible #GodsVessel #ChristianLiving #Prayer #Hope",
-        "tags": "faith,christian,devotional,bible,prayer,hope,christian living,god,jesus,inspiration",
-        "categoryId": "22",
-        "privacyStatus": "private",
-        "videoFilename": "{{ $json.video_file_path }}",
-        "thumbnailFilename": "{{ $json.thumbnail_file_path }}"
-      },
-      "id": "10",
-      "name": "Upload Faith Video",
-      "type": "n8n-nodes-base.youtube",
-      "typeVersion": 1,
-      "position": [1560, 300]
-    },
-    {
-      "parameters": {
-        "operation": "append",
-        "documentId": "{{ $env.GODS_VESSEL_TRACKING_SHEET }}",
-        "sheetName": "Video Production",
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Date": "{{ $now.format('YYYY-MM-DD') }}",
-            "Video Title": "{{ $json.video_title }}",
-            "YouTube URL": "{{ $json.youtube_url }}",
-            "Duration": "{{ $json.video_duration }}",
-            "Scripture References": "{{ $json.scripture_references.join(', ') }}",
-            "Word Count": "{{ $json.word_count }}",
-            "Prayer Segments": "{{ $json.prayer_segments.length }}",
-            "Merchandise Integration": "Yes",
-            "Status": "Uploaded - Private",
-            "Publish Date": "{{ $now.plus({hours: 2}).format('YYYY-MM-DD HH:mm') }}",
-            "Cross-Platform Ready": "Pending"
-          }
-        }
-      },
-      "id": "11",
-      "name": "Track Faith Video",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4,
-      "position": [1780, 300]
-    },
-    {
-      "parameters": {
-        "channel": "#gods-vessel-content",
-        "text": "✝️ New God's Vessel devotional ready!\n\n📹 *{{ $json.video_title }}*\n🔗 YouTube: {{ $json.youtube_url }}\n⏱️ Duration: {{ $json.video_duration }}\n📖 Scripture: {{ $json.scripture_references.join(', ') }}\n\n🙏 Content includes:\n• {{ $json.prayer_segments.length }} prayer segments\n• Scripture graphics and overlays\n• Faith apparel merchandise integration\n• Daily encouragement and practical application\n\n✅ Next steps:\n1. Review devotional content and biblical accuracy\n2. Adjust thumbnail for maximum inspiration\n3. Schedule publication for morning devotional time\n4. Prepare Instagram and Facebook cross-posts\n5. Set up merchandise promotion campaign\n\n💝 Ready to encourage believers and drive shop traffic!"
-      },
-      "id": "12",
-      "name": "Notify Faith Team",
-      "type": "n8n-nodes-base.slack",
-      "typeVersion": 1,
-      "position": [2000, 300]
-    }
-  ],
-  "connections": {
-    "Daily Faith Content Trigger": {
-      "main": [
-        [
-          {
-            "node": "Generate Faith Video Concept",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Generate Faith Video Concept": {
-      "main": [
-        [
-          {
-            "node": "Create Faith Script",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Faith Script": {
-      "main": [
-        [
-          {
-            "node": "Process Faith Script",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Process Faith Script": {
-      "main": [
-        [
-          {
-            "node": "Generate Faith Voice",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Get Faith Stock Images",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Generate Scripture Graphics",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Generate Faith Voice": {
-      "main": [
-        [
-          {
-            "node": "Create Faith Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Faith Stock Images": {
-      "main": [
-        [
-          {
-            "node": "Create Faith Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Generate Scripture Graphics": {
-      "main": [
-        [
-          {
-            "node": "Create Faith Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Faith Video": {
-      "main": [
-        [
-          {
-            "node": "Create Faith Thumbnail",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Faith Thumbnail": {
-      "main": [
-        [
-          {
-            "node": "Upload Faith Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Upload Faith Video": {
-      "main": [
-        [
-          {
-            "node": "Track Faith Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Track Faith Video": {
-      "main": [
-        [
-          {
-            "node": "Notify Faith Team",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    }
-  },
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "staticData": null,
-  "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2024-01-15T10:00:00.000Z",
-  "versionId": "1"
+﻿{
+    "name":  "God\u0027s Vessel Faith Video Automation",
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "rule":  {
+                                                      "interval":  [
+                                                                       {
+                                                                           "field":  "cronExpression",
+                                                                           "expression":  "0 6 * * *"
+                                                                       }
+                                                                   ]
+                                                  }
+                                     },
+                      "id":  "1",
+                      "name":  "Daily Faith Content Trigger",
+                      "type":  "n8n-nodes-base.cron",
+                      "typeVersion":  1,
+                      "position":  [
+                                       240,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "model":  "gpt-4",
+                                         "messages":  {
+                                                          "messageType":  "multipleMessages",
+                                                          "messages":  [
+                                                                           {
+                                                                               "role":  "system",
+                                                                               "message":  "You are a faith-based content creator for God\u0027s Vessel, focused on inspiring biblical content, daily devotionals, and Christian living guidance. Your content should be encouraging, biblically sound, and accessible to believers at all stages of their faith journey."
+                                                                           },
+                                                                           {
+                                                                               "role":  "user",
+                                                                               "message":  "Generate a faith-based video concept for today\u0027s devotional content. Consider:\n\nCurrent date: {{ $now.format(\u0027MMMM Do, YYYY\u0027) }}\nDay of week: {{ $now.format(\u0027dddd\u0027) }}\nSeason: {{ $now.format(\u0027MMMM\u0027) }}\nUpcoming Christian holidays: {{ $json.christian_calendar }}\n\nCreate:\n1. Inspiring video title (6-10 words, hope-focused)\n2. Video description with biblical foundation\n3. Key scripture passage and application points\n4. Practical faith application for daily life\n5. Prayer focus and call-to-action\n6. Merchandise integration opportunities (faith-based apparel)\n7. Target 5-8 minute inspirational format\n\nFocus on authentic encouragement that helps viewers grow in their relationship with God and live out their faith practically."
+                                                                           }
+                                                                       ]
+                                                      },
+                                         "options":  {
+                                                         "temperature":  0.7,
+                                                         "maxTokens":  1500
+                                                     }
+                                     },
+                      "id":  "2",
+                      "name":  "Generate Faith Video Concept",
+                      "type":  "@n8n/n8n-nodes-langchain.openAi",
+                      "typeVersion":  1,
+                      "position":  [
+                                       460,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "model":  "gpt-4",
+                                         "messages":  {
+                                                          "messageType":  "multipleMessages",
+                                                          "messages":  [
+                                                                           {
+                                                                               "role":  "system",
+                                                                               "message":  "You are creating a faith-based devotional script. Write with warmth, authenticity, and biblical wisdom. Include personal reflection, practical application, and encouragement that feels like a conversation with a trusted friend in faith."
+                                                                           },
+                                                                           {
+                                                                               "role":  "user",
+                                                                               "message":  "Create a devotional script for this faith concept:\n\n{{ $json.video_concept }}\n\nScript structure:\n1. Warm greeting and introduction (15-30 seconds)\n2. Scripture reading with context (1 minute)\n3. Biblical teaching and explanation (2-4 minutes)\n4. Personal application and reflection (1-2 minutes)\n5. Prayer and God\u0027s Vessel merchandise mention (30 seconds)\n6. Closing encouragement and subscribe reminder (30 seconds)\n\nInclude markers:\n- [PAUSE] for reflective moments\n- [EMPHASIS] for key biblical truths\n- [VISUAL: description] for scripture graphics or imagery\n- [PRAYER] for prayer segments\n- [MERCHANDISE] for natural product integration\n\nMaintain a conversational, encouraging tone that builds faith and provides practical guidance for Christian living."
+                                                                           }
+                                                                       ]
+                                                      },
+                                         "options":  {
+                                                         "temperature":  0.6,
+                                                         "maxTokens":  2500
+                                                     }
+                                     },
+                      "id":  "3",
+                      "name":  "Create Faith Script",
+                      "type":  "@n8n/n8n-nodes-langchain.openAi",
+                      "typeVersion":  1,
+                      "position":  [
+                                       680,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Process faith script for audio generation\nconst script = $input.first().json.script;\n\n// Clean script for text-to-speech\nlet cleanScript = script\n  .replace(/\\[PAUSE\\]/g, \u0027... \u0027)\n  .replace(/\\[EMPHASIS\\]/g, \u0027\u0027)\n  .replace(/\\[VISUAL:.*?\\]/g, \u0027\u0027)\n  .replace(/\\[PRAYER\\]/g, \u0027\u0027)\n  .replace(/\\[MERCHANDISE\\]/g, \u0027\u0027)\n  .replace(/\\[.*?\\]/g, \u0027\u0027)\n  .replace(/\\s+/g, \u0027 \u0027)\n  .trim();\n\n// Extract scripture references\nconst scriptureRefs = [];\nconst scriptureMatches = script.match(/\\b\\d*\\s*[A-Za-z]+\\s+\\d+:\\d+(-\\d+)?\\b/g);\nif (scriptureMatches) {\n  scriptureRefs.push(...scriptureMatches);\n}\n\n// Extract visual cues for graphics\nconst visualCues = [];\nconst visualMatches = script.match(/\\[VISUAL:(.*?)\\]/g);\nif (visualMatches) {\n  visualMatches.forEach(match =\u003e {\n    const cue = match.replace(/\\[VISUAL:|\\]/g, \u0027\u0027).trim();\n    visualCues.push(cue);\n  });\n}\n\n// Extract prayer segments\nconst prayerSegments = [];\nconst prayerMatches = script.match(/\\[PRAYER\\](.*?)(?=\\[|$)/gs);\nif (prayerMatches) {\n  prayerMatches.forEach(match =\u003e {\n    const prayer = match.replace(/\\[PRAYER\\]/g, \u0027\u0027).trim();\n    if (prayer) prayerSegments.push(prayer);\n  });\n}\n\n// Generate keywords for faith-based imagery\nconst faithKeywords = [\n  \u0027cross\u0027, \u0027bible\u0027, \u0027prayer\u0027, \u0027faith\u0027, \u0027hope\u0027, \u0027peace\u0027,\n  \u0027worship\u0027, \u0027church\u0027, \u0027christian\u0027, \u0027spiritual\u0027, \u0027blessed\u0027,\n  \u0027grace\u0027, \u0027salvation\u0027, \u0027jesus\u0027, \u0027god\u0027, \u0027holy\u0027\n];\n\nreturn {\n  script_clean: cleanScript,\n  script_original: script,\n  scripture_references: scriptureRefs,\n  visual_cues: visualCues,\n  prayer_segments: prayerSegments,\n  visual_keywords: faithKeywords.join(\u0027 \u0027),\n  word_count: cleanScript.split(\u0027 \u0027).length\n};"
+                                     },
+                      "id":  "4",
+                      "name":  "Process Faith Script",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       900,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "voice":  "{{ $env.GODS_VESSEL_VOICE_ID }}",
+                                         "text":  "{{ $json.script_clean }}",
+                                         "model":  "eleven_multilingual_v2",
+                                         "voice_settings":  {
+                                                                "stability":  0.85,
+                                                                "similarity_boost":  0.8,
+                                                                "style":  0.2
+                                                            }
+                                     },
+                      "id":  "5",
+                      "name":  "Generate Faith Voice",
+                      "type":  "n8n-nodes-base.elevenLabs",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1120,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "query":  "{{ $json.visual_keywords }} christian faith inspirational peaceful",
+                                         "count":  12,
+                                         "license":  "free",
+                                         "orientation":  "landscape"
+                                     },
+                      "id":  "6",
+                      "name":  "Get Faith Stock Images",
+                      "type":  "n8n-nodes-base.unsplash",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1120,
+                                       480
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "model":  "gpt-4",
+                                         "messages":  {
+                                                          "messageType":  "multipleMessages",
+                                                          "messages":  [
+                                                                           {
+                                                                               "role":  "system",
+                                                                               "message":  "You are creating scripture graphics for a faith-based video. Generate clean, readable text overlays for key Bible verses and inspirational quotes."
+                                                                           },
+                                                                           {
+                                                                               "role":  "user",
+                                                                               "message":  "Create text overlay graphics for these scripture references and key points:\n\nScripture references: {{ $json.scripture_references }}\nVisual cues: {{ $json.visual_cues }}\n\nFor each, provide:\n1. Main text (scripture or quote)\n2. Reference (book, chapter, verse)\n3. Background color suggestion\n4. Font style recommendation\n5. Positioning guidance\n\nKeep text concise and readable for video overlay. Use encouraging, hope-filled language that complements the devotional message."
+                                                                           }
+                                                                       ]
+                                                      },
+                                         "options":  {
+                                                         "temperature":  0.5,
+                                                         "maxTokens":  1000
+                                                     }
+                                     },
+                      "id":  "7",
+                      "name":  "Generate Scripture Graphics",
+                      "type":  "@n8n/n8n-nodes-langchain.openAi",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1120,
+                                       660
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "command":  "python3 /home/ubuntu/scripts/faith_video_generator.py",
+                                         "additionalFields":  {
+                                                                  "workingDirectory":  "/home/ubuntu/video_production/gods_vessel",
+                                                                  "env":  {
+                                                                              "AUDIO_FILE":  "{{ $json.audio_file_path }}",
+                                                                              "VISUAL_CUES":  "{{ $json.visual_cues }}",
+                                                                              "STOCK_IMAGES":  "{{ $json.stock_images }}",
+                                                                              "SCRIPTURE_GRAPHICS":  "{{ $json.scripture_graphics }}",
+                                                                              "BRAND_COLORS":  "#8B4513,#FFD700,#FFFFFF",
+                                                                              "LOGO_PATH":  "/home/ubuntu/assets/gods_vessel_logo.png"
+                                                                          }
+                                                              }
+                                     },
+                      "id":  "8",
+                      "name":  "Create Faith Video",
+                      "type":  "n8n-nodes-base.executeCommand",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1340,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "model":  "dall-e-3",
+                                         "prompt":  "YouTube thumbnail for Christian devotional video: {{ $json.thumbnail_concept }}. Warm, peaceful style with God\u0027s Vessel branding. Include inspiring text overlay, cross or biblical imagery, and welcoming composition. Colors: warm browns, gold, and white theme.",
+                                         "size":  "1792x1024",
+                                         "quality":  "hd"
+                                     },
+                      "id":  "9",
+                      "name":  "Create Faith Thumbnail",
+                      "type":  "@n8n/n8n-nodes-langchain.openAi",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1340,
+                                       480
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "authentication":  "oAuth2",
+                                         "title":  "{{ $json.video_title }}",
+                                         "description":  "{{ $json.video_description }}\n\nðŸ™ Daily devotionals and faith encouragement!\nâœï¸ Shop God\u0027s Vessel faith apparel: {{ $env.GODS_VESSEL_SHOP_URL }}\n\nðŸ“– Scripture references:\n{{ $json.scripture_references }}\n\nðŸ’ Support our ministry:\nâ€¢ Subscribe for daily encouragement\nâ€¢ Share with fellow believers\nâ€¢ Visit our shop for faith-inspired apparel\n\nðŸ“± Connect with us:\nâ€¢ Instagram: @gods_vessel_faith\nâ€¢ Facebook: God\u0027s Vessel Ministry\nâ€¢ Website: {{ $env.GODS_VESSEL_WEBSITE }}\n\nðŸ”” Subscribe for daily faith content!\n\n#Faith #Christian #Devotional #Bible #GodsVessel #ChristianLiving #Prayer #Hope",
+                                         "tags":  "faith,christian,devotional,bible,prayer,hope,christian living,god,jesus,inspiration",
+                                         "categoryId":  "22",
+                                         "privacyStatus":  "private",
+                                         "videoFilename":  "{{ $json.video_file_path }}",
+                                         "thumbnailFilename":  "{{ $json.thumbnail_file_path }}"
+                                     },
+                      "id":  "10",
+                      "name":  "Upload Faith Video",
+                      "type":  "n8n-nodes-base.youtube",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1560,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "append",
+                                         "documentId":  "{{ $env.GODS_VESSEL_TRACKING_SHEET }}",
+                                         "sheetName":  "Video Production",
+                                         "columns":  {
+                                                         "mappingMode":  "defineBelow",
+                                                         "value":  {
+                                                                       "Date":  "{{ $now.format(\u0027YYYY-MM-DD\u0027) }}",
+                                                                       "Video Title":  "{{ $json.video_title }}",
+                                                                       "YouTube URL":  "{{ $json.youtube_url }}",
+                                                                       "Duration":  "{{ $json.video_duration }}",
+                                                                       "Scripture References":  "{{ $json.scripture_references.join(\u0027, \u0027) }}",
+                                                                       "Word Count":  "{{ $json.word_count }}",
+                                                                       "Prayer Segments":  "{{ $json.prayer_segments.length }}",
+                                                                       "Merchandise Integration":  "Yes",
+                                                                       "Status":  "Uploaded - Private",
+                                                                       "Publish Date":  "{{ $now.plus({hours: 2}).format(\u0027YYYY-MM-DD HH:mm\u0027) }}",
+                                                                       "Cross-Platform Ready":  "Pending"
+                                                                   }
+                                                     }
+                                     },
+                      "id":  "11",
+                      "name":  "Track Faith Video",
+                      "type":  "n8n-nodes-base.googleSheets",
+                      "typeVersion":  4,
+                      "position":  [
+                                       1780,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "channel":  "#gods-vessel-content",
+                                         "text":  "âœï¸ New God\u0027s Vessel devotional ready!\n\nðŸ“¹ *{{ $json.video_title }}*\nðŸ”— YouTube: {{ $json.youtube_url }}\nâ±ï¸ Duration: {{ $json.video_duration }}\nðŸ“– Scripture: {{ $json.scripture_references.join(\u0027, \u0027) }}\n\nðŸ™ Content includes:\nâ€¢ {{ $json.prayer_segments.length }} prayer segments\nâ€¢ Scripture graphics and overlays\nâ€¢ Faith apparel merchandise integration\nâ€¢ Daily encouragement and practical application\n\nâœ… Next steps:\n1. Review devotional content and biblical accuracy\n2. Adjust thumbnail for maximum inspiration\n3. Schedule publication for morning devotional time\n4. Prepare Instagram and Facebook cross-posts\n5. Set up merchandise promotion campaign\n\nðŸ’ Ready to encourage believers and drive shop traffic!"
+                                     },
+                      "id":  "12",
+                      "name":  "Notify Faith Team",
+                      "type":  "n8n-nodes-base.slack",
+                      "typeVersion":  1,
+                      "position":  [
+                                       2000,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "content":  "DAX Agent Attachment\nMode: manual_review_first\nAgents: operations_director_agent, compliance_qa_agent, video_concept_agent, scriptwriting_agent, video_production_agent, merch_design_agent, sticker_design_agent\nOutputs: videos, merch, stickers\nPublishing requires DAX_ENABLE_PUBLIC_PUBLISHING=true and reviewStatus=approved_for_publish.",
+                                         "height":  260,
+                                         "width":  420,
+                                         "color":  5
+                                     },
+                      "id":  "dax-agent-attachment-note",
+                      "name":  "DAX Agent Attachment",
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "typeVersion":  1,
+                      "position":  [
+                                       -160,
+                                       -80
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "const enabled = $env.DAX_ENABLE_PUBLIC_PUBLISHING === \u0027true\u0027;\nconst approvedValues = [\u0027approved_for_publish\u0027, \u0027approved\u0027, \u0027ready_to_publish\u0027];\nreturn $input.all().filter((item) =\u003e {\n  const data = item.json || {};\n  const approved = data.approvedForPublish === true || approvedValues.includes(data.reviewStatus) || approvedValues.includes(data.review_status) || approvedValues.includes(data.approvalStatus);\n  return enabled \u0026\u0026 approved;\n}).map((item) =\u003e {\n  item.json.daxPublishingGuard = { passed: true, checkedAt: new Date().toISOString(), targetNode: \u0027Upload Faith Video\u0027 };\n  return item;\n});"
+                                     },
+                      "id":  "dax-publish-guard-upload-faith-video",
+                      "name":  "DAX Publish Guard - Upload Faith Video",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1300,
+                                       300
+                                   ]
+                  }
+              ],
+    "connections":  {
+                        "Daily Faith Content Trigger":  {
+                                                            "main":  [
+                                                                         [
+                                                                             {
+                                                                                 "node":  "Generate Faith Video Concept",
+                                                                                 "type":  "main",
+                                                                                 "index":  0
+                                                                             }
+                                                                         ]
+                                                                     ]
+                                                        },
+                        "Generate Faith Video Concept":  {
+                                                             "main":  [
+                                                                          [
+                                                                              {
+                                                                                  "node":  "Create Faith Script",
+                                                                                  "type":  "main",
+                                                                                  "index":  0
+                                                                              }
+                                                                          ]
+                                                                      ]
+                                                         },
+                        "Create Faith Script":  {
+                                                    "main":  [
+                                                                 [
+                                                                     {
+                                                                         "node":  "Process Faith Script",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     }
+                                                                 ]
+                                                             ]
+                                                },
+                        "Process Faith Script":  {
+                                                     "main":  [
+                                                                  [
+                                                                      {
+                                                                          "node":  "Generate Faith Voice",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ],
+                                                                  [
+                                                                      {
+                                                                          "node":  "Get Faith Stock Images",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ],
+                                                                  [
+                                                                      {
+                                                                          "node":  "Generate Scripture Graphics",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ]
+                                                              ]
+                                                 },
+                        "Generate Faith Voice":  {
+                                                     "main":  [
+                                                                  [
+                                                                      {
+                                                                          "node":  "Create Faith Video",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ]
+                                                              ]
+                                                 },
+                        "Get Faith Stock Images":  {
+                                                       "main":  [
+                                                                    [
+                                                                        {
+                                                                            "node":  "Create Faith Video",
+                                                                            "type":  "main",
+                                                                            "index":  0
+                                                                        }
+                                                                    ]
+                                                                ]
+                                                   },
+                        "Generate Scripture Graphics":  {
+                                                            "main":  [
+                                                                         [
+                                                                             {
+                                                                                 "node":  "Create Faith Video",
+                                                                                 "type":  "main",
+                                                                                 "index":  0
+                                                                             }
+                                                                         ]
+                                                                     ]
+                                                        },
+                        "Create Faith Video":  {
+                                                   "main":  [
+                                                                [
+                                                                    {
+                                                                        "node":  "Create Faith Thumbnail",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    }
+                                                                ]
+                                                            ]
+                                               },
+                        "Create Faith Thumbnail":  {
+                                                       "main":  [
+                                                                    [
+                                                                        {
+                                                                            "node":  "DAX Publish Guard - Upload Faith Video",
+                                                                            "type":  "main",
+                                                                            "index":  0
+                                                                        }
+                                                                    ]
+                                                                ]
+                                                   },
+                        "Upload Faith Video":  {
+                                                   "main":  [
+                                                                [
+                                                                    {
+                                                                        "node":  "Track Faith Video",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    }
+                                                                ]
+                                                            ]
+                                               },
+                        "Track Faith Video":  {
+                                                  "main":  [
+                                                               [
+                                                                   {
+                                                                       "node":  "Notify Faith Team",
+                                                                       "type":  "main",
+                                                                       "index":  0
+                                                                   }
+                                                               ]
+                                                           ]
+                                              },
+                        "DAX Publish Guard - Upload Faith Video":  {
+                                                                       "main":  [
+                                                                                    {
+                                                                                        "node":  "Upload Faith Video",
+                                                                                        "type":  "main",
+                                                                                        "index":  0
+                                                                                    }
+                                                                                ]
+                                                                   }
+                    },
+    "settings":  {
+                     "executionOrder":  "v1"
+                 },
+    "staticData":  null,
+    "tags":  [
+
+             ],
+    "triggerCount":  0,
+    "updatedAt":  "2024-01-15T10:00:00.000Z",
+    "versionId":  "1",
+    "daxAgentAttachment":  {
+                               "attachedAt":  "2026-06-03",
+                               "mode":  "manual_review_first",
+                               "primaryAgents":  [
+                                                     "operations_director_agent",
+                                                     "compliance_qa_agent",
+                                                     "video_concept_agent",
+                                                     "scriptwriting_agent",
+                                                     "video_production_agent",
+                                                     "merch_design_agent",
+                                                     "sticker_design_agent"
+                                                 ],
+                               "outputTypes":  [
+                                                   "videos",
+                                                   "merch",
+                                                   "stickers"
+                                               ],
+                               "requiresManualApproval":  true,
+                               "publishAllowedByDefault":  false,
+                               "publishEnableEnv":  "DAX_ENABLE_PUBLIC_PUBLISHING",
+                               "approvalField":  "reviewStatus=approved_for_publish",
+                               "notes":  "Attached to existing workflow. Public publishing is blocked unless explicit environment and item approval gates pass."
+                           }
 }

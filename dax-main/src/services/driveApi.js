@@ -95,7 +95,7 @@ class DriveApiService {
 
       const headers = await this.getAuthHeaders(user);
 
-      const response = await fetch(`${this.baseUrl}/api/drive/images/${folderId}?${params}`, {
+      const response = await fetch(`${this.baseUrl}/api/admin/drive/images/${folderId}?${params}`, {
         method: 'GET',
         headers: headers,
       });
@@ -144,7 +144,7 @@ class DriveApiService {
 
       const token = await user.getIdToken();
       
-      const response = await fetch(`${this.baseUrl}/api/drive`, {
+      const response = await fetch(`${this.baseUrl}/api/admin/drive-upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -178,7 +178,7 @@ class DriveApiService {
 
       const token = await user.getIdToken();
 
-      const response = await fetch(`${this.baseUrl}/api/firebase`, {
+      const response = await fetch(`${this.baseUrl}/api/admin/firebase-profile`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -244,7 +244,7 @@ class DriveApiService {
     try {
       const headers = await this.getAuthHeaders(user);
 
-      const response = await fetch(`${this.baseUrl}/api/drive/folder/${folderId}`, {
+      const response = await fetch(`${this.baseUrl}/api/admin/drive/folder/${folderId}`, {
         method: 'GET',
         headers: headers,
       });
@@ -340,4 +340,3 @@ export const {
   getAllFolderStats,
   validateFolderConfiguration
 } = driveApiService;
-

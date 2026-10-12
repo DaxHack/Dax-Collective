@@ -1,3 +1,11 @@
+// src/components/BrandCard.jsx
+// Restored to the pre-redesign (original) full-bleed gradient tile design —
+// each brand gets its own vivid gradient background, not a uniform
+// charcoal/glass dashboard card. Recovered from git history (commit
+// e4c5bad, the commit before this session's redesign work) per the
+// explicit instruction to restore the stronger earlier visual base rather
+// than reinterpret it.
+
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
@@ -18,18 +26,18 @@ const BrandCard = ({ brand, index }) => {
     <motion.article
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.6, 
+      transition={{
+        duration: 0.6,
         delay: index * 0.1,
         ease: "easeInOut"
       }}
-      whileHover={{ 
+      whileHover={{
         y: -8,
         transition: { duration: 0.3, ease: "easeInOut" }
       }}
       className="group"
     >
-      <Link 
+      <Link
         to={brand.link}
         className="block h-full"
         aria-label={`Explore ${brand.name}`}
@@ -43,34 +51,34 @@ const BrandCard = ({ brand, index }) => {
         `}>
           {/* Subtle overlay for depth */}
           <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors duration-300" />
-          
+
           {/* Content */}
           <div className="relative z-10 h-full flex flex-col justify-between">
             {/* Icon */}
             <div className="flex justify-between items-start">
               <motion.div
-                whileHover={{ 
+                whileHover={{
                   scale: 1.1,
                   transition: { duration: 0.2, ease: "easeInOut" }
                 }}
                 className="p-4 bg-white/20 backdrop-blur-sm rounded-2xl"
               >
-                <IconComponent 
-                  size={28} 
+                <IconComponent
+                  size={28}
                   className="text-white drop-shadow-sm"
                   aria-hidden="true"
                 />
               </motion.div>
-              
+
               {/* Status indicator */}
               <motion.div
                 className="w-3 h-3 bg-white/60 rounded-full"
-                animate={{ 
+                animate={{
                   scale: [1, 1.2, 1],
                   opacity: [0.6, 1, 0.6]
                 }}
-                transition={{ 
-                  duration: 2, 
+                transition={{
+                  duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut",
                   delay: index * 0.5
@@ -87,16 +95,16 @@ const BrandCard = ({ brand, index }) => {
               <p className="text-white/85 text-sm leading-relaxed">
                 {brand.description}
               </p>
-              
+
               {/* Call to action */}
               <div className="flex items-center text-white/80 text-sm font-medium pt-2">
                 <span>Explore</span>
-                <motion.span 
+                <motion.span
                   className="ml-2"
                   animate={{ x: [0, 4, 0] }}
-                  transition={{ 
-                    duration: 2, 
-                    repeat: Infinity, 
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
                     ease: "easeInOut"
                   }}
                   aria-hidden="true"
@@ -112,7 +120,7 @@ const BrandCard = ({ brand, index }) => {
             className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"
             initial={{ opacity: 0 }}
           />
-          
+
           {/* Subtle inner glow */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
         </div>

@@ -1,275 +1,320 @@
-{
-  "name": "Global Error Handler & Retry Supervisor",
-  "nodes": [
-    {
-      "parameters": {},
-      "id": "error-trigger",
-      "name": "Error Trigger",
-      "type": "n8n-nodes-base.errorTrigger",
-      "typeVersion": 1,
-      "position": [
-        240,
-        300
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "// Global Error Handler & Retry Supervisor\n// Analyzes errors, implements intelligent retry logic, and manages escalation\n\nconst errorData = $input.first();\nconst workflowId = $workflow.id;\nconst executionId = $execution.id;\nconst timestamp = new Date().toISOString();\n\n// Extract error information\nconst errorInfo = {\n  workflowId,\n  executionId,\n  timestamp,\n  nodeName: errorData.node?.name || 'Unknown',\n  nodeType: errorData.node?.type || 'Unknown',\n  errorMessage: errorData.error?.message || 'Unknown error',\n  errorStack: errorData.error?.stack || '',\n  errorCode: errorData.error?.code || 'UNKNOWN',\n  httpStatusCode: errorData.error?.httpStatusCode || null\n};\n\n// Classify error type and determine retry strategy\nfunction classifyError(error) {\n  const message = error.errorMessage.toLowerCase();\n  const httpCode = error.httpStatusCode;\n  \n  // Rate limiting errors\n  if (httpCode === 429 || message.includes('rate limit') || message.includes('too many requests')) {\n    return {\n      type: 'RATE_LIMIT',\n      retryable: true,\n      retryDelay: 300000, // 5 minutes\n      maxRetries: 3,\n      escalationLevel: 'LOW'\n    };\n  }\n  \n  // Authentication errors\n  if (httpCode === 401 || httpCode === 403 || message.includes('unauthorized') || message.includes('forbidden')) {\n    return {\n      type: 'AUTH_ERROR',\n      retryable: false,\n      retryDelay: 0,\n      maxRetries: 0,\n      escalationLevel: 'HIGH'\n    };\n  }\n  \n  // Network/timeout errors\n  if (httpCode >= 500 || message.includes('timeout') || message.includes('network') || message.includes('connection')) {\n    return {\n      type: 'NETWORK_ERROR',\n      retryable: true,\n      retryDelay: 60000, // 1 minute\n      maxRetries: 5,\n      escalationLevel: 'MEDIUM'\n    };\n  }\n  \n  // API quota/limit errors\n  if (message.includes('quota') || message.includes('limit exceeded')) {\n    return {\n      type: 'QUOTA_ERROR',\n      retryable: true,\n      retryDelay: 3600000, // 1 hour\n      maxRetries: 2,\n      escalationLevel: 'MEDIUM'\n    };\n  }\n  \n  // Data/validation errors\n  if (httpCode === 400 || message.includes('invalid') || message.includes('bad request')) {\n    return {\n      type: 'DATA_ERROR',\n      retryable: false,\n      retryDelay: 0,\n      maxRetries: 0,\n      escalationLevel: 'MEDIUM'\n    };\n  }\n  \n  // Default classification\n  return {\n    type: 'UNKNOWN_ERROR',\n    retryable: true,\n    retryDelay: 120000, // 2 minutes\n    maxRetries: 2,\n    escalationLevel: 'MEDIUM'\n  };\n}\n\nconst classification = classifyError(errorInfo);\n\n// Get retry history from static data\nconst retryKey = `${workflowId}_${errorInfo.nodeName}_${errorInfo.errorCode}`;\nconst staticData = $workflow.staticData || {};\nconst retryHistory = staticData[retryKey] || { count: 0, lastRetry: null };\n\n// Determine if retry should be attempted\nconst shouldRetry = classification.retryable && retryHistory.count < classification.maxRetries;\n\n// Update retry history\nif (shouldRetry) {\n  retryHistory.count += 1;\n  retryHistory.lastRetry = timestamp;\n  staticData[retryKey] = retryHistory;\n}\n\n// Create comprehensive error report\nconst errorReport = {\n  ...errorInfo,\n  classification,\n  retryHistory,\n  shouldRetry,\n  nextRetryAt: shouldRetry ? new Date(Date.now() + classification.retryDelay).toISOString() : null,\n  escalationRequired: !shouldRetry || classification.escalationLevel === 'HIGH'\n};\n\nreturn errorReport;"
-      },
-      "id": "analyze-error",
-      "name": "Analyze Error",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        460,
-        300
-      ]
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict"
-          },
-          "conditions": [
-            {
-              "id": "should-retry",
-              "leftValue": "={{ $json.shouldRetry }}",
-              "rightValue": true,
-              "operator": {
-                "type": "boolean",
-                "operation": "equal"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "check-retry-needed",
-      "name": "Retry Needed?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [
-        680,
-        300
-      ]
-    },
-    {
-      "parameters": {
-        "unit": "seconds",
-        "amount": "={{ Math.floor($json.classification.retryDelay / 1000) }}"
-      },
-      "id": "wait-for-retry",
-      "name": "Wait for Retry",
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1,
-      "position": [
-        900,
-        200
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "={{ $env.ERROR_LOG_SHEET_ID }}",
-          "mode": "id"
-        },
-        "sheetName": "Error_Log",
-        "columnToMatchOn": "execution_id",
-        "valueToMatchOn": "={{ $json.executionId }}",
-        "valuesToSend": {
-          "values": [
-            {
-              "column": "execution_id",
-              "value": "={{ $json.executionId }}"
-            },
-            {
-              "column": "workflow_id",
-              "value": "={{ $json.workflowId }}"
-            },
-            {
-              "column": "timestamp",
-              "value": "={{ $json.timestamp }}"
-            },
-            {
-              "column": "node_name",
-              "value": "={{ $json.nodeName }}"
-            },
-            {
-              "column": "node_type",
-              "value": "={{ $json.nodeType }}"
-            },
-            {
-              "column": "error_message",
-              "value": "={{ $json.errorMessage }}"
-            },
-            {
-              "column": "error_code",
-              "value": "={{ $json.errorCode }}"
-            },
-            {
-              "column": "error_type",
-              "value": "={{ $json.classification.type }}"
-            },
-            {
-              "column": "escalation_level",
-              "value": "={{ $json.classification.escalationLevel }}"
-            },
-            {
-              "column": "retry_count",
-              "value": "={{ $json.retryHistory.count }}"
-            },
-            {
-              "column": "should_retry",
-              "value": "={{ $json.shouldRetry }}"
-            },
-            {
-              "column": "escalation_required",
-              "value": "={{ $json.escalationRequired }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "log-error",
-      "name": "Log Error",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4,
-      "position": [
-        900,
-        400
-      ]
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "error-alert",
-              "name": "errorAlert",
-              "value": "🚨 *Error Alert*\\n\\n*Workflow:* {{ $json.workflowId }}\\n*Node:* {{ $json.nodeName }}\\n*Error Type:* {{ $json.classification.type }}\\n*Message:* {{ $json.errorMessage }}\\n\\n*Retry Status:*\\n• Should Retry: {{ $json.shouldRetry ? 'Yes' : 'No' }}\\n• Retry Count: {{ $json.retryHistory.count }}/{{ $json.classification.maxRetries }}\\n• Escalation Level: {{ $json.classification.escalationLevel }}\\n\\n*Next Action:* {{ $json.shouldRetry ? 'Automatic retry in ' + Math.floor($json.classification.retryDelay / 60000) + ' minutes' : 'Manual intervention required' }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "format-error-alert",
-      "name": "Format Error Alert",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3,
-      "position": [
-        1120,
-        400
-      ]
-    },
-    {
-      "parameters": {
-        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "{\n  \"text\": \"{{ $json.errorAlert }}\",\n  \"username\": \"Error Handler\",\n  \"icon_emoji\": \":warning:\"\n}",
-        "options": {}
-      },
-      "id": "send-error-alert",
-      "name": "Send Error Alert",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.1,
-      "position": [
-        1340,
-        400
-      ]
-    }
-  ],
-  "connections": {
-    "Error Trigger": {
-      "main": [
-        [
-          {
-            "node": "Analyze Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Analyze Error": {
-      "main": [
-        [
-          {
-            "node": "Retry Needed?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Retry Needed?": {
-      "main": [
-        [
-          {
-            "node": "Wait for Retry",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Log Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Log Error": {
-      "main": [
-        [
-          {
-            "node": "Format Error Alert",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Format Error Alert": {
-      "main": [
-        [
-          {
-            "node": "Send Error Alert",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    }
-  },
-  "pinData": {},
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "staticData": null,
-  "tags": [
-    {
-      "createdAt": "2024-01-15T10:00:00.000Z",
-      "updatedAt": "2024-01-15T10:00:00.000Z",
-      "id": "error-handling",
-      "name": "Error Handling"
-    },
-    {
-      "createdAt": "2024-01-15T10:00:00.000Z",
-      "updatedAt": "2024-01-15T10:00:00.000Z",
-      "id": "retry-logic",
-      "name": "Retry Logic"
-    }
-  ],
-  "triggerCount": 1,
-  "updatedAt": "2024-01-15T10:00:00.000Z",
-  "versionId": "1"
+﻿{
+    "name":  "Global Error Handler \u0026 Retry Supervisor",
+    "nodes":  [
+                  {
+                      "parameters":  {
+
+                                     },
+                      "id":  "error-trigger",
+                      "name":  "Error Trigger",
+                      "type":  "n8n-nodes-base.errorTrigger",
+                      "typeVersion":  1,
+                      "position":  [
+                                       240,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Global Error Handler \u0026 Retry Supervisor\n// Analyzes errors, implements intelligent retry logic, and manages escalation\n\nconst errorData = $input.first();\nconst workflowId = $workflow.id;\nconst executionId = $execution.id;\nconst timestamp = new Date().toISOString();\n\n// Extract error information\nconst errorInfo = {\n  workflowId,\n  executionId,\n  timestamp,\n  nodeName: errorData.node?.name || \u0027Unknown\u0027,\n  nodeType: errorData.node?.type || \u0027Unknown\u0027,\n  errorMessage: errorData.error?.message || \u0027Unknown error\u0027,\n  errorStack: errorData.error?.stack || \u0027\u0027,\n  errorCode: errorData.error?.code || \u0027UNKNOWN\u0027,\n  httpStatusCode: errorData.error?.httpStatusCode || null\n};\n\n// Classify error type and determine retry strategy\nfunction classifyError(error) {\n  const message = error.errorMessage.toLowerCase();\n  const httpCode = error.httpStatusCode;\n  \n  // Rate limiting errors\n  if (httpCode === 429 || message.includes(\u0027rate limit\u0027) || message.includes(\u0027too many requests\u0027)) {\n    return {\n      type: \u0027RATE_LIMIT\u0027,\n      retryable: true,\n      retryDelay: 300000, // 5 minutes\n      maxRetries: 3,\n      escalationLevel: \u0027LOW\u0027\n    };\n  }\n  \n  // Authentication errors\n  if (httpCode === 401 || httpCode === 403 || message.includes(\u0027unauthorized\u0027) || message.includes(\u0027forbidden\u0027)) {\n    return {\n      type: \u0027AUTH_ERROR\u0027,\n      retryable: false,\n      retryDelay: 0,\n      maxRetries: 0,\n      escalationLevel: \u0027HIGH\u0027\n    };\n  }\n  \n  // Network/timeout errors\n  if (httpCode \u003e= 500 || message.includes(\u0027timeout\u0027) || message.includes(\u0027network\u0027) || message.includes(\u0027connection\u0027)) {\n    return {\n      type: \u0027NETWORK_ERROR\u0027,\n      retryable: true,\n      retryDelay: 60000, // 1 minute\n      maxRetries: 5,\n      escalationLevel: \u0027MEDIUM\u0027\n    };\n  }\n  \n  // API quota/limit errors\n  if (message.includes(\u0027quota\u0027) || message.includes(\u0027limit exceeded\u0027)) {\n    return {\n      type: \u0027QUOTA_ERROR\u0027,\n      retryable: true,\n      retryDelay: 3600000, // 1 hour\n      maxRetries: 2,\n      escalationLevel: \u0027MEDIUM\u0027\n    };\n  }\n  \n  // Data/validation errors\n  if (httpCode === 400 || message.includes(\u0027invalid\u0027) || message.includes(\u0027bad request\u0027)) {\n    return {\n      type: \u0027DATA_ERROR\u0027,\n      retryable: false,\n      retryDelay: 0,\n      maxRetries: 0,\n      escalationLevel: \u0027MEDIUM\u0027\n    };\n  }\n  \n  // Default classification\n  return {\n    type: \u0027UNKNOWN_ERROR\u0027,\n    retryable: true,\n    retryDelay: 120000, // 2 minutes\n    maxRetries: 2,\n    escalationLevel: \u0027MEDIUM\u0027\n  };\n}\n\nconst classification = classifyError(errorInfo);\n\n// Get retry history from static data\nconst retryKey = `${workflowId}_${errorInfo.nodeName}_${errorInfo.errorCode}`;\nconst staticData = $workflow.staticData || {};\nconst retryHistory = staticData[retryKey] || { count: 0, lastRetry: null };\n\n// Determine if retry should be attempted\nconst shouldRetry = classification.retryable \u0026\u0026 retryHistory.count \u003c classification.maxRetries;\n\n// Update retry history\nif (shouldRetry) {\n  retryHistory.count += 1;\n  retryHistory.lastRetry = timestamp;\n  staticData[retryKey] = retryHistory;\n}\n\n// Create comprehensive error report\nconst errorReport = {\n  ...errorInfo,\n  classification,\n  retryHistory,\n  shouldRetry,\n  nextRetryAt: shouldRetry ? new Date(Date.now() + classification.retryDelay).toISOString() : null,\n  escalationRequired: !shouldRetry || classification.escalationLevel === \u0027HIGH\u0027\n};\n\nreturn errorReport;"
+                                     },
+                      "id":  "analyze-error",
+                      "name":  "Analyze Error",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       460,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "options":  {
+                                                                            "caseSensitive":  true,
+                                                                            "leftValue":  "",
+                                                                            "typeValidation":  "strict"
+                                                                        },
+                                                            "conditions":  [
+                                                                               {
+                                                                                   "id":  "should-retry",
+                                                                                   "leftValue":  "={{ $json.shouldRetry }}",
+                                                                                   "rightValue":  true,
+                                                                                   "operator":  {
+                                                                                                    "type":  "boolean",
+                                                                                                    "operation":  "equal"
+                                                                                                }
+                                                                               }
+                                                                           ],
+                                                            "combinator":  "and"
+                                                        },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "check-retry-needed",
+                      "name":  "Retry Needed?",
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  2,
+                      "position":  [
+                                       680,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "unit":  "seconds",
+                                         "amount":  "={{ Math.floor($json.classification.retryDelay / 1000) }}"
+                                     },
+                      "id":  "wait-for-retry",
+                      "name":  "Wait for Retry",
+                      "type":  "n8n-nodes-base.wait",
+                      "typeVersion":  1,
+                      "position":  [
+                                       900,
+                                       200
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "appendOrUpdate",
+                                         "documentId":  {
+                                                            "__rl":  true,
+                                                            "value":  "={{ $env.ERROR_LOG_SHEET_ID }}",
+                                                            "mode":  "id"
+                                                        },
+                                         "sheetName":  "Error_Log",
+                                         "columnToMatchOn":  "execution_id",
+                                         "valueToMatchOn":  "={{ $json.executionId }}",
+                                         "valuesToSend":  {
+                                                              "values":  [
+                                                                             {
+                                                                                 "column":  "execution_id",
+                                                                                 "value":  "={{ $json.executionId }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "workflow_id",
+                                                                                 "value":  "={{ $json.workflowId }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "timestamp",
+                                                                                 "value":  "={{ $json.timestamp }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "node_name",
+                                                                                 "value":  "={{ $json.nodeName }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "node_type",
+                                                                                 "value":  "={{ $json.nodeType }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "error_message",
+                                                                                 "value":  "={{ $json.errorMessage }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "error_code",
+                                                                                 "value":  "={{ $json.errorCode }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "error_type",
+                                                                                 "value":  "={{ $json.classification.type }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "escalation_level",
+                                                                                 "value":  "={{ $json.classification.escalationLevel }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "retry_count",
+                                                                                 "value":  "={{ $json.retryHistory.count }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "should_retry",
+                                                                                 "value":  "={{ $json.shouldRetry }}"
+                                                                             },
+                                                                             {
+                                                                                 "column":  "escalation_required",
+                                                                                 "value":  "={{ $json.escalationRequired }}"
+                                                                             }
+                                                                         ]
+                                                          },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "log-error",
+                      "name":  "Log Error",
+                      "type":  "n8n-nodes-base.googleSheets",
+                      "typeVersion":  4,
+                      "position":  [
+                                       900,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "assignments":  {
+                                                             "assignments":  [
+                                                                                 {
+                                                                                     "id":  "error-alert",
+                                                                                     "name":  "errorAlert",
+                                                                                     "value":  "ðŸš¨ *Error Alert*\\n\\n*Workflow:* {{ $json.workflowId }}\\n*Node:* {{ $json.nodeName }}\\n*Error Type:* {{ $json.classification.type }}\\n*Message:* {{ $json.errorMessage }}\\n\\n*Retry Status:*\\nâ€¢ Should Retry: {{ $json.shouldRetry ? \u0027Yes\u0027 : \u0027No\u0027 }}\\nâ€¢ Retry Count: {{ $json.retryHistory.count }}/{{ $json.classification.maxRetries }}\\nâ€¢ Escalation Level: {{ $json.classification.escalationLevel }}\\n\\n*Next Action:* {{ $json.shouldRetry ? \u0027Automatic retry in \u0027 + Math.floor($json.classification.retryDelay / 60000) + \u0027 minutes\u0027 : \u0027Manual intervention required\u0027 }}",
+                                                                                     "type":  "string"
+                                                                                 }
+                                                                             ]
+                                                         },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "format-error-alert",
+                      "name":  "Format Error Alert",
+                      "type":  "n8n-nodes-base.set",
+                      "typeVersion":  3,
+                      "position":  [
+                                       1120,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "url":  "={{ $env.SLACK_WEBHOOK_URL }}",
+                                         "sendBody":  true,
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "{\n  \"text\": \"{{ $json.errorAlert }}\",\n  \"username\": \"Error Handler\",\n  \"icon_emoji\": \":warning:\"\n}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "send-error-alert",
+                      "name":  "Send Error Alert",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       1340,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "content":  "DAX Agent Attachment\nMode: manual_review_first\nAgents: operations_director_agent, compliance_qa_agent, error_handler_agent\nOutputs: operations\nPublishing requires DAX_ENABLE_PUBLIC_PUBLISHING=true and reviewStatus=approved_for_publish.",
+                                         "height":  260,
+                                         "width":  420,
+                                         "color":  5
+                                     },
+                      "id":  "dax-agent-attachment-note",
+                      "name":  "DAX Agent Attachment",
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "typeVersion":  1,
+                      "position":  [
+                                       -160,
+                                       -80
+                                   ]
+                  }
+              ],
+    "connections":  {
+                        "Error Trigger":  {
+                                              "main":  [
+                                                           [
+                                                               {
+                                                                   "node":  "Analyze Error",
+                                                                   "type":  "main",
+                                                                   "index":  0
+                                                               }
+                                                           ]
+                                                       ]
+                                          },
+                        "Analyze Error":  {
+                                              "main":  [
+                                                           [
+                                                               {
+                                                                   "node":  "Retry Needed?",
+                                                                   "type":  "main",
+                                                                   "index":  0
+                                                               }
+                                                           ]
+                                                       ]
+                                          },
+                        "Retry Needed?":  {
+                                              "main":  [
+                                                           [
+                                                               {
+                                                                   "node":  "Wait for Retry",
+                                                                   "type":  "main",
+                                                                   "index":  0
+                                                               }
+                                                           ],
+                                                           [
+                                                               {
+                                                                   "node":  "Log Error",
+                                                                   "type":  "main",
+                                                                   "index":  0
+                                                               }
+                                                           ]
+                                                       ]
+                                          },
+                        "Log Error":  {
+                                          "main":  [
+                                                       [
+                                                           {
+                                                               "node":  "Format Error Alert",
+                                                               "type":  "main",
+                                                               "index":  0
+                                                           }
+                                                       ]
+                                                   ]
+                                      },
+                        "Format Error Alert":  {
+                                                   "main":  [
+                                                                [
+                                                                    {
+                                                                        "node":  "Send Error Alert",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    }
+                                                                ]
+                                                            ]
+                                               }
+                    },
+    "pinData":  {
+
+                },
+    "settings":  {
+                     "executionOrder":  "v1"
+                 },
+    "staticData":  null,
+    "tags":  [
+                 {
+                     "createdAt":  "2024-01-15T10:00:00.000Z",
+                     "updatedAt":  "2024-01-15T10:00:00.000Z",
+                     "id":  "error-handling",
+                     "name":  "Error Handling"
+                 },
+                 {
+                     "createdAt":  "2024-01-15T10:00:00.000Z",
+                     "updatedAt":  "2024-01-15T10:00:00.000Z",
+                     "id":  "retry-logic",
+                     "name":  "Retry Logic"
+                 }
+             ],
+    "triggerCount":  1,
+    "updatedAt":  "2024-01-15T10:00:00.000Z",
+    "versionId":  "1",
+    "daxAgentAttachment":  {
+                               "attachedAt":  "2026-06-03",
+                               "mode":  "manual_review_first",
+                               "primaryAgents":  [
+                                                     "operations_director_agent",
+                                                     "compliance_qa_agent",
+                                                     "error_handler_agent"
+                                                 ],
+                               "outputTypes":  [
+                                                   "operations"
+                                               ],
+                               "requiresManualApproval":  true,
+                               "publishAllowedByDefault":  false,
+                               "publishEnableEnv":  "DAX_ENABLE_PUBLIC_PUBLISHING",
+                               "approvalField":  "reviewStatus=approved_for_publish",
+                               "notes":  "Attached to existing workflow. Public publishing is blocked unless explicit environment and item approval gates pass."
+                           }
 }

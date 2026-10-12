@@ -1,6 +1,8 @@
 // LOCATION: dax-main/src/services/enhanced-driveApi.js
 // ACTION: CREATE NEW FILE
 
+import { auth } from '../config/firebase';
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 /**
@@ -9,6 +11,64 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || process.env.REACT_APP
 class DriveApiService {
   constructor() {
     this.baseUrl = API_BASE_URL;
+  }
+
+  /**
+   * All routes in this file are admin-only (mounted under /api/admin on the
+   * backend, behind requireAuth + requireAdmin). Every call must carry the
+   * signed-in user's current Firebase ID token — there is no other way in.
+   * Uses the shared Firebase auth instance directly so callers don't need
+   * to thread a `user` object through every method.
+   */
+  async getAuthHeaders(extra = {}) {
+    const headers = { ...extra };
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const token = await currentUser.getIdToken();
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
+  /**
+   * Calls the backend admin-access check (GET /api/admin/access). This is
+   * the ONLY source of truth for whether the current user may see admin
+   * controls — the frontend never decides this on its own (no hardcoded
+   * UID/email checks). Returns a structured result instead of throwing so
+   * callers can render a clean state per outcome.
+   */
+  async checkAdminAccess() {
+    try {
+      const headers = await this.getAuthHeaders();
+      const response = await fetch(`${this.baseUrl}/api/admin/access`, {
+        method: 'GET',
+        headers,
+      });
+
+      if (response.status === 401) {
+        return { authorized: false, reason: 'unauthenticated' };
+      }
+      if (response.status === 403) {
+        return { authorized: false, reason: 'forbidden' };
+      }
+      if (response.status === 404) {
+        // /api/admin/* isn't mounted at all — ENABLE_ADMIN_UPLOADS isn't 'true'.
+        return { authorized: false, reason: 'not_configured' };
+      }
+      if (!response.ok) {
+        return { authorized: false, reason: 'error' };
+      }
+
+      const data = await response.json();
+      return data.authorized === true ?
+        { authorized: true, reason: 'ok' } :
+        { authorized: false, reason: 'forbidden' };
+    } catch (error) {
+      // Network failure / backend unreachable — treat the same as "not
+      // configured" rather than crashing the page.
+      console.error('Error checking admin access:', error);
+      return { authorized: false, reason: 'unreachable' };
+    }
   }
 
   /**
@@ -26,11 +86,10 @@ class DriveApiService {
         ...(pageToken && { pageToken })
       });
 
-      const response = await fetch(`${this.baseUrl}/api/drive/images/${folderId}?${params}`, {
+      const headers = await this.getAuthHeaders({ 'Content-Type': 'application/json' });
+      const response = await fetch(`${this.baseUrl}/api/admin/drive/images/${folderId}?${params}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
       });
 
       if (!response.ok) {
@@ -69,8 +128,10 @@ class DriveApiService {
         formData.append('description', options.description);
       }
 
-      const response = await fetch(`${this.baseUrl}/api/drive`, {
+      const headers = await this.getAuthHeaders(); // No Content-Type — browser sets multipart boundary.
+      const response = await fetch(`${this.baseUrl}/api/admin/drive-upload`, {
         method: 'POST',
+        headers,
         body: formData,
       });
 
@@ -94,8 +155,10 @@ class DriveApiService {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`${this.baseUrl}/api/firebase`, {
+      const headers = await this.getAuthHeaders(); // No Content-Type — browser sets multipart boundary.
+      const response = await fetch(`${this.baseUrl}/api/admin/firebase-profile`, {
         method: 'POST',
+        headers,
         body: formData,
       });
 
@@ -129,8 +192,10 @@ class DriveApiService {
         formData.append('category', category);
       }
 
-      const response = await fetch(`${this.baseUrl}/api/check-duplicates`, {
+      const headers = await this.getAuthHeaders(); // No Content-Type — browser sets multipart boundary.
+      const response = await fetch(`${this.baseUrl}/api/admin/check-duplicates`, {
         method: 'POST',
+        headers,
         body: formData,
       });
 
@@ -150,11 +215,10 @@ class DriveApiService {
    */
   async getFolderInfo(folderId) {
     try {
-      const response = await fetch(`${this.baseUrl}/api/drive/folder/${folderId}`, {
+      const headers = await this.getAuthHeaders({ 'Content-Type': 'application/json' });
+      const response = await fetch(`${this.baseUrl}/api/admin/drive/folder/${folderId}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
       });
 
       if (!response.ok) {
@@ -175,11 +239,10 @@ class DriveApiService {
     try {
       const { tags = [], descriptions = [] } = options;
 
-      const response = await fetch(`${this.baseUrl}/api/drive/batch-from-urls`, {
+      const headers = await this.getAuthHeaders({ 'Content-Type': 'application/json' });
+      const response = await fetch(`${this.baseUrl}/api/admin/drive/batch-from-urls`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           urls,
           category,
@@ -252,6 +315,7 @@ export { DriveApiService };
 export default driveApiService;
 
 export const {
+  checkAdminAccess,
   fetchDriveImages,
   uploadToDrive,
   uploadToFirebase,
@@ -261,4 +325,3 @@ export const {
   getFolderIdForCategory,
   validateFolderConfiguration
 } = driveApiService;
-

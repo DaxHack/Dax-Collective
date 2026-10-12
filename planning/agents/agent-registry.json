@@ -1,0 +1,505 @@
+{
+    "version":  "2026-06-03",
+    "default_run_mode":  "manual_review_first",
+    "publishing_enabled":  false,
+    "previous_requirements_covered":  [
+                                          "five_brand_ecosystem",
+                                          "cross_platform_posts",
+                                          "short_and_long_video_creation",
+                                          "travel_itineraries_and_guides",
+                                          "merch_apparel_and_streetwear",
+                                          "stickers_and_print_assets",
+                                          "logo_and_thumbnail_designs",
+                                          "account_setup_and_oauth_readiness",
+                                          "manual_review_before_publication",
+                                          "no_secret_exposure"
+                                      ],
+    "brands":  [
+                   {
+                       "id":  "dax-collective",
+                       "name":  "The Dax Collective",
+                       "role":  "parent_hub",
+                       "voice":  "bold, visionary, community-first",
+                       "primary_platforms":  [
+                                                 "youtube",
+                                                 "tiktok",
+                                                 "instagram",
+                                                 "facebook",
+                                                 "website"
+                                             ],
+                       "content_scope":  [
+                                             "brand_announcements",
+                                             "cross_brand_posts",
+                                             "behind_the_scenes",
+                                             "community_spotlights",
+                                             "creator_updates",
+                                             "brand_design_assets",
+                                             "merch_designs",
+                                             "sticker_designs"
+                                         ]
+                   },
+                   {
+                       "id":  "dax-the-traveler",
+                       "name":  "Dax the Traveler",
+                       "role":  "travel_storytelling",
+                       "voice":  "conversational, honest, practical",
+                       "primary_platforms":  [
+                                                 "youtube",
+                                                 "tiktok",
+                                                 "instagram",
+                                                 "facebook",
+                                                 "website"
+                                             ],
+                       "content_scope":  [
+                                             "travel_videos",
+                                             "destination_posts",
+                                             "budget_breakdowns",
+                                             "itineraries",
+                                             "travel_guides",
+                                             "affiliate_gear_posts",
+                                             "thumbnail_designs",
+                                             "merch_designs",
+                                             "sticker_designs"
+                                         ]
+                   },
+                   {
+                       "id":  "time-zone-travelers",
+                       "name":  "Time-Zone Travelers",
+                       "role":  "interactive_travel_guides",
+                       "voice":  "useful, clear, travel-smart",
+                       "primary_platforms":  [
+                                                 "youtube",
+                                                 "tiktok",
+                                                 "instagram",
+                                                 "facebook",
+                                                 "website"
+                                             ],
+                       "content_scope":  [
+                                             "travel_hack_videos",
+                                             "itineraries",
+                                             "packing_lists",
+                                             "interactive_guides",
+                                             "challenge_posts",
+                                             "infographics",
+                                             "thumbnail_designs",
+                                             "merch_designs",
+                                             "sticker_designs"
+                                         ]
+                   },
+                   {
+                       "id":  "ani-dax",
+                       "name":  "Ani-Dax",
+                       "role":  "anime_and_character_content",
+                       "voice":  "playful, analytical, fandom-aware",
+                       "primary_platforms":  [
+                                                 "youtube",
+                                                 "tiktok",
+                                                 "instagram",
+                                                 "facebook",
+                                                 "website"
+                                             ],
+                       "content_scope":  [
+                                             "anime_review_videos",
+                                             "character_analysis_posts",
+                                             "seasonal_rankings",
+                                             "community_posts",
+                                             "avatar_designs",
+                                             "thumbnail_designs",
+                                             "merch_designs",
+                                             "sticker_designs"
+                                         ]
+                   },
+                   {
+                       "id":  "gods-vessel",
+                       "name":  "God\u0027s Vessel",
+                       "role":  "faith_content_and_apparel",
+                       "voice":  "faithful, encouraging, grounded",
+                       "primary_platforms":  [
+                                                 "youtube",
+                                                 "tiktok",
+                                                 "instagram",
+                                                 "facebook",
+                                                 "website"
+                                             ],
+                       "content_scope":  [
+                                             "faith_videos",
+                                             "scripture_posts",
+                                             "testimony_posts",
+                                             "devotionals",
+                                             "merch_designs",
+                                             "sticker_designs",
+                                             "apparel_assets",
+                                             "thumbnail_designs"
+                                         ]
+                   }
+               ],
+    "output_type_agents":  [
+                               {
+                                   "agent_id":  "social_post_agent",
+                                   "mission":  "Create platform-specific captions, carousel outlines, community posts, hashtags, CTAs, and repurposed post variants for every brand.",
+                                   "owned_outputs":  [
+                                                         "instagram_caption",
+                                                         "facebook_post",
+                                                         "tiktok_caption",
+                                                         "youtube_community_post",
+                                                         "carousel_outline",
+                                                         "hashtag_set"
+                                                     ],
+                                   "required_checks":  [
+                                                           "brand_voice",
+                                                           "platform_fit",
+                                                           "cta_present",
+                                                           "no_unapproved_claims",
+                                                           "manual_review_required"
+                                                       ]
+                               },
+                               {
+                                   "agent_id":  "video_concept_agent",
+                                   "mission":  "Create video concepts, hooks, scripts, scenes, thumbnail briefs, metadata, and review-package instructions for each brand.",
+                                   "owned_outputs":  [
+                                                         "video_title",
+                                                         "hook",
+                                                         "short_script",
+                                                         "long_script",
+                                                         "scene_plan",
+                                                         "thumbnail_prompt",
+                                                         "description",
+                                                         "tags"
+                                                     ],
+                                   "required_checks":  [
+                                                           "brand_voice",
+                                                           "first_3_seconds_hook",
+                                                           "asset_needs",
+                                                           "copyright_risk",
+                                                           "manual_review_required"
+                                                       ]
+                               },
+                               {
+                                   "agent_id":  "itinerary_agent",
+                                   "mission":  "Create travel itineraries, packing lists, safety notes, budget breakdowns, and destination guide structures for travel brands.",
+                                   "owned_outputs":  [
+                                                         "day_by_day_itinerary",
+                                                         "budget_table",
+                                                         "packing_list",
+                                                         "safety_notes",
+                                                         "local_context_notes",
+                                                         "affiliate_fit_notes"
+                                                     ],
+                                   "applies_to_brands":  [
+                                                             "dax-the-traveler",
+                                                             "time-zone-travelers"
+                                                         ],
+                                   "required_checks":  [
+                                                           "current_info_needed_flag",
+                                                           "safety_disclaimer",
+                                                           "price_estimate_label",
+                                                           "manual_review_required"
+                                                       ]
+                               },
+                               {
+                                   "agent_id":  "merch_design_agent",
+                                   "mission":  "Create apparel, streetwear, print, and product design briefs with production constraints and brand-fit checks.",
+                                   "owned_outputs":  [
+                                                         "hoodie_brief",
+                                                         "tee_brief",
+                                                         "patch_brief",
+                                                         "hang_tag_brief",
+                                                         "product_mockup_prompt",
+                                                         "print_specs"
+                                                     ],
+                                   "applies_to_brands":  [
+                                                             "gods-vessel",
+                                                             "dax-collective",
+                                                             "time-zone-travelers",
+                                                             "ani-dax",
+                                                             "dax-the-traveler"
+                                                         ],
+                                   "required_checks":  [
+                                                           "original_design_required",
+                                                           "print_ready_constraints",
+                                                           "no_derivative_brand_copies",
+                                                           "manual_review_required"
+                                                       ]
+                               },
+                               {
+                                   "agent_id":  "sticker_design_agent",
+                                   "mission":  "Create sticker concepts, sticker pack systems, cutline notes, transparent-background requirements, and print-safe briefs.",
+                                   "owned_outputs":  [
+                                                         "sticker_pack_brief",
+                                                         "single_sticker_prompt",
+                                                         "cutline_notes",
+                                                         "transparent_png_requirements",
+                                                         "print_vendor_notes"
+                                                     ],
+                                   "required_checks":  [
+                                                           "original_design_required",
+                                                           "readable_at_small_size",
+                                                           "safe_bleed_margin",
+                                                           "manual_review_required"
+                                                       ]
+                               },
+                               {
+                                   "agent_id":  "brand_design_agent",
+                                   "mission":  "Create logo, banner, thumbnail, highlight cover, profile image, and visual-system briefs for all brands.",
+                                   "owned_outputs":  [
+                                                         "logo_brief",
+                                                         "banner_brief",
+                                                         "thumbnail_template_brief",
+                                                         "highlight_cover_brief",
+                                                         "profile_image_brief",
+                                                         "asset_manifest"
+                                                     ],
+                                   "required_checks":  [
+                                                           "distinct_silhouette",
+                                                           "not_generic_clipart",
+                                                           "brand_palette_match",
+                                                           "no_parent_mark_copying_for_subbrands",
+                                                           "manual_review_required"
+                                                       ]
+                               }
+                           ],
+    "brand_video_agents":  [
+                               {
+                                   "agent_id":  "dax_collective_parent_hub_video_agent",
+                                   "brand":  "dax-collective",
+                                   "mission":  "Create parent-hub videos that connect all sub-brands, announce launches, and package behind-the-scenes stories.",
+                                   "outputs":  [
+                                                   "short_script",
+                                                   "long_script",
+                                                   "scene_plan",
+                                                   "cta",
+                                                   "thumbnail_prompt",
+                                                   "review_video_package"
+                                               ],
+                                   "review_required":  true,
+                                   "publish_allowed":  false
+                               },
+                               {
+                                   "agent_id":  "dax_the_traveler_video_agent",
+                                   "brand":  "dax-the-traveler",
+                                   "mission":  "Create authentic solo travel videos, budget breakdowns, destination guides, itinerary tie-ins, and practical travel stories.",
+                                   "outputs":  [
+                                                   "short_script",
+                                                   "long_script",
+                                                   "scene_plan",
+                                                   "itinerary_tie_in",
+                                                   "cta",
+                                                   "thumbnail_prompt",
+                                                   "review_video_package"
+                                               ],
+                                   "review_required":  true,
+                                   "publish_allowed":  false
+                               },
+                               {
+                                   "agent_id":  "time_zone_travelers_video_agent",
+                                   "brand":  "time-zone-travelers",
+                                   "mission":  "Create travel-hack, packing, time-zone, itinerary, challenge, and interactive guide videos.",
+                                   "outputs":  [
+                                                   "short_script",
+                                                   "long_script",
+                                                   "scene_plan",
+                                                   "itinerary_tie_in",
+                                                   "cta",
+                                                   "thumbnail_prompt",
+                                                   "review_video_package"
+                                               ],
+                                   "review_required":  true,
+                                   "publish_allowed":  false
+                               },
+                               {
+                                   "agent_id":  "ani_dax_video_agent",
+                                   "brand":  "ani-dax",
+                                   "mission":  "Create anime review, character analysis, trend commentary, and creative AI/anime workflow videos using copyright-aware sourcing rules.",
+                                   "outputs":  [
+                                                   "short_script",
+                                                   "long_script",
+                                                   "scene_plan",
+                                                   "copyright_safe_asset_notes",
+                                                   "cta",
+                                                   "thumbnail_prompt",
+                                                   "review_video_package"
+                                               ],
+                                   "review_required":  true,
+                                   "publish_allowed":  false
+                               },
+                               {
+                                   "agent_id":  "gods_vessel_video_agent",
+                                   "brand":  "gods-vessel",
+                                   "mission":  "Create faith encouragement, testimony, devotional, apparel, sticker, and community-building videos.",
+                                   "outputs":  [
+                                                   "short_script",
+                                                   "long_script",
+                                                   "scene_plan",
+                                                   "merch_tie_in",
+                                                   "cta",
+                                                   "thumbnail_prompt",
+                                                   "review_video_package"
+                                               ],
+                                   "review_required":  true,
+                                   "publish_allowed":  false
+                               }
+                           ],
+    "company_operations_agents":  [
+                                      {
+                                          "agent_id":  "operations_director_agent",
+                                          "mission":  "Coordinate daily priorities across brands, workflows, content queues, and blockers.",
+                                          "outputs":  [
+                                                          "daily_brief",
+                                                          "priority_board",
+                                                          "blocker_list",
+                                                          "owner_assignments"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "content_strategy_agent",
+                                          "mission":  "Choose topics, hooks, formats, platform targets, and brand priorities across posts, videos, itineraries, merch, stickers, and designs.",
+                                          "outputs":  [
+                                                          "content_calendar",
+                                                          "topic_backlog",
+                                                          "platform_strategy",
+                                                          "brand_priority",
+                                                          "output_mix"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "scriptwriting_agent",
+                                          "mission":  "Turn approved concepts into scripts, captions, hooks, CTAs, scene beats, carousel copy, and product copy.",
+                                          "outputs":  [
+                                                          "short_script",
+                                                          "long_script",
+                                                          "caption",
+                                                          "carousel_copy",
+                                                          "product_copy",
+                                                          "cta",
+                                                          "scene_beats"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "video_production_agent",
+                                          "mission":  "Package scripts, assets, audio, thumbnails, and metadata for review video generation.",
+                                          "outputs":  [
+                                                          "video_job",
+                                                          "asset_requirements",
+                                                          "metadata",
+                                                          "review_package"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "asset_management_agent",
+                                          "mission":  "Track logos, images, audio, thumbnails, raw footage, generated videos, merch art, sticker art, design files, and publishing-ready assets.",
+                                          "outputs":  [
+                                                          "asset_manifest",
+                                                          "missing_assets",
+                                                          "reuse_candidates",
+                                                          "archive_plan"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "publishing_scheduler_agent",
+                                          "mission":  "Build manual-review publishing schedules for connected platforms and product drops.",
+                                          "outputs":  [
+                                                          "schedule",
+                                                          "platform_queue",
+                                                          "product_drop_queue",
+                                                          "review_checklist",
+                                                          "publish_blockers"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "analytics_agent",
+                                          "mission":  "Summarize performance data and recommend next content and product decisions.",
+                                          "outputs":  [
+                                                          "performance_summary",
+                                                          "trend_flags",
+                                                          "winning_formats",
+                                                          "next_tests"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "revenue_agent",
+                                          "mission":  "Track revenue opportunities, affiliate offers, products, sponsorship leads, merch drops, sticker drops, and monetization experiments.",
+                                          "outputs":  [
+                                                          "revenue_board",
+                                                          "offer_backlog",
+                                                          "sponsorship_targets",
+                                                          "product_drop_plan",
+                                                          "monthly_forecast"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "community_agent",
+                                          "mission":  "Plan comments, replies, community prompts, email updates, user-generated content prompts, and audience feedback loops.",
+                                          "outputs":  [
+                                                          "reply_queue",
+                                                          "community_posts",
+                                                          "feedback_summary",
+                                                          "audience_questions"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "compliance_qa_agent",
+                                          "mission":  "Check posts, videos, itineraries, merch, stickers, and designs for brand fit, platform risk, copyright risk, claims, safety notes, and publishing readiness.",
+                                          "outputs":  [
+                                                          "qa_report",
+                                                          "risk_flags",
+                                                          "approval_recommendation",
+                                                          "required_edits"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "platform_setup_agent",
+                                          "mission":  "Track account setup, OAuth readiness, domains, API scopes, redirects, public policy pages, and connected account blockers.",
+                                          "outputs":  [
+                                                          "setup_checklist",
+                                                          "missing_credentials",
+                                                          "domain_status",
+                                                          "oauth_blockers"
+                                                      ]
+                                      },
+                                      {
+                                          "agent_id":  "error_handler_agent",
+                                          "mission":  "Record failed workflow runs, retry-safe actions, and human escalation steps.",
+                                          "outputs":  [
+                                                          "incident_summary",
+                                                          "retry_plan",
+                                                          "owner_action",
+                                                          "prevention_note"
+                                                      ]
+                                      }
+                                  ],
+    "compliance_policies":  {
+                                "global":  [
+                                               "Do not publish automatically.",
+                                               "Do not create or expose secrets.",
+                                               "Do not use unapproved account credentials.",
+                                               "Every output must end with manual_review_required unless explicitly approved by the user.",
+                                               "Every public-facing asset must identify brand, platform, content type, CTA, and review status."
+                                           ],
+                                "posts":  [
+                                              "Match each brand voice and platform length limits.",
+                                              "Avoid unsupported claims, fake urgency, and misleading monetization promises.",
+                                              "Include CTA only when it matches the content and platform."
+                                          ],
+                                "videos":  [
+                                               "Include a strong hook in the first three seconds.",
+                                               "Include scene plan, captions/overlay notes, description, tags, and thumbnail brief.",
+                                               "Keep public upload disabled until connected-account workflow is approved."
+                                           ],
+                                "itineraries":  [
+                                                    "Flag anything needing current research, including prices, hours, routes, weather, safety, and legal requirements.",
+                                                    "Label estimates clearly.",
+                                                    "Include practical safety notes and accessibility assumptions."
+                                                ],
+                                "merch_and_stickers":  [
+                                                           "Designs must be original and ownable.",
+                                                           "Do not copy known brands, characters, logos, or protected artwork.",
+                                                           "Include print constraints: transparent background needs, bleed/safe margin, color notes, and file format targets."
+                                                       ],
+                                "designs":  [
+                                                "No generic clipart.",
+                                                "No derivative brand copies.",
+                                                "Sub-brand marks must have distinct silhouettes from the parent mark.",
+                                                "Ani-Dax should use original art or official promotional art references only; avoid unlicensed screenshots."
+                                            ]
+                            }
+}

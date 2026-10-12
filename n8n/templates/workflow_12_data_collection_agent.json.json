@@ -1,0 +1,135 @@
+﻿{
+    "name":  "Data Collection Agent",
+    "nodes":  [
+                  {
+                      "parameters":  {
+
+                                     },
+                      "id":  "manual-start",
+                      "name":  "Manual Start",
+                      "type":  "n8n-nodes-base.manualTrigger",
+                      "typeVersion":  1,
+                      "position":  [
+                                       160,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "const brands = [\n  {\n    brand: \u0027dax-collective\u0027,\n    agentId: \u0027dax_collective_data_collection_agent\u0027,\n    focus: [\u0027company structure\u0027, \u0027parent site\u0027, \u0027cross-brand routing\u0027, \u0027shared assets\u0027]\n  },\n  {\n    brand: \u0027dax-the-traveler\u0027,\n    agentId: \u0027dax_the_traveler_data_collection_agent\u0027,\n    focus: [\u0027travel video ideas\u0027, \u0027destination pages\u0027, \u0027YouTube channel setup\u0027, \u0027short-form clips\u0027]\n  },\n  {\n    brand: \u0027time-zone-travelers\u0027,\n    agentId: \u0027time_zone_travelers_data_collection_agent\u0027,\n    focus: [\u0027itineraries\u0027, \u0027trip templates\u0027, \u0027packing lists\u0027, \u0027lead magnets\u0027]\n  },\n  {\n    brand: \u0027ani-dax\u0027,\n    agentId: \u0027ani_dax_data_collection_agent\u0027,\n    focus: [\u0027anime commentary ideas\u0027, \u0027community prompts\u0027, \u0027merch concepts\u0027, \u0027sticker designs\u0027]\n  },\n  {\n    brand: \u0027gods-vessel\u0027,\n    agentId: \u0027gods_vessel_data_collection_agent\u0027,\n    focus: [\u0027devotional themes\u0027, \u0027scripture references\u0027, \u0027encouragement posts\u0027, \u0027faith merch\u0027]\n  }\n];\n\nreturn brands.map((entry) =\u003e ({\n  json: {\n    ...entry,\n    reviewStatus: \u0027manual_review_required\u0027,\n    publishAllowed: false,\n    collectionMode: \u0027manual_first\u0027,\n    requiredInventories: [\n      \u0027existing_pages\u0027,\n      \u0027social_accounts_needed\u0027,\n      \u0027content_assets\u0027,\n      \u0027video_pipeline_inputs\u0027,\n      \u0027merch_and_sticker_inputs\u0027,\n      \u0027credential_gaps_without_secret_values\u0027\n    ],\n    createdAt: new Date().toISOString()\n  }\n}));"
+                                     },
+                      "id":  "build-brand-collection-queue",
+                      "name":  "Build Brand Collection Queue",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       420,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "return $input.all().map((item) =\u003e {\n  const brand = item.json.brand;\n  const focus = item.json.focus || [];\n  return {\n    json: {\n      ...item.json,\n      collectionTasks: [\n        `List existing files, pages, workflows, and assets for ${brand}`,\n        `Identify missing account/page/channel setup needed for ${brand}`,\n        `Prepare starter video, post, itinerary, merch, and sticker input requirements for ${brand}`,\n        `Record blockers without copying or exposing credentials for ${brand}`,\n        `Send a manual review summary before any publishing is enabled for ${brand}`\n      ],\n      researchQuestions: focus.map((topic) =\u003e `What usable existing material or missing input exists for ${brand}: ${topic}?`),\n      handoffTarget: \u0027DAX-04 Company Startup Operator - Manual Review\u0027,\n      qaChecks: [\n        \u0027no_secrets_collected\u0027,\n        \u0027existing_workflows_checked_first\u0027,\n        \u0027brand_specific_outputs_named\u0027,\n        \u0027manual_review_required\u0027,\n        \u0027publish_disabled\u0027\n      ]\n    }\n  };\n});"
+                                     },
+                      "id":  "build-data-collection-tasks",
+                      "name":  "Build Data Collection Tasks",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       700,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "const items = $input.all();\nreturn [{\n  json: {\n    agentId: \u0027dax_collective_data_collection_agent\u0027,\n    status: \u0027ready_for_manual_collection\u0027,\n    reviewStatus: \u0027manual_review_required\u0027,\n    publishAllowed: false,\n    brandsQueued: items.map((item) =\u003e item.json.brand),\n    brandCount: items.length,\n    nextAction: \u0027Open each brand item, collect missing non-secret inputs, and route reviewed summaries into the startup operator.\u0027,\n    accountSetupStillManual: [\u0027TikTok accounts\u0027, \u0027Instagram accounts\u0027, \u0027Facebook pages\u0027, \u0027YouTube channels/OAuth\u0027, \u0027public n8n callback URL\u0027],\n    secretHandling: \u0027Use n8n credentials or platform consoles only. Do not paste secrets into workflow JSON or project files.\u0027,\n    items\n  }\n}];"
+                                     },
+                      "id":  "build-review-handoff",
+                      "name":  "Build Review Handoff",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       980,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "content":  "Collects brand setup inputs and content requirements without credentials. Produces manual review handoff only; publishing stays disabled.",
+                                         "height":  200,
+                                         "width":  420,
+                                         "color":  4
+                                     },
+                      "id":  "workflow-safety-note",
+                      "name":  "DAX Agent Attachment",
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "typeVersion":  1,
+                      "position":  [
+                                       360,
+                                       40
+                                   ]
+                  }
+              ],
+    "connections":  {
+                        "Manual Start":  {
+                                             "main":  [
+                                                          [
+                                                              {
+                                                                  "node":  "Build Brand Collection Queue",
+                                                                  "type":  "main",
+                                                                  "index":  0
+                                                              }
+                                                          ]
+                                                      ]
+                                         },
+                        "Build Brand Collection Queue":  {
+                                                             "main":  [
+                                                                          [
+                                                                              {
+                                                                                  "node":  "Build Data Collection Tasks",
+                                                                                  "type":  "main",
+                                                                                  "index":  0
+                                                                              }
+                                                                          ]
+                                                                      ]
+                                                         },
+                        "Build Data Collection Tasks":  {
+                                                            "main":  [
+                                                                         [
+                                                                             {
+                                                                                 "node":  "Build Review Handoff",
+                                                                                 "type":  "main",
+                                                                                 "index":  0
+                                                                             }
+                                                                         ]
+                                                                     ]
+                                                        }
+                    },
+    "pinData":  {
+
+                },
+    "settings":  {
+                     "executionOrder":  "v1"
+                 },
+    "active":  false,
+    "versionId":  "1",
+    "tags":  [
+
+             ],
+    "daxAgentAttachment":  {
+                               "attachedAt":  "2026-06-03",
+                               "mode":  "manual_review_first",
+                               "primaryAgents":  [
+                                                     "operations_director_agent",
+                                                     "compliance_qa_agent"
+                                                 ],
+                               "outputTypes":  [
+                                                   "operations"
+                                               ],
+                               "requiresManualApproval":  true,
+                               "publishAllowedByDefault":  false,
+                               "publishEnableEnv":  "DAX_ENABLE_PUBLIC_PUBLISHING",
+                               "approvalField":  "reviewStatus=approved_for_publish",
+                               "notes":  "Attached to existing workflow. Public publishing is blocked unless explicit environment and item approval gates pass."
+                           }
+}

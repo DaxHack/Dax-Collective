@@ -57,7 +57,6 @@ const SOCIAL_SHEETS = {
 // N8N webhook configuration
 const N8N_CONFIG = {
   baseUrl: process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook',
-  apiKey: process.env.REACT_APP_N8N_API_KEY || '',
   webhooks: {
     contentGeneration: process.env.REACT_APP_N8N_WEBHOOK_CONTENT_GENERATION || '',
     socialDistribution: process.env.REACT_APP_N8N_WEBHOOK_SOCIAL_DISTRIBUTION || '',
@@ -544,8 +543,7 @@ async function triggerN8NWebhook(webhookType, data) {
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        ...(N8N_CONFIG.apiKey && { 'Authorization': `Bearer ${N8N_CONFIG.apiKey}` })
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     });
@@ -749,7 +747,8 @@ export const validateAutomationConfig = () => {
   // Validate N8N configuration
   validation.n8nConfig = {
     baseUrl: !!N8N_CONFIG.baseUrl,
-    apiKey: !!N8N_CONFIG.apiKey,
+    // Browser code supports public webhooks only.
+    apiKey: false,
     webhooks: Object.entries(N8N_CONFIG.webhooks).reduce((acc, [key, value]) => {
       acc[key] = !!value;
       return acc;

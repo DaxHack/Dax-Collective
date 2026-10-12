@@ -1,341 +1,207 @@
 // src/pages/GodsVesselPage.jsx
-// OPTIMIZED VERSION - Original styling preserved, improved functionality
+// Restored to the earlier purple/indigo/blue visual world (recovered from
+// git history, commit e4c5bad — the version before the archive-style
+// rewrite). This is a restoration, not a new interpretation: layered
+// gradient light, floating atmosphere, glass cards, smooth scroll-reveal
+// rhythm. Product content is honest — no fake shop, no fake prices, no
+// fake buy buttons, no fake testimonials. The Phase One collection concept
+// below is drawn from the real (unpublished) garment matrix in
+// planning/operations/gods-vessel-merch-production-phase1.md, which is
+// explicitly still in the design/sample phase — nothing is for sale.
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import BrandGallery from '../components/BrandGallery';
-import GodsVesselQuotesSection from '../components/GodsVesselQuotes';
+import { Link } from 'react-router-dom';
+import SixEntriesSection from '../components/SixEntriesSection';
+import FloatingBubbles from '../components/FloatingBubbles';
+import { analytics } from '../utils/analytics';
+
+// Real Phase One garment concepts — see
+// planning/operations/gods-vessel-merch-production-phase1.md. Nothing here
+// is produced, photographed, priced, or for sale yet.
+const collectionConcepts = [
+  {
+    title: 'Premium Hoodies',
+    detail: 'El Shaddai (stone) and Peace (black) — heavyweight hoodie concepts.',
+    status: 'Sample Phase'
+  },
+  {
+    title: 'Heavyweight & Washed Tees',
+    detail: 'Adonai, Grace, Faith, and Hope — tee concepts across the six-entry set.',
+    status: 'Sample Phase'
+  },
+  {
+    title: 'Phase One: Six Entries Collection',
+    detail: 'The full six-entry faithwear release, grouped as one collection.',
+    status: 'Collection in Development'
+  },
+  {
+    title: 'Devotional Study Card Deck',
+    detail: 'A printed card set carrying the same six names, definitions, and references.',
+    status: 'In Development'
+  }
+];
+
+const handleSupportClick = () => {
+  analytics.trackDonation('gods-vessel-cta', 'Support The Collective');
+  window.open('https://buymeacoffee.com/DaxCollective', '_blank', 'noopener,noreferrer');
+};
 
 const GodsVesselPage = () => {
-  const [activeSection, setActiveSection] = useState('faith');
-
-  const faithContent = [
-    {
-      id: 1,
-      title: "Walking in Purpose",
-      verse: "Jeremiah 29:11",
-      content: "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, to give you hope and a future.",
-      category: "Purpose",
-      readTime: "3 min"
-    },
-    {
-      id: 2,
-      title: "Strength in Trials",
-      verse: "Romans 8:28",
-      content: "And we know that in all things God works for the good of those who love him, who have been called according to his purpose.",
-      category: "Encouragement",
-      readTime: "4 min"
-    },
-    {
-      id: 3,
-      title: "Faith Over Fear",
-      verse: "Isaiah 41:10",
-      content: "So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand.",
-      category: "Courage",
-      readTime: "2 min"
-    }
-  ];
-
-  const apparelItems = [
-    {
-      name: "Faith Over Fear Hoodie",
-      price: "$45",
-      description: "Premium comfort with a powerful message",
-      image: "/api/placeholder/300/300",
-      colors: ["Black", "White", "Navy"]
-    },
-    {
-      name: "Blessed & Grateful Tee",
-      price: "$25",
-      description: "Soft cotton blend with inspiring design",
-      image: "/api/placeholder/300/300",
-      colors: ["Heather Gray", "White", "Sage Green"]
-    },
-    {
-      name: "Scripture Verse Cap",
-      price: "$30",
-      description: "Adjustable cap with embroidered verse",
-      image: "/api/placeholder/300/300",
-      colors: ["Black", "Khaki", "Navy"]
-    }
-  ];
-
-  const testimonies = [
-    {
-      name: "Sarah M.",
-      testimony: "God's Vessel content has been such a blessing in my daily walk. The scripture reminders and encouraging words always come at the perfect time.",
-      location: "Atlanta, GA"
-    },
-    {
-      name: "Marcus T.",
-      testimony: "Wearing my Faith Over Fear hoodie has opened so many conversations about faith. It's amazing how God uses simple things to reach others.",
-      location: "Dallas, TX"
-    },
-    {
-      name: "Jennifer L.",
-      testimony: "The daily devotionals have transformed my morning routine. Starting each day with God's word sets the tone for everything else.",
-      location: "Phoenix, AZ"
-    }
-  ];
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <>
       <Helmet>
-        <title>God's Vessel – Faith, Purpose, and Creative Light</title>
-        <meta 
-          name="description" 
-          content="A faith-based brand shining light through media, fashion, and storytelling. Glorify God through art and action." 
+        <title>God's Vessel – Faith, Scripture, and a Collection in Development</title>
+        <meta
+          name="description"
+          content="God's Vessel is a faith-based brand built around scripture and the names of God, with a faithwear collection currently in development."
         />
-        <meta property="og:title" content="God's Vessel – Faith, Purpose, and Creative Light" />
-        <meta property="og:description" content="Faith-forward content and apparel designed to inspire, uplift, and empower." />
+        <meta property="og:title" content="God's Vessel – Faith, Scripture, and a Collection in Development" />
+        <meta property="og:description" content="A faith-based brand built around scripture and the names of God." />
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white">
-        {/* Hero Section (ORIGINAL STYLING PRESERVED) */}
-        <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/40"></div>
-          <div 
-            className="h-96 bg-cover bg-center bg-no-repeat flex items-center justify-center"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('/api/placeholder/1920/600')`
-            }}
-          >
-            <div className="text-center max-w-4xl px-4 relative z-10">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  ✝️ GOD'S VESSEL
-                </h1>
-                <p className="text-xl md:text-2xl text-gray-300 mb-6">
-                  Truth. Testimony. Transformation.
-                </p>
-                <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-                  A space of truth, testimony, and transformation. From scriptures to apparel, this page is your anchor. 
-                  Support the brand, wear your faith proudly, or get content to bless your feed and your spirit.
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-blue-950 text-white relative overflow-hidden">
+        {/* Floating atmosphere — same soft-light system used across the site */}
+        <FloatingBubbles />
 
-        {/* Content Tabs (ORIGINAL STYLING PRESERVED) */}
-        <section className="py-12 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex justify-center mb-8 bg-gray-800/30 backdrop-blur-sm rounded-full p-2 border border-gray-700">
-              {[
-                { id: 'faith', label: 'Faith Content' },
-                { id: 'apparel', label: 'Faith Apparel' },
-                { id: 'testimonies', label: 'Testimonies' }
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveSection(tab.id)}
-                  className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                    activeSection === tab.id
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
+        {/* Hero — restored purple/indigo/blue world, layered light */}
+        <section className="relative py-24 px-4 text-center overflow-hidden">
+          <div
+            className="absolute inset-0 opacity-40 pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle at 50% 10%, rgba(147,51,234,0.45), transparent 55%), radial-gradient(circle at 15% 65%, rgba(99,102,241,0.35), transparent 60%), radial-gradient(circle at 85% 80%, rgba(59,130,246,0.3), transparent 55%)'
+            }}
+            aria-hidden="true"
+          />
+          <motion.div
+            className="absolute inset-0 opacity-30 pointer-events-none"
+            style={{ background: 'radial-gradient(circle at 50% 30%, rgba(168,85,247,0.3), transparent 65%)' }}
+            animate={shouldReduceMotion ? {} : { opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            aria-hidden="true"
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="relative max-w-3xl mx-auto"
+          >
+            <span className="inline-block text-xs tracking-[0.2em] uppercase text-white/60 border border-white/15 rounded-full px-4 py-1.5 mb-6">
+              Faith &middot; Scripture &middot; Faithwear
+            </span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-5">
+              <span className="bg-gradient-to-r from-purple-400 via-indigo-300 to-blue-400 bg-clip-text text-transparent">
+                God's Vessel
+              </span>
+            </h1>
+            <p className="text-lg md:text-xl text-white/60 max-w-xl mx-auto leading-relaxed">
+              Truth and testimony, built one entry at a time.
+            </p>
+          </motion.div>
+        </section>
+
+        {/* Phase One: Six Entries — devotional card deck */}
+        <SixEntriesSection />
+
+        {/* Future Collection — honest, drawn from the real Phase One garment matrix */}
+        <section className="relative py-20 px-4" aria-labelledby="collection-heading">
+          <div
+            className="absolute inset-0 opacity-25 pointer-events-none"
+            style={{ background: 'radial-gradient(circle at 30% 50%, rgba(99,102,241,0.3), transparent 60%)' }}
+            aria-hidden="true"
+          />
+          <div className="relative max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-14"
+            >
+              <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-white/50 border border-white/15 rounded-full px-4 py-1.5 mb-6">
+                The Faithwear Collection
+              </span>
+              <h2 id="collection-heading" className="text-3xl md:text-4xl font-bold mb-4">
+                Planned, Not Yet for Sale
+              </h2>
+              <p className="text-white/55 max-w-xl mx-auto leading-relaxed">
+                Every piece below is a real design direction currently in the sample and
+                approval phase — nothing here has a price, inventory, or a working checkout yet.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {collectionConcepts.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className="rounded-2xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm shadow-[0_15px_40px_-20px_rgba(99,102,241,0.4)] transition-shadow duration-300 hover:border-white/20 hover:shadow-[0_20px_50px_-15px_rgba(147,51,234,0.35)]"
                 >
-                  {tab.label}
-                </button>
+                  <span className="inline-block text-[9px] tracking-wider uppercase text-purple-300/80 border border-purple-300/25 rounded-full px-2.5 py-1 mb-4">
+                    {item.status}
+                  </span>
+                  <h3 className="text-base font-semibold text-white mb-2">{item.title}</h3>
+                  <p className="text-white/55 text-sm leading-relaxed">{item.detail}</p>
+                </motion.div>
               ))}
             </div>
 
-            {/* Faith Content Section (ORIGINAL STYLING PRESERVED) */}
-            {activeSection === 'faith' && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <GodsVesselQuotesSection maxQuotes={5} showTitle={true} />
-              </motion.div>
-            )}
-
-            {activeSection === 'faith' && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"
-              >
-                {faithContent.map((content) => (
-                  <div key={content.id} className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="bg-purple-600/30 text-purple-300 px-3 py-1 rounded-full text-sm font-semibold">
-                        {content.category}
-                      </span>
-                      <span className="text-gray-400 text-sm">{content.readTime}</span>
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-white mb-2">{content.title}</h3>
-                    <p className="text-purple-300 font-semibold mb-3">{content.verse}</p>
-                    <p className="text-gray-300 mb-4 leading-relaxed italic">"{content.content}"</p>
-                    
-                    <button className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
-                      Read Devotional
-                    </button>
-                  </div>
-                ))}
-              </motion.div>
-            )}
-
-            {/* Apparel Section (ORIGINAL STYLING PRESERVED) */}
-            {activeSection === 'apparel' && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {apparelItems.map((item, index) => (
-                  <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 hover:border-purple-500 transition-all duration-300">
-                    <img 
-                      src={item.image} 
-                      alt={item.name}
-                      className="w-full h-64 object-cover"
-                    />
-                    
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-2">{item.name}</h3>
-                      <p className="text-gray-300 mb-3">{item.description}</p>
-                      
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-2xl font-bold text-purple-400">{item.price}</span>
-                        <div className="flex gap-2">
-                          {item.colors.map((color, idx) => (
-                            <div 
-                              key={idx}
-                              className="w-6 h-6 rounded-full border-2 border-gray-600"
-                              style={{ 
-                                backgroundColor: color.toLowerCase() === 'white' ? '#ffffff' : 
-                                               color.toLowerCase() === 'black' ? '#000000' :
-                                               color.toLowerCase() === 'navy' ? '#1e3a8a' :
-                                               color.toLowerCase() === 'heather gray' ? '#9ca3af' :
-                                               color.toLowerCase() === 'sage green' ? '#84cc16' :
-                                               color.toLowerCase() === 'khaki' ? '#d2b48c' : '#6b7280'
-                              }}
-                            ></div>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-2 rounded-lg font-semibold transition-all duration-300">
-                        Shop Now
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            )}
-
-            {/* Testimonies Section (ORIGINAL STYLING PRESERVED) */}
-            {activeSection === 'testimonies' && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="space-y-6"
-              >
-                {testimonies.map((testimony, index) => (
-                  <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                        {testimony.name.charAt(0)}
-                      </div>
-                      
-                      <div className="flex-1">
-                        <blockquote className="text-gray-300 text-lg italic mb-4 leading-relaxed">
-                          "{testimony.testimony}"
-                        </blockquote>
-                        
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="text-white font-semibold">{testimony.name}</p>
-                            <p className="text-gray-400 text-sm">{testimony.location}</p>
-                          </div>
-                          
-                          <div className="flex text-yellow-400">
-                            {[...Array(5)].map((_, i) => (
-                              <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-                              </svg>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                <div className="text-center mt-8">
-                  <button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                    Share Your Testimony
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </div>
-        </section>
-
-        {/* OPTIMIZED BrandGallery Section */}
-        <section className="py-12 px-4">
-          <div className="max-w-6xl mx-auto mb-12">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-              className="text-3xl font-bold text-white mb-6 text-center"
-            >
-              God's Vessel Gallery
-            </motion.h2>
-            
-            {/* OPTIMIZED: Use brand prop instead of folderId */}
-            <div className="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-              <BrandGallery 
-                brand="gods-vessel"
-                category="faith"
-                maxImages={12}
-                layout="grid"
-                showControls={true}
-                enableUpload={false}
-                className="faith-gallery"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Call to Action (ORIGINAL STYLING PRESERVED) */}
-        <section className="py-16 px-4 bg-black/20">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Walk by Faith, Not by Sight</h2>
-            <p className="text-gray-300 mb-8 text-lg">
-              Join our community of believers and let your faith shine through every aspect of your life.
+            <p className="text-center text-white/35 text-sm mt-10 max-w-lg mx-auto">
+              No items are listed for sale. When the collection opens, pieces will appear here
+              with real photography, real pricing, and a real checkout — not before.
             </p>
-            
-            <div className="grid md:grid-cols-3 gap-8 mb-8">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-purple-400 mb-2">10K+</div>
-                <div className="text-gray-400">Faithful Followers</div>
+          </div>
+        </section>
+
+        {/* Call to Action — honest, layered glow matching the restored atmosphere */}
+        <section className="px-4 py-20" aria-labelledby="cta-heading">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6 }}
+              className="relative"
+            >
+              <motion.div
+                className="absolute inset-0 -m-8 rounded-3xl blur-xl opacity-40 pointer-events-none"
+                style={{ background: 'radial-gradient(circle, rgba(147,51,234,0.2), rgba(99,102,241,0.15) 55%, transparent 80%)' }}
+                animate={shouldReduceMotion ? {} : { scale: [1, 1.02, 1], opacity: [0.3, 0.45, 0.3] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                aria-hidden="true"
+              />
+              <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-12 border border-white/10">
+                <h2 id="cta-heading" className="text-2xl md:text-3xl font-bold text-white mb-4">
+                  Follow the Build
+                </h2>
+                <p className="text-white/55 mb-8">
+                  God's Vessel is early. Support the wider Dax Collective studio, or explore
+                  what's already live across the other brands.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-4">
+                  <button
+                    onClick={handleSupportClick}
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 px-7 rounded-full text-base transition-all duration-300 shadow-lg"
+                  >
+                    Support the Collective
+                  </button>
+                  <Link
+                    to="/"
+                    className="border border-white/20 hover:border-white/40 text-white/80 hover:text-white font-medium py-3 px-7 rounded-full text-base transition-colors duration-300"
+                  >
+                    Back to The Dax Collective
+                  </Link>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-blue-400 mb-2">500+</div>
-                <div className="text-gray-400">Lives Transformed</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-purple-400 mb-2">∞</div>
-                <div className="text-gray-400">God's Love</div>
-              </div>
-            </div>
-            
-            <button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-              Join the Movement
-            </button>
+            </motion.div>
           </div>
         </section>
       </div>
@@ -344,4 +210,3 @@ const GodsVesselPage = () => {
 };
 
 export default GodsVesselPage;
-

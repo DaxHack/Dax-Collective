@@ -1,497 +1,620 @@
-{
-  "name": "Multi-Format Video Creator with FFmpeg",
-  "nodes": [
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "create-video",
-        "responseMode": "responseNode",
-        "options": {}
-      },
-      "id": "webhook_trigger",
-      "name": "Webhook Trigger",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 1,
-      "position": [240, 300],
-      "webhookId": "create-video-webhook"
-    },
-    {
-      "parameters": {
-        "authentication": "serviceAccount",
-        "resource": "sheet",
-        "operation": "read",
-        "documentId": "={{ $json.body.sheetId }}",
-        "sheetName": "Sheet1",
-        "range": "={{ 'A' + $json.body.rowNumber + ':Z' + $json.body.rowNumber }}",
-        "options": {
-          "valueInputOption": "USER_ENTERED"
-        }
-      },
-      "id": "read_content_data",
-      "name": "Read Content Data",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4,
-      "position": [460, 300],
-      "credentials": {
-        "googleSheetsApi": {
-          "id": "google_sheets_api",
-          "name": "Google Sheets API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict"
-          },
-          "conditions": [
-            {
-              "id": "check_format",
-              "leftValue": "={{ $json.Video_Format }}",
-              "rightValue": "short",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "format_router",
-      "name": "Format Router",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [680, 300]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.deepseek.com/v1/chat/completions",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "Bearer {{ $env.DEEPSEEK_API_KEY }}"
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "model",
-              "value": "deepseek-chat"
-            },
-            {
-              "name": "messages",
-              "value": "[{\"role\": \"user\", \"content\": \"{{ $json.Script_Prompt }} Create a {{ $json.Video_Length }}-second {{ $json.Video_Format }} video script for {{ $json.Brand }}. Make it highly engaging and viral-worthy. Include hooks, emotional triggers, and clear call-to-action.\"}]"
-            },
-            {
-              "name": "max_tokens",
-              "value": 800
-            },
-            {
-              "name": "temperature",
-              "value": 0.8
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "generate_script",
-      "name": "Generate Script",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.1,
-      "position": [900, 200]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.elevenlabs.io/v1/text-to-speech/{{ $json.Voice_ID }}",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "xi-api-key",
-              "value": "{{ $env.ELEVENLABS_API_KEY }}"
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "text",
-              "value": "={{ $('Generate Script').item.json.choices[0].message.content }}"
-            },
-            {
-              "name": "model_id",
-              "value": "eleven_multilingual_v2"
-            },
-            {
-              "name": "voice_settings",
-              "value": "{\"stability\": 0.75, \"similarity_boost\": 0.85, \"style\": 0.4, \"use_speaker_boost\": true}"
-            }
-          ]
-        },
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "file"
-            }
-          }
-        }
-      },
-      "id": "generate_voice",
-      "name": "Generate Voice",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.1,
-      "position": [1120, 200]
-    },
-    {
-      "parameters": {
-        "command": "python3 /app/scripts/create_video.py",
-        "additionalFlags": {
-          "flags": [
-            "--script=\"{{ $('Generate Script').item.json.choices[0].message.content }}\"",
-            "--audio-file=\"{{ $('Generate Voice').item.binary.data }}\"",
-            "--title=\"{{ $json.Video_Title }}\"",
-            "--format=\"{{ $json.Video_Format }}\"",
-            "--brand=\"{{ $json.Brand }}\"",
-            "--viral-score=\"{{ $json.Viral_Score }}\"",
-            "--output-dir=\"/app/output/videos\""
-          ]
-        }
-      },
-      "id": "create_short_video",
-      "name": "Create Short Video",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1340, 120]
-    },
-    {
-      "parameters": {
-        "command": "python3 /app/scripts/create_longform_video.py",
-        "additionalFlags": {
-          "flags": [
-            "--script=\"{{ $('Generate Script').item.json.choices[0].message.content }}\"",
-            "--audio-file=\"{{ $('Generate Voice').item.binary.data }}\"",
-            "--title=\"{{ $json.Video_Title }}\"",
-            "--format=\"{{ $json.Video_Format }}\"",
-            "--brand=\"{{ $json.Brand }}\"",
-            "--duration=\"{{ $json.Video_Length }}\"",
-            "--output-dir=\"/app/output/videos\""
-          ]
-        }
-      },
-      "id": "create_longform_video",
-      "name": "Create Longform Video",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1340, 280]
-    },
-    {
-      "parameters": {
-        "command": "ffmpeg",
-        "additionalFlags": {
-          "flags": [
-            "-i", "/app/output/videos/{{ $json.Video_Title }}.mp4",
-            "-vf", "scale=1080:1920,setsar=1:1",
-            "-c:v", "libx264",
-            "-c:a", "aac",
-            "-b:v", "2M",
-            "-b:a", "128k",
-            "-movflags", "+faststart",
-            "/app/output/videos/{{ $json.Video_Title }}_portrait.mp4"
-          ]
-        }
-      },
-      "id": "convert_to_portrait",
-      "name": "Convert to Portrait",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1560, 120]
-    },
-    {
-      "parameters": {
-        "command": "ffmpeg",
-        "additionalFlags": {
-          "flags": [
-            "-i", "/app/output/videos/{{ $json.Video_Title }}.mp4",
-            "-vf", "scale=1920:1080,setsar=1:1",
-            "-c:v", "libx264",
-            "-c:a", "aac",
-            "-b:v", "4M",
-            "-b:a", "192k",
-            "-movflags", "+faststart",
-            "/app/output/videos/{{ $json.Video_Title }}_landscape.mp4"
-          ]
-        }
-      },
-      "id": "convert_to_landscape",
-      "name": "Convert to Landscape",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1560, 280]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "http://localhost:3001/api/upload-to-platforms",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "videoPath",
-              "value": "/app/output/videos/{{ $json.Video_Title }}_{{ $json.Video_Format === 'short' ? 'portrait' : 'landscape' }}.mp4"
-            },
-            {
-              "name": "title",
-              "value": "{{ $json.Video_Title }}"
-            },
-            {
-              "name": "description",
-              "value": "{{ $('Generate Script').item.json.choices[0].message.content }}"
-            },
-            {
-              "name": "tags",
-              "value": "{{ $json.SEO_Keywords }}"
-            },
-            {
-              "name": "platforms",
-              "value": "{{ $json.Target_Platforms }}"
-            },
-            {
-              "name": "brand",
-              "value": "{{ $json.Brand }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "upload_to_platforms",
-      "name": "Upload to Platforms",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.1,
-      "position": [1780, 200]
-    },
-    {
-      "parameters": {
-        "authentication": "serviceAccount",
-        "resource": "sheet",
-        "operation": "update",
-        "documentId": "={{ $json.body.sheetId }}",
-        "sheetName": "Sheet1",
-        "range": "={{ 'I' + $json.body.rowNumber }}",
-        "options": {
-          "valueInputOption": "USER_ENTERED"
-        },
-        "dataToSend": "defineInNode",
-        "valueToSend": "uploaded"
-      },
-      "id": "update_sheet_status",
-      "name": "Update Sheet Status",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4,
-      "position": [2000, 200],
-      "credentials": {
-        "googleSheetsApi": {
-          "id": "google_sheets_api",
-          "name": "Google Sheets API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "{{ $env.DISCORD_WEBHOOK_URL }}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "content",
-              "value": "🎬 **Video Created & Uploaded!**\\n\\n**Brand:** {{ $json.Brand }}\\n**Title:** {{ $json.Video_Title }}\\n**Format:** {{ $json.Video_Format }}\\n**Platforms:** {{ $json.Target_Platforms }}\\n**Viral Score:** {{ $json.Viral_Score }}/100\\n\\n✅ Ready for engagement!"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "success_notification",
-      "name": "Success Notification",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.1,
-      "position": [2220, 200]
-    }
-  ],
-  "connections": {
-    "Webhook Trigger": {
-      "main": [
-        [
-          {
-            "node": "Read Content Data",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Read Content Data": {
-      "main": [
-        [
-          {
-            "node": "Format Router",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Format Router": {
-      "main": [
-        [
-          {
-            "node": "Generate Script",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Generate Script",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Generate Script": {
-      "main": [
-        [
-          {
-            "node": "Generate Voice",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Generate Voice": {
-      "main": [
-        [
-          {
-            "node": "Create Short Video",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Create Longform Video",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Short Video": {
-      "main": [
-        [
-          {
-            "node": "Convert to Portrait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Longform Video": {
-      "main": [
-        [
-          {
-            "node": "Convert to Landscape",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert to Portrait": {
-      "main": [
-        [
-          {
-            "node": "Upload to Platforms",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert to Landscape": {
-      "main": [
-        [
-          {
-            "node": "Upload to Platforms",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Upload to Platforms": {
-      "main": [
-        [
-          {
-            "node": "Update Sheet Status",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update Sheet Status": {
-      "main": [
-        [
-          {
-            "node": "Success Notification",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    }
-  },
-  "pinData": {},
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "staticData": null,
-  "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-01-09T00:00:00.000Z",
-  "versionId": "1"
+﻿{
+    "name":  "Multi-Format Video Creator with FFmpeg",
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "httpMethod":  "POST",
+                                         "path":  "create-video",
+                                         "responseMode":  "responseNode",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "webhook_trigger",
+                      "name":  "Webhook Trigger",
+                      "type":  "n8n-nodes-base.webhook",
+                      "typeVersion":  1,
+                      "position":  [
+                                       240,
+                                       300
+                                   ],
+                      "webhookId":  "create-video-webhook"
+                  },
+                  {
+                      "parameters":  {
+                                         "authentication":  "serviceAccount",
+                                         "resource":  "sheet",
+                                         "operation":  "read",
+                                         "documentId":  "={{ $json.body.sheetId }}",
+                                         "sheetName":  "Sheet1",
+                                         "range":  "={{ \u0027A\u0027 + $json.body.rowNumber + \u0027:Z\u0027 + $json.body.rowNumber }}",
+                                         "options":  {
+                                                         "valueInputOption":  "USER_ENTERED"
+                                                     }
+                                     },
+                      "id":  "read_content_data",
+                      "name":  "Read Content Data",
+                      "type":  "n8n-nodes-base.googleSheets",
+                      "typeVersion":  4,
+                      "position":  [
+                                       460,
+                                       300
+                                   ],
+                      "credentials":  {
+                                          "googleSheetsApi":  {
+                                                                  "id":  "google_sheets_api",
+                                                                  "name":  "Google Sheets API"
+                                                              }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "options":  {
+                                                                            "caseSensitive":  true,
+                                                                            "leftValue":  "",
+                                                                            "typeValidation":  "strict"
+                                                                        },
+                                                            "conditions":  [
+                                                                               {
+                                                                                   "id":  "check_format",
+                                                                                   "leftValue":  "={{ $json.Video_Format }}",
+                                                                                   "rightValue":  "short",
+                                                                                   "operator":  {
+                                                                                                    "type":  "string",
+                                                                                                    "operation":  "equals"
+                                                                                                }
+                                                                               }
+                                                                           ],
+                                                            "combinator":  "and"
+                                                        },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "format_router",
+                      "name":  "Format Router",
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  2,
+                      "position":  [
+                                       680,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "method":  "POST",
+                                         "url":  "https://api.deepseek.com/v1/chat/completions",
+                                         "authentication":  "predefinedCredentialType",
+                                         "nodeCredentialType":  "httpHeaderAuth",
+                                         "sendHeaders":  true,
+                                         "headerParameters":  {
+                                                                  "parameters":  [
+                                                                                     {
+                                                                                         "name":  "Authorization",
+                                                                                         "value":  "Bearer {{ $env.DEEPSEEK_API_KEY }}"
+                                                                                     },
+                                                                                     {
+                                                                                         "name":  "Content-Type",
+                                                                                         "value":  "application/json"
+                                                                                     }
+                                                                                 ]
+                                                              },
+                                         "sendBody":  true,
+                                         "bodyParameters":  {
+                                                                "parameters":  [
+                                                                                   {
+                                                                                       "name":  "model",
+                                                                                       "value":  "deepseek-chat"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "messages",
+                                                                                       "value":  "[{\"role\": \"user\", \"content\": \"{{ $json.Script_Prompt }} Create a {{ $json.Video_Length }}-second {{ $json.Video_Format }} video script for {{ $json.Brand }}. Make it highly engaging and viral-worthy. Include hooks, emotional triggers, and clear call-to-action.\"}]"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "max_tokens",
+                                                                                       "value":  800
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "temperature",
+                                                                                       "value":  0.8
+                                                                                   }
+                                                                               ]
+                                                            },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "generate_script",
+                      "name":  "Generate Script",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       900,
+                                       200
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "method":  "POST",
+                                         "url":  "https://api.elevenlabs.io/v1/text-to-speech/{{ $json.Voice_ID }}",
+                                         "authentication":  "predefinedCredentialType",
+                                         "nodeCredentialType":  "httpHeaderAuth",
+                                         "sendHeaders":  true,
+                                         "headerParameters":  {
+                                                                  "parameters":  [
+                                                                                     {
+                                                                                         "name":  "xi-api-key",
+                                                                                         "value":  "{{ $env.ELEVENLABS_API_KEY }}"
+                                                                                     },
+                                                                                     {
+                                                                                         "name":  "Content-Type",
+                                                                                         "value":  "application/json"
+                                                                                     }
+                                                                                 ]
+                                                              },
+                                         "sendBody":  true,
+                                         "bodyParameters":  {
+                                                                "parameters":  [
+                                                                                   {
+                                                                                       "name":  "text",
+                                                                                       "value":  "={{ $(\u0027Generate Script\u0027).item.json.choices[0].message.content }}"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "model_id",
+                                                                                       "value":  "eleven_multilingual_v2"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "voice_settings",
+                                                                                       "value":  "{\"stability\": 0.75, \"similarity_boost\": 0.85, \"style\": 0.4, \"use_speaker_boost\": true}"
+                                                                                   }
+                                                                               ]
+                                                            },
+                                         "options":  {
+                                                         "response":  {
+                                                                          "response":  {
+                                                                                           "responseFormat":  "file"
+                                                                                       }
+                                                                      }
+                                                     }
+                                     },
+                      "id":  "generate_voice",
+                      "name":  "Generate Voice",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       1120,
+                                       200
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "command":  "python3 /app/scripts/create_video.py",
+                                         "additionalFlags":  {
+                                                                 "flags":  [
+                                                                               "--script=\"{{ $(\u0027Generate Script\u0027).item.json.choices[0].message.content }}\"",
+                                                                               "--audio-file=\"{{ $(\u0027Generate Voice\u0027).item.binary.data }}\"",
+                                                                               "--title=\"{{ $json.Video_Title }}\"",
+                                                                               "--format=\"{{ $json.Video_Format }}\"",
+                                                                               "--brand=\"{{ $json.Brand }}\"",
+                                                                               "--viral-score=\"{{ $json.Viral_Score }}\"",
+                                                                               "--output-dir=\"/app/output/videos\""
+                                                                           ]
+                                                             }
+                                     },
+                      "id":  "create_short_video",
+                      "name":  "Create Short Video",
+                      "type":  "n8n-nodes-base.executeCommand",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1340,
+                                       120
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "command":  "python3 /app/scripts/create_longform_video.py",
+                                         "additionalFlags":  {
+                                                                 "flags":  [
+                                                                               "--script=\"{{ $(\u0027Generate Script\u0027).item.json.choices[0].message.content }}\"",
+                                                                               "--audio-file=\"{{ $(\u0027Generate Voice\u0027).item.binary.data }}\"",
+                                                                               "--title=\"{{ $json.Video_Title }}\"",
+                                                                               "--format=\"{{ $json.Video_Format }}\"",
+                                                                               "--brand=\"{{ $json.Brand }}\"",
+                                                                               "--duration=\"{{ $json.Video_Length }}\"",
+                                                                               "--output-dir=\"/app/output/videos\""
+                                                                           ]
+                                                             }
+                                     },
+                      "id":  "create_longform_video",
+                      "name":  "Create Longform Video",
+                      "type":  "n8n-nodes-base.executeCommand",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1340,
+                                       280
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "command":  "ffmpeg",
+                                         "additionalFlags":  {
+                                                                 "flags":  [
+                                                                               "-i",
+                                                                               "/app/output/videos/{{ $json.Video_Title }}.mp4",
+                                                                               "-vf",
+                                                                               "scale=1080:1920,setsar=1:1",
+                                                                               "-c:v",
+                                                                               "libx264",
+                                                                               "-c:a",
+                                                                               "aac",
+                                                                               "-b:v",
+                                                                               "2M",
+                                                                               "-b:a",
+                                                                               "128k",
+                                                                               "-movflags",
+                                                                               "+faststart",
+                                                                               "/app/output/videos/{{ $json.Video_Title }}_portrait.mp4"
+                                                                           ]
+                                                             }
+                                     },
+                      "id":  "convert_to_portrait",
+                      "name":  "Convert to Portrait",
+                      "type":  "n8n-nodes-base.executeCommand",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1560,
+                                       120
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "command":  "ffmpeg",
+                                         "additionalFlags":  {
+                                                                 "flags":  [
+                                                                               "-i",
+                                                                               "/app/output/videos/{{ $json.Video_Title }}.mp4",
+                                                                               "-vf",
+                                                                               "scale=1920:1080,setsar=1:1",
+                                                                               "-c:v",
+                                                                               "libx264",
+                                                                               "-c:a",
+                                                                               "aac",
+                                                                               "-b:v",
+                                                                               "4M",
+                                                                               "-b:a",
+                                                                               "192k",
+                                                                               "-movflags",
+                                                                               "+faststart",
+                                                                               "/app/output/videos/{{ $json.Video_Title }}_landscape.mp4"
+                                                                           ]
+                                                             }
+                                     },
+                      "id":  "convert_to_landscape",
+                      "name":  "Convert to Landscape",
+                      "type":  "n8n-nodes-base.executeCommand",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1560,
+                                       280
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "method":  "POST",
+                                         "url":  "http://localhost:3001/api/upload-to-platforms",
+                                         "sendHeaders":  true,
+                                         "headerParameters":  {
+                                                                  "parameters":  [
+                                                                                     {
+                                                                                         "name":  "Content-Type",
+                                                                                         "value":  "application/json"
+                                                                                     }
+                                                                                 ]
+                                                              },
+                                         "sendBody":  true,
+                                         "bodyParameters":  {
+                                                                "parameters":  [
+                                                                                   {
+                                                                                       "name":  "videoPath",
+                                                                                       "value":  "/app/output/videos/{{ $json.Video_Title }}_{{ $json.Video_Format === \u0027short\u0027 ? \u0027portrait\u0027 : \u0027landscape\u0027 }}.mp4"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "title",
+                                                                                       "value":  "{{ $json.Video_Title }}"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "description",
+                                                                                       "value":  "{{ $(\u0027Generate Script\u0027).item.json.choices[0].message.content }}"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "tags",
+                                                                                       "value":  "{{ $json.SEO_Keywords }}"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "platforms",
+                                                                                       "value":  "{{ $json.Target_Platforms }}"
+                                                                                   },
+                                                                                   {
+                                                                                       "name":  "brand",
+                                                                                       "value":  "{{ $json.Brand }}"
+                                                                                   }
+                                                                               ]
+                                                            },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "upload_to_platforms",
+                      "name":  "Upload to Platforms",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       1780,
+                                       200
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "authentication":  "serviceAccount",
+                                         "resource":  "sheet",
+                                         "operation":  "update",
+                                         "documentId":  "={{ $json.body.sheetId }}",
+                                         "sheetName":  "Sheet1",
+                                         "range":  "={{ \u0027I\u0027 + $json.body.rowNumber }}",
+                                         "options":  {
+                                                         "valueInputOption":  "USER_ENTERED"
+                                                     },
+                                         "dataToSend":  "defineInNode",
+                                         "valueToSend":  "uploaded"
+                                     },
+                      "id":  "update_sheet_status",
+                      "name":  "Update Sheet Status",
+                      "type":  "n8n-nodes-base.googleSheets",
+                      "typeVersion":  4,
+                      "position":  [
+                                       2000,
+                                       200
+                                   ],
+                      "credentials":  {
+                                          "googleSheetsApi":  {
+                                                                  "id":  "google_sheets_api",
+                                                                  "name":  "Google Sheets API"
+                                                              }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "method":  "POST",
+                                         "url":  "{{ $env.DISCORD_WEBHOOK_URL }}",
+                                         "sendBody":  true,
+                                         "bodyParameters":  {
+                                                                "parameters":  [
+                                                                                   {
+                                                                                       "name":  "content",
+                                                                                       "value":  "ðŸŽ¬ **Video Created \u0026 Uploaded!**\\n\\n**Brand:** {{ $json.Brand }}\\n**Title:** {{ $json.Video_Title }}\\n**Format:** {{ $json.Video_Format }}\\n**Platforms:** {{ $json.Target_Platforms }}\\n**Viral Score:** {{ $json.Viral_Score }}/100\\n\\nâœ… Ready for engagement!"
+                                                                                   }
+                                                                               ]
+                                                            },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "success_notification",
+                      "name":  "Success Notification",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       2220,
+                                       200
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "content":  "DAX Agent Attachment\nMode: manual_review_first\nAgents: operations_director_agent, compliance_qa_agent, video_concept_agent, scriptwriting_agent, video_production_agent\nOutputs: videos\nPublishing requires DAX_ENABLE_PUBLIC_PUBLISHING=true and reviewStatus=approved_for_publish.",
+                                         "height":  260,
+                                         "width":  420,
+                                         "color":  5
+                                     },
+                      "id":  "dax-agent-attachment-note",
+                      "name":  "DAX Agent Attachment",
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "typeVersion":  1,
+                      "position":  [
+                                       -160,
+                                       -80
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "const enabled = $env.DAX_ENABLE_PUBLIC_PUBLISHING === \u0027true\u0027;\nconst approvedValues = [\u0027approved_for_publish\u0027, \u0027approved\u0027, \u0027ready_to_publish\u0027];\nreturn $input.all().filter((item) =\u003e {\n  const data = item.json || {};\n  const approved = data.approvedForPublish === true || approvedValues.includes(data.reviewStatus) || approvedValues.includes(data.review_status) || approvedValues.includes(data.approvalStatus);\n  return enabled \u0026\u0026 approved;\n}).map((item) =\u003e {\n  item.json.daxPublishingGuard = { passed: true, checkedAt: new Date().toISOString(), targetNode: \u0027Upload to Platforms\u0027 };\n  return item;\n});"
+                                     },
+                      "id":  "dax-publish-guard-upload-to-platforms",
+                      "name":  "DAX Publish Guard - Upload to Platforms",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1520,
+                                       200
+                                   ]
+                  }
+              ],
+    "connections":  {
+                        "Webhook Trigger":  {
+                                                "main":  [
+                                                             [
+                                                                 {
+                                                                     "node":  "Read Content Data",
+                                                                     "type":  "main",
+                                                                     "index":  0
+                                                                 }
+                                                             ]
+                                                         ]
+                                            },
+                        "Read Content Data":  {
+                                                  "main":  [
+                                                               [
+                                                                   {
+                                                                       "node":  "Format Router",
+                                                                       "type":  "main",
+                                                                       "index":  0
+                                                                   }
+                                                               ]
+                                                           ]
+                                              },
+                        "Format Router":  {
+                                              "main":  [
+                                                           [
+                                                               {
+                                                                   "node":  "Generate Script",
+                                                                   "type":  "main",
+                                                                   "index":  0
+                                                               }
+                                                           ],
+                                                           [
+                                                               {
+                                                                   "node":  "Generate Script",
+                                                                   "type":  "main",
+                                                                   "index":  0
+                                                               }
+                                                           ]
+                                                       ]
+                                          },
+                        "Generate Script":  {
+                                                "main":  [
+                                                             [
+                                                                 {
+                                                                     "node":  "Generate Voice",
+                                                                     "type":  "main",
+                                                                     "index":  0
+                                                                 }
+                                                             ]
+                                                         ]
+                                            },
+                        "Generate Voice":  {
+                                               "main":  [
+                                                            [
+                                                                {
+                                                                    "node":  "Create Short Video",
+                                                                    "type":  "main",
+                                                                    "index":  0
+                                                                }
+                                                            ],
+                                                            [
+                                                                {
+                                                                    "node":  "Create Longform Video",
+                                                                    "type":  "main",
+                                                                    "index":  0
+                                                                }
+                                                            ]
+                                                        ]
+                                           },
+                        "Create Short Video":  {
+                                                   "main":  [
+                                                                [
+                                                                    {
+                                                                        "node":  "Convert to Portrait",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    }
+                                                                ]
+                                                            ]
+                                               },
+                        "Create Longform Video":  {
+                                                      "main":  [
+                                                                   [
+                                                                       {
+                                                                           "node":  "Convert to Landscape",
+                                                                           "type":  "main",
+                                                                           "index":  0
+                                                                       }
+                                                                   ]
+                                                               ]
+                                                  },
+                        "Convert to Portrait":  {
+                                                    "main":  [
+                                                                 [
+                                                                     {
+                                                                         "node":  "DAX Publish Guard - Upload to Platforms",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     }
+                                                                 ]
+                                                             ]
+                                                },
+                        "Convert to Landscape":  {
+                                                     "main":  [
+                                                                  [
+                                                                      {
+                                                                          "node":  "DAX Publish Guard - Upload to Platforms",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ]
+                                                              ]
+                                                 },
+                        "Upload to Platforms":  {
+                                                    "main":  [
+                                                                 [
+                                                                     {
+                                                                         "node":  "Update Sheet Status",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     }
+                                                                 ]
+                                                             ]
+                                                },
+                        "Update Sheet Status":  {
+                                                    "main":  [
+                                                                 [
+                                                                     {
+                                                                         "node":  "Success Notification",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     }
+                                                                 ]
+                                                             ]
+                                                },
+                        "DAX Publish Guard - Upload to Platforms":  {
+                                                                        "main":  [
+                                                                                     {
+                                                                                         "node":  "Upload to Platforms",
+                                                                                         "type":  "main",
+                                                                                         "index":  0
+                                                                                     }
+                                                                                 ]
+                                                                    }
+                    },
+    "pinData":  {
+
+                },
+    "settings":  {
+                     "executionOrder":  "v1"
+                 },
+    "staticData":  null,
+    "tags":  [
+
+             ],
+    "triggerCount":  0,
+    "updatedAt":  "2025-01-09T00:00:00.000Z",
+    "versionId":  "1",
+    "daxAgentAttachment":  {
+                               "attachedAt":  "2026-06-03",
+                               "mode":  "manual_review_first",
+                               "primaryAgents":  [
+                                                     "operations_director_agent",
+                                                     "compliance_qa_agent",
+                                                     "video_concept_agent",
+                                                     "scriptwriting_agent",
+                                                     "video_production_agent"
+                                                 ],
+                               "outputTypes":  [
+                                                   "videos"
+                                               ],
+                               "requiresManualApproval":  true,
+                               "publishAllowedByDefault":  false,
+                               "publishEnableEnv":  "DAX_ENABLE_PUBLIC_PUBLISHING",
+                               "approvalField":  "reviewStatus=approved_for_publish",
+                               "notes":  "Attached to existing workflow. Public publishing is blocked unless explicit environment and item approval gates pass."
+                           }
 }
