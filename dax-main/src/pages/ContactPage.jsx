@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { EnvelopeIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
 const TOPICS = [
   'General question',
@@ -12,6 +12,19 @@ const TOPICS = [
   'Press or media',
   'Something else',
 ];
+
+// There is no backend contact endpoint, so this form does not send anything
+// itself. It prepares a draft in the visitor's own email app and says so; it
+// never claims a message was received.
+const CONTACT_EMAIL = 'hello@daxcollective.com';
+
+const buildMailto = ({ name, email, topic, message }) => {
+  const subject = `[Dax Collective] ${topic || 'General question'}`;
+  const body = [message, '', name ? `— ${name}` : null, `Reply to: ${email}`]
+    .filter((line) => line !== null)
+    .join('\n');
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
 
 const ContactPage = () => {
   const [form, setForm] = useState({ name: '', email: '', topic: '', message: '' });
@@ -29,6 +42,7 @@ const ContactPage = () => {
       return;
     }
     setError('');
+    window.location.href = buildMailto(form);
     setSubmitted(true);
   };
 
@@ -57,17 +71,25 @@ const ContactPage = () => {
 
           {submitted ? (
             <div className="bg-gray-800/50 border border-gray-700 rounded-2xl p-10 text-center">
-              <CheckCircleIcon className="h-12 w-12 text-green-400 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-white mb-2">Message received</h2>
+              <EnvelopeIcon className="h-12 w-12 text-blue-400 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-white mb-2">Finish in your email app</h2>
               <p className="text-gray-400">
-                We'll get back to you at <span className="text-white">{form.email}</span> within a
-                few business days.
+                We opened a draft addressed to{' '}
+                <span className="text-white">{CONTACT_EMAIL}</span>. Your message is not sent until
+                you send it from there.
+              </p>
+              <p className="mt-3 text-gray-400 text-sm">
+                Nothing opened?{' '}
+                <a href={buildMailto(form)} className="text-blue-400 hover:underline">
+                  Open the draft again
+                </a>{' '}
+                or email us directly at that address.
               </p>
               <button
                 onClick={() => { setSubmitted(false); setForm({ name: '', email: '', topic: '', message: '' }); }}
                 className="mt-6 text-sm text-blue-400 hover:underline"
               >
-                Send another message
+                Write another message
               </button>
             </div>
           ) : (
@@ -139,10 +161,11 @@ const ContactPage = () => {
                 className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors"
               >
                 <EnvelopeIcon className="h-4 w-4" />
-                Send Message
+                Continue in Email
               </button>
 
               <p className="text-xs text-gray-500 text-center">
+                This opens a draft in your email app — nothing is sent from this page.
                 We do not sell or share contact information.{' '}
                 <a href="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</a>
               </p>

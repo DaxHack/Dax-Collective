@@ -21,6 +21,7 @@ const Footer = () => {
     ],
     legal: [
       { name: 'Privacy Policy', to: '/privacy' },
+      { name: 'Terms of Service', to: '/terms' },
       { name: 'Affiliate Disclosure', to: '/disclosure' },
     ],
     social: daxCollectiveSocialLinks,
@@ -98,14 +99,22 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Your email"
-                className="min-w-0 flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:border-blue-500 text-white placeholder-gray-500 text-sm"
+                aria-label="Email address"
+                disabled
+                className="min-w-0 flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:border-blue-500 text-white placeholder-gray-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               />
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-r-lg font-semibold transition-colors duration-300 text-sm">
-                Go
+              {/* No email-updates service is connected yet, so this stays disabled
+                  rather than accepting an address that would go nowhere. */}
+              <button
+                type="button"
+                disabled
+                className="px-4 py-2 bg-blue-600 rounded-r-lg font-semibold text-sm opacity-50 cursor-not-allowed"
+              >
+                Soon
               </button>
             </div>
-            <p className="mt-2 text-xs text-gray-600">
-              No spam.{' '}
+            <p className="mt-2 text-xs text-gray-500">
+              Email updates aren&rsquo;t open yet.{' '}
               <Link to="/privacy" className="hover:text-gray-400">Privacy Policy.</Link>
             </p>
           </div>

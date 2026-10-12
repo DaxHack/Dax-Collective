@@ -31,6 +31,7 @@
     "lint:v3": "eslint src/App.jsx src/pages/experiments/universe-v3 --max-warnings 0",
     "test:v3": "react-scripts test --watchAll=false --runInBand --testPathPattern=universe-v3",
     "test:admin-client": "react-scripts test --watchAll=false --runInBand --testPathPattern=adminClientWiring",
+    "test:site": "react-scripts test --watchAll=false --runInBand --testPathPattern=__tests__",
     "format": "prettier --write \"src/**/*.{js,jsx,css,md}\""
   },
   "eslintConfig": {

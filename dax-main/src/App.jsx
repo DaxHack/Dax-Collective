@@ -19,6 +19,7 @@ import BlogPostPage from './pages/BlogPostPage'
 import ResourcesPage from './pages/ResourcesPage'
 import DisclosurePage from './pages/DisclosurePage'
 import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
 import ContactPage from './pages/ContactPage'
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -93,8 +94,7 @@ function App() {
                   {/* Legal */}
                   <Route path="/privacy" element={<PrivacyPage />} />
                   <Route path="/disclosure" element={<DisclosurePage />} />
-                  {/* Legacy alias */}
-                  <Route path="/terms" element={<DisclosurePage />} />
+                  <Route path="/terms" element={<TermsPage />} />
 
                   {/* Internal */}
                   <Route path="/automation" element={<Dashboard />} />
