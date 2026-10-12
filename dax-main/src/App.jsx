@@ -11,7 +11,6 @@ import TimeZoneTravelersPage from './pages/TimeZoneTravelersPage'
 import GodsVesselPage from './pages/GodsVesselPage'
 import GodsVesselMerchPage from './pages/GodsVesselMerchPage'
 import Dashboard from './pages/Dashboard'
-import DaxTheInvestorPage from './pages/DaxTheInvestorPage'
 import AboutPage from './pages/AboutPage'
 import BrandsPage from './pages/BrandsPage'
 import BlogPage from './pages/BlogPage'
@@ -23,6 +22,25 @@ import TermsPage from './pages/TermsPage'
 import ContactPage from './pages/ContactPage'
 import NotFoundPage from './pages/NotFoundPage'
 
+// Internal concept page (future Rollo Dax / The Rollo Investor work). It holds
+// example figures and is not a public page, so it is loaded and routed in
+// development builds only. In production these paths do not exist and fall
+// through to the normal 404. The condition is written inline so the bundler
+// drops the page from production builds entirely.
+const DaxTheInvestorPage = process.env.NODE_ENV !== 'production'
+  ? React.lazy(() => import('./pages/DaxTheInvestorPage'))
+  : null
+
+const INTERNAL_INVESTOR_PATHS = [
+  '/dax-the-investor',
+  '/investor',
+  '/internal/investor',
+  '/private/financial',
+  '/dax/investor',
+  '/rollo-investor',
+  '/internal/rollo',
+]
+
 const DaxTravelerJourneyPage = React.lazy(() => import('./pages/experiments/DaxTravelerJourneyPage'))
 const DaxUniverseApp = React.lazy(() => import('./pages/experiments/universe/DaxUniverseApp'))
 const DaxUniverseV3App = React.lazy(() => import('./pages/experiments/universe-v3/DaxUniverseV3App'))
@@ -33,14 +51,18 @@ function App() {
     <AuthProvider>
       <div className="App min-h-screen bg-black">
         <Routes>
-          {/* Private/hidden routes — no Navbar or Footer */}
-          <Route path="/dax-the-investor" element={<DaxTheInvestorPage />} />
-          <Route path="/investor" element={<DaxTheInvestorPage />} />
-          <Route path="/internal/investor" element={<DaxTheInvestorPage />} />
-          <Route path="/private/financial" element={<DaxTheInvestorPage />} />
-          <Route path="/dax/investor" element={<DaxTheInvestorPage />} />
-          <Route path="/rollo-investor" element={<DaxTheInvestorPage />} />
-          <Route path="/internal/rollo" element={<DaxTheInvestorPage />} />
+          {/* Internal concept routes — development builds only (see above). */}
+          {DaxTheInvestorPage && INTERNAL_INVESTOR_PATHS.map((path) => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <React.Suspense fallback={null}>
+                  <DaxTheInvestorPage />
+                </React.Suspense>
+              }
+            />
+          ))}
 
           {/* Isolated V3 motion proof (test only, placeholder content). */}
           <Route path="/experiments/dax-universe-v3/motion-proof/*" element={

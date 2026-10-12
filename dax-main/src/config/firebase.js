@@ -16,6 +16,10 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || ""
 }
 
+// True only when a real Firebase web config was supplied at build time.
+// Without it sign-in cannot work, and admin-only screens stay hidden.
+export const isFirebaseConfigured = Boolean(process.env.REACT_APP_FIREBASE_API_KEY)
+
 let firebaseApp, db, auth, storage
 
 try {
