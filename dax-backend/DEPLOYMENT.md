@@ -23,7 +23,7 @@ With no Firebase or admin configuration the server starts and serves:
 |---|---|
 | `GET /api/health` | `200`, reports `"firebase": false` and `"adminUploadsEnabled": false` |
 | `POST /api/waitlist` | Works. Saved to `data/waitlist.csv`; the Firestore copy is skipped |
-| `GET /api/sheets` | `503` for approved spreadsheet IDs (it needs the service account) |
+| `GET /api/sheets` | `503` for public content spreadsheet IDs (it needs the service account); `403` for every other ID |
 | `/api/admin/*` | Not mounted — `404` |
 
 This is the mode used for local development on a machine with no
@@ -70,7 +70,36 @@ server fails to start with a clear message if any is missing while
 from a trusted environment with
 `admin.auth().setCustomUserClaims(uid, {admin: true})`.
 
-## 4. How credentials are supplied
+## 4. Google Sheets access
+
+Spreadsheet IDs are split in `services/sheets.js`:
+
+| Set | Env keys | Route |
+|---|---|---|
+| Public website content | `SHEET_GODS_VESSEL_QUOTES`, `SHEET_DAX_TRAVELER_BLOGS`, `SHEET_TIMEZONE_TRAVELERS_BLOGS_ITINERARIES` | `GET /api/sheets` (anonymous) |
+| Protected | `SHEET_BRAND_ANALYTICS_DASHBOARD`, `SHEET_SOCIAL_TRACKING_*`, `SHEET_TSHIRT_DESIGNS_CANVA_BULK`, `SHEET_GODS_VESSEL_DISCUSSIONS`, `SHEET_SATIATED_TASTE_RECIPES` | `GET /api/admin/sheets` only (`requireAuth` + `requireAdmin`) |
+
+A sheet is public only when a public page reads it today. Everything else
+defaults to protected; to publish another sheet, move its key to
+`PUBLIC_SHEET_KEYS` deliberately. The public route answers `403` for
+protected and unknown IDs alike. The admin route serves both sets and, like
+the rest of `/api/admin`, exists only when `ENABLE_ADMIN_UPLOADS=true`.
+
+## 5. Batch upload from URLs
+
+`POST /api/admin/drive/batch-from-urls` downloads through
+`services/safeDownload.js`:
+
+- at most 10 URLs per request, each at most 2048 characters
+- `http`/`https` only, default ports only, no credentials in the URL
+- loopback, private, link-local (including `169.254.169.254`), carrier-grade
+  NAT, multicast and reserved addresses are refused, for IPv4, IPv6 and IPv4
+  embedded in IPv6; the check runs on the address the socket actually
+  connects to, and again on every redirect (at most 3)
+- 10 second overall timeout and 10 MB maximum size per URL
+- failures are reported per URL with a fixed generic message
+
+## 6. How credentials are supplied
 
 `services/firebaseAdmin.js` is the only code that reads the service account.
 Sources, in priority order:
@@ -89,7 +118,7 @@ If a source is configured but unusable (missing file, invalid JSON) the
 server logs a warning and continues in the public baseline — unless
 `ENABLE_ADMIN_UPLOADS=true`, in which case it exits.
 
-## 5. Docker
+## 7. Docker
 
 ```bash
 docker build -t dax-backend ./dax-backend
@@ -97,20 +126,28 @@ docker run -p 5000:5000 dax-backend
 ```
 
 The image contains no credentials and defaults every feature flag to `false`.
+`.dockerignore` keeps `data/waitlist.csv` (subscriber emails), `credentials/`,
+`.env` files and tests out of the build context; the server recreates the
+waitlist file with its header on first use. Mount a volume at `/app/data` if
+waitlist signups must survive container restarts.
 Supply configuration at run time through the platform's environment/secret UI.
 
-## 6. Rollback
+## 8. Rollback
 
 Every admin feature is gated by an explicit flag. Setting
 `ENABLE_ADMIN_UPLOADS=false` (or unsetting it) and restarting removes
 `/api/admin/*` without a code change.
 
-## 7. Known limitations
+## 9. Known limitations
 
 - The rate limiter is in-memory and per-process. It suits a single instance;
   a multi-instance deployment needs a shared store.
 - `POST /api/admin/post/:brand` is still a stub: it validates configuration
   and returns, it does not publish anything.
+- The admin dashboard code in `dax-main/src/utils/automationConnector.js`
+  reads analytics, social-tracking, recipe and discussion sheets through the
+  public `/api/sheets`; those requests now get `403` and must move to
+  `/api/admin/sheets` with an ID token.
 - The frontend upload services still call the previous paths
   (`/api/drive/...`, `/api/firebase`) and need to be pointed at
   `/api/admin/...` before the admin upload UI can be used.

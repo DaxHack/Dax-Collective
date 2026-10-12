@@ -10,3 +10,12 @@ credentials/
 *serviceAccountKey*.json
 .git
 .gitignore
+
+# Runtime data — waitlist subscriber emails must never be baked into an image.
+# The server recreates data/waitlist.csv with its header on first use.
+data/waitlist.csv
+data/*.csv
+
+# Not needed at runtime
+test/
+test-support/
