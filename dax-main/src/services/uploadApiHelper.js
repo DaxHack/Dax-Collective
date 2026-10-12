@@ -1,8 +1,37 @@
 // src/services/uploadApiHelper.js
-// CORRECTED VERSION - Copy this to replace your existing uploadApiHelper.js
-
-import { API_BASE } from '../config/apiConfig';
+//
+// Upload helpers for the admin dashboard. Every network call goes to the
+// backend's protected /api/admin/* routes through adminFetch, which attaches
+// the signed-in user's Firebase ID token and sends nothing when signed out.
+//
+// Backend routes used (dax-backend/routes/adminUploadApi.js):
+//   POST /api/admin/firebase-profile        field "file"
+//   POST /api/admin/drive-upload            field "files" (up to 10)
+//   POST /api/admin/drive/batch-from-urls   JSON { urls, category, tags, descriptions }
+import { adminFetch, AdminApiError } from './adminApi';
 import { getFolderIdByTags, FOLDER_IDS } from '../config/driveFolder';
+
+// The backend parses `tags` as JSON, so always send a JSON array.
+const tagsToJson = (tags) => {
+  const list = Array.isArray(tags)
+    ? tags
+    : String(tags || '').split(',').map((tag) => tag.trim()).filter(Boolean);
+  return JSON.stringify(list);
+};
+
+const requireUser = (user, action) => {
+  if (!user) {
+    throw new Error(`User not authenticated for ${action}.`);
+  }
+};
+
+// Operations the dashboard code refers to that the backend does not provide.
+const notSupported = () => {
+  throw new AdminApiError(
+    { reason: 'not_available', message: 'This admin feature is not enabled on the server.' },
+    404
+  );
+};
 
 /**
  * Enhanced Upload API Helper with comprehensive error handling and authentication
@@ -15,10 +44,7 @@ export const uploadApiHelper = {
    * @returns {Promise<Object>} Upload result with download URL
    */
   async uploadProfilePicture(file, user) {
-    if (!user) {
-      throw new Error('User not authenticated for profile picture upload.');
-    }
-    
+    requireUser(user, 'profile picture upload');
     if (!file) {
       throw new Error('No file provided for upload.');
     }
@@ -33,40 +59,51 @@ export const uploadApiHelper = {
     if (file.size > maxSize) {
       throw new Error('File size must be less than 5MB.');
     }
-    
-    try {
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('userId', user.uid);
-      formData.append('timestamp', Date.now().toString());
-      
-      const token = await user.getIdToken();
-      
-      const response = await fetch(`${API_BASE}/api/profile-picture`, {
-        method: 'POST',
-        headers: { 
-          'Authorization': `Bearer ${token}` 
-        },
-        body: formData
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Upload failed: ${errorData.details || errorData.error || response.statusText}`);
-      }
-      
-      const result = await response.json();
-      return {
-        success: true,
-        downloadURL: result.downloadURL,
-        fileName: result.fileName,
-        fileSize: result.fileSize,
-        uploadedAt: result.uploadedAt || new Date().toISOString()
-      };
-    } catch (error) {
-      console.error('Profile picture upload error:', error);
-      throw error;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const result = await adminFetch('/firebase-profile', { method: 'POST', body: formData });
+
+    return {
+      success: true,
+      downloadURL: result.url,
+      fileName: result.fileName,
+      fileSize: result.size,
+      uploadedAt: new Date().toISOString()
+    };
+  },
+
+  /**
+   * Upload files to Google Drive, routed by category
+   * @param {FileList|Array} files - Files to upload (the backend accepts up to 10)
+   * @param {string} category - Category for folder routing
+   * @param {Object} user - Authenticated Firebase user object
+   * @param {Object} options - Additional upload options (tags, description, folderId)
+   * @returns {Promise<Object>} Backend response ({ uploads, totalFiles, ... })
+   */
+  async uploadToDrive(files, category = 'collective', user, options = {}) {
+    requireUser(user, 'Drive upload');
+    if (!files || files.length === 0) {
+      throw new Error('No files provided for upload.');
     }
+
+    const formData = new FormData();
+    Array.from(files).forEach((file) => {
+      formData.append('files', file);
+    });
+    formData.append('category', category);
+    if (options.folderId) {
+      formData.append('folderId', options.folderId);
+    }
+    if (options.tags) {
+      formData.append('tags', tagsToJson(options.tags));
+    }
+    if (options.description) {
+      formData.append('description', options.description);
+    }
+
+    return adminFetch('/drive-upload', { method: 'POST', body: formData });
   },
 
   /**
@@ -78,10 +115,7 @@ export const uploadApiHelper = {
    * @returns {Promise<Object>} Upload result
    */
   async uploadSmartImage(file, tags, user, options = {}) {
-    if (!user) {
-      throw new Error('User not authenticated for smart image upload.');
-    }
-    
+    requireUser(user, 'smart image upload');
     if (!file) {
       throw new Error('No file provided for upload.');
     }
@@ -97,55 +131,23 @@ export const uploadApiHelper = {
       throw new Error('No folder found for tags. Please check driveFolders.js configuration.');
     }
 
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('folderId', folderId);
-      formData.append('tags', tags);
-      formData.append('timestamp', Date.now().toString());
-      formData.append('userId', user.uid);
+    const result = await this.uploadToDrive([file], options.category || 'collective', user, {
+      folderId,
+      tags,
+      description: options.description
+    });
+    const uploaded = (result.uploads || [])[0] || {};
 
-      // Add optional metadata
-      if (options.description) {
-        formData.append('description', options.description);
-      }
-      if (options.location) {
-        formData.append('location', options.location);
-      }
-      if (options.category) {
-        formData.append('category', options.category);
-      }
-
-      const token = await user.getIdToken();
-      
-      const response = await fetch(`${API_BASE}/api/drive-image`, {
-        method: 'POST',
-        headers: { 
-          'Authorization': `Bearer ${token}` 
-        },
-        body: formData
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Upload failed: ${errorData.details || errorData.error || response.statusText}`);
-      }
-      
-      const result = await response.json();
-      return {
-        success: true,
-        fileId: result.fileId,
-        fileName: result.fileName,
-        downloadURL: result.downloadURL,
-        thumbnailURL: result.thumbnailURL,
-        folderId: folderId,
-        tags: tags,
-        uploadedAt: result.uploadedAt || new Date().toISOString()
-      };
-    } catch (error) {
-      console.error('Smart image upload error:', error);
-      throw error;
-    }
+    return {
+      success: true,
+      fileId: uploaded.id,
+      fileName: uploaded.fileName,
+      downloadURL: uploaded.directLink,
+      thumbnailURL: uploaded.thumbnailLink,
+      folderId: folderId,
+      tags: tags,
+      uploadedAt: uploaded.createdTime || new Date().toISOString()
+    };
   },
 
   /**
@@ -157,10 +159,7 @@ export const uploadApiHelper = {
    * @returns {Promise<Object>} Batch upload results
    */
   async batchUpload(files, tags, user, options = {}) {
-    if (!user) {
-      throw new Error('User not authenticated for batch upload.');
-    }
-    
+    requireUser(user, 'batch upload');
     if (!files || files.length === 0) {
       throw new Error('No files provided for upload.');
     }
@@ -174,7 +173,7 @@ export const uploadApiHelper = {
     // Validate all files
     const validFiles = [];
     const invalidFiles = [];
-    
+
     Array.from(files).forEach((file, index) => {
       if (file.type.startsWith('image/')) {
         validFiles.push(file);
@@ -187,223 +186,91 @@ export const uploadApiHelper = {
       throw new Error('No valid image files found in the selection.');
     }
 
-    try {
-      const formData = new FormData();
-      
-      validFiles.forEach(file => {
-        formData.append('files', file);
-      });
-      
-      formData.append('folderId', folderId);
-      formData.append('tags', tags);
-      formData.append('userId', user.uid);
-      formData.append('timestamp', Date.now().toString());
+    const result = await this.uploadToDrive(validFiles, options.category || 'collective', user, {
+      folderId,
+      tags,
+      description: options.description
+    });
 
-      // Add optional metadata
-      if (options.description) {
-        formData.append('description', options.description);
-      }
-      if (options.location) {
-        formData.append('location', options.location);
-      }
-      if (options.category) {
-        formData.append('category', options.category);
-      }
-
-      const token = await user.getIdToken();
-      
-      const response = await fetch(`${API_BASE}/api/batch-upload`, {
-        method: 'POST',
-        headers: { 
-          'Authorization': `Bearer ${token}` 
-        },
-        body: formData
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Batch upload failed: ${errorData.details || errorData.error || response.statusText}`);
-      }
-      
-      const result = await response.json();
-      return {
-        success: true,
-        totalFiles: files.length,
-        validFiles: validFiles.length,
-        invalidFiles: invalidFiles,
-        uploadedFiles: result.uploadedFiles || [],
-        failedFiles: result.failedFiles || [],
-        folderId: folderId,
-        tags: tags,
-        uploadedAt: new Date().toISOString()
-      };
-    } catch (error) {
-      console.error('Batch upload error:', error);
-      throw error;
-    }
+    return {
+      success: true,
+      totalFiles: files.length,
+      validFiles: validFiles.length,
+      invalidFiles: invalidFiles,
+      uploadedFiles: result.uploads || [],
+      failedFiles: [],
+      folderId: folderId,
+      tags: tags,
+      uploadedAt: new Date().toISOString()
+    };
   },
 
   /**
-   * Check upload status by upload ID
-   * @param {string} uploadId - Upload ID to check
-   * @param {Object} user - Authenticated Firebase user object
-   * @returns {Promise<Object>} Upload status
+   * Check upload status by upload ID.
+   * Not provided by the backend: uploads complete within the upload request.
    */
   async checkUploadStatus(uploadId, user) {
-    if (!user) {
-      throw new Error('User not authenticated.');
-    }
-    
-    if (!uploadId) {
-      throw new Error('Upload ID is required.');
-    }
-    
-    try {
-      const token = await user.getIdToken();
-      const response = await fetch(`${API_BASE}/api/upload-status/${uploadId}`, {
-        headers: { 
-          'Authorization': `Bearer ${token}` 
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Failed to check upload status: ${errorData.error || response.statusText}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('Upload status check error:', error);
-      throw error;
-    }
+    requireUser(user, 'upload status');
+    return notSupported();
   },
 
   /**
-   * Delete uploaded file
-   * @param {string} fileId - File ID to delete
-   * @param {Object} user - Authenticated Firebase user object
-   * @returns {Promise<Object>} Delete result
+   * Delete uploaded file. Not provided by the backend.
    */
   async deleteUploadedFile(fileId, user) {
-    if (!user) {
-      throw new Error('User not authenticated.');
-    }
-    
-    if (!fileId) {
-      throw new Error('File ID is required.');
-    }
-    
-    try {
-      const token = await user.getIdToken();
-      const response = await fetch(`${API_BASE}/api/file/${fileId}`, {
-        method: 'DELETE',
-        headers: { 
-          'Authorization': `Bearer ${token}` 
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Delete failed: ${errorData.details || errorData.error || response.statusText}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('File deletion error:', error);
-      throw error;
-    }
+    requireUser(user, 'file deletion');
+    return notSupported();
   },
 
   /**
    * Upload from URL (for photo search integration)
+   * The backend downloads the image itself, with its own safety limits, and
+   * files it in the Drive folder for `options.category`.
    * @param {string} imageUrl - URL of image to upload
-   * @param {string} tags - Tags to determine folder routing
+   * @param {string} tags - Tags stored with the upload
    * @param {Object} user - Authenticated Firebase user object
-   * @param {Object} options - Additional upload options
+   * @param {Object} options - Additional upload options (category, description)
    * @returns {Promise<Object>} Upload result
    */
   async uploadFromUrl(imageUrl, tags, user, options = {}) {
-    if (!user) {
-      throw new Error('User not authenticated.');
-    }
-    
+    requireUser(user, 'URL upload');
     if (!imageUrl) {
       throw new Error('Image URL is required.');
     }
 
-    // Get folder ID based on tags
-    const folderId = getFolderIdByTags(tags);
-    if (!folderId) {
-      throw new Error('No folder found for tags. Please check driveFolders.js configuration.');
+    const result = await adminFetch('/drive/batch-from-urls', {
+      method: 'POST',
+      json: {
+        urls: [imageUrl],
+        category: options.category || 'collective',
+        tags: [JSON.parse(tagsToJson(tags))],
+        descriptions: options.description ? [options.description] : []
+      }
+    });
+
+    const uploaded = (result.uploads || [])[0];
+    if (!uploaded) {
+      // The backend reports a short, generic reason per URL.
+      const reason = (result.errors || [])[0];
+      throw new Error((reason && reason.error) || 'Upload failed');
     }
 
-    try {
-      const token = await user.getIdToken();
-      
-      const response = await fetch(`${API_BASE}/api/upload-from-url`, {
-        method: 'POST',
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          imageUrl,
-          folderId,
-          tags,
-          userId: user.uid,
-          timestamp: Date.now(),
-          ...options
-        })
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`URL upload failed: ${errorData.details || errorData.error || response.statusText}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('URL upload error:', error);
-      throw error;
-    }
+    return {
+      success: true,
+      fileId: uploaded.id,
+      fileName: uploaded.fileName,
+      downloadURL: uploaded.directLink,
+      thumbnailURL: uploaded.thumbnailLink,
+      uploadedAt: uploaded.createdTime || new Date().toISOString()
+    };
   },
 
   /**
-   * Get upload history for user
-   * @param {Object} user - Authenticated Firebase user object
-   * @param {Object} options - Query options (limit, offset, category)
-   * @returns {Promise<Array>} Upload history
+   * Get upload history for user. Not provided by the backend.
    */
-  async getUploadHistory(user, options = {}) {
-    if (!user) {
-      throw new Error('User not authenticated.');
-    }
-    
-    try {
-      const { limit = 50, offset = 0, category = null } = options;
-      const params = new URLSearchParams({
-        limit: limit.toString(),
-        offset: offset.toString(),
-        ...(category && { category })
-      });
-
-      const token = await user.getIdToken();
-      const response = await fetch(`${API_BASE}/api/upload-history?${params}`, {
-        headers: { 
-          'Authorization': `Bearer ${token}` 
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Failed to get upload history: ${errorData.error || response.statusText}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('Upload history error:', error);
-      throw error;
-    }
+  async getUploadHistory(user) {
+    requireUser(user, 'upload history');
+    return notSupported();
   },
 
   /**

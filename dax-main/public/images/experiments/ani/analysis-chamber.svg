@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 960" fill="none">
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="1400" y2="960" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#27333A"/>
+      <stop offset=".52" stop-color="#172128"/>
+      <stop offset="1" stop-color="#0E151C"/>
+    </linearGradient>
+    <linearGradient id="sheet" x1="428" y1="194" x2="1028" y2="746" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D7D0BF" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#A6C5C1" stop-opacity=".035"/>
+    </linearGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" stroke="#DDE0D5" stroke-opacity=".07"/>
+      <circle cx="1" cy="1" r="1" fill="#E88A62" fill-opacity=".34"/>
+    </pattern>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+  <path fill="url(#field)" d="M0 0h1400v960H0z"/>
+  <path fill="url(#grid)" d="M0 0h1400v960H0z"/>
+  <ellipse cx="829" cy="423" rx="425" ry="312" fill="#A5C5C1" fill-opacity=".09" filter="url(#soft)"/>
+  <path d="M82 80h1236v800H82z" stroke="#E4DFD1" stroke-opacity=".22"/>
+  <path d="M111 109h1178v742H111z" stroke="#E4DFD1" stroke-opacity=".09"/>
+  <path d="M112 772h1176" stroke="#E88A62" stroke-opacity=".45"/>
+  <path d="M151 142v609M1248 142v609" stroke="#E4DFD1" stroke-opacity=".12"/>
+  <path d="M193 198l565-68 433 151-564 92-434-175Z" fill="url(#sheet)" stroke="#E4DFD1" stroke-opacity=".5"/>
+  <path d="M193 198v344l434 208V373" fill="#101920" fill-opacity=".28" stroke="#E4DFD1" stroke-opacity=".32"/>
+  <path d="M627 373l564-92v338l-564 131V373Z" fill="#0D151B" fill-opacity=".42" stroke="#A5C5C1" stroke-opacity=".45"/>
+  <path d="M252 245l301-36m-301 60 221-26m-220 52 283-34m-283 59 188-23" stroke="#E4DFD1" stroke-opacity=".38"/>
+  <path d="m703 401 420-70m-420 104 341-57m-341 89 387-66m-387 97 247-42" stroke="#A5C5C1" stroke-opacity=".46"/>
+  <circle cx="878" cy="486" r="141" stroke="#E88A62" stroke-opacity=".74"/>
+  <circle cx="878" cy="486" r="107" stroke="#E4DFD1" stroke-opacity=".28"/>
+  <circle cx="878" cy="486" r="68" stroke="#A5C5C1" stroke-opacity=".62"/>
+  <path d="M878 324v324M716 486h324m-276-114 228 228m0-228L764 600" stroke="#E4DFD1" stroke-opacity=".21"/>
+  <circle cx="878" cy="486" r="7" fill="#E88A62"/>
+  <path d="M878 486 1123 396m-245 90-165 114m165-114-62-150" stroke="#E88A62" stroke-opacity=".72"/>
+  <circle cx="1123" cy="396" r="5" fill="#E88A62"/>
+  <circle cx="713" cy="600" r="5" fill="#A5C5C1"/>
+  <circle cx="816" cy="336" r="5" fill="#A5C5C1"/>
+  <path d="M122 126h57m-57 0v57m1099-57h57m0 0v57M122 834h57m-57 0v-57m1099 57h57m0 0v-57" stroke="#E88A62" stroke-opacity=".75"/>
+  <path d="M120 727h169m-169 12h110M1097 727h169m-109 12h109" stroke="#E4DFD1" stroke-opacity=".35"/>
+  <text x="145" y="91" fill="#E88A62" font-family="monospace" font-size="12" letter-spacing="3">ANI—DAX / ANALYSIS CHAMBER</text>
+  <text x="145" y="707" fill="#D7D0BF" fill-opacity=".72" font-family="monospace" font-size="10" letter-spacing="2">OBSERVE</text>
+  <text x="646" y="707" fill="#A5C5C1" fill-opacity=".84" font-family="monospace" font-size="10" letter-spacing="2">CONNECT</text>
+  <text x="1110" y="707" fill="#D7D0BF" fill-opacity=".72" font-family="monospace" font-size="10" letter-spacing="2">QUESTION</text>
+  <text x="145" y="810" fill="#D7D0BF" fill-opacity=".62" font-family="monospace" font-size="9" letter-spacing="2">ILLUSTRATIVE MODEL / NOT SOURCE FOOTAGE</text>
+  <text x="1049" y="810" fill="#E88A62" fill-opacity=".8" font-family="monospace" font-size="9" letter-spacing="2">FIG. 01 — CLOSE READING</text>
+</svg>

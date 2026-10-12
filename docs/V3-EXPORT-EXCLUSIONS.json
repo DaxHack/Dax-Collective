@@ -1,0 +1,15 @@
+{
+  "excludedUnsafeOrNonportableFiles": [
+    "WEBSITE_AUDIT.md",
+    "dax-backend/credentials/firebase-adminsdk.json",
+    "dax-main/getGoogleToken.js",
+    "scripts/__pycache__/v3-portable-checkpoint.cpython-312.pyc",
+    "scripts/__pycache__/v3-snapshot.cpython-312.pyc"
+  ],
+  "preservedLocally": [
+    "Earlier snapshots and ZIP exports",
+    "Original attached uploads",
+    "Original Git history"
+  ],
+  "reason": "No legacy history, full local archives, upload metadata or unreviewed intake are transmitted. Approved public assets and a frontend-only portable checkpoint are included."
+}

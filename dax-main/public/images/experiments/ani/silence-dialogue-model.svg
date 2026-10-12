@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 760" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="121" y1="58" x2="978" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#343D3B"/>
+      <stop offset="1" stop-color="#11191D"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" stroke="#E9E4D9" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h1100v760H0z"/>
+  <path fill="url(#grid)" d="M0 0h1100v760H0z"/>
+  <path d="M56 62h988v636H56z" stroke="#E9E4D9" stroke-opacity=".23"/>
+  <path d="M86 95h928v569H86z" stroke="#E9E4D9" stroke-opacity=".08"/>
+  <text x="103" y="133" fill="#E88A62" font-family="monospace" font-size="11" letter-spacing="2.5">MODEL 02 / DIALOGUE &amp; ABSENCE</text>
+  <text x="103" y="176" fill="#E9E4D9" font-family="Georgia,serif" font-size="29">Understanding arrives on a delayed track.</text>
+  <path d="M141 362h818" stroke="#E9E4D9" stroke-opacity=".24"/>
+  <path d="M141 362h183" stroke="#E88A62" stroke-width="2"/>
+  <path d="M324 362h276" stroke="#A5C5C1" stroke-width="2" stroke-dasharray="5 8"/>
+  <path d="M600 362h359" stroke="#E88A62" stroke-width="2"/>
+  <circle cx="141" cy="362" r="7" fill="#E88A62"/>
+  <circle cx="324" cy="362" r="7" fill="#E9E4D9"/>
+  <circle cx="600" cy="362" r="7" fill="#A5C5C1"/>
+  <circle cx="959" cy="362" r="7" fill="#E88A62"/>
+  <circle cx="141" cy="362" r="17" stroke="#E88A62" stroke-opacity=".4"/>
+  <circle cx="324" cy="362" r="17" stroke="#E9E4D9" stroke-opacity=".3"/>
+  <circle cx="600" cy="362" r="17" stroke="#A5C5C1" stroke-opacity=".4"/>
+  <circle cx="959" cy="362" r="17" stroke="#E88A62" stroke-opacity=".4"/>
+  <path d="M141 344v-84h170m13 0h101m175 0h157m18 0h183" stroke="#E9E4D9" stroke-opacity=".23"/>
+  <path d="M324 380v93h276m0-93v93h359m-818-93v93h183" stroke="#E9E4D9" stroke-opacity=".23"/>
+  <text x="140" y="235" fill="#E88A62" font-family="monospace" font-size="10" letter-spacing="1.5">SPOKEN</text>
+  <text x="376" y="235" fill="#D6D1C4" font-family="monospace" font-size="10" letter-spacing="1.5">UNNOTICED</text>
+  <text x="811" y="235" fill="#A5C5C1" font-family="monospace" font-size="10" letter-spacing="1.5">UNDERSTOOD LATER</text>
+  <text x="143" y="505" fill="#E9E4D9" font-family="monospace" font-size="10" letter-spacing="1.3">MOMENT</text>
+  <text x="351" y="505" fill="#E9E4D9" font-family="monospace" font-size="10" letter-spacing="1.3">THE GAP</text>
+  <text x="703" y="505" fill="#E9E4D9" font-family="monospace" font-size="10" letter-spacing="1.3">REINTERPRETATION</text>
+  <path d="M187 317v-27h11v27m15 0v-44h11v44m15 0v-19h11v19m15 0v-60h11v60m15 0v-33h11v33" stroke="#E88A62" stroke-opacity=".84"/>
+  <path d="M405 317v-8h11v8m15 0v-7h11v7m15 0v-8h11v8m15 0v-7h11v7m15 0v-8h11v8" stroke="#A5C5C1" stroke-opacity=".62"/>
+  <path d="M746 317v-21h11v21m15 0v-43h11v43m15 0v-31h11v31m15 0v-60h11v60m15 0v-48h11v48" stroke="#E88A62" stroke-opacity=".84"/>
+  <path d="M104 566h892" stroke="#E9E4D9" stroke-opacity=".14"/>
+  <text x="104" y="601" fill="#E9E4D9" fill-opacity=".76" font-family="Georgia,serif" font-size="17" font-style="italic">The pause gains weight when the character finally has context.</text>
+  <text x="104" y="646" fill="#E9E4D9" fill-opacity=".48" font-family="monospace" font-size="9" letter-spacing="1.6">ILLUSTRATIVE MODEL / NOT SOURCE FOOTAGE</text>
+  <text x="837" y="646" fill="#E88A62" fill-opacity=".8" font-family="monospace" font-size="9" letter-spacing="1.6">ANALYTICAL DIAGRAM</text>
+</svg>

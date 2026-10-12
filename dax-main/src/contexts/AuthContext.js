@@ -1,12 +1,24 @@
 // dax-main/src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { auth } from '../config/firebase';
+
+let getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut;
+try {
+  const firebaseAuth = require('firebase/auth');
+  getAuth = firebaseAuth.getAuth;
+  onAuthStateChanged = firebaseAuth.onAuthStateChanged;
+  signInWithPopup = firebaseAuth.signInWithPopup;
+  GoogleAuthProvider = firebaseAuth.GoogleAuthProvider;
+  signOut = firebaseAuth.signOut;
+} catch (e) {
+  console.warn('Firebase auth not available');
+}
 
 const AuthContext = createContext({ 
   user: null, 
-  loading: true,
-  signIn: () => {},
-  signOut: () => {}
+  loading: false,
+  signIn: () => Promise.resolve(null),
+  signOut: () => Promise.resolve()
 });
 
 export const useAuth = () => {
@@ -19,19 +31,26 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const auth = getAuth();
+  const [loading, setLoading] = useState(!!auth);
 
   useEffect(() => {
+    if (!auth || !onAuthStateChanged) {
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });
 
     return unsubscribe;
-  }, [auth]);
+  }, []);
 
   const signInWithGoogle = async () => {
+    if (!auth || !signInWithPopup || !GoogleAuthProvider) {
+      console.warn('Firebase auth not configured');
+      return null;
+    }
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
@@ -43,6 +62,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signOutUser = async () => {
+    if (!auth || !signOut) {
+      console.warn('Firebase auth not configured');
+      return;
+    }
     try {
       await signOut(auth);
     } catch (error) {

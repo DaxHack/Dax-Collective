@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PhotoIcon, CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { adminFetch } from '../services/adminApi';
 
 const ProfilePictureUploader = ({ onUploadComplete, currentImage = null }) => {
   const [preview, setPreview] = useState(currentImage);
@@ -37,27 +38,17 @@ const ProfilePictureUploader = ({ onUploadComplete, currentImage = null }) => {
     setUploadStatus(null);
 
     try {
-      // Create form data
+      // Admin-only route: adminFetch adds the signed-in user's Firebase ID
+      // token and throws without sending anything when nobody is signed in.
       const formData = new FormData();
-      formData.append('profileImage', file);
-      formData.append('timestamp', Date.now());
+      formData.append('file', file);
 
-      // Upload to your backend endpoint
-      const response = await fetch('/api/upload/profile-picture', {
-        method: 'POST',
-        body: formData,
-      });
+      const result = await adminFetch('/firebase-profile', { method: 'POST', body: formData });
+      setUploadStatus('success');
 
-      if (response.ok) {
-        const result = await response.json();
-        setUploadStatus('success');
-        
-        // Call parent callback with uploaded image URL
-        if (onUploadComplete) {
-          onUploadComplete(result.imageUrl);
-        }
-      } else {
-        throw new Error('Upload failed');
+      // Call parent callback with uploaded image URL
+      if (onUploadComplete) {
+        onUploadComplete(result.url);
       }
     } catch (error) {
       console.error('Upload error:', error);

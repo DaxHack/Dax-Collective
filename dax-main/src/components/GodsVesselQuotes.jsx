@@ -1,8 +1,13 @@
 // src/components/GodsVesselQuotes.jsx
+// Brand palette: cream (#F5F1E8), charcoal (#2C2A26), gold (#B8956A / #8B6F3D)
+// No purple. No pink. No gradients.
+
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { fetchGodsVesselQuotes } from '../services/sheetsApi';
-import { BookOpenIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { BookOpenIcon } from '@heroicons/react/24/outline';
+
+const serif = { fontFamily: '"Cormorant Garamond", "Playfair Display", Georgia, serif' };
 
 export function GodsVesselQuotesSection({ maxQuotes = 3, showTitle = true }) {
   const [quotes, setQuotes] = useState([]);
@@ -12,14 +17,14 @@ export function GodsVesselQuotesSection({ maxQuotes = 3, showTitle = true }) {
 
   useEffect(() => {
     loadQuotes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxQuotes]);
 
   useEffect(() => {
     if (quotes.length > 1) {
       const interval = setInterval(() => {
         setCurrentQuoteIndex((prev) => (prev + 1) % quotes.length);
-      }, 5000); // Change quote every 5 seconds
-
+      }, 5000);
       return () => clearInterval(interval);
     }
   }, [quotes.length]);
@@ -37,13 +42,22 @@ export function GodsVesselQuotesSection({ maxQuotes = 3, showTitle = true }) {
     }
   };
 
+  const Label = () =>
+    showTitle ? (
+      <div className="mb-6 font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8B6F3D]">
+        Scripture &bull; Daily
+      </div>
+    ) : null;
+
   if (loading) {
     return (
       <div className="py-8">
-        {showTitle && <h2 className="text-3xl font-bold text-white mb-6">Daily Inspiration</h2>}
-        <div className="bg-purple-900/30 rounded-lg p-8 animate-pulse">
-          <div className="h-4 bg-purple-700 rounded mb-4"></div>
-          <div className="h-3 bg-purple-700 rounded w-1/2"></div>
+        <Label />
+        <div className="border border-stone-200 bg-[#F5F1E8] p-8 animate-pulse">
+          <div className="mx-auto mb-8 h-px w-12 bg-stone-200" />
+          <div className="h-5 bg-stone-200 rounded mx-auto w-3/4 mb-3" />
+          <div className="h-5 bg-stone-200 rounded mx-auto w-1/2" />
+          <div className="mx-auto mt-8 h-px w-12 bg-stone-200" />
         </div>
       </div>
     );
@@ -52,9 +66,11 @@ export function GodsVesselQuotesSection({ maxQuotes = 3, showTitle = true }) {
   if (error) {
     return (
       <div className="py-8">
-        {showTitle && <h2 className="text-3xl font-bold text-white mb-6">Daily Inspiration</h2>}
-        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6">
-          <p className="text-red-400">Error loading quotes: {error}</p>
+        <Label />
+        <div className="border-l-2 border-[#B8956A] bg-[#F5F1E8] px-6 py-5">
+          <p className="text-sm leading-relaxed text-stone-500">
+            Today&rsquo;s scripture will return shortly. The archive is being updated.
+          </p>
         </div>
       </div>
     );
@@ -63,10 +79,12 @@ export function GodsVesselQuotesSection({ maxQuotes = 3, showTitle = true }) {
   if (quotes.length === 0) {
     return (
       <div className="py-8">
-        {showTitle && <h2 className="text-3xl font-bold text-white mb-6">Daily Inspiration</h2>}
-        <div className="text-center py-12">
-          <BookOpenIcon className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-          <p className="text-gray-400">No quotes found. Check back soon for daily inspiration!</p>
+        <Label />
+        <div className="border border-stone-200 bg-[#F5F1E8] p-10 text-center">
+          <BookOpenIcon className="mx-auto h-10 w-10 text-[#B8956A]" />
+          <p className="mt-4 text-sm text-stone-500">
+            The daily scripture rotation is being prepared.
+          </p>
         </div>
       </div>
     );
@@ -76,46 +94,53 @@ export function GodsVesselQuotesSection({ maxQuotes = 3, showTitle = true }) {
 
   return (
     <div className="py-8">
-      {showTitle && (
-        <h2 className="text-3xl font-bold text-white mb-6">Daily Inspiration</h2>
-      )}
-      
+      <Label />
+
       <motion.div
         key={currentQuoteIndex}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 backdrop-blur-sm rounded-lg p-8 text-center"
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="border border-stone-200 bg-[#F5F1E8] px-8 py-10 md:px-14 md:py-14"
       >
-        <BookOpenIcon className="w-12 h-12 text-purple-300 mx-auto mb-6" />
-        
-        <blockquote className="text-xl md:text-2xl text-white font-medium mb-6 leading-relaxed">
-          "{currentQuote.text}"
+        <div className="mx-auto h-px w-12 bg-[#B8956A] mb-10" />
+
+        <blockquote
+          className="text-2xl font-medium leading-relaxed text-[#2C2A26] text-center md:text-3xl"
+          style={serif}
+        >
+          &ldquo;{currentQuote.text}&rdquo;
         </blockquote>
-        
-        <div className="flex items-center justify-center text-purple-300">
-          <HeartIcon className="w-5 h-5 mr-2" />
-          <cite className="font-semibold">
+
+        <div className="mt-8 text-center">
+          <cite className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8B6F3D] not-italic">
             {currentQuote.reference}
-            {currentQuote.author && ` - ${currentQuote.author}`}
+            {currentQuote.author && ` \u2014 ${currentQuote.author}`}
           </cite>
         </div>
-        
+
         {currentQuote.category && (
-          <span className="inline-block mt-4 px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full">
-            {currentQuote.category}
-          </span>
+          <div className="mt-5 flex justify-center">
+            <span className="border border-[#B8956A]/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[#8B6F3D]">
+              {currentQuote.category}
+            </span>
+          </div>
         )}
+
+        <div className="mx-auto mt-10 h-px w-12 bg-[#B8956A]" />
       </motion.div>
-      
+
       {quotes.length > 1 && (
-        <div className="flex justify-center mt-4 space-x-2">
+        <div className="mt-4 flex justify-center gap-2">
           {quotes.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentQuoteIndex(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentQuoteIndex ? 'bg-purple-400' : 'bg-gray-600'
+              aria-label={`Scripture ${index + 1}`}
+              className={`h-1 transition-all duration-300 ${
+                index === currentQuoteIndex
+                  ? 'w-6 bg-[#B8956A]'
+                  : 'w-1.5 rounded-full bg-stone-300'
               }`}
             />
           ))}

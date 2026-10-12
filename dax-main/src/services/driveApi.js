@@ -2,6 +2,7 @@
 // CORRECTED VERSION - Copy this to replace your existing driveApi.js
 
 import { API_BASE } from '../config/apiConfig';
+import { adminFetch } from './adminApi';
 
 // FIXED: Proper FOLDER_IDS export with all your folder IDs
 export const FOLDER_IDS = {
@@ -93,19 +94,8 @@ class DriveApiService {
         ...(pageToken && { pageToken })
       });
 
-      const headers = await this.getAuthHeaders(user);
-
-      const response = await fetch(`${this.baseUrl}/api/drive/images/${folderId}?${params}`, {
-        method: 'GET',
-        headers: headers,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Failed to fetch images: ${errorData.error || response.statusText}`);
-      }
-
-      const data = await response.json();
+      // Protected route: adminFetch attaches the signed-in user's ID token.
+      const data = await adminFetch(`/drive/images/${encodeURIComponent(folderId)}?${params}`);
       return {
         images: data.images || [],
         nextPageToken: data.nextPageToken,
@@ -128,6 +118,9 @@ class DriveApiService {
    */
   async uploadToDrive(files, category = 'collective', user, options = {}) {
     try {
+      if (!user) {
+        throw new Error('Authentication required. User object is missing.');
+      }
       const formData = new FormData();
       
       Array.from(files).forEach((file) => {
@@ -142,23 +135,7 @@ class DriveApiService {
         formData.append('description', options.description);
       }
 
-      const token = await user.getIdToken();
-      
-      const response = await fetch(`${this.baseUrl}/api/drive`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Upload failed: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      return result;
+      return await adminFetch('/drive-upload', { method: 'POST', body: formData });
     } catch (error) {
       console.error('Error uploading to Drive:', error);
       throw error;
@@ -176,22 +153,7 @@ class DriveApiService {
       const formData = new FormData();
       formData.append('file', file);
 
-      const token = await user.getIdToken();
-
-      const response = await fetch(`${this.baseUrl}/api/firebase`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Upload failed: ${response.statusText}`);
-      }
-
-      return await response.json();
+      return await adminFetch('/firebase-profile', { method: 'POST', body: formData });
     } catch (error) {
       console.error('Error uploading to Firebase:', error);
       throw error;
@@ -242,19 +204,10 @@ class DriveApiService {
    */
   async getFolderInfo(folderId, user) {
     try {
-      const headers = await this.getAuthHeaders(user);
-
-      const response = await fetch(`${this.baseUrl}/api/drive/folder/${folderId}`, {
-        method: 'GET',
-        headers: headers,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Failed to get folder info: ${response.statusText}`);
+      if (!user) {
+        throw new Error('Authentication required. User object is missing.');
       }
-
-      return await response.json();
+      return await adminFetch(`/drive/folder/${encodeURIComponent(folderId)}`);
     } catch (error) {
       console.error('Error getting folder info:', error);
       throw error;

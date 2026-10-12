@@ -145,11 +145,11 @@ export default function Navbar() {
               Dax{' '}
               <span
                 style={{
-                  background: `linear-gradient(90deg, ${activeAccent}, #fff)`,
+                  backgroundImage: `linear-gradient(90deg, ${activeAccent}, #fff)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
-                  transition: 'background 0.4s',
+                  transition: 'background-image 0.4s',
                 }}
               >
                 Collective

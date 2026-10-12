@@ -13,7 +13,12 @@ import {
   ArrowPathIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  LightBulbIcon,
+  RectangleStackIcon,
+  CpuChipIcon,
+  SwatchIcon,
+  FilmIcon,
 } from '@heroicons/react/24/outline';
 
 // Import services and components - Fixed imports
@@ -21,13 +26,29 @@ import ImageSourcer from '../utils/imageSourcer'; // Fixed: Use default export
 import driveApiService from '../services/enhanced-driveApi';
 import ImageUpload from './ImageUpload';
 import ProfilePictureUploader from '../components/ProfilePictureUploader';
+import ContentIdeas from './ContentIdeas';
+import ContentPackages from './ContentPackages';
+import AIDepartmentCenter from './AIDepartmentCenter';
+import AssetReview from './AssetReview';
+import MediaIntake from './MediaIntake';
 import { useAuth } from '../contexts/AuthContext';
+import { useAdminAccess } from '../hooks/useAdminAccess';
 
 const AutomationDashboard = () => {
   const { user } = useAuth();
+  // Server-side answer to "is this user an admin?" (GET /api/admin/access).
+  // Used only to decide what to load and show; the backend enforces access.
+  const adminAccess = useAdminAccess(user);
   
   // Dashboard state
   const [activeTab, setActiveTab] = useState('overview');
+  const [highlightPackageId, setHighlightPackageId] = useState(null);
+
+  // Navigate from an idea's toast to the packages tab and highlight the new pkg
+  const handleViewPackage = (packageId) => {
+    setHighlightPackageId(packageId);
+    setActiveTab('packages');
+  };
   const [automationStatus, setAutomationStatus] = useState('idle'); // 'idle', 'running', 'paused', 'error'
   const [stats, setStats] = useState({
     totalImages: 0,
@@ -56,10 +77,12 @@ const AutomationDashboard = () => {
 
   // Load dashboard data
   useEffect(() => {
-    if (user) {
+    // Drive statistics come from admin-only routes: wait for the backend to
+    // confirm access instead of firing requests that would be refused.
+    if (user && adminAccess.authorized) {
       loadDashboardData();
     }
-  }, [user]);
+  }, [user, adminAccess.authorized]);
 
   const loadDashboardData = async () => {
     try {
@@ -536,21 +559,24 @@ const AutomationDashboard = () => {
 
   const tabs = [
     { id: 'overview', name: 'Overview', icon: ChartBarIcon },
+    { id: 'ideas', name: 'Content Ideas', icon: LightBulbIcon },
+    { id: 'packages', name: 'Content Packages', icon: RectangleStackIcon },
+    { id: 'ai-departments', name: 'AI Departments', icon: CpuChipIcon },
+    { id: 'asset-review', name: 'Asset Review', icon: SwatchIcon },
+    { id: 'media-intake', name: 'Media Intake', icon: FilmIcon },
     { id: 'search', name: 'Photo Search', icon: MagnifyingGlassIcon },
     { id: 'upload', name: 'Upload', icon: CloudArrowUpIcon },
     { id: 'settings', name: 'Settings', icon: Cog6ToothIcon }
   ];
 
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <InformationCircleIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600">Please sign in to access the automation dashboard</p>
-        </div>
+  const AuthRequiredTab = () => (
+    <div className="flex items-center justify-center h-64">
+      <div className="text-center">
+        <InformationCircleIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+        <p className="text-gray-600">Please sign in to access this feature</p>
       </div>
-    );
-  }
+    </div>
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -558,7 +584,7 @@ const AutomationDashboard = () => {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Automation Dashboard</h1>
-          <p className="text-gray-600">Manage your photo automation and uploads</p>
+          <p className="text-gray-600">Manage your content ideas, packages, and photo automation</p>
         </div>
 
         {/* Automation Controls */}
@@ -625,6 +651,15 @@ const AutomationDashboard = () => {
         </nav>
       </div>
 
+      {user && adminAccess.checked && !adminAccess.authorized && (
+        <div
+          role="status"
+          className="mb-6 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-sm text-yellow-800"
+        >
+          {adminAccess.message} Upload, Drive and protected sheet tools need admin access.
+        </div>
+      )}
+
       {/* Tab Content */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -634,10 +669,22 @@ const AutomationDashboard = () => {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2 }}
         >
-          {activeTab === 'overview' && <OverviewTab />}
-          {activeTab === 'search' && <PhotoSearchTab />}
-          {activeTab === 'upload' && <UploadTab />}
-          {activeTab === 'settings' && <SettingsTab />}
+          {activeTab === 'overview' && (user ? <OverviewTab /> : <AuthRequiredTab />)}
+          {activeTab === 'ideas' && (
+            <ContentIdeas onViewPackage={handleViewPackage} />
+          )}
+          {activeTab === 'packages' && (
+            <ContentPackages
+              highlightId={highlightPackageId}
+              onHighlightClear={() => setHighlightPackageId(null)}
+            />
+          )}
+          {activeTab === 'ai-departments' && <AIDepartmentCenter />}
+          {activeTab === 'asset-review' && <AssetReview />}
+          {activeTab === 'media-intake' && <MediaIntake />}
+          {activeTab === 'search' && (user ? <PhotoSearchTab /> : <AuthRequiredTab />)}
+          {activeTab === 'upload' && (user ? <UploadTab /> : <AuthRequiredTab />)}
+          {activeTab === 'settings' && (user ? <SettingsTab /> : <AuthRequiredTab />)}
         </motion.div>
       </AnimatePresence>
     </div>
