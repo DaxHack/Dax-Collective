@@ -85,8 +85,9 @@ app.use("/api", publicRoutes);
 if (config.ENABLE_ADMIN_UPLOADS) {
   const requireAuth = require("./middleware/requireAuth");
   const requireAdmin = require("./middleware/requireAdmin");
+  const adminSheetsRoutes = require("./routes/adminSheetsApi");
   const adminRoutes = require("./routes/adminUploadApi");
-  app.use("/api/admin", requireAuth, requireAdmin, adminRoutes);
+  app.use("/api/admin", requireAuth, requireAdmin, adminSheetsRoutes, adminRoutes);
 }
 
 // Unknown API routes

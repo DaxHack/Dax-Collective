@@ -3,7 +3,7 @@
 // Routes mounted here are reachable with NO authentication:
 //   GET  /api/health
 //   POST /api/waitlist
-//   GET  /api/sheets   (read-only, approved spreadsheet IDs only)
+//   GET  /api/sheets   (read-only, public content spreadsheets only)
 //
 // Nothing in this file may require Firebase Admin, Drive, or any admin-only
 // configuration to load — it must work in a deployment that has none of
@@ -14,7 +14,8 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const config = require("../config/env");
-const {getAdmin, getServiceAccount, isInitialized} = require("../services/firebaseAdmin");
+const {getAdmin, isInitialized} = require("../services/firebaseAdmin");
+const {PUBLIC_SHEET_IDS, createSheetsHandler} = require("../services/sheets");
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -122,72 +123,10 @@ router.post("/waitlist", async (req, res) => {
   return res.json({success: true, message: "Subscribed successfully."});
 });
 
-// ─── Google Sheets proxy ─────────────────────────────────────────────────────
-// Approved Google Sheet IDs for the proxy (blocks arbitrary spreadsheet access).
-// Backend reads SHEET_* variables (no REACT_APP_ prefix) — these can be set
-// via Replit Secrets shared across both frontend and backend, or via .env.
-const APPROVED_SHEET_IDS = new Set([
-  process.env.SHEET_GODS_VESSEL_QUOTES || process.env.REACT_APP_SHEET_GODS_VESSEL_QUOTES,
-  process.env.SHEET_DAX_TRAVELER_BLOGS || process.env.REACT_APP_SHEET_DAX_TRAVELER_BLOGS,
-  process.env.SHEET_TIMEZONE_TRAVELERS_BLOGS_ITINERARIES ||
-    process.env.REACT_APP_SHEET_TIMEZONE_TRAVELERS_BLOGS_ITINERARIES,
-  process.env.SHEET_GODS_VESSEL_DISCUSSIONS || process.env.REACT_APP_SHEET_GODS_VESSEL_DISCUSSIONS,
-  process.env.SHEET_TSHIRT_DESIGNS_CANVA_BULK || process.env.REACT_APP_SHEET_TSHIRT_DESIGNS_CANVA_BULK,
-  process.env.SHEET_SATIATED_TASTE_RECIPES || process.env.REACT_APP_SHEET_SATIATED_TASTE_RECIPES,
-  process.env.SHEET_BRAND_ANALYTICS_DASHBOARD || process.env.REACT_APP_SHEET_BRAND_ANALYTICS_DASHBOARD,
-  process.env.SHEET_SOCIAL_TRACKING_YOUTUBE || process.env.REACT_APP_SHEET_SOCIAL_TRACKING_YOUTUBE,
-  process.env.SHEET_SOCIAL_TRACKING_INSTAGRAM || process.env.REACT_APP_SHEET_SOCIAL_TRACKING_INSTAGRAM,
-  process.env.SHEET_SOCIAL_TRACKING_TIKTOK || process.env.REACT_APP_SHEET_SOCIAL_TRACKING_TIKTOK,
-  process.env.SHEET_SOCIAL_TRACKING_TWITTER || process.env.REACT_APP_SHEET_SOCIAL_TRACKING_TWITTER,
-  process.env.SHEET_SOCIAL_TRACKING_FACEBOOK || process.env.REACT_APP_SHEET_SOCIAL_TRACKING_FACEBOOK,
-].filter(Boolean));
-
-// Server-side read via the service account — no API key reaches the browser.
-router.get("/sheets", async (req, res) => {
-  const {spreadsheetId, range, valueRenderOption = "FORMATTED_VALUE"} = req.query;
-
-  if (!spreadsheetId) {
-    return res.status(400).json({error: "spreadsheetId is required"});
-  }
-
-  if (!APPROVED_SHEET_IDS.has(spreadsheetId)) {
-    console.warn("Blocked sheet access attempt for a spreadsheet ID that is not in the approved list");
-    return res.status(403).json({error: "Spreadsheet ID not in approved list"});
-  }
-
-  const serviceAccount = getServiceAccount();
-  if (!serviceAccount) {
-    return res.status(503).json({error: "Sheets proxy is not configured on this server"});
-  }
-
-  const sheetRange = range || "Sheet1!A1:Z1000";
-
-  try {
-    const {JWT} = require("google-auth-library");
-    const client = new JWT({
-      email: serviceAccount.client_email,
-      key: serviceAccount.private_key,
-      scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
-    });
-    const token = await client.authorize();
-
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}` +
-      `/values/${encodeURIComponent(sheetRange)}` +
-      `?valueRenderOption=${encodeURIComponent(valueRenderOption)}`;
-    const response = await fetch(url, {
-      headers: {Authorization: `Bearer ${token.access_token}`},
-    });
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(response.status).json(data);
-    }
-
-    res.json(data);
-  } catch (err) {
-    console.error("Sheets proxy error:", err.message);
-    res.status(502).json({error: "Sheets request failed"});
-  }
-});
+// ─── Google Sheets proxy (public content sheets only) ───────────────────────
+// Serves only the spreadsheets that public website pages read. Operational,
+// analytics and tracking sheets are refused here and are available solely
+// through GET /api/admin/sheets — see services/sheets.js for the split.
+router.get("/sheets", createSheetsHandler(PUBLIC_SHEET_IDS));
 
 module.exports = router;
