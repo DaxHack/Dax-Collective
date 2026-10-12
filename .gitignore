@@ -23,6 +23,11 @@
 /generated-artifacts/
 /backups/dax-site-v1-current-working-version-2026-10-11/
 /backups/dax-site-v1-current-working-version-2026-10-11-verified/
+# Backups, portable exports and pre-merge review snapshots are preservation
+# material. They live on the preserve/ and archive/ branches, never in the
+# product tree.
+/backups/
+/planning/review-backups/
 !/package-lock.json
 !/dax-main/package-lock.json
 # front-end
