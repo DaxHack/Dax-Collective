@@ -4,10 +4,10 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import NotFoundPage from './NotFoundPage';
+import { joinWaitlist, isWaitlistAvailable, WAITLIST_UNAVAILABLE_MESSAGE } from '../services/waitlistApi';
 
 const serif = { fontFamily: '"Cormorant Garamond", "Playfair Display", Georgia, serif' };
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
 const PRODUCTS = {
   '001': {
@@ -136,17 +136,12 @@ const WaitlistForm = ({ source }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || loading) return;
+    if (!isWaitlistAvailable || !email || loading) return;
     setError('');
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/waitlist`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+      // Resolves only when the backend confirms the sign-up.
+      await joinWaitlist(email, source);
       setSubmitted(true);
       setEmail('');
     } catch (err) {
@@ -177,15 +172,20 @@ const WaitlistForm = ({ source }) => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter your email"
+        disabled={!isWaitlistAvailable}
+        aria-label="Email address"
         className="flex-1 rounded-none border-b border-[#2C2A26] bg-transparent px-1 py-3 text-sm text-[#2C2A26] placeholder:text-stone-400 focus:border-[#8B6F3D] focus:outline-none"
       />
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || !isWaitlistAvailable}
         className="whitespace-nowrap bg-[#2C2A26] px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#F5F1E8] transition hover:bg-[#8B6F3D] disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {loading ? 'Saving…' : 'Notify Me'}
+        {!isWaitlistAvailable ? 'Opening Soon' : loading ? 'Saving…' : 'Notify Me'}
       </button>
+      {!isWaitlistAvailable && (
+        <p role="status" className="w-full text-xs text-stone-500 mt-1">{WAITLIST_UNAVAILABLE_MESSAGE}</p>
+      )}
       {error && (
         <p className="w-full text-xs text-red-600 mt-1">{error}</p>
       )}

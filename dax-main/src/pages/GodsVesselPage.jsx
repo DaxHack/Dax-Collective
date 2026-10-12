@@ -6,6 +6,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import ApprovedMediaGallery from '../components/ApprovedMediaGallery';
 import GodsVesselQuotesSection from '../components/GodsVesselQuotes';
 import { countSectionPhotos } from '../data/mediaCounts';
+import { joinWaitlist, isWaitlistAvailable, WAITLIST_UNAVAILABLE_MESSAGE } from '../services/waitlistApi';
 
 const HERO_MOCKUP = '/images/gods-vessel-hero-gen.png';
 
@@ -311,8 +312,6 @@ const ScriptureCard = ({ post, index }) => (
 );
 
 const GodsVesselPage = () => {
-  const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
-
   // Hero form — independent state from the CTA form below
   const [heroEmail, setHeroEmail] = useState('');
   const [heroSubmitted, setHeroSubmitted] = useState(false);
@@ -325,20 +324,14 @@ const GodsVesselPage = () => {
   const [ctaError, setCtaError] = useState('');
   const [ctaLoading, setCtaLoading] = useState(false);
 
-  const submitWaitlist = async (emailValue, source) => {
-    const res = await fetch(`${API_BASE}/api/waitlist`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailValue, source }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
-    return data;
-  };
+  // Sign-ups go through services/waitlistApi, which refuses to send anything
+  // when no production backend is configured and only reports success when
+  // the backend confirms it.
+  const submitWaitlist = (emailValue, source) => joinWaitlist(emailValue, source);
 
   const handleHeroWaitlist = async (e) => {
     e.preventDefault();
-    if (!heroEmail || heroLoading) return;
+    if (!isWaitlistAvailable || !heroEmail || heroLoading) return;
     setHeroError('');
     setHeroLoading(true);
     try {
@@ -354,7 +347,7 @@ const GodsVesselPage = () => {
 
   const handleWaitlist = async (e) => {
     e.preventDefault();
-    if (!email || ctaLoading) return;
+    if (!isWaitlistAvailable || !email || ctaLoading) return;
     setCtaError('');
     setCtaLoading(true);
     try {
@@ -430,16 +423,23 @@ const GodsVesselPage = () => {
                   value={heroEmail}
                   onChange={(e) => setHeroEmail(e.target.value)}
                   placeholder="Enter your email"
+                  disabled={!isWaitlistAvailable}
+                  aria-label="Email address"
                   className="flex-1 rounded-none border-b border-[#2C2A26] bg-transparent px-1 py-3 text-sm text-[#2C2A26] placeholder:text-stone-400 focus:border-[#8B6F3D] focus:outline-none"
                 />
                 <button
                   type="submit"
-                  disabled={heroLoading}
+                  disabled={heroLoading || !isWaitlistAvailable}
                   className="whitespace-nowrap bg-[#2C2A26] px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#F5F1E8] transition hover:bg-[#8B6F3D] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {heroLoading ? 'Saving…' : 'Join the Waitlist'}
+                  {!isWaitlistAvailable ? 'Opening Soon' : heroLoading ? 'Saving…' : 'Join the Waitlist'}
                 </button>
               </form>
+              {!isWaitlistAvailable && (
+                <p role="status" className="mt-3 text-xs text-stone-500">
+                  {WAITLIST_UNAVAILABLE_MESSAGE}
+                </p>
+              )}
               {heroSubmitted && (
                 <p className="mt-3 text-xs text-[#8B6F3D]">
                   You&rsquo;re in the archive. We&rsquo;ll be in touch before Phase One drops.
@@ -756,16 +756,23 @@ const GodsVesselPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
+                disabled={!isWaitlistAvailable}
+                aria-label="Email address"
                 className="flex-1 rounded-none border-b border-[#2C2A26] bg-transparent px-1 py-3 text-sm text-[#2C2A26] placeholder:text-stone-400 focus:border-[#8B6F3D] focus:outline-none"
               />
               <button
                 type="submit"
-                disabled={ctaLoading}
+                disabled={ctaLoading || !isWaitlistAvailable}
                 className="whitespace-nowrap bg-[#2C2A26] px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#F5F1E8] transition hover:bg-[#8B6F3D] disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {ctaLoading ? 'Saving…' : 'Join the Archive'}
+                {!isWaitlistAvailable ? 'Opening Soon' : ctaLoading ? 'Saving…' : 'Join the Archive'}
               </button>
             </form>
+            {!isWaitlistAvailable && (
+              <p role="status" className="mt-4 text-center text-xs text-stone-500">
+                {WAITLIST_UNAVAILABLE_MESSAGE}
+              </p>
+            )}
             {submitted && (
               <p className="mt-4 text-center text-xs text-[#8B6F3D]">
                 You&rsquo;re in the archive. We&rsquo;ll be in touch before Phase One drops.

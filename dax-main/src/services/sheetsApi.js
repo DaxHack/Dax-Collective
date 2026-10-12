@@ -2,8 +2,7 @@
 // CORRECTED VERSION - Copy this to replace your existing sheetsApi.js
 
 import { adminFetch } from './adminApi';
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+import { PUBLIC_API_BASE, isPublicApiConfigured } from '../config/publicApi';
 
 // All sheet reads route through the backend, which holds the Google credential.
 //
@@ -13,7 +12,7 @@ const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 // The split mirrors dax-backend/services/sheets.js. A sheet is public only if
 // it is listed in PUBLIC_SHEET_KEYS; any other key is treated as protected and
 // is never requested from the public route.
-const PROXY_URL = `${API_BASE}/api/sheets`;
+const PROXY_URL = `${PUBLIC_API_BASE}/api/sheets`;
 
 export const PUBLIC_SHEET_KEYS = [
   'GODS_VESSEL_QUOTES',
@@ -54,6 +53,12 @@ export async function fetchSheetData(spreadsheetId, range = 'Sheet1!A1:Z1000', v
   // All sheet reads go through the backend proxy.
   // The proxy is the single point of auth (service-account JWT) and prevents
   // browser referrer restrictions that block direct API-key calls.
+  // A production build without a backend URL makes no request at all; callers
+  // fall back to their empty state.
+  if (!isPublicApiConfigured) {
+    throw new Error('Content service is not configured');
+  }
+
   const proxyParams = new URLSearchParams({ spreadsheetId, range, valueRenderOption });
   const response = await fetch(`${PROXY_URL}?${proxyParams}`);
   const data = await response.json();
