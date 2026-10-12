@@ -35,7 +35,8 @@ npm run dev
 - `dax-main/src/config/apiConfig.js` — All API/environment configuration
 - `dax-main/src/contexts/AuthContext.js` — Firebase Auth context with graceful fallback
 - `dax-backend/server.js` — Express server entry point
-- `dax-backend/routes/uploadApi.js` — Google Drive upload, Firebase Storage, image optimization routes
+- `dax-backend/routes/publicApi.js` — public routes: health, waitlist, Sheets proxy
+- `dax-backend/routes/adminUploadApi.js` — admin-only Drive/Firebase Storage upload routes, mounted at `/api/admin` when `ENABLE_ADMIN_UPLOADS=true` (see `dax-backend/DEPLOYMENT.md`)
 - `dax-backend/credentials/firebase-adminsdk.json` — Firebase Admin SDK service account
 
 ## Environment Variables

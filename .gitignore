@@ -119,6 +119,7 @@ docker-compose.override.yml
 **/yarn.lock
 !/package-lock.json
 !/dax-main/package-lock.json
+!/dax-backend/package-lock.json
 **/__pycache__/
 
 
