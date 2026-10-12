@@ -1,71 +1,58 @@
-// dax-backend/routes/uploadApi.js
+// dax-backend/routes/adminUploadApi.js
+//
+// Replaces the original routes/uploadApi.js, whose routes were mounted
+// directly under /api and required only a signed-in user. Every route in
+// this router requires a valid Firebase ID token AND admin authorization
+// (custom claim `admin:true` or ADMIN_UIDS allowlist) — see server.js,
+// which only mounts this router (under /api/admin) when
+// ENABLE_ADMIN_UPLOADS === 'true', and applies requireAuth + requireAdmin
+// before any route here is reached.
+//
+// Drive-specific routes additionally require ENABLE_DRIVE_AUTOMATION='true'
+// plus the Drive OAuth env vars (validated at startup in config/env.js).
+// Making an uploaded Drive file public is now OPT-IN via
+// ALLOW_PUBLIC_DRIVE_FILES='true' — previously this happened automatically
+// on every upload.
+
 const express = require("express");
 const multer = require("multer");
 const {google} = require("googleapis");
-const admin = require("firebase-admin");
-const fs = require("fs"); // Still needed for some operations like stream.Readable.from
 const path = require("path");
 const crypto = require("crypto");
-const sharp = require("sharp"); // For image optimization
-const router = express.Router();
+const sharp = require("sharp");
+const config = require("../config/env");
+const {getAdmin} = require("../services/firebaseAdmin");
 
-// --- Firebase Admin SDK Initialization ---
-// Ensure this is initialized once in your main server.js or here if this is the only place it's used.
-// It's safer to initialize it in your main server.js file and pass `admin` to this router.
-// For demonstration, I'll include it here, assuming it's the first place it's initialized.
-if (!admin.apps.length) {
-  try {
-    const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH || "./credentials/firebase-adminsdk.json";
-    const serviceAccount = require(path.resolve(serviceAccountPath)); // Ensure this path is correct
+const router = express.Router(); // eslint-disable-line new-cap
 
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      storageBucket: process.env.FIREBASE_STORAGE_BUCKET, // Required for Firebase Storage
+// --- Google Drive API Setup (lazy — only constructed if Drive automation is enabled) ---
+let driveOauth2Client = null;
+
+function ensureDriveEnabled(req, res, next) {
+  if (!config.ENABLE_DRIVE_AUTOMATION) {
+    return res.status(503).json({
+      error: "Drive automation is disabled on this server (ENABLE_DRIVE_AUTOMATION is not 'true').",
     });
-    console.log("Firebase Admin SDK initialized successfully.");
-  } catch (error) {
-    console.error("Failed to initialize Firebase Admin SDK:", error);
-    // Exit process or handle error appropriately if Firebase is critical
   }
+  next();
 }
 
-// --- Firebase Authentication Middleware ---
-const verifyAuth = async (req, res, next) => {
-  const authHeader = req.headers.authorization || "";
-  const token = authHeader.startsWith("Bearer ") ? authHeader.split("Bearer ")[1].trim() : null;
-
-  if (!token) {
-    return res.status(401).json({error: "Unauthorized: No token provided"});
+function getDriveService() {
+  if (!driveOauth2Client) {
+    driveOauth2Client = new google.auth.OAuth2(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        process.env.GOOGLE_REDIRECT_URI,
+    );
+    driveOauth2Client.setCredentials({
+      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+    });
   }
-
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken;
-    next();
-  } catch (error) {
-    console.error("Error verifying Firebase ID token:", error);
-    res.status(401).json({error: "Unauthorized: Invalid token", details: error.message});
-  }
-};
-// --- Google Drive API Setup (using OAuth2 with Refresh Token) ---
-// This is generally more robust for a backend service
-const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI, // Ensure this is set in your .env
-);
-
-oauth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_REFRESH_TOKEN, // Ensure this is set in your .env
-});
-
-// Function to get authenticated Drive instance
-const getDriveService = () => {
-  return google.drive({version: "v3", auth: oauth2Client});
-};
+  return google.drive({version: "v3", auth: driveOauth2Client});
+}
 
 // --- Multer Configuration ---
-const storage = multer.memoryStorage(); // Store files in memory for processing with sharp
+const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: {
@@ -80,54 +67,48 @@ const upload = multer({
   },
 });
 
-// --- Folder Mapping for Smart Routing (from your .env) ---
+// --- Folder Mapping for Smart Routing (from backend env only) ---
 const FOLDER_MAPPING = {
-  "dax-the-traveler": process.env.REACT_APP_DRIVE_DAX_TRAVELER_PHOTOS,
-  "gods-vessel": process.env.REACT_APP_DRIVE_GODS_VESSEL_PHOTOS,
-  "ani-dax": process.env.REACT_APP_DRIVE_ANI_DAX_PHOTOS,
-  "timezone-travelers": process.env.REACT_APP_DRIVE_TIMEZONE_TRAVELERS_PHOTOS,
-  "dax-homepage": process.env.REACT_APP_DRIVE_DAX_HOMEPAGE_PHOTOS,
-  "dax-analytics": process.env.REACT_APP_DRIVE_DAX_ANALYTICS_IMAGES,
-  // Add any other categories you need, matching your frontend's logic
-  "collective": process.env.REACT_APP_DRIVE_DAX_HOMEPAGE_PHOTOS, // Default/fallback
+  "dax-the-traveler": process.env.DRIVE_FOLDER_TRAVEL,
+  "gods-vessel": process.env.DRIVE_FOLDER_FAITH,
+  "ani-dax": process.env.DRIVE_FOLDER_COLLECTIVE,
+  "timezone-travelers": process.env.DRIVE_FOLDER_TIMEZONE,
+  "dax-homepage": process.env.DRIVE_FOLDER_COLLECTIVE,
+  "dax-analytics": process.env.DRIVE_FOLDER_COLLECTIVE,
+  "collective": process.env.DRIVE_FOLDER_COLLECTIVE,
 };
 
 // --- Helper Functions ---
 
-// Helper function to generate unique filename
 const generateUniqueFilename = (originalName) => {
   const ext = path.extname(originalName);
   const name = path.basename(originalName, ext);
   const timestamp = Date.now();
-  const random = crypto.randomBytes(4).toString("hex"); // Shorter random string
-  return `${name.substring(0, 50)}-${timestamp}-${random}${ext}`; // Limit name length
+  const random = crypto.randomBytes(4).toString("hex");
+  return `${name.substring(0, 50)}-${timestamp}-${random}${ext}`;
 };
 
-// Helper function to optimize image using sharp
 const optimizeImage = async (buffer, options = {}) => {
-  const {width = 1920, quality = 85, format = "jpeg"} = options;
-
+  const {width = 1920, quality = 85} = options;
   return await sharp(buffer)
       .resize(width, null, {
-        withoutEnlargement: true, // Don't enlarge if smaller than width
-        fit: "inside", // Maintain aspect ratio, fit within dimensions
+        withoutEnlargement: true,
+        fit: "inside",
       })
-      .jpeg({quality, progressive: true}) // Use JPEG for web, progressive for faster loading
+      .jpeg({quality, progressive: true})
       .toBuffer();
 };
 
-// Helper function to generate image hash for duplicate detection
 const generateImageHash = (buffer) => {
   return crypto.createHash("md5").update(buffer).digest("hex");
 };
 
-// Helper function to check for duplicates in Drive folder
 const checkDuplicatesInFolder = async (driveInstance, folderId, fileHashes) => {
   try {
     const response = await driveInstance.files.list({
       q: `'${folderId}' in parents and trashed=false`,
       fields: "files(id, name, md5Checksum, size, createdTime)",
-      pageSize: 1000, // Fetch up to 1000 files to check for duplicates
+      pageSize: 1000,
     });
 
     const existingFiles = response.data.files || [];
@@ -136,11 +117,7 @@ const checkDuplicatesInFolder = async (driveInstance, folderId, fileHashes) => {
     fileHashes.forEach((hash, index) => {
       const duplicate = existingFiles.find((file) => file.md5Checksum === hash);
       if (duplicate) {
-        duplicates.push({
-          index, // Index of the uploaded file that is a duplicate
-          hash,
-          existingFile: duplicate,
-        });
+        duplicates.push({index, hash, existingFile: duplicate});
       }
     });
 
@@ -151,23 +128,24 @@ const checkDuplicatesInFolder = async (driveInstance, folderId, fileHashes) => {
   }
 };
 
-// Helper to make file publicly viewable in Google Drive
-const makeFilePublic = async (driveInstance, fileId) => {
+// Only makes a Drive file public if ALLOW_PUBLIC_DRIVE_FILES='true'.
+// Previously this ran unconditionally on every upload.
+const maybeMakeFilePublic = async (driveInstance, fileId) => {
+  if (!config.ALLOW_PUBLIC_DRIVE_FILES) {
+    return false;
+  }
   try {
     await driveInstance.permissions.create({
       fileId: fileId,
-      resource: {
-        role: "reader",
-        type: "anyone",
-      },
+      resource: {role: "reader", type: "anyone"},
     });
+    return true;
   } catch (error) {
     console.error(`Error making Drive file ${fileId} public:`, error);
-    // Log error but don't fail the upload, as the file is still uploaded
+    return false;
   }
 };
 
-// Helper function to format bytes
 function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return "0 Bytes";
   const k = 1024;
@@ -178,23 +156,34 @@ function formatBytes(bytes, decimals = 2) {
 }
 
 // --- API Routes ---
+// NOTE: requireAuth + requireAdmin are applied by server.js to this entire
+// router before any handler below runs.
+
+// Route: Admin-access check, used by the frontend to decide whether to show
+// admin/upload UI. Intentionally returns NOTHING beyond a boolean — no UIDs,
+// account IDs, secrets, or integration details. By the time a request
+// reaches this handler it has already passed requireAuth (401 if missing/
+// invalid token) and requireAdmin (403 if authenticated but not an allowed
+// admin), so a 200 here always means "real admin, verified server-side."
+// Does not depend on ENABLE_DRIVE_AUTOMATION — available whenever
+// ENABLE_ADMIN_UPLOADS=true, independent of whether Drive is also enabled.
+router.get("/access", (req, res) => {
+  res.json({authorized: true});
+});
 
 // Route: Upload to Firebase Storage (Profile Pictures)
-router.post("/firebase-profile", verifyAuth, upload.single("file"), async (req, res) => {
+router.post("/firebase-profile", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({error: "No file provided"});
     }
 
+    const admin = getAdmin();
     const bucket = admin.storage().bucket();
-    const fileName = `profile-pictures/${req.user.uid}/${generateUniqueFilename(req.file.originalname)}`; // Store by user ID
+    const fileName = `profile-pictures/${req.user.uid}/${generateUniqueFilename(req.file.originalname)}`;
     const file = bucket.file(fileName);
 
-    // Optimize image for profile picture (smaller size)
-    const optimizedBuffer = await optimizeImage(req.file.buffer, {
-      width: 400,
-      quality: 90,
-    });
+    const optimizedBuffer = await optimizeImage(req.file.buffer, {width: 400, quality: 90});
 
     const stream = file.createWriteStream({
       metadata: {
@@ -214,7 +203,6 @@ router.post("/firebase-profile", verifyAuth, upload.single("file"), async (req, 
 
     stream.on("finish", async () => {
       try {
-        // Make file publicly accessible
         await file.makePublic();
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
 
@@ -240,15 +228,13 @@ router.post("/firebase-profile", verifyAuth, upload.single("file"), async (req, 
 });
 
 // Route: Upload to Google Drive with smart routing (single or batch)
-router.post("/drive-upload", verifyAuth, upload.array("files", 10), async (req, res) => {
+router.post("/drive-upload", ensureDriveEnabled, upload.array("files", 10), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({error: "No files provided"});
     }
 
-    const {category, tags, description, folderId: clientFolderId} = req.body; // clientFolderId can be passed from frontend
-
-    // Determine target folder ID
+    const {category, tags, description, folderId: clientFolderId} = req.body;
     const targetFolderId = clientFolderId || FOLDER_MAPPING[category] || FOLDER_MAPPING["collective"];
 
     if (!targetFolderId) {
@@ -259,7 +245,6 @@ router.post("/drive-upload", verifyAuth, upload.array("files", 10), async (req, 
     const fileData = [];
     const fileHashes = [];
 
-    // Process files, optimize, and generate hashes
     for (const file of req.files) {
       const optimizedBuffer = await optimizeImage(file.buffer);
       const hash = generateImageHash(optimizedBuffer);
@@ -273,11 +258,10 @@ router.post("/drive-upload", verifyAuth, upload.array("files", 10), async (req, 
       fileHashes.push(hash);
     }
 
-    // Check for duplicates
     const duplicates = await checkDuplicatesInFolder(driveInstance, targetFolderId, fileHashes);
 
     if (duplicates.length > 0) {
-      return res.status(409).json({ // 409 Conflict
+      return res.status(409).json({
         success: false,
         duplicates: duplicates.map((dup) => ({
           fileName: req.files[dup.index].originalname,
@@ -288,7 +272,6 @@ router.post("/drive-upload", verifyAuth, upload.array("files", 10), async (req, 
       });
     }
 
-    // Upload files to Drive
     const uploadResults = [];
 
     for (const file of fileData) {
@@ -302,16 +285,16 @@ router.post("/drive-upload", verifyAuth, upload.array("files", 10), async (req, 
 
       const media = {
         mimeType: file.mimetype,
-        body: require("stream").Readable.from(file.buffer), // Use stream.Readable.from for buffer
+        body: require("stream").Readable.from(file.buffer),
       };
 
       const response = await driveInstance.files.create({
         requestBody: fileMetadata,
         media: media,
-        fields: "id, name, size, createdTime, webViewLink, thumbnailLink", // Request thumbnailLink
+        fields: "id, name, size, createdTime, webViewLink, thumbnailLink",
       });
 
-      await makeFilePublic(driveInstance, response.data.id);
+      const madePublic = await maybeMakeFilePublic(driveInstance, response.data.id);
 
       uploadResults.push({
         id: response.data.id,
@@ -320,11 +303,12 @@ router.post("/drive-upload", verifyAuth, upload.array("files", 10), async (req, 
         size: response.data.size,
         category: category,
         webViewLink: response.data.webViewLink,
-        thumbnailLink: response.data.thumbnailLink, // Include thumbnailLink
+        thumbnailLink: response.data.thumbnailLink,
         directLink: `https://drive.google.com/uc?id=${response.data.id}`,
         createdTime: response.data.createdTime,
-        tags: tags ? JSON.parse(tags) : [], // Assuming tags come as JSON string
+        tags: tags ? JSON.parse(tags) : [],
         hash: file.hash,
+        public: madePublic,
       });
     }
 
@@ -342,8 +326,8 @@ router.post("/drive-upload", verifyAuth, upload.array("files", 10), async (req, 
   }
 });
 
-// Route: Check for duplicates before upload (can be called separately by frontend)
-router.post("/check-duplicates", verifyAuth, upload.array("files", 10), async (req, res) => {
+// Route: Check for duplicates before upload
+router.post("/check-duplicates", ensureDriveEnabled, upload.array("files", 10), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({error: "No files provided for duplicate check"});
@@ -363,11 +347,7 @@ router.post("/check-duplicates", verifyAuth, upload.array("files", 10), async (r
     for (const file of req.files) {
       const hash = generateImageHash(file.buffer);
       fileHashes.push(hash);
-      fileInfo.push({
-        name: file.originalname,
-        size: file.size,
-        hash,
-      });
+      fileInfo.push({name: file.originalname, size: file.size, hash});
     }
 
     const duplicates = await checkDuplicatesInFolder(driveInstance, targetFolderId, fileHashes);
@@ -389,7 +369,7 @@ router.post("/check-duplicates", verifyAuth, upload.array("files", 10), async (r
 });
 
 // Route: Get images from Drive folder
-router.get("/drive/images/:folderId", verifyAuth, async (req, res) => {
+router.get("/drive/images/:folderId", ensureDriveEnabled, async (req, res) => {
   try {
     const {folderId} = req.params;
     const {pageSize = 50, pageToken} = req.query;
@@ -428,23 +408,20 @@ router.get("/drive/images/:folderId", verifyAuth, async (req, res) => {
 });
 
 // Route: Get folder information and statistics
-router.get("/drive/folder/:folderId", verifyAuth, async (req, res) => {
+router.get("/drive/folder/:folderId", ensureDriveEnabled, async (req, res) => {
   try {
     const {folderId} = req.params;
-
     const driveInstance = getDriveService();
 
-    // Get folder info
     const folderInfo = await driveInstance.files.get({
       fileId: folderId,
       fields: "id, name, createdTime, modifiedTime",
     });
 
-    // Get file count and total size
     const filesResponse = await driveInstance.files.list({
       q: `'${folderId}' in parents and trashed=false`,
       fields: "files(size, mimeType)",
-      pageSize: 1000, // Max page size for stats
+      pageSize: 1000,
     });
 
     const files = filesResponse.data.files || [];
@@ -469,7 +446,7 @@ router.get("/drive/folder/:folderId", verifyAuth, async (req, res) => {
 });
 
 // Route: Batch upload from URLs (for photo search integration)
-router.post("/drive/batch-from-urls", verifyAuth, async (req, res) => {
+router.post("/drive/batch-from-urls", ensureDriveEnabled, async (req, res) => {
   try {
     const {urls, category = "collective", tags = [], descriptions = []} = req.body;
 
@@ -489,14 +466,17 @@ router.post("/drive/batch-from-urls", verifyAuth, async (req, res) => {
     for (let i = 0; i < urls.length; i++) {
       try {
         const url = urls[i];
-        const response = await fetch(url); // Node.js fetch API
+        if (!/^https?:$/.test(new URL(url).protocol)) {
+          throw new Error("Only http(s) URLs are allowed");
+        }
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch image from URL: ${response.statusText}`);
         }
 
-        const buffer = await response.buffer();
-        const optimizedBuffer = await optimizeImage(buffer); // Optimize fetched image
+        const buffer = Buffer.from(await response.arrayBuffer());
+        const optimizedBuffer = await optimizeImage(buffer);
 
         const urlPath = new URL(url).pathname;
         const originalName = path.basename(urlPath) || `image-${i + 1}.jpg`;
@@ -509,7 +489,7 @@ router.post("/drive/batch-from-urls", verifyAuth, async (req, res) => {
         };
 
         const media = {
-          mimeType: "image/jpeg", // Assume JPEG after optimization
+          mimeType: "image/jpeg",
           body: require("stream").Readable.from(optimizedBuffer),
         };
 
@@ -519,7 +499,7 @@ router.post("/drive/batch-from-urls", verifyAuth, async (req, res) => {
           fields: "id, name, size, createdTime, webViewLink, thumbnailLink",
         });
 
-        await makeFilePublic(driveInstance, driveResponse.data.id);
+        const madePublic = await maybeMakeFilePublic(driveInstance, driveResponse.data.id);
 
         uploadResults.push({
           id: driveResponse.data.id,
@@ -532,13 +512,11 @@ router.post("/drive/batch-from-urls", verifyAuth, async (req, res) => {
           directLink: `https://drive.google.com/uc?id=${driveResponse.data.id}`,
           createdTime: driveResponse.data.createdTime,
           tags: tags[i] || [],
+          public: madePublic,
         });
       } catch (error) {
         console.error(`Error uploading from URL ${urls[i]}:`, error);
-        errors.push({
-          url: urls[i],
-          error: error.message,
-        });
+        errors.push({url: urls[i], error: error.message});
       }
     }
 
@@ -557,6 +535,36 @@ router.post("/drive/batch-from-urls", verifyAuth, async (req, res) => {
   }
 });
 
+// Route: Brand-aware social posting stub.
+// Moved here (from the old public server.js mount) because it returns
+// configured social-account IDs and is a precursor to actual publishing —
+// neither belongs on a public route. Still a TODO stub: it does not post.
+function getAccountIds(brand) {
+  const B = brand.toUpperCase();
+  return {
+    tiktok: process.env[`TIKTOK_ACCOUNT_ID_${B}`],
+    facebook: process.env[`FACEBOOK_PAGE_ID_${B}`],
+    instagram: process.env[`INSTAGRAM_ACCOUNT_ID_${B}`],
+    youtube: process.env[`YOUTUBE_CHANNEL_ID_${B}`],
+  };
+}
+
+router.post("/post/:brand", async (req, res) => {
+  const ids = getAccountIds(req.params.brand);
+  if (Object.values(ids).some((v) => !v)) {
+    return res.status(400).json({
+      error: `Missing one of [tiktok,facebook,instagram,youtube] ID for "${req.params.brand}"`,
+    });
+  }
+  try {
+    // TODO: call your actual social-post functions here
+    return res.json({success: true, used: ids});
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({error: err.message});
+  }
+});
+
 // --- Error Handling Middleware ---
 router.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
@@ -564,7 +572,7 @@ router.use((error, req, res, next) => {
       return res.status(400).json({error: "File too large. Maximum size is 10MB."});
     }
   }
-  console.error("Upload API general error:", error);
+  console.error("Admin upload API general error:", error);
   res.status(500).json({error: "Internal server error", details: error.message});
 });
 
