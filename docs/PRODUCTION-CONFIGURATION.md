@@ -82,3 +82,21 @@ feature-gated and simply do not exist until enabled.
 |---|---|
 | `FIREBASE_SERVICE_ACCOUNT_DAX_COLLECTIVE` | Both Firebase Hosting workflows (deploy only). |
 | `GITHUB_TOKEN` | Provided by GitHub. |
+
+## 6. Content and internal routes — release switches in code
+
+These are not environment variables; they are deliberate defaults in the
+source that keep unapproved material out of production.
+
+| What | Where | Production behaviour |
+|---|---|---|
+| Blog posts | `dax-main/src/data/blogData.js` (published) and `dax-main/src/data/editorial/blogDrafts.js` (drafts) | Only entries with `status: 'published'` **and** `verified: true` are listed or routable. The 12 existing pieces are unverified drafts kept in the editorial file, which the app does not import, so they are not in the production bundle. `/blog` shows an editorial coming-soon state. |
+| Social links | `dax-main/src/config/socialLinks.js` — each link has `verified` | Only verified `https` links render. Placeholders and unconfirmed handles are kept in config and omitted from the UI. |
+| Investor concept page | `dax-main/src/App.jsx` | Loaded and routed in development builds only. The seven paths 404 in production and the page is not in the production bundle. |
+| `/automation` dashboard | `dax-main/src/pages/Dashboard.jsx` | 404 unless the build has a Firebase web config. Then sign-in is required, and the dashboard renders only after the backend's `GET /api/admin/access` confirms an admin. |
+| Waitlist, contact, footer sign-up | see section 1 | Disabled / mailto until a backend exists. |
+
+Backups, portable exports and pre-merge review snapshots are not part of the
+product tree (`/backups/` and `/planning/review-backups/` are git-ignored).
+They are preserved on `preserve/main-local-2026-10-12` and
+`archive/main-pre-v3-2026-10-12`.
