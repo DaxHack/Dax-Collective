@@ -1,203 +1,116 @@
 // LOCATION: dax-main/src/services/enhanced-driveApi.js
-// ACTION: CREATE NEW FILE
+//
+// Drive / Firebase Storage operations for the admin dashboard.
+// Every call goes to the backend's protected /api/admin/* routes through
+// adminFetch, which attaches the signed-in user's Firebase ID token and
+// refuses to send anything when nobody is signed in.
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+import { adminFetch, checkAdminAccess } from './adminApi';
 
 /**
  * Enhanced Drive API service with comprehensive upload and management features
  */
 class DriveApiService {
-  constructor() {
-    this.baseUrl = API_BASE_URL;
+  /**
+   * Ask the backend whether the signed-in user may use the admin routes.
+   * @returns {Promise<{authorized: boolean, reason: string|null}>}
+   */
+  checkAdminAccess() {
+    return checkAdminAccess();
   }
 
   /**
    * Fetch images from a Google Drive folder with pagination
    */
   async fetchDriveImages(folderId, options = {}) {
-    try {
-      if (!folderId) {
-        throw new Error('Folder ID is required');
-      }
-
-      const { pageSize = 50, pageToken } = options;
-      const params = new URLSearchParams({
-        pageSize: pageSize.toString(),
-        ...(pageToken && { pageToken })
-      });
-
-      const response = await fetch(`${this.baseUrl}/api/drive/images/${folderId}?${params}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch images: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      return {
-        images: data.images || [],
-        nextPageToken: data.nextPageToken,
-        hasMore: !!data.nextPageToken,
-        totalCount: data.totalCount || data.images?.length || 0
-      };
-    } catch (error) {
-      console.error('Error fetching Drive images:', error);
-      throw error;
+    if (!folderId) {
+      throw new Error('Folder ID is required');
     }
+
+    const { pageSize = 50, pageToken } = options;
+    const params = new URLSearchParams({
+      pageSize: pageSize.toString(),
+      ...(pageToken && { pageToken })
+    });
+
+    const data = await adminFetch(`/drive/images/${encodeURIComponent(folderId)}?${params}`);
+    return {
+      images: data.images || [],
+      nextPageToken: data.nextPageToken,
+      hasMore: !!data.nextPageToken,
+      totalCount: data.totalCount || data.images?.length || 0
+    };
   }
 
   /**
    * Upload files to Google Drive with smart folder routing
    */
   async uploadToDrive(files, category = 'collective', options = {}) {
-    try {
-      const formData = new FormData();
-      
-      Array.from(files).forEach((file) => {
-        formData.append('files', file);
-      });
-      
-      formData.append('category', category);
-      if (options.tags) {
-        formData.append('tags', JSON.stringify(options.tags));
-      }
-      if (options.description) {
-        formData.append('description', options.description);
-      }
+    const formData = new FormData();
 
-      const response = await fetch(`${this.baseUrl}/api/drive`, {
-        method: 'POST',
-        body: formData,
-      });
+    Array.from(files).forEach((file) => {
+      formData.append('files', file);
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Upload failed: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error uploading to Drive:', error);
-      throw error;
+    formData.append('category', category);
+    if (options.tags) {
+      formData.append('tags', JSON.stringify(options.tags));
     }
+    if (options.description) {
+      formData.append('description', options.description);
+    }
+
+    return adminFetch('/drive-upload', { method: 'POST', body: formData });
   }
 
   /**
    * Upload to Firebase Storage (for profile pictures)
    */
   async uploadToFirebase(file) {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
+    const formData = new FormData();
+    formData.append('file', file);
 
-      const response = await fetch(`${this.baseUrl}/api/firebase`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Upload failed: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error uploading to Firebase:', error);
-      throw error;
-    }
+    return adminFetch('/firebase-profile', { method: 'POST', body: formData });
   }
 
   /**
    * Check for duplicate images before upload
    */
   async checkDuplicates(files, folderId = null, category = null) {
-    try {
-      const formData = new FormData();
-      
-      Array.from(files).forEach((file) => {
-        formData.append('files', file);
-      });
-      
-      if (folderId) {
-        formData.append('folderId', folderId);
-      }
-      if (category) {
-        formData.append('category', category);
-      }
+    const formData = new FormData();
 
-      const response = await fetch(`${this.baseUrl}/api/check-duplicates`, {
-        method: 'POST',
-        body: formData,
-      });
+    Array.from(files).forEach((file) => {
+      formData.append('files', file);
+    });
 
-      if (!response.ok) {
-        throw new Error(`Duplicate check failed: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error checking duplicates:', error);
-      throw error;
+    if (folderId) {
+      formData.append('folderId', folderId);
     }
+    if (category) {
+      formData.append('category', category);
+    }
+
+    return adminFetch('/check-duplicates', { method: 'POST', body: formData });
   }
 
   /**
    * Get folder information and statistics
    */
   async getFolderInfo(folderId) {
-    try {
-      const response = await fetch(`${this.baseUrl}/api/drive/folder/${folderId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to get folder info: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error getting folder info:', error);
-      throw error;
-    }
+    return adminFetch(`/drive/folder/${encodeURIComponent(folderId)}`);
   }
 
   /**
-   * Batch upload images from URLs (for photo search integration)
+   * Batch upload images from URLs (for photo search integration).
+   * The backend accepts at most 10 URLs per request.
    */
   async batchUploadFromUrls(urls, category = 'collective', options = {}) {
-    try {
-      const { tags = [], descriptions = [] } = options;
+    const { tags = [], descriptions = [] } = options;
 
-      const response = await fetch(`${this.baseUrl}/api/drive/batch-from-urls`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          urls,
-          category,
-          tags,
-          descriptions
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Batch upload failed: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error in batch upload from URLs:', error);
-      throw error;
-    }
+    return adminFetch('/drive/batch-from-urls', {
+      method: 'POST',
+      json: { urls, category, tags, descriptions }
+    });
   }
 
   /**
@@ -251,14 +164,12 @@ const driveApiService = new DriveApiService();
 export { DriveApiService };
 export default driveApiService;
 
-export const {
-  fetchDriveImages,
-  uploadToDrive,
-  uploadToFirebase,
-  checkDuplicates,
-  getFolderInfo,
-  batchUploadFromUrls,
-  getFolderIdForCategory,
-  validateFolderConfiguration
-} = driveApiService;
-
+// Bound so the named exports keep working when called on their own.
+export const fetchDriveImages = driveApiService.fetchDriveImages.bind(driveApiService);
+export const uploadToDrive = driveApiService.uploadToDrive.bind(driveApiService);
+export const uploadToFirebase = driveApiService.uploadToFirebase.bind(driveApiService);
+export const checkDuplicates = driveApiService.checkDuplicates.bind(driveApiService);
+export const getFolderInfo = driveApiService.getFolderInfo.bind(driveApiService);
+export const batchUploadFromUrls = driveApiService.batchUploadFromUrls.bind(driveApiService);
+export const getFolderIdForCategory = driveApiService.getFolderIdForCategory.bind(driveApiService);
+export const validateFolderConfiguration = driveApiService.validateFolderConfiguration.bind(driveApiService);
