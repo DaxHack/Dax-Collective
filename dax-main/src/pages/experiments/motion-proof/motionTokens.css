@@ -1,0 +1,35 @@
+/* V3 Motion Proof — tokens from Figma "Motion (PROPOSED)" with CSS units.
+   Scoped to .motion-proof so nothing leaks into V1/V2/V3 foundation pages. */
+.motion-proof {
+  --motion-duration-micro: 120ms;
+  --motion-duration-ui: 240ms;
+  --motion-duration-scene: 480ms;
+  --motion-duration-cinematic: 880ms; /* corrected from 900ms: measured end-to-end must be <= 900ms */
+  --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-easing-enter: cubic-bezier(0, 0, 0, 1);
+  --motion-easing-exit: cubic-bezier(0.3, 0, 1, 1);
+  --motion-easing-cinematic: cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-distance-ui: 8px;
+  --motion-distance-reveal: 24px;
+  --motion-distance-depth: 64px;
+  --motion-scale-push: 1.06;
+}
+@media (max-width: 639px) {
+  .motion-proof {
+    --motion-distance-ui: 4px;
+    --motion-distance-reveal: 16px;
+    --motion-distance-depth: 24px;
+    --motion-scale-push: 1.03;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-proof {
+    --motion-duration-ui: 0ms;
+    --motion-duration-scene: 120ms;
+    --motion-duration-cinematic: 120ms;
+    --motion-distance-ui: 0px;
+    --motion-distance-reveal: 0px;
+    --motion-distance-depth: 0px;
+    --motion-scale-push: 1;
+  }
+}

@@ -25,6 +25,7 @@ import NotFoundPage from './pages/NotFoundPage'
 const DaxTravelerJourneyPage = React.lazy(() => import('./pages/experiments/DaxTravelerJourneyPage'))
 const DaxUniverseApp = React.lazy(() => import('./pages/experiments/universe/DaxUniverseApp'))
 const DaxUniverseV3App = React.lazy(() => import('./pages/experiments/universe-v3/DaxUniverseV3App'))
+const MotionProofApp = React.lazy(() => import('./pages/experiments/motion-proof/MotionProofApp'))
 
 function App() {
   return (
@@ -39,6 +40,13 @@ function App() {
           <Route path="/dax/investor" element={<DaxTheInvestorPage />} />
           <Route path="/rollo-investor" element={<DaxTheInvestorPage />} />
           <Route path="/internal/rollo" element={<DaxTheInvestorPage />} />
+
+          {/* Isolated V3 motion proof (test only, placeholder content). */}
+          <Route path="/experiments/dax-universe-v3/motion-proof/*" element={
+            <React.Suspense fallback={<p role="status" className="p-6 text-white">Loading motion proof…</p>}>
+              <MotionProofApp />
+            </React.Suspense>
+          } />
 
           {/* Separate local redesign — V1 routes and layout stay unchanged. */}
           <Route path="/experiments/dax-universe-v3/*" element={
