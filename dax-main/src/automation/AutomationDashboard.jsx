@@ -32,9 +32,13 @@ import AIDepartmentCenter from './AIDepartmentCenter';
 import AssetReview from './AssetReview';
 import MediaIntake from './MediaIntake';
 import { useAuth } from '../contexts/AuthContext';
+import { useAdminAccess } from '../hooks/useAdminAccess';
 
 const AutomationDashboard = () => {
   const { user } = useAuth();
+  // Server-side answer to "is this user an admin?" (GET /api/admin/access).
+  // Used only to decide what to load and show; the backend enforces access.
+  const adminAccess = useAdminAccess(user);
   
   // Dashboard state
   const [activeTab, setActiveTab] = useState('overview');
@@ -73,10 +77,12 @@ const AutomationDashboard = () => {
 
   // Load dashboard data
   useEffect(() => {
-    if (user) {
+    // Drive statistics come from admin-only routes: wait for the backend to
+    // confirm access instead of firing requests that would be refused.
+    if (user && adminAccess.authorized) {
       loadDashboardData();
     }
-  }, [user]);
+  }, [user, adminAccess.authorized]);
 
   const loadDashboardData = async () => {
     try {
@@ -644,6 +650,15 @@ const AutomationDashboard = () => {
           })}
         </nav>
       </div>
+
+      {user && adminAccess.checked && !adminAccess.authorized && (
+        <div
+          role="status"
+          className="mb-6 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-sm text-yellow-800"
+        >
+          {adminAccess.message} Upload, Drive and protected sheet tools need admin access.
+        </div>
+      )}
 
       {/* Tab Content */}
       <AnimatePresence mode="wait">
