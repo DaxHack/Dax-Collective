@@ -1,12 +1,27 @@
 // src/services/sheetsApi.js
 // CORRECTED VERSION - Copy this to replace your existing sheetsApi.js
 
+import { adminFetch } from './adminApi';
+
 const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
-// All sheet reads route through the backend proxy.
-// The proxy handles auth (service-account JWT) and shields the frontend from
-// Google API referrer restrictions and credential rotation.
+// All sheet reads route through the backend, which holds the Google credential.
+//
+//   Public website content  -> GET /api/sheets        (anonymous)
+//   Everything else         -> GET /api/admin/sheets  (Firebase ID token + admin)
+//
+// The split mirrors dax-backend/services/sheets.js. A sheet is public only if
+// it is listed in PUBLIC_SHEET_KEYS; any other key is treated as protected and
+// is never requested from the public route.
 const PROXY_URL = `${API_BASE}/api/sheets`;
+
+export const PUBLIC_SHEET_KEYS = [
+  'GODS_VESSEL_QUOTES',
+  'DAX_TRAVELER_BLOGS',
+  'TIMEZONE_TRAVELERS_BLOGS_ITINERARIES'
+];
+
+export const isProtectedSheetKey = (sheetKey) => !PUBLIC_SHEET_KEYS.includes(sheetKey);
 
 // FIXED: Sheet ID mappings from environment variables with proper fallbacks
 export const SHEET_IDS = {
@@ -44,7 +59,7 @@ export async function fetchSheetData(spreadsheetId, range = 'Sheet1!A1:Z1000', v
   const data = await response.json();
 
   if (!response.ok) {
-    const err = new Error(data.error || `Sheets proxy returned ${response.status}`);
+    const err = new Error(`Sheets request failed (${response.status})`);
     err.status = response.status;
     throw err;
   }
@@ -70,7 +85,32 @@ export async function fetchBrandSheetData(sheetKey, range = 'Sheet1!A1:Z1000') {
     throw new Error(`Spreadsheet ID not found for sheet: ${sheetKey}. Please check your environment variables.`);
   }
 
-  return fetchSheetData(spreadsheetId, range);
+  // Protected sheets go to the admin route only. If the user is signed out or
+  // not an admin this throws; it does not retry against the public route.
+  return isProtectedSheetKey(sheetKey)
+    ? fetchProtectedSheetData(spreadsheetId, range)
+    : fetchSheetData(spreadsheetId, range);
+}
+
+/**
+ * Fetches data from a protected (operational/analytics/tracking) spreadsheet
+ * through GET /api/admin/sheets. Requires a signed-in admin: the request
+ * carries the user's Firebase ID token and is not sent without one.
+ * @param {string} spreadsheetId - The Google Sheets spreadsheet ID
+ * @param {string} range - The range to fetch
+ * @param {string} valueRenderOption - How to render values
+ * @returns {Promise<Array>} Array of rows
+ * @throws {AdminApiError} when signed out, not an admin, or unavailable
+ */
+export async function fetchProtectedSheetData(spreadsheetId, range = 'Sheet1!A1:Z1000', valueRenderOption = 'FORMATTED_VALUE') {
+  if (!spreadsheetId) {
+    throw new Error('Spreadsheet ID is required');
+  }
+
+  const params = new URLSearchParams({ spreadsheetId, range, valueRenderOption });
+  const data = await adminFetch(`/sheets?${params}`);
+
+  return data.values && data.values.length > 0 ? data.values : [];
 }
 
 /**
@@ -399,6 +439,7 @@ export { SHEET_IDS as default };
 // Export all functions for easy importing
 export const sheetsApi = {
   fetchSheetData,
+  fetchProtectedSheetData,
   fetchBrandSheetData,
   convertSheetToObjects,
   fetchDaxTravelerBlogs,
@@ -410,6 +451,8 @@ export const sheetsApi = {
   isValidSpreadsheetId,
   validateAllSheetIds,
   appendToSheet,
+  isProtectedSheetKey,
+  PUBLIC_SHEET_KEYS,
   SHEET_IDS
 };
 
