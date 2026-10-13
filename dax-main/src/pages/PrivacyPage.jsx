@@ -19,7 +19,7 @@ const PrivacyPage = () => {
               Legal
             </p>
             <h1 className="text-4xl font-bold text-white mb-4">Privacy Policy</h1>
-            <p className="text-gray-400 text-sm">Last updated: January 1, 2025</p>
+            <p className="text-gray-400 text-sm">Last updated: October 13, 2026</p>
           </div>
 
           <div className="space-y-8 text-gray-300 leading-relaxed">
@@ -81,6 +81,35 @@ const PrivacyPage = () => {
                   payment platform. Subject to their own privacy policy.
                 </li>
               </ul>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-bold text-white mb-3">Google and YouTube Account Access</h2>
+              <p className="mb-3">
+                This site does not ask visitors to connect a Google or YouTube account, and no
+                public feature requests Google OAuth permissions from you.
+              </p>
+              <p className="mb-3">
+                Dax Collective may connect its own Google accounts (such as Google Drive and
+                YouTube) to internal tools, with the owner&apos;s authorization, to manage its own
+                files, channel information and publishing workflows. That access is limited to
+                accounts Dax Collective owns and is not used to read visitor data.
+              </p>
+              <p>
+                Where this access is in use, the OAuth credentials and refresh tokens are kept in
+                server-side configuration and are never included in this website or sent to your
+                browser. The account owner can revoke the access at any time from the Google
+                Account permissions page at{' '}
+                <a
+                  href="https://myaccount.google.com/permissions"
+                  className="text-blue-400 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  myaccount.google.com/permissions
+                </a>
+                .
+              </p>
             </section>
 
             <section>
