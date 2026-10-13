@@ -1,0 +1,37 @@
+/* Provisional engineering tokens, NOT accepted V3 art direction.
+   Replace only with approved Figma tokens; never style outside this root. */
+.dax-v3-foundation {
+  --v3-bg: #131619;
+  --v3-surface: #20262a;
+  --v3-text: #f1f4f5;
+  --v3-muted: #c2cbd0;
+  --v3-focus: #a5dfff;
+  --v3-space: 1rem;
+  --v3-content: 64rem;
+  color: var(--v3-text);
+  background: var(--v3-bg);
+  font: 1rem/1.6 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+.dax-v3-foundation header,
+.dax-v3-foundation main,
+.dax-v3-foundation footer { max-width: var(--v3-content); margin: auto; padding: clamp(1rem, 4vw, 2.5rem); }
+.dax-v3-foundation nav,
+.dax-v3-foundation footer { display: flex; flex-wrap: wrap; gap: var(--v3-space); }
+.dax-v3-foundation a { color: var(--v3-focus); display: inline-block; padding: .65rem; min-height: 44px; text-decoration: underline; }
+.dax-v3-foundation a[aria-current="page"] { background: var(--v3-surface); font-weight: 700; }
+.dax-v3-foundation :focus-visible { outline: 3px solid var(--v3-focus); outline-offset: 3px; }
+.dax-v3-foundation h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 700; }
+.dax-v3-foundation h2 { font-size: 1.25rem; font-weight: 700; }
+.dax-v3-foundation h3 { font-size: 1.15rem; font-weight: 700; }
+.dax-v3-foundation p { margin: 1rem 0; }
+.dax-v3-foundation .v3-gate { border-left: 3px solid var(--v3-muted); padding: 1rem; margin: 1.5rem 0; background: var(--v3-surface); }
+.dax-v3-foundation label { display: block; margin-top: 1rem; }
+.dax-v3-foundation select { color: var(--v3-text); background: var(--v3-surface); padding: .75rem; width: 100%; min-height: 44px; border: 1px solid var(--v3-muted); }
+.dax-v3-foundation dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .5rem; }
+.dax-v3-foundation ul { list-style: disc; padding-left: 1.5rem; }
+.dax-v3-foundation .v3-skip { position: absolute; left: -10000px; }
+.dax-v3-foundation .v3-skip:focus { position: fixed; left: 1rem; top: 1rem; background: var(--v3-bg); z-index: 100; }
+@media (prefers-reduced-motion: reduce) {
+  .dax-v3-foundation *, .dax-v3-foundation *::before, .dax-v3-foundation *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

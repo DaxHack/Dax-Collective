@@ -4,6 +4,10 @@
 import React, { Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
+import { useAdminAccess } from '../hooks/useAdminAccess';
+import { isFirebaseConfigured } from '../config/firebase';
+import NotFoundPage from './NotFoundPage';
 
 // Lazy load AutomationDashboard for better performance
 const AutomationDashboard = lazy(() => import('../automation/AutomationDashboard'));
@@ -21,6 +25,18 @@ const DashboardLoading = () => (
       <h2 className="text-xl font-semibold text-white mb-2">Loading Dashboard...</h2>
       <p className="text-gray-400">Preparing your automation tools</p>
     </motion.div>
+  </div>
+);
+
+// Shown instead of the dashboard whenever access has not been granted. No
+// dashboard control is ever rendered alongside it.
+const AdminGateMessage = ({ title, message, action }) => (
+  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center px-6">
+    <div className="text-center max-w-md mx-auto">
+      <h1 className="text-xl font-semibold text-white mb-2">{title}</h1>
+      <p className="text-gray-400">{message}</p>
+      {action}
+    </div>
   </div>
 );
 
@@ -83,7 +99,71 @@ class DashboardErrorBoundary extends React.Component {
   }
 }
 
+// /automation is an internal tool, not a public page.
+//
+//   - No Firebase web config in this build  -> the route behaves as a 404.
+//   - Signed out                            -> sign-in prompt only.
+//   - Signed in                             -> the backend decides, through
+//     GET /api/admin/access (requireAuth + requireAdmin). The dashboard is
+//     rendered only when that call says the user is an admin.
+//
+// Nothing here decides authorization from a UID, an email or any other
+// client-side value, and there is no development bypass. The dashboard code
+// itself is lazy-loaded, so it is not even fetched until access is granted.
 const Dashboard = () => {
+  const { user, loading: authLoading, signIn } = useAuth();
+  const adminAccess = useAdminAccess(user);
+
+  if (!isFirebaseConfigured) {
+    return <NotFoundPage />;
+  }
+
+  const meta = (
+    <Helmet>
+      <title>Dashboard – Dax Collective Automation</title>
+      <meta name="robots" content="noindex, nofollow" />
+    </Helmet>
+  );
+
+  if (authLoading || (user && !adminAccess.checked)) {
+    return (
+      <>
+        {meta}
+        <DashboardLoading />
+      </>
+    );
+  }
+
+  if (!user) {
+    return (
+      <>
+        {meta}
+        <AdminGateMessage
+          title="Admin sign-in required"
+          message="This area is for authorized Dax Collective admins."
+          action={
+            <button
+              type="button"
+              onClick={() => { signIn().catch(() => {}); }}
+              className="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors"
+            >
+              Sign in
+            </button>
+          }
+        />
+      </>
+    );
+  }
+
+  if (!adminAccess.authorized) {
+    return (
+      <>
+        {meta}
+        <AdminGateMessage title="Dashboard unavailable" message={adminAccess.message} />
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>

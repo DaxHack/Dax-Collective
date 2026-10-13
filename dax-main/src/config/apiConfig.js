@@ -166,9 +166,16 @@ export const envConfig = {
 // FIXED: API endpoints configuration
 export const apiEndpoints = {
   // Firebase Functions
-  drive: `${API_BASE}/api/drive`,
-  driveImages: `${API_BASE}/api/drive/images`,
-  driveUpload: `${API_BASE}/api/drive/upload`,
+  // Admin routes need a Firebase ID token — call them through services/adminApi.
+  adminAccess: `${API_BASE}/api/admin/access`,
+  adminSheets: `${API_BASE}/api/admin/sheets`,
+  driveImages: `${API_BASE}/api/admin/drive/images`,
+  driveFolder: `${API_BASE}/api/admin/drive/folder`,
+  driveUpload: `${API_BASE}/api/admin/drive-upload`,
+  driveBatchFromUrls: `${API_BASE}/api/admin/drive/batch-from-urls`,
+  checkDuplicates: `${API_BASE}/api/admin/check-duplicates`,
+  firebaseProfile: `${API_BASE}/api/admin/firebase-profile`,
+  // Public content sheets only (quotes, traveler blogs, itineraries).
   sheets: `${API_BASE}/api/sheets`,
   youtube: `${API_BASE}/api/youtube`,
   analytics: `${API_BASE}/api/analytics`,

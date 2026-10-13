@@ -1,0 +1,21 @@
+node_modules
+npm-debug.log
+.env
+.env.*
+!.env.example
+credentials/
+**/credentials/
+*firebase-adminsdk*.json
+*service-account*.json
+*serviceAccountKey*.json
+.git
+.gitignore
+
+# Runtime data — waitlist subscriber emails must never be baked into an image.
+# The server recreates data/waitlist.csv with its header on first use.
+data/waitlist.csv
+data/*.csv
+
+# Not needed at runtime
+test/
+test-support/

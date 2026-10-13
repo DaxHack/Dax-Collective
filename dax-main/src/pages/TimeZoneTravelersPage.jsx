@@ -1,412 +1,511 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Tilt from 'react-parallax-tilt';
-import { 
-  MapPin, Clock, Compass, Globe2, Sun, Camera, 
-  ArrowRight, Navigation, Ticket, Utensils, Zap, BookOpen 
-} from 'lucide-react';
+import { ArrowDownRight, ArrowRight, Camera, Clock3, Compass, Globe2, MapPin, MoveUpRight } from 'lucide-react';
 import BrandGallery from '../components/BrandGallery';
 import ApprovedMediaGallery from '../components/ApprovedMediaGallery';
 import { countBrandPhotos } from '../data/mediaCounts';
 
-// --- Reusable Thematic Components ---
+const mediaRoot = '/assets/approved-media/time-zone-travelers';
 
-const DepartureBoardText = ({ text, className = '' }) => (
-  <div className={`flex gap-[2px] font-mono font-bold uppercase tracking-wider ${className}`}>
-    {text.split('').map((char, i) => (
-      <div 
-        key={i} 
-        className="w-5 h-7 sm:w-6 sm:h-8 flex items-center justify-center bg-[#111] border-b border-t border-gray-800 text-orange-400 rounded-sm relative overflow-hidden"
-      >
-        <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-black/60 z-10" />
-        <span className="relative z-0 text-xs sm:text-sm">{char}</span>
-      </div>
-    ))}
-  </div>
-);
+const destinations = [
+  {
+    city: 'Tokyo',
+    detail: 'Shibuya',
+    image: `${mediaRoot}/2024-tokyo-zone-guide-shibuya.png`,
+    alt: 'Shibuya crossing in Tokyo, framed by its surrounding city lights',
+    index: '01',
+    tone: 'tokyo',
+  },
+  {
+    city: 'Paris',
+    detail: 'Seine riverbank',
+    image: `${mediaRoot}/2023-paris-seine-riverbank-dusk.png`,
+    alt: 'Dusk settling over the Seine riverbank in Paris',
+    index: '02',
+    tone: 'paris',
+  },
+  {
+    city: 'Atlanta',
+    detail: 'Airport, morning',
+    image: `${mediaRoot}/2024-atlanta-airport-gate-morning.png`,
+    alt: 'Morning light at an Atlanta airport gate',
+    index: '03',
+    tone: 'atlanta',
+  },
+];
 
-const PassportStamp = ({ text, date, angle, color = "border-rose-500 text-rose-500", top, left, right, bottom }) => (
-  <motion.div 
-    initial={{ opacity: 0, scale: 0.5, rotate: angle - 30 }}
-    whileInView={{ opacity: 0.8, scale: 1, rotate: angle }}
-    viewport={{ once: true }}
-    transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
-    className={`absolute pointer-events-none rounded-full border-4 border-dashed p-4 flex flex-col items-center justify-center w-32 h-32 opacity-80 mix-blend-screen z-0 ${color}`}
-    style={{ top, left, right, bottom, transform: `rotate(${angle}deg)` }}
-  >
-    <span className="uppercase tracking-[0.2em] font-black text-center leading-none text-sm mb-1">{text}</span>
-    <span className="text-[10px] font-mono font-bold">{date}</span>
-    <span className="mt-1 flex gap-1">
-      <Globe2 size={12} strokeWidth={3} />
-      <Compass size={12} strokeWidth={3} />
-    </span>
-  </motion.div>
-);
+const TimeZoneTravelersPage = () => (
+  <>
+    <Helmet>
+      <title>Time-Zone Travelers — A world in many hours</title>
+      <meta
+        name="description"
+        content="A visual starting point for curious travelers: destination concepts, the in-between, and a growing travel image archive."
+      />
+    </Helmet>
 
-const RouteLine = ({ className }) => (
-  <svg 
-    viewBox="0 0 400 100" 
-    fill="none" 
-    xmlns="http://www.w3.org/2000/svg" 
-    className={`w-full overflow-visible ${className}`}
-  >
-    <motion.path 
-      d="M0,50 Q100,0 200,50 T400,50" 
-      stroke="url(#route-gradient)" 
-      strokeWidth="2" 
-      strokeDasharray="6 6"
-      initial={{ pathLength: 0, opacity: 0 }}
-      whileInView={{ pathLength: 1, opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 2, ease: "easeInOut" }}
-    />
-    <defs>
-      <linearGradient id="route-gradient" x1="0" y1="0" x2="400" y2="0" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#f43f5e" stopOpacity="0" />
-        <stop offset="0.5" stopColor="#f97316" />
-        <stop offset="1" stopColor="#fbbf24" stopOpacity="0" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
+    <main className="tz-page" id="top">
+      <style>{`
+        .tz-page {
+          --tz-ink: #102c2c;
+          --tz-ink-soft: #385251;
+          --tz-paper: #f3f0e6;
+          --tz-paper-deep: #e8e5d9;
+          --tz-acid: #d5ed67;
+          --tz-coral: #dc7357;
+          --tz-line: rgba(16, 44, 44, .17);
+          min-height: 100dvh;
+          overflow: hidden;
+          background: var(--tz-paper);
+          color: var(--tz-ink);
+          font-family: "DM Sans", "Avenir Next", sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+        .tz-page *, .tz-page *::before, .tz-page *::after { box-sizing: border-box; }
+        .tz-page a { color: inherit; }
+        .tz-serif { font-family: "Instrument Serif", Georgia, serif; }
+        .tz-mono { font-family: "Space Mono", "Courier New", monospace; }
+        .tz-shell { width: min(1380px, calc(100% - 64px)); margin-inline: auto; }
+        .tz-topbar {
+          position: relative; z-index: 5; display: flex; align-items: center;
+          justify-content: space-between; min-height: 82px; border-bottom: 1px solid var(--tz-line);
+        }
+        .tz-brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+        .tz-mark {
+          display: grid; width: 37px; height: 37px; place-items: center; border-radius: 50%;
+          background: var(--tz-acid); color: var(--tz-ink);
+        }
+        .tz-brand-name { font-size: 12px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+        .tz-nav { display: flex; align-items: center; gap: clamp(20px, 4vw, 54px); }
+        .tz-nav a {
+          position: relative; padding-block: 10px; color: var(--tz-ink-soft); font-size: 12px;
+          font-weight: 650; letter-spacing: .02em; text-decoration: none; transition: color .2s ease;
+        }
+        .tz-nav a::after {
+          position: absolute; right: 0; bottom: 3px; left: 0; height: 1px;
+          background: var(--tz-coral); content: ""; transform: scaleX(0); transform-origin: left;
+          transition: transform .22s ease;
+        }
+        .tz-nav a:hover { color: var(--tz-ink); }
+        .tz-nav a:hover::after { transform: scaleX(1); }
+        .tz-nav .tz-nav-archive { display: inline-flex; align-items: center; gap: 8px; }
 
-// --- Sections ---
+        .tz-hero {
+          position: relative; display: grid; min-height: min(760px, calc(100svh - 82px));
+          grid-template-columns: minmax(0, .91fr) minmax(0, 1.09fr); align-items: center;
+          gap: clamp(28px, 5vw, 76px); padding-block: 52px 72px;
+        }
+        .tz-hero-copy { position: relative; z-index: 2; padding-block: 18px; }
+        .tz-eyebrow {
+          display: flex; align-items: center; gap: 11px; margin-bottom: 25px;
+          color: var(--tz-ink-soft); font-size: 10px; font-weight: 700; letter-spacing: .19em;
+          line-height: 1.5; text-transform: uppercase;
+        }
+        .tz-eyebrow::before { width: 27px; height: 1px; background: var(--tz-coral); content: ""; }
+        .tz-hero h1 {
+          max-width: 660px; margin: 0; font-size: clamp(64px, 8.1vw, 120px);
+          font-weight: 650; letter-spacing: -.09em; line-height: .84;
+        }
+        .tz-hero h1 em {
+          display: block; margin-left: .36em; color: var(--tz-coral);
+          font-size: 1.12em; font-weight: 400; letter-spacing: -.065em; line-height: .98;
+        }
+        .tz-hero-intro {
+          max-width: 400px; margin: 31px 0 0; color: var(--tz-ink-soft);
+          font-size: clamp(15px, 1.45vw, 18px); line-height: 1.7;
+        }
+        .tz-hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 23px; margin-top: 31px; }
+        .tz-primary-link {
+          display: inline-flex; min-height: 51px; align-items: center; justify-content: center; gap: 14px;
+          padding: 0 21px; background: var(--tz-ink); color: var(--tz-paper) !important;
+          font-size: 12px; font-weight: 700; text-decoration: none; transition: background .2s ease, color .2s ease;
+        }
+        .tz-primary-link:hover { background: var(--tz-coral); color: #fff !important; }
+        .tz-text-link {
+          display: inline-flex; align-items: center; gap: 8px; color: var(--tz-ink);
+          font-size: 12px; font-weight: 700; text-decoration: none;
+        }
+        .tz-text-link svg, .tz-primary-link svg { transition: transform .2s ease; }
+        .tz-text-link:hover svg, .tz-primary-link:hover svg { transform: translate(3px, -2px); }
+        .tz-hero-count {
+          position: absolute; bottom: 0; left: 0; display: flex; align-items: baseline; gap: 10px;
+          color: var(--tz-ink-soft); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+        }
+        .tz-hero-count strong { color: var(--tz-ink); font-size: 18px; font-weight: 600; letter-spacing: -.04em; }
+        .tz-hero-visual { position: relative; min-width: 0; height: min(620px, 67vw); min-height: 410px; }
+        .tz-hero-image {
+          position: absolute; top: 0; right: 5%; width: 77%; height: 83%;
+          object-fit: cover; object-position: center; background: var(--tz-paper-deep);
+        }
+        .tz-hero-image::after { content: ""; }
+        .tz-photo-label {
+          position: absolute; top: 19px; left: 19px; display: inline-flex; align-items: center;
+          gap: 8px; padding: 8px 10px; background: var(--tz-paper); color: var(--tz-ink);
+          font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+        }
+        .tz-hero-inset {
+          position: absolute; right: 0; bottom: 0; width: 44%; height: 39%;
+          border: 9px solid var(--tz-paper); object-fit: cover; object-position: center;
+          background: var(--tz-paper-deep);
+        }
+        .tz-hero-index {
+          position: absolute; top: 48%; left: -17px; color: var(--tz-ink-soft);
+          font-size: 9px; letter-spacing: .17em; text-transform: uppercase; writing-mode: vertical-rl;
+        }
+        .tz-visual-caption {
+          position: absolute; right: 48%; bottom: 5%; display: flex; flex-direction: column; gap: 4px;
+          color: var(--tz-ink-soft); font-size: 10px; line-height: 1.4;
+        }
+        .tz-visual-caption strong { color: var(--tz-ink); font-size: 12px; }
+        .tz-orbit {
+          position: absolute; top: 12%; right: -4%; display: grid; width: 82px; height: 82px;
+          place-items: center; border: 1px solid var(--tz-ink); border-radius: 50%;
+          background: var(--tz-acid); transform: rotate(9deg);
+        }
+        .tz-orbit span { max-width: 48px; font-size: 8px; font-weight: 800; letter-spacing: .11em; line-height: 1.45; text-align: center; text-transform: uppercase; }
 
-const CinematicHero = () => {
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 1000], [0, -100]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+        .tz-band {
+          background: var(--tz-ink); color: var(--tz-paper); border-block: 1px solid rgba(255,255,255,.13);
+        }
+        .tz-band-inner {
+          display: flex; min-height: 70px; align-items: center; justify-content: space-between;
+          gap: 20px; padding-block: 14px;
+        }
+        .tz-band-note { color: #b5c6b7; font-size: 11px; line-height: 1.5; }
+        .tz-band-note b { margin-right: 12px; color: var(--tz-acid); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+        .tz-band-right { display: flex; align-items: center; gap: 10px; color: var(--tz-acid); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
 
-  return (
-    <div className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#0A0F1A]">
-      {/* Background Gradients & Glows */}
-      <motion.div style={{ y: y1, opacity }} className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0F1A]/50 to-[#0A0F1A] z-10" />
-        <div className="absolute top-[-20%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-tr from-rose-600/30 via-orange-500/20 to-amber-400/10 blur-[100px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-tr from-pink-600/20 via-rose-500/10 to-transparent blur-[80px]" />
-        
-        {/* Abstract topographic grid */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
-          backgroundSize: '40px 40px'
-        }} />
-      </motion.div>
+        .tz-discovery { padding-block: 112px 122px; }
+        .tz-section-head {
+          display: grid; grid-template-columns: 1fr minmax(220px, 370px); align-items: end;
+          gap: 24px; margin-bottom: 40px;
+        }
+        .tz-kicker { margin-bottom: 15px; color: var(--tz-coral); font-size: 9px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+        .tz-section-head h2 {
+          margin: 0; font-size: clamp(42px, 6vw, 76px); font-weight: 600;
+          letter-spacing: -.075em; line-height: .92;
+        }
+        .tz-section-head h2 em { color: var(--tz-coral); font-weight: 400; }
+        .tz-section-head p { max-width: 350px; margin: 0 0 4px; color: var(--tz-ink-soft); font-size: 13px; line-height: 1.7; }
+        .tz-destination-grid { display: grid; grid-template-columns: 1.08fr .88fr .88fr; align-items: start; gap: 17px; }
+        .tz-destination:nth-child(2) { margin-top: 54px; }
+        .tz-destination:nth-child(3) { margin-top: 108px; }
+        .tz-destination-image-wrap { position: relative; overflow: hidden; background: var(--tz-paper-deep); }
+        .tz-destination:first-child .tz-destination-image-wrap { aspect-ratio: 1.03 / 1; }
+        .tz-destination:not(:first-child) .tz-destination-image-wrap { aspect-ratio: .87 / 1; }
+        .tz-destination-image {
+          display: block; width: 100%; height: 100%; min-height: 235px; object-fit: cover;
+          transition: transform .65s cubic-bezier(.2,.75,.2,1);
+        }
+        .tz-destination:hover .tz-destination-image { transform: scale(1.035); }
+        .tz-image-number {
+          position: absolute; top: 13px; left: 13px; padding: 7px 9px;
+          background: var(--tz-paper); color: var(--tz-ink); font-size: 9px; letter-spacing: .1em;
+        }
+        .tz-destination-meta { display: flex; justify-content: space-between; gap: 10px; padding: 15px 2px 0; }
+        .tz-destination h3 { margin: 0; font-size: 27px; font-weight: 650; letter-spacing: -.06em; }
+        .tz-destination-detail { display: block; margin-top: 4px; color: var(--tz-ink-soft); font-size: 11px; }
+        .tz-concept-label {
+          align-self: flex-start; padding: 6px 8px; border: 1px solid var(--tz-line);
+          color: var(--tz-ink-soft); font-size: 8px; font-weight: 700; letter-spacing: .1em;
+          line-height: 1.4; text-align: center; text-transform: uppercase;
+        }
+        .tz-disclaimer {
+          display: flex; align-items: center; gap: 9px; margin-top: 29px;
+          color: var(--tz-ink-soft); font-size: 10px; line-height: 1.5;
+        }
+        .tz-disclaimer svg { color: var(--tz-coral); flex: none; }
 
-      {/* Decorative Stamps */}
-      <PassportStamp text="GLOBAL" date="HUB" angle={-15} top="20%" left="10%" color="border-orange-500/30 text-orange-500/30" />
-      <PassportStamp text="DISCOVER" date="TZ-TRVL" angle={25} bottom="30%" right="10%" color="border-rose-500/30 text-rose-500/30" />
+        .tz-interlude { position: relative; overflow: hidden; background: var(--tz-acid); }
+        .tz-interlude::after {
+          position: absolute; top: -105px; right: 7%; width: 310px; height: 310px;
+          border: 1px solid rgba(16,44,44,.16); border-radius: 50%; content: "";
+          box-shadow: 0 0 0 36px rgba(16,44,44,.035), 0 0 0 72px rgba(16,44,44,.025);
+          pointer-events: none;
+        }
+        .tz-interlude-inner {
+          position: relative; z-index: 1; display: grid; grid-template-columns: .85fr 1.15fr;
+          align-items: center; gap: 48px; padding-block: 74px;
+        }
+        .tz-interlude-tag { display: flex; align-items: center; gap: 10px; font-size: 9px; font-weight: 800; letter-spacing: .19em; text-transform: uppercase; }
+        .tz-interlude h2 { max-width: 410px; margin: 17px 0 0; font-size: clamp(39px, 5vw, 64px); letter-spacing: -.075em; line-height: .94; }
+        .tz-interlude h2 em { font-weight: 400; }
+        .tz-interlude-copy { max-width: 490px; color: rgba(16,44,44,.78); font-size: 14px; line-height: 1.75; }
+        .tz-interlude-copy p { margin: 0 0 23px; }
+        .tz-interlude .tz-text-link { border-bottom: 1px solid rgba(16,44,44,.45); padding-bottom: 7px; }
 
-      <div className="relative z-10 container mx-auto px-6 pt-20 pb-12 flex flex-col items-center text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center"
-        >
-          <div className="flex items-center gap-3 mb-6 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <span className="text-xs font-mono font-bold tracking-widest text-orange-300 uppercase">
-              Global Discovery Clubhouse
-            </span>
-          </div>
+        .tz-archive { padding-block: 103px 112px; }
+        .tz-archive-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 36px; }
+        .tz-archive-heading h2 { margin: 0; font-size: clamp(37px, 5.3vw, 68px); font-weight: 600; letter-spacing: -.075em; line-height: .95; }
+        .tz-archive-heading p { max-width: 310px; margin: 0 0 3px; color: var(--tz-ink-soft); font-size: 12px; line-height: 1.65; }
+        .tz-gallery-shell { padding: clamp(15px, 3vw, 31px); border: 1px solid var(--tz-line); background: rgba(255,255,255,.23); }
+        .tz-gallery-title {
+          display: flex; align-items: center; justify-content: space-between; gap: 12px;
+          margin-bottom: 19px; padding-bottom: 14px; border-bottom: 1px solid var(--tz-line);
+          color: var(--tz-ink-soft); font-size: 9px; letter-spacing: .13em; text-transform: uppercase;
+        }
+        .tz-gallery-title span { display: flex; align-items: center; gap: 8px; }
+        .tz-gallery-title strong { color: var(--tz-ink); font-weight: 700; }
+        .tz-brand-gallery { min-height: 180px; }
+        .tz-approved { padding-block: 82px 94px; background: #e7e4d8; }
+        .tz-approved-head { display: grid; grid-template-columns: 1fr minmax(220px, 370px); gap: 25px; align-items: end; margin-bottom: 31px; }
+        .tz-approved-head h2 { margin: 0; font-size: clamp(35px, 4.5vw, 57px); font-weight: 600; letter-spacing: -.07em; }
+        .tz-approved-head p { margin: 0; color: var(--tz-ink-soft); font-size: 12px; line-height: 1.7; }
+        .tz-approved-count { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 11px; color: var(--tz-coral); font-size: 9px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+        .tz-approved-count b { color: var(--tz-ink); font-family: "Space Mono", monospace; font-size: 11px; font-weight: 400; letter-spacing: 0; }
+        .tz-approved-gallery { padding: clamp(14px, 2.7vw, 30px); border: 1px solid var(--tz-line); background: var(--tz-paper); }
 
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-200 via-orange-400 to-rose-600 tracking-tighter mb-4 filter drop-shadow-[0_0_30px_rgba(249,115,22,0.3)]">
-            TIME-ZONE
-            <br />
-            <span className="text-white filter drop-shadow-none">TRAVELERS</span>
-          </h1>
+        .tz-footer { background: var(--tz-ink); color: var(--tz-paper); }
+        .tz-footer-main { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 29px; }
+        .tz-footer-brand { display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+        .tz-footer-brand .tz-mark { width: 30px; height: 30px; }
+        .tz-footer-note { color: #b5c6b7; font-size: 10px; line-height: 1.6; text-align: right; }
+        .tz-footer-note a { color: var(--tz-acid); text-decoration: none; }
+        .tz-footer-note a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-          <p className="text-lg md:text-2xl text-gray-400 max-w-2xl font-light mb-12">
-            A warm, energetic hub for those who chase sunsets, embrace new cultures, and master the art of exploration.
+        @keyframes tz-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        .tz-hero-copy > * { animation: tz-enter .65s both; }
+        .tz-hero-copy > :nth-child(2) { animation-delay: .06s; }
+        .tz-hero-copy > :nth-child(3) { animation-delay: .13s; }
+        .tz-hero-copy > :nth-child(4) { animation-delay: .2s; }
+        .tz-hero-visual { animation: tz-enter .85s .12s both; }
+        @media (min-width: 1500px) { .tz-hero { min-height: 750px; } }
+        @media (max-width: 900px) {
+          .tz-shell { width: min(100% - 42px, 760px); }
+          .tz-topbar { min-height: 72px; }
+          .tz-nav { gap: 19px; }
+          .tz-hero { min-height: unset; grid-template-columns: 1fr .9fr; gap: 24px; padding-block: 55px 71px; }
+          .tz-hero h1 { font-size: clamp(62px, 9vw, 89px); }
+          .tz-hero-visual { height: 500px; min-height: 380px; }
+          .tz-destination-grid { grid-template-columns: 1fr 1fr; gap: 25px 17px; }
+          .tz-destination:first-child { grid-row: span 2; }
+          .tz-destination:first-child .tz-destination-image-wrap { aspect-ratio: .77 / 1; }
+          .tz-destination:not(:first-child) .tz-destination-image-wrap { aspect-ratio: 1.45 / 1; }
+          .tz-destination:nth-child(2), .tz-destination:nth-child(3) { margin-top: 0; }
+        }
+        @media (max-width: 620px) {
+          .tz-shell { width: calc(100% - 36px); }
+          .tz-topbar { min-height: 68px; }
+          .tz-mark { width: 33px; height: 33px; }
+          .tz-brand-name { font-size: 10px; letter-spacing: .1em; }
+          .tz-nav { gap: 14px; }
+          .tz-nav a { font-size: 10px; }
+          .tz-nav a:first-child { display: none; }
+          .tz-nav .tz-nav-archive { gap: 4px; }
+          .tz-nav .tz-nav-archive svg { width: 13px; }
+          .tz-hero { display: flex; flex-direction: column; align-items: stretch; gap: 29px; padding-block: 48px 57px; }
+          .tz-hero-copy { padding: 0; }
+          .tz-eyebrow { margin-bottom: 22px; font-size: 9px; }
+          .tz-hero h1 { font-size: clamp(62px, 17vw, 92px); }
+          .tz-hero h1 em { margin-left: .25em; }
+          .tz-hero-intro { max-width: 360px; margin-top: 21px; font-size: 14px; }
+          .tz-hero-actions { margin-top: 22px; }
+          .tz-primary-link { min-height: 47px; }
+          .tz-hero-visual { width: 100%; height: 95vw; min-height: 320px; max-height: 470px; }
+          .tz-hero-image { right: 8%; width: 82%; height: 82%; }
+          .tz-hero-index { left: 0; font-size: 8px; }
+          .tz-hero-inset { width: 43%; height: 39%; border-width: 7px; }
+          .tz-orbit { top: 7%; right: 0; width: 67px; height: 67px; }
+          .tz-orbit span { font-size: 7px; }
+          .tz-visual-caption { right: 48%; bottom: 3%; font-size: 9px; }
+          .tz-hero-count { position: static; margin-top: 22px; font-size: 9px; }
+          .tz-band-inner { align-items: flex-start; flex-direction: column; gap: 9px; padding-block: 15px; }
+          .tz-band-note { font-size: 10px; }
+          .tz-discovery { padding-block: 76px 78px; }
+          .tz-section-head { grid-template-columns: 1fr; gap: 14px; margin-bottom: 26px; }
+          .tz-section-head h2 { font-size: clamp(44px, 13vw, 66px); }
+          .tz-section-head p { max-width: 370px; font-size: 12px; }
+          .tz-destination-grid { grid-template-columns: 1fr 1fr; gap: 25px 12px; }
+          .tz-destination:first-child { grid-column: 1 / -1; grid-row: auto; }
+          .tz-destination:first-child .tz-destination-image-wrap { aspect-ratio: 1.15 / 1; }
+          .tz-destination:not(:first-child) .tz-destination-image-wrap { aspect-ratio: .78 / 1; }
+          .tz-destination-image { min-height: 170px; }
+          .tz-destination h3 { font-size: 23px; }
+          .tz-destination-meta { display: block; padding-top: 11px; }
+          .tz-concept-label { display: inline-block; margin-top: 9px; padding: 5px 6px; font-size: 7px; }
+          .tz-disclaimer { align-items: flex-start; margin-top: 20px; font-size: 9px; }
+          .tz-interlude-inner { grid-template-columns: 1fr; gap: 21px; padding-block: 48px; }
+          .tz-interlude h2 { font-size: clamp(43px, 13vw, 62px); }
+          .tz-interlude-copy { max-width: 420px; font-size: 12px; }
+          .tz-interlude::after { top: -120px; right: -130px; }
+          .tz-archive { padding-block: 72px 76px; }
+          .tz-archive-heading { align-items: flex-start; flex-direction: column; gap: 13px; margin-bottom: 24px; }
+          .tz-archive-heading h2 { font-size: clamp(41px, 12vw, 59px); }
+          .tz-archive-heading p { max-width: 360px; font-size: 11px; }
+          .tz-gallery-title { font-size: 8px; }
+          .tz-approved { padding-block: 61px 67px; }
+          .tz-approved-head { grid-template-columns: 1fr; gap: 12px; }
+          .tz-approved-head h2 { font-size: 42px; }
+          .tz-approved-head p { max-width: 400px; font-size: 11px; }
+          .tz-footer-main { align-items: flex-start; flex-direction: column; gap: 16px; }
+          .tz-footer-note { text-align: left; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .tz-page *, .tz-page *::before, .tz-page *::after {
+            scroll-behavior: auto !important; animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important; transition-duration: .01ms !important;
+          }
+        }
+      `}</style>
+
+      <header className="tz-shell tz-topbar">
+        <a className="tz-brand" href="#top" aria-label="Time-Zone Travelers home" data-testid="link-timezone-home">
+          <span className="tz-mark"><Globe2 size={18} strokeWidth={1.8} /></span>
+          <span className="tz-brand-name">Time-Zone Travelers</span>
+        </a>
+        <nav className="tz-nav" aria-label="Page navigation">
+          <a href="#destinations" data-testid="link-destinations">Destinations</a>
+          <a href="#journey" data-testid="link-journey">The in-between</a>
+          <a className="tz-nav-archive" href="#archive" data-testid="link-visual-archive">Visual archive <ArrowRight size={14} /></a>
+        </nav>
+      </header>
+
+      <section className="tz-shell tz-hero" aria-labelledby="tz-title">
+        <div className="tz-hero-copy">
+          <div className="tz-eyebrow">A field guide to elsewhere</div>
+          <h1 id="tz-title">A world<br />in many <em>hours.</em></h1>
+          <p className="tz-hero-intro">
+            The world doesn’t keep one schedule. Start with a place, a passing moment, or the space between arrivals.
           </p>
+          <div className="tz-hero-actions">
+            <a className="tz-primary-link" href="#destinations" data-testid="link-browse-destinations">
+              Browse destination concepts <ArrowRight size={16} />
+            </a>
+            <a className="tz-text-link" href="#archive" data-testid="link-open-archive">
+              Open the visual archive <ArrowDownRight size={15} />
+            </a>
+          </div>
+          <div className="tz-hero-count"><strong>01—03</strong> Visual starting points</div>
+        </div>
 
-          <DepartureBoardText text="DEPARTURES" className="mb-12 opacity-80" />
+        <div className="tz-hero-visual" aria-label="A glimpse of Tokyo and Paris">
+          <span className="tz-hero-index tz-mono">Local time, another point of view</span>
+          <img
+            className="tz-hero-image"
+            src={destinations[0].image}
+            alt={destinations[0].alt}
+            data-testid="img-hero-tokyo"
+          />
+          <span className="tz-photo-label tz-mono"><MapPin size={12} /> Tokyo · Shibuya</span>
+          <img
+            className="tz-hero-inset"
+            src={destinations[1].image}
+            alt={destinations[1].alt}
+            loading="lazy"
+            data-testid="img-hero-paris"
+          />
+          <div className="tz-visual-caption"><strong>Somewhere, it’s dusk.</strong><span>Somewhere else, the day begins.</span></div>
+          <div className="tz-orbit" aria-hidden="true"><span>Across<br />the hours</span></div>
+        </div>
+      </section>
 
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold rounded-full overflow-hidden shadow-[0_0_40px_rgba(249,115,22,0.4)] transition-shadow hover:shadow-[0_0_60px_rgba(249,115,22,0.6)]"
-          >
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-            <span className="relative flex items-center gap-2">
-              Start Exploring <ArrowRight size={18} />
-            </span>
-          </motion.button>
-        </motion.div>
+      <div className="tz-band" aria-label="About this discovery page">
+        <div className="tz-shell tz-band-inner">
+          <div className="tz-band-note"><b className="tz-mono">Open atlas</b> A discovery page in progress — made to wander, not to prescribe.</div>
+          <div className="tz-band-right tz-mono"><Clock3 size={14} />Everywhere has its own hour</div>
+        </div>
       </div>
-      
-      {/* Scroll indicator */}
-      <motion.div 
-        style={{ opacity: useTransform(scrollY, [0, 200], [1, 0]) }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500"
-      >
-        <span className="text-xs font-mono tracking-widest uppercase">Scroll</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-orange-500/50 to-transparent" />
-      </motion.div>
-    </div>
-  );
-};
 
-const DiscoveryRail = () => {
-  const destinations = [
-    { city: "Tokyo", desc: "Neon & Tradition", coords: "35.6762° N, 139.6503° E", color: "from-purple-500 to-rose-500" },
-    { city: "Oaxaca", desc: "Culinary Capital", coords: "17.0732° N, 96.7266° W", color: "from-orange-500 to-amber-500" },
-    { city: "Kyoto", desc: "Ancient Streets", coords: "35.0116° N, 135.7681° E", color: "from-emerald-500 to-teal-500" },
-    { city: "Lisbon", desc: "Golden Hour Hills", coords: "38.7223° N, 9.1393° W", color: "from-amber-400 to-orange-500" },
-    { city: "Havana", desc: "Time Capsule", coords: "23.1136° N, 82.3666° W", color: "from-sky-400 to-blue-600" },
-  ];
-
-  return (
-    <section className="py-24 bg-[#0A0F1A] relative overflow-hidden border-y border-white/5">
-      <div className="container mx-auto px-6 mb-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <section className="tz-shell tz-discovery" id="destinations" aria-labelledby="tz-destinations-heading">
+        <div className="tz-section-head">
           <div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Culture Radar</h2>
-            <p className="text-gray-400 max-w-md">Our curated picks for where the energy is flowing right now. Time zones to watch.</p>
+            <div className="tz-kicker tz-mono">A first look · 01—03</div>
+            <h2 id="tz-destinations-heading">Places to<br /><em>begin with.</em></h2>
           </div>
-          <div className="font-mono text-sm text-orange-400 flex flex-col items-end opacity-70">
-            <span>RADAR: ACTIVE</span>
-            <span>SCANNING: GLOBAL</span>
-          </div>
+          <p>Three destination concepts, opened through available photography. A visual point of departure—not a set of published city guides.</p>
         </div>
-      </div>
 
-      <div className="flex overflow-x-auto pb-12 pt-4 px-6 gap-6 snap-x snap-mandatory scrollbar-hide -mx-6 w-[calc(100%+3rem)]">
-        {destinations.map((dest, i) => (
-          <motion.div 
-            key={i}
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: i * 0.1, duration: 0.6 }}
-            className="snap-center shrink-0 w-[280px] md:w-[360px]"
-          >
-            <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.02} transitionSpeed={2000}>
-              <div className="relative h-[400px] rounded-3xl overflow-hidden group border border-white/10 bg-gray-900">
-                <div className={`absolute inset-0 bg-gradient-to-br ${dest.color} opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
-                
-                {/* Abstract texture */}
-                <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '16px 16px' }} />
-
-                <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
-                  <div className="flex justify-between items-start">
-                    <span className="w-10 h-10 rounded-full border border-white/20 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/70">
-                      <MapPin size={18} />
-                    </span>
-                    <span className="font-mono text-[10px] text-white/50 tracking-widest uppercase bg-black/40 backdrop-blur-sm px-2 py-1 rounded">
-                      {dest.coords}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-3xl font-black text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/50 transition-all">
-                      {dest.city}
-                    </h3>
-                    <p className="text-gray-300 font-medium">{dest.desc}</p>
-                    
-                    <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-sm text-orange-400 font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                      <span>Explore</span>
-                      <ArrowRight size={16} />
-                    </div>
-                  </div>
+        <div className="tz-destination-grid">
+          {destinations.map((destination) => (
+            <article className={`tz-destination tz-destination-${destination.tone}`} key={destination.city} data-testid={`card-destination-${destination.city.toLowerCase()}`}>
+              <div className="tz-destination-image-wrap">
+                <img
+                  className="tz-destination-image"
+                  src={destination.image}
+                  alt={destination.alt}
+                  loading="lazy"
+                  data-testid={`img-destination-${destination.city.toLowerCase()}`}
+                />
+                <span className="tz-image-number tz-mono">{destination.index} / 03</span>
+              </div>
+              <div className="tz-destination-meta">
+                <div>
+                  <h3>{destination.city}</h3>
+                  <span className="tz-destination-detail">{destination.detail}</span>
                 </div>
+                <span className="tz-concept-label">Destination<br />concept</span>
               </div>
-            </Tilt>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-const WaypointScene = () => {
-  return (
-    <section className="py-32 bg-[#0A0F1A] relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-rose-950/10 to-transparent" />
-      
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-16">
-          <MapPin className="mx-auto text-rose-500 mb-6 w-12 h-12 opacity-80" />
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Connect the Dots</h2>
-          <p className="text-xl text-gray-400 font-light">
-            Travel isn't just about the destination. It's the friction, the transit, the layovers, and the unexpected waypoints that define the journey.
-          </p>
-        </div>
-
-        <div className="relative h-64 md:h-48 max-w-5xl mx-auto flex items-center justify-center">
-          <RouteLine className="absolute inset-0 z-0 opacity-50" />
-          
-          <div className="relative z-10 w-full flex justify-between items-center px-4 md:px-12">
-            <motion.div 
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", delay: 0.2 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <div className="w-4 h-4 rounded-full bg-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.8)]" />
-              <div className="font-mono text-xs text-orange-400 uppercase tracking-widest bg-[#0A0F1A] px-2 py-1">Origin</div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", delay: 1 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <div className="w-3 h-3 rounded-full bg-rose-500 border-2 border-[#0A0F1A] shadow-[0_0_15px_rgba(244,63,94,0.6)]" />
-              <div className="font-mono text-[10px] text-rose-400 uppercase tracking-widest bg-[#0A0F1A] px-2 py-1">Transit</div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", delay: 1.8 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <div className="w-4 h-4 rounded-full bg-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.8)]" />
-              <div className="font-mono text-xs text-amber-400 uppercase tracking-widest bg-[#0A0F1A] px-2 py-1">Arrival</div>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const StoryCards = () => {
-  const stories = [
-    {
-      category: "Productivity",
-      title: "Working from the Shinkansen",
-      excerpt: "How to stay focused at 320km/h while traversing the Japanese countryside.",
-      icon: <Zap size={20} />,
-      color: "border-orange-500/30 hover:border-orange-500 text-orange-400"
-    },
-    {
-      category: "Culture",
-      title: "The Midnight Street Food Rules",
-      excerpt: "Navigating night markets without a map: look for the longest line of locals.",
-      icon: <Utensils size={20} />,
-      color: "border-rose-500/30 hover:border-rose-500 text-rose-400"
-    },
-    {
-      category: "Hacks",
-      title: "Beating the 12-Hour Jet Lag",
-      excerpt: "Strategic sunlight, fasting windows, and why you shouldn't nap at 3 PM.",
-      icon: <Sun size={20} />,
-      color: "border-amber-400/30 hover:border-amber-400 text-amber-300"
-    }
-  ];
-
-  return (
-    <section className="py-24 bg-[#0A0F1A]">
-      <div className="container mx-auto px-6">
-        <div className="flex items-center gap-4 mb-12">
-          <BookOpen className="text-gray-500" />
-          <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Curated Field Notes</h2>
-          <div className="h-[1px] flex-grow bg-gradient-to-r from-gray-800 to-transparent ml-4" />
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {stories.map((story, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className={`group bg-[#111827] border rounded-2xl p-8 transition-all duration-300 hover:bg-[#1f2937] ${story.color}`}
-            >
-              <div className="flex justify-between items-start mb-6">
-                <div className={`p-3 rounded-xl bg-[#0A0F1A] border border-inherit text-inherit`}>
-                  {story.icon}
-                </div>
-                <span className="font-mono text-[10px] tracking-widest uppercase border border-inherit px-2 py-1 rounded-full opacity-60">
-                  {story.category}
-                </span>
-              </div>
-              
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-inherit transition-colors">
-                {story.title}
-              </h3>
-              <p className="text-gray-400 leading-relaxed mb-8">
-                {story.excerpt}
-              </p>
-              
-              <div className="flex items-center gap-2 text-sm font-semibold opacity-80 group-hover:opacity-100 transition-opacity">
-                Read Dispatch <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </div>
-            </motion.div>
+            </article>
           ))}
         </div>
-      </div>
-    </section>
-  );
-};
+        <div className="tz-disclaimer"><Compass size={15} />These are visual concepts only. No destination guide or itinerary is being presented.</div>
+      </section>
 
-const TimeZoneTravelersPage = () => {
-  return (
-    <>
-      <Helmet>
-        <title>Time-Zone Travelers | Global Discovery Clubhouse</title>
-        <meta name="description" content="A warm, energetic hub for people who love culture and exploration across time zones." />
-      </Helmet>
-
-      <main className="bg-[#0A0F1A] text-slate-200 min-h-screen selection:bg-orange-500/30">
-        <CinematicHero />
-        <DiscoveryRail />
-        <WaypointScene />
-        <StoryCards />
-        
-        {/* BrandGallery Section */}
-        <section className="py-24 bg-[#0A0F1A] relative border-t border-gray-800">
-          <div className="container mx-auto px-6 mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 text-center tracking-tight">Visual Archive</h2>
-            <div className="max-w-4xl mx-auto">
-              <BrandGallery 
-                brand="timezone-travelers"
-                category="gallery"
-                maxImages={12}
-                layout="grid"
-                showControls={true}
-                enableUpload={false}
-              />
-            </div>
+      <section className="tz-interlude" id="journey" aria-labelledby="tz-journey-heading">
+        <div className="tz-shell tz-interlude-inner">
+          <div>
+            <div className="tz-interlude-tag tz-mono"><MoveUpRight size={14} /> The passage is part of it</div>
+            <h2 className="tz-serif" id="tz-journey-heading">Not just where.<br /><em>What happens between.</em></h2>
           </div>
-        </section>
-
-        {/* Approved Media Section */}
-        <section className="py-24 bg-[#111827] relative">
-          <PassportStamp text="APPROVED" date="VERIFIED" angle={-20} top="-40px" left="10%" color="border-emerald-500/20 text-emerald-500/20" />
-          
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="mb-12 text-center">
-              <div className="inline-flex items-center justify-center gap-3 px-4 py-2 bg-gray-900 border border-gray-800 rounded-full mb-6">
-                <Camera size={16} className="text-gray-400" />
-                <span className="font-mono text-xs uppercase tracking-widest text-gray-400">Curated Collection</span>
-                <span className="bg-gray-800 text-gray-300 text-[10px] px-2 py-0.5 rounded-full font-bold">
-                  {countBrandPhotos('Time-Zone Travelers')} items
-                </span>
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-4 tracking-tight">Approved Media</h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
-                Official visual assets for Time-Zone Travelers. Manually reviewed to maintain the discovery clubhouse aesthetic.
-              </p>
-            </div>
-            
-            <div className="max-w-6xl mx-auto bg-[#0A0F1A] border border-gray-800 rounded-3xl p-6 md:p-12 shadow-2xl">
-              <ApprovedMediaGallery brand="Time-Zone Travelers" />
-            </div>
+          <div className="tz-interlude-copy">
+            <p>Gates, windows, layovers, first light through an unfamiliar terminal. Travel discovery can start long before arrival—and keep going after the map is folded away.</p>
+            <a className="tz-text-link" href="#approved-media" data-testid="link-transit-photography">
+              See the travel image collection <ArrowRight size={15} />
+            </a>
           </div>
-        </section>
-      </main>
-    </>
-  );
-};
+        </div>
+      </section>
+
+      <section className="tz-shell tz-archive" id="archive" aria-labelledby="tz-archive-heading">
+        <div className="tz-archive-heading">
+          <div>
+            <div className="tz-kicker tz-mono">Collected, not concluded</div>
+            <h2 id="tz-archive-heading">The visual archive.</h2>
+          </div>
+          <p>A growing collection of travel imagery. Browse the gallery for the moments that catch your eye.</p>
+        </div>
+        <div className="tz-gallery-shell tz-brand-gallery">
+          <div className="tz-gallery-title tz-mono">
+            <span><Camera size={14} /> Brand gallery</span>
+            <strong>Time-Zone Travelers</strong>
+          </div>
+          <BrandGallery
+            brand="timezone-travelers"
+            category="gallery"
+            maxImages={12}
+            layout="grid"
+            showControls={true}
+            enableUpload={false}
+          />
+        </div>
+      </section>
+
+      <section className="tz-approved" id="approved-media" aria-labelledby="tz-approved-heading">
+        <div className="tz-shell">
+          <div className="tz-approved-head">
+            <div>
+              <div className="tz-approved-count tz-mono"><Camera size={14} /> Approved collection <b>{countBrandPhotos('Time-Zone Travelers')} items</b></div>
+              <h2 id="tz-approved-heading">Images with a passport.</h2>
+            </div>
+            <p>Reviewed visual assets selected for this brand. The collection stays focused on travel and the feeling of moving through place.</p>
+          </div>
+          <div className="tz-approved-gallery">
+            <ApprovedMediaGallery brand="Time-Zone Travelers" />
+          </div>
+        </div>
+      </section>
+
+      <footer className="tz-footer">
+        <div className="tz-shell tz-footer-main">
+          <div className="tz-footer-brand"><span className="tz-mark"><Globe2 size={15} /></span>Time-Zone Travelers</div>
+          <div className="tz-footer-note">
+            A visual discovery project, still unfolding.<br />
+            <a href="#top" data-testid="link-back-to-top">Back to the beginning ↑</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </>
+);
 
 export default TimeZoneTravelersPage;

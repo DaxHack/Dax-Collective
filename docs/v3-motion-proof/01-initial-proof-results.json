@@ -1,0 +1,842 @@
+{
+ "browser": {
+  "name": "chromium",
+  "version": "141.0.7390.37"
+ },
+ "portal": {
+  "desktop_enter": {
+   "tokens": {
+    "duration-micro": "120ms",
+    "duration-ui": "240ms",
+    "duration-scene": "480ms",
+    "duration-cinematic": "900ms",
+    "easing-standard": "cubic-bezier(0.2,0,0,1)",
+    "easing-enter": "cubic-bezier(0,0,0,1)",
+    "easing-exit": "cubic-bezier(0.3,0,1,1)",
+    "easing-cinematic": "cubic-bezier(0.65,0,0.35,1)",
+    "distance-ui": "8px",
+    "distance-reveal": "24px",
+    "distance-depth": "64px",
+    "scale-push": "1.06"
+   },
+   "scrollY_before": 386,
+   "hover_navigated": false,
+   "hover_media_scale": "matrix(1.02, 0, 0, 1.02, 0, 0)",
+   "scroll_navigated": false,
+   "method": "Enter",
+   "anim_ms": 910.3,
+   "start_to_world_mounted_ms": 919.5,
+   "overlay_removed_after_mount_ms": 7.6,
+   "focus_on_h1": true,
+   "frames": [
+    {
+     "label": "portal-desktop",
+     "frames": 63,
+     "avg_fps": 57.3,
+     "max_frame_ms": 33.4,
+     "long_frames_gt50ms": 0
+    }
+   ],
+   "cls_hub_through_transition": 0,
+   "overlay_present_after": false,
+   "back_scrollY": 386,
+   "back_restored_event": {
+    "name": "hub-restored",
+    "t": 3437.8000000000466,
+    "scrollY": 386,
+    "savedY": 386,
+    "focused": "b"
+   },
+   "back_focus_portal": "b",
+   "reverse_ms": 497,
+   "wall_s": 2.27
+  },
+  "desktop_space": {
+   "tokens": {
+    "duration-micro": "120ms",
+    "duration-ui": "240ms",
+    "duration-scene": "480ms",
+    "duration-cinematic": "900ms",
+    "easing-standard": "cubic-bezier(0.2,0,0,1)",
+    "easing-enter": "cubic-bezier(0,0,0,1)",
+    "easing-exit": "cubic-bezier(0.3,0,1,1)",
+    "easing-cinematic": "cubic-bezier(0.65,0,0.35,1)",
+    "distance-ui": "8px",
+    "distance-reveal": "24px",
+    "distance-depth": "64px",
+    "scale-push": "1.06"
+   },
+   "scrollY_before": 386,
+   "hover_navigated": false,
+   "hover_media_scale": "matrix(1.02, 0, 0, 1.02, 0, 0)",
+   "scroll_navigated": false,
+   "method": "Space",
+   "anim_ms": 916.7,
+   "start_to_world_mounted_ms": 926.5,
+   "overlay_removed_after_mount_ms": 10.5,
+   "focus_on_h1": true,
+   "frames": [
+    {
+     "label": "portal-desktop",
+     "frames": 66,
+     "avg_fps": 59.1,
+     "max_frame_ms": 33.4,
+     "long_frames_gt50ms": 0
+    }
+   ],
+   "cls_hub_through_transition": 0,
+   "overlay_present_after": false,
+   "back_scrollY": 386,
+   "back_restored_event": {
+    "name": "hub-restored",
+    "t": 3344.899999999907,
+    "scrollY": 386,
+    "savedY": 386,
+    "focused": "b"
+   },
+   "back_focus_portal": "b",
+   "reverse_ms": 481.3,
+   "wall_s": 2.28
+  },
+  "desktop_click": {
+   "tokens": {
+    "duration-micro": "120ms",
+    "duration-ui": "240ms",
+    "duration-scene": "480ms",
+    "duration-cinematic": "900ms",
+    "easing-standard": "cubic-bezier(0.2,0,0,1)",
+    "easing-enter": "cubic-bezier(0,0,0,1)",
+    "easing-exit": "cubic-bezier(0.3,0,1,1)",
+    "easing-cinematic": "cubic-bezier(0.65,0,0.35,1)",
+    "distance-ui": "8px",
+    "distance-reveal": "24px",
+    "distance-depth": "64px",
+    "scale-push": "1.06"
+   },
+   "scrollY_before": 386,
+   "hover_navigated": false,
+   "hover_media_scale": "matrix(1.02, 0, 0, 1.02, 0, 0)",
+   "scroll_navigated": false,
+   "method": "click",
+   "anim_ms": 907.9,
+   "start_to_world_mounted_ms": 916.2,
+   "overlay_removed_after_mount_ms": 8.4,
+   "focus_on_h1": true,
+   "frames": [
+    {
+     "label": "portal-desktop",
+     "frames": 62,
+     "avg_fps": 56.4,
+     "max_frame_ms": 50,
+     "long_frames_gt50ms": 0
+    }
+   ],
+   "cls_hub_through_transition": 0,
+   "overlay_present_after": false,
+   "back_scrollY": 386,
+   "back_restored_event": {
+    "name": "hub-restored",
+    "t": 3358.0999999998603,
+    "scrollY": 386,
+    "savedY": 386,
+    "focused": "b"
+   },
+   "back_focus_portal": "b",
+   "reverse_ms": 482.7,
+   "wall_s": 2.27
+  },
+  "tablet_click": {
+   "tokens": {
+    "duration-micro": "120ms",
+    "duration-ui": "240ms",
+    "duration-scene": "480ms",
+    "duration-cinematic": "900ms",
+    "easing-standard": "cubic-bezier(0.2,0,0,1)",
+    "easing-enter": "cubic-bezier(0,0,0,1)",
+    "easing-exit": "cubic-bezier(0.3,0,1,1)",
+    "easing-cinematic": "cubic-bezier(0.65,0,0.35,1)",
+    "distance-ui": "8px",
+    "distance-reveal": "24px",
+    "distance-depth": "64px",
+    "scale-push": "1.06"
+   },
+   "scrollY_before": 230,
+   "scroll_navigated": false,
+   "method": "click",
+   "anim_ms": 493.1,
+   "start_to_world_mounted_ms": 499.8,
+   "overlay_removed_after_mount_ms": 10.0,
+   "focus_on_h1": true,
+   "frames": [
+    {
+     "label": "portal-tablet",
+     "frames": 40,
+     "avg_fps": 58.5,
+     "max_frame_ms": 33.4,
+     "long_frames_gt50ms": 0
+    }
+   ],
+   "cls_hub_through_transition": 0,
+   "overlay_present_after": false,
+   "back_scrollY": 230,
+   "back_restored_event": {
+    "name": "hub-restored",
+    "t": 2356.1999999999534,
+    "scrollY": 230,
+    "savedY": 230,
+    "focused": "b"
+   },
+   "back_focus_portal": "b",
+   "reverse_ms": 487.5,
+   "wall_s": 1.85
+  },
+  "mobile_tap": {
+   "tokens": {
+    "duration-micro": "120ms",
+    "duration-ui": "240ms",
+    "duration-scene": "480ms",
+    "duration-cinematic": "900ms",
+    "easing-standard": "cubic-bezier(0.2,0,0,1)",
+    "easing-enter": "cubic-bezier(0,0,0,1)",
+    "easing-exit": "cubic-bezier(0.3,0,1,1)",
+    "easing-cinematic": "cubic-bezier(0.65,0,0.35,1)",
+    "distance-ui": "4px",
+    "distance-reveal": "16px",
+    "distance-depth": "24px",
+    "scale-push": "1.03"
+   },
+   "scrollY_before": 1157,
+   "scroll_navigated": false,
+   "method": "tap",
+   "anim_ms": 495.9,
+   "start_to_world_mounted_ms": 501.4,
+   "overlay_removed_after_mount_ms": 11.2,
+   "focus_on_h1": true,
+   "frames": [
+    {
+     "label": "portal-mobile",
+     "frames": 41,
+     "avg_fps": 60.0,
+     "max_frame_ms": 16.8,
+     "long_frames_gt50ms": 0
+    }
+   ],
+   "cls_hub_through_transition": 0,
+   "overlay_present_after": false,
+   "back_scrollY": 1157,
+   "back_restored_event": {
+    "name": "hub-restored",
+    "t": 2401.3000000000466,
+    "scrollY": 1157,
+    "savedY": 1157,
+    "focused": "b"
+   },
+   "back_focus_portal": "b",
+   "reverse_ms": 491.4,
+   "wall_s": 1.88
+  },
+  "reduced_desktop": {
+   "tokens": {
+    "duration-micro": "120ms",
+    "duration-ui": "0ms",
+    "duration-scene": "120ms",
+    "duration-cinematic": "120ms",
+    "easing-standard": "cubic-bezier(0.2,0,0,1)",
+    "easing-enter": "cubic-bezier(0,0,0,1)",
+    "easing-exit": "cubic-bezier(0.3,0,1,1)",
+    "easing-cinematic": "cubic-bezier(0.65,0,0.35,1)",
+    "distance-ui": "0px",
+    "distance-reveal": "0px",
+    "distance-depth": "0px",
+    "scale-push": "1"
+   },
+   "scrollY_before": 386,
+   "scroll_navigated": false,
+   "method": "Enter",
+   "anim_ms": null,
+   "start_to_world_mounted_ms": 12.4,
+   "overlay_removed_after_mount_ms": null,
+   "focus_on_h1": true,
+   "frames": [],
+   "cls_hub_through_transition": 0,
+   "overlay_present_after": false,
+   "back_scrollY": 386,
+   "back_restored_event": {
+    "name": "hub-restored",
+    "t": 1989.8000000000466,
+    "scrollY": 386,
+    "savedY": 386,
+    "focused": "b"
+   },
+   "back_focus_portal": "b",
+   "reverse_ms": null,
+   "wall_s": 1.37
+  },
+  "reduced_mobile": {
+   "tokens": {
+    "duration-micro": "120ms",
+    "duration-ui": "0ms",
+    "duration-scene": "120ms",
+    "duration-cinematic": "120ms",
+    "easing-standard": "cubic-bezier(0.2,0,0,1)",
+    "easing-enter": "cubic-bezier(0,0,0,1)",
+    "easing-exit": "cubic-bezier(0.3,0,1,1)",
+    "easing-cinematic": "cubic-bezier(0.65,0,0.35,1)",
+    "distance-ui": "0px",
+    "distance-reveal": "0px",
+    "distance-depth": "0px",
+    "scale-push": "1"
+   },
+   "scrollY_before": 1157,
+   "scroll_navigated": false,
+   "method": "tap",
+   "anim_ms": null,
+   "start_to_world_mounted_ms": 16.0,
+   "overlay_removed_after_mount_ms": null,
+   "focus_on_h1": true,
+   "frames": [],
+   "cls_hub_through_transition": 0,
+   "overlay_present_after": false,
+   "back_scrollY": 1157,
+   "back_restored_event": {
+    "name": "hub-restored",
+    "t": 1954.4000000001397,
+    "scrollY": 1157,
+    "savedY": 1157,
+    "focused": "b"
+   },
+   "back_focus_portal": "b",
+   "reverse_ms": null,
+   "wall_s": 1.4
+  },
+  "back_without_state": {
+   "world_focus": "world-h1",
+   "reverse_played": false,
+   "scrollY": 0
+  }
+ },
+ "journey": {
+  "desktop": {
+   "viewport_h": 900,
+   "section_heights": [
+    2700,
+    2700,
+    2700
+   ],
+   "pin_distance_vh": 2.0,
+   "samples": {
+    "0": {
+     "progress": 0,
+     "drawn": 0,
+     "mediaB": 0,
+     "l1": 0,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.05": {
+     "progress": 0.05,
+     "drawn": 0,
+     "mediaB": 0,
+     "l1": 0.5,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.1": {
+     "progress": 0.1,
+     "drawn": 0,
+     "mediaB": 0,
+     "l1": 1,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.3": {
+     "progress": 0.3,
+     "drawn": 0.29,
+     "mediaB": 0,
+     "l1": 1,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.5": {
+     "progress": 0.5,
+     "drawn": 0.57,
+     "mediaB": 0.5,
+     "l1": 1,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.6": {
+     "progress": 0.6,
+     "drawn": 0.71,
+     "mediaB": 1,
+     "l1": 1,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.79": {
+     "progress": 0.79,
+     "drawn": 0.99,
+     "mediaB": 1,
+     "l1": 1,
+     "l2": 0.95,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.81": {
+     "progress": 0.81,
+     "drawn": 1,
+     "mediaB": 1,
+     "l1": 1,
+     "l2": 1,
+     "stageTop": 0,
+     "current": "marker-1",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be"
+    },
+    "1.0": {
+     "progress": 1,
+     "drawn": 1,
+     "mediaB": 1,
+     "l1": 1,
+     "l2": 1,
+     "stageTop": 0,
+     "current": "marker-1",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be"
+    }
+   },
+   "marker_swap_progress": 0.8,
+   "reverse_to_0.3": {
+    "progress": 0.3,
+    "drawn": 0.29,
+    "mediaB": 0,
+    "l1": 1,
+    "l2": 0,
+    "stageTop": 0,
+    "current": "marker-0",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+   },
+   "scrub_settle_ms": 331,
+   "scrub_final_drawn": 1,
+   "frames": [
+    {
+     "label": "journey-scroll",
+     "frames": 180,
+     "avg_fps": 60.0,
+     "max_frame_ms": 16.8,
+     "long_frames_gt50ms": 0
+    }
+   ],
+   "cls": 4.230967078189301e-05,
+   "jump_expanded": "true",
+   "escape_returns_focus": true,
+   "jump_to_3": {
+    "focused_heading": "chapter-3-h",
+    "hash": "#chapter-3",
+    "scrollY": 5464,
+    "section_top": 5464,
+    "event": {
+     "name": "jump-end",
+     "t": 22813.300000000047,
+     "to": 2,
+     "y": 5464,
+     "top": 5464,
+     "focused": true
+    }
+   },
+   "prev_from_3": {
+    "focused_heading": "chapter-2-h",
+    "hash": "#chapter-2"
+   },
+   "reload_hash_restore": {
+    "hash": "#chapter-2",
+    "scrollY": 2764,
+    "expected_top": 2764,
+    "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be"
+   },
+   "tab_sequence": [
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1",
+    "|Next chapter: chapter 3",
+    "|Previous chapter: chapter 2",
+    "|",
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1",
+    "|Next chapter: chapter 3",
+    "|Previous chapter: chapter 2",
+    "|",
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1",
+    "|Next chapter: chapter 3",
+    "|Previous chapter: chapter 2",
+    "|",
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1"
+   ]
+  },
+  "tablet": {
+   "viewport_h": 1112,
+   "section_heights": [
+    2224,
+    2224,
+    2224
+   ],
+   "pin_distance_vh": 1.0,
+   "samples": {
+    "0": {
+     "progress": 0,
+     "drawn": 0,
+     "mediaB": 0,
+     "l1": 0,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.05": {
+     "progress": 0.05,
+     "drawn": 0,
+     "mediaB": 0,
+     "l1": 0.504,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.1": {
+     "progress": 0.1,
+     "drawn": 0,
+     "mediaB": 0,
+     "l1": 0.998,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.3": {
+     "progress": 0.3,
+     "drawn": 0.29,
+     "mediaB": 0,
+     "l1": 1,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.5": {
+     "progress": 0.5,
+     "drawn": 0.57,
+     "mediaB": 0.5,
+     "l1": 1,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.6": {
+     "progress": 0.6,
+     "drawn": 0.71,
+     "mediaB": 0.999,
+     "l1": 1,
+     "l2": 0,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.79": {
+     "progress": 0.79,
+     "drawn": 0.99,
+     "mediaB": 1,
+     "l1": 1,
+     "l2": 0.948,
+     "stageTop": 0,
+     "current": "marker-0",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+    },
+    "0.81": {
+     "progress": 0.81,
+     "drawn": 1,
+     "mediaB": 1,
+     "l1": 1,
+     "l2": 1,
+     "stageTop": 0,
+     "current": "marker-1",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be"
+    },
+    "1.0": {
+     "progress": 1,
+     "drawn": 1,
+     "mediaB": 1,
+     "l1": 1,
+     "l2": 1,
+     "stageTop": 0,
+     "current": "marker-1",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be"
+    }
+   },
+   "marker_swap_progress": 0.8,
+   "reverse_to_0.3": {
+    "progress": 0.3,
+    "drawn": 0.29,
+    "mediaB": 0,
+    "l1": 1,
+    "l2": 0,
+    "stageTop": 0,
+    "current": "marker-0",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 1 \u25be"
+   },
+   "scrub_settle_ms": 353,
+   "scrub_final_drawn": 1,
+   "frames": [
+    {
+     "label": "journey-scroll",
+     "frames": 180,
+     "avg_fps": 60.0,
+     "max_frame_ms": 16.8,
+     "long_frames_gt50ms": 0
+    }
+   ],
+   "cls": 0.0001033901929747543,
+   "jump_expanded": "true",
+   "escape_returns_focus": true,
+   "jump_to_3": {
+    "focused_heading": "chapter-3-h",
+    "hash": "#chapter-3",
+    "scrollY": 4512,
+    "section_top": 4512,
+    "event": {
+     "name": "jump-end",
+     "t": 22731.800000000047,
+     "to": 2,
+     "y": 4512,
+     "top": 4512,
+     "focused": true
+    }
+   },
+   "prev_from_3": {
+    "focused_heading": "chapter-2-h",
+    "hash": "#chapter-2"
+   },
+   "reload_hash_restore": {
+    "hash": "#chapter-2",
+    "scrollY": 2288,
+    "expected_top": 2288,
+    "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be"
+   },
+   "tab_sequence": [
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1",
+    "|Next chapter: chapter 3",
+    "|Previous chapter: chapter 2",
+    "|",
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1",
+    "|Next chapter: chapter 3",
+    "|Previous chapter: chapter 2",
+    "|",
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1",
+    "|Next chapter: chapter 3",
+    "|Previous chapter: chapter 2",
+    "|",
+    "|mp-skip",
+    "|mp-jump-trigger",
+    "|Next chapter: chapter 2",
+    "|Previous chapter: chapter 1"
+   ]
+  },
+  "mobile": {
+   "mode": "mp-journey is-flow ",
+   "section_heights": [
+    485,
+    485,
+    485
+   ],
+   "viewport_h": 844,
+   "scrolltrigger_active": false,
+   "stage_position": "static",
+   "targets": {
+    "steps": [
+     48,
+     48
+    ],
+    "jump": [
+     181,
+     48
+    ],
+    "header_sticky": "sticky"
+   },
+   "chapter2_on_screen": {
+    "mediaB_opacity_before": 0,
+    "mediaB_opacity_after_100ms": 0.654671,
+    "mediaB_opacity_after_600ms": 1,
+    "current": "marker-1",
+    "mediaB_transition": "0.24s",
+    "l1_transform": "none"
+   },
+   "next_from_1": {
+    "focused_heading": "chapter-2-h",
+    "hash": "#chapter-2",
+    "jump_event": {
+     "name": "jump-end",
+     "t": 2565,
+     "to": 1,
+     "y": 485,
+     "top": 485,
+     "focused": true
+    }
+   }
+  },
+  "reduced_desktop": {
+   "mode": "mp-journey is-flow is-reduced",
+   "section_heights": [
+    660,
+    660,
+    660
+   ],
+   "viewport_h": 900,
+   "scrolltrigger_active": false,
+   "stage_position": "static",
+   "targets": {
+    "steps": [
+     48,
+     48
+    ],
+    "jump": [
+     220,
+     48
+    ],
+    "header_sticky": "sticky"
+   },
+   "chapter2_on_screen": {
+    "mediaB_opacity_before": 1,
+    "mediaB_opacity_after_100ms": 1,
+    "mediaB_opacity_after_600ms": 1,
+    "current": "marker-1",
+    "mediaB_transition": "0s",
+    "l1_transform": "none"
+   },
+   "next_from_1": {
+    "focused_heading": "chapter-2-h",
+    "hash": "#chapter-2",
+    "jump_event": {
+     "name": "jump-end",
+     "t": 2201.7000000001863,
+     "to": 1,
+     "y": 660,
+     "top": 660,
+     "focused": true
+    }
+   }
+  },
+  "reduced_mobile": {
+   "mode": "mp-journey is-flow is-reduced",
+   "section_heights": [
+    485,
+    485,
+    485
+   ],
+   "viewport_h": 844,
+   "scrolltrigger_active": false,
+   "stage_position": "static",
+   "targets": {
+    "steps": [
+     48,
+     48
+    ],
+    "jump": [
+     181,
+     48
+    ],
+    "header_sticky": "sticky"
+   },
+   "chapter2_on_screen": {
+    "mediaB_opacity_before": 1,
+    "mediaB_opacity_after_100ms": 1,
+    "mediaB_opacity_after_600ms": 1,
+    "current": "marker-1",
+    "mediaB_transition": "0s",
+    "l1_transform": "none"
+   },
+   "next_from_1": {
+    "focused_heading": "chapter-2-h",
+    "hash": "#chapter-2",
+    "jump_event": {
+     "name": "jump-end",
+     "t": 2178.1999999999534,
+     "to": 1,
+     "y": 485,
+     "top": 485,
+     "focused": true
+    }
+   }
+  }
+ },
+ "lcp": {
+  "gateway_v3_baseline_desktop_4g": {
+   "lcp_ms": 2420,
+   "cls": 0,
+   "transfer_kb_js": 339
+  },
+  "gateway_v3_baseline_mobile_4g_cpu4x": {
+   "lcp_ms": 2884,
+   "cls": 0,
+   "transfer_kb_js": 339
+  },
+  "hub_desktop_unthrottled": {
+   "lcp_ms": 248,
+   "cls": 0,
+   "transfer_kb_js": 335
+  },
+  "journey_desktop_unthrottled": {
+   "lcp_ms": 312,
+   "cls": 0,
+   "transfer_kb_js": 382
+  },
+  "hub_desktop_4g": {
+   "lcp_ms": 2404,
+   "cls": 0,
+   "transfer_kb_js": 335
+  },
+  "hub_mobile_4g_cpu4x": {
+   "lcp_ms": 2836,
+   "cls": 0,
+   "transfer_kb_js": 335
+  },
+  "journey_desktop_4g": {
+   "lcp_ms": 2424,
+   "cls": 0,
+   "transfer_kb_js": 335
+  },
+  "journey_mobile_4g_cpu4x": {
+   "lcp_ms": 2840,
+   "cls": 0,
+   "transfer_kb_js": 335
+  }
+ }
+}

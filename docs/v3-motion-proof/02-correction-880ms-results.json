@@ -1,0 +1,468 @@
+{
+ "browser": "141.0.7390.37",
+ "portal_desktop_runs": [
+  {
+   "token": "880ms",
+   "anim_ms": 896.0,
+   "to_world_ms": 913.6,
+   "focus_h1": true,
+   "max_frame_ms": 100,
+   "long_gt50": 2,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 487.8
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 884.3,
+   "to_world_ms": 896.2,
+   "focus_h1": true,
+   "max_frame_ms": 99.9,
+   "long_gt50": 1,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 489.4
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 884.2,
+   "to_world_ms": 899.4,
+   "focus_h1": true,
+   "max_frame_ms": 83.3,
+   "long_gt50": 1,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 488.3
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 883.8,
+   "to_world_ms": 896.2,
+   "focus_h1": true,
+   "max_frame_ms": 83.3,
+   "long_gt50": 1,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 495.8
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 886.3,
+   "to_world_ms": 894.1,
+   "focus_h1": true,
+   "max_frame_ms": 99.9,
+   "long_gt50": 2,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 490.5
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 885.7,
+   "to_world_ms": 902.2,
+   "focus_h1": true,
+   "max_frame_ms": 83.4,
+   "long_gt50": 3,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 497.9
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 884.7,
+   "to_world_ms": 899.0,
+   "focus_h1": true,
+   "max_frame_ms": 116.6,
+   "long_gt50": 2,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 483.3
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 888.9,
+   "to_world_ms": 907.0,
+   "focus_h1": true,
+   "max_frame_ms": 83.3,
+   "long_gt50": 2,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 486.6
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 884.1,
+   "to_world_ms": 899.7,
+   "focus_h1": true,
+   "max_frame_ms": 83.3,
+   "long_gt50": 1,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 482
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 886.9,
+   "to_world_ms": 898.4,
+   "focus_h1": true,
+   "max_frame_ms": 83.2,
+   "long_gt50": 3,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 483.4
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 885.4,
+   "to_world_ms": 895.6,
+   "focus_h1": true,
+   "max_frame_ms": 66.6,
+   "long_gt50": 1,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 487.7
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 884.2,
+   "to_world_ms": 892.2,
+   "focus_h1": true,
+   "max_frame_ms": 66.6,
+   "long_gt50": 1,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 484.8
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 885.0,
+   "to_world_ms": 897.4,
+   "focus_h1": true,
+   "max_frame_ms": 100,
+   "long_gt50": 2,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 493.2
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 885.5,
+   "to_world_ms": 895.2,
+   "focus_h1": true,
+   "max_frame_ms": 100.0,
+   "long_gt50": 2,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 484.7
+  },
+  {
+   "token": "880ms",
+   "anim_ms": 884.2,
+   "to_world_ms": 891.5,
+   "focus_h1": true,
+   "max_frame_ms": 99.9,
+   "long_gt50": 2,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 494.2
+  }
+ ],
+ "portal_desktop_summary": {
+  "n": 15,
+  "anim_min": 883.8,
+  "anim_median": 885.0,
+  "anim_max": 896.0,
+  "to_world_min": 891.5,
+  "to_world_median": 897.4,
+  "to_world_max": 913.6,
+  "all_le_900": true,
+  "all_to_world_le_900": false,
+  "focus_all": true,
+  "back_all": true,
+  "max_frame_ms": 116.6,
+  "long_gt50_total": 26
+ },
+ "portal_unaffected": {
+  "tablet_click": {
+   "token": "880ms",
+   "anim_ms": 483.6,
+   "to_world_ms": 497.4,
+   "focus_h1": true,
+   "max_frame_ms": 50.1,
+   "long_gt50": 1,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 483.4
+  },
+  "mobile_tap": {
+   "token": "880ms",
+   "anim_ms": 484.3,
+   "to_world_ms": 492.9,
+   "focus_h1": true,
+   "max_frame_ms": 33.3,
+   "long_gt50": 0,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": 486.8
+  },
+  "reduced_desktop": {
+   "token": "120ms",
+   "anim_ms": null,
+   "to_world_ms": 27.4,
+   "focus_h1": true,
+   "max_frame_ms": 0,
+   "long_gt50": 0,
+   "back_scroll_ok": true,
+   "back_focus": "b",
+   "reverse_ms": null
+  }
+ },
+ "chapter_nav": {
+  "desktop": {
+   "mode": "mp-journey is-pinned",
+   "jump": [
+    {
+     "label": "jump->3 @50ms",
+     "scrollY": 5464,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+     "expected_top": 5464,
+     "jump_elapsed_ms": 0.8,
+     "chapter_current_events": [
+      2,
+      1,
+      2
+     ]
+    },
+    {
+     "label": "jump->3 @750ms (after scrub settle)",
+     "scrollY": 5464,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+     "routes_drawn": [
+      1,
+      1,
+      0
+     ]
+    }
+   ],
+   "prev": {
+    "label": "prev 3->2 @50ms",
+    "scrollY": 2764,
+    "focus": "chapter-2-h",
+    "hash": "#chapter-2",
+    "current": "marker-1",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be",
+    "expected_top": 2764,
+    "chapter_current_events": [
+     1
+    ]
+   },
+   "next": {
+    "label": "next 2->3 @50ms",
+    "scrollY": 5464,
+    "focus": "chapter-3-h",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 5464
+   },
+   "history_entries_added": 0,
+   "escape_returns_focus": true,
+   "reload": {
+    "label": "reload",
+    "scrollY": 5464,
+    "focus": "",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 5464
+   }
+  },
+  "tablet": {
+   "mode": "mp-journey is-pinned",
+   "jump": [
+    {
+     "label": "jump->3 @50ms",
+     "scrollY": 4512,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+     "expected_top": 4512,
+     "jump_elapsed_ms": 1.0,
+     "chapter_current_events": [
+      2,
+      1,
+      2
+     ]
+    },
+    {
+     "label": "jump->3 @750ms (after scrub settle)",
+     "scrollY": 4512,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+     "routes_drawn": [
+      1,
+      1,
+      0
+     ]
+    }
+   ],
+   "prev": {
+    "label": "prev 3->2 @50ms",
+    "scrollY": 2288,
+    "focus": "chapter-2-h",
+    "hash": "#chapter-2",
+    "current": "marker-1",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be",
+    "expected_top": 2288,
+    "chapter_current_events": [
+     1
+    ]
+   },
+   "next": {
+    "label": "next 2->3 @50ms",
+    "scrollY": 4512,
+    "focus": "chapter-3-h",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 4512
+   },
+   "history_entries_added": 0,
+   "escape_returns_focus": true,
+   "reload": {
+    "label": "reload",
+    "scrollY": 4512,
+    "focus": "",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 4512
+   }
+  },
+  "mobile": {
+   "mode": "mp-journey is-flow",
+   "jump": [
+    {
+     "label": "jump->3 @50ms",
+     "scrollY": 890,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+     "expected_top": 969,
+     "jump_elapsed_ms": 0.8,
+     "chapter_current_events": [
+      2
+     ]
+    },
+    {
+     "label": "jump->3 @750ms (after scrub settle)",
+     "scrollY": 890,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be"
+    }
+   ],
+   "prev": {
+    "label": "prev 3->2 @50ms",
+    "scrollY": 485,
+    "focus": "chapter-2-h",
+    "hash": "#chapter-2",
+    "current": "marker-1",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be",
+    "expected_top": 485,
+    "chapter_current_events": [
+     1
+    ]
+   },
+   "next": {
+    "label": "next 2->3 @50ms",
+    "scrollY": 886,
+    "focus": "chapter-3-h",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 969
+   },
+   "history_entries_added": 0,
+   "escape_returns_focus": true,
+   "reload": {
+    "label": "reload",
+    "scrollY": 886,
+    "focus": "",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 969
+   }
+  },
+  "reduced_desktop": {
+   "mode": "mp-journey is-flow is-reduced",
+   "jump": [
+    {
+     "label": "jump->3 @50ms",
+     "scrollY": 1320,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+     "expected_top": 1320,
+     "jump_elapsed_ms": 0.9,
+     "chapter_current_events": [
+      2
+     ]
+    },
+    {
+     "label": "jump->3 @750ms (after scrub settle)",
+     "scrollY": 1320,
+     "focus": "chapter-3-h",
+     "hash": "#chapter-3",
+     "current": "marker-2",
+     "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be"
+    }
+   ],
+   "prev": {
+    "label": "prev 3->2 @50ms",
+    "scrollY": 660,
+    "focus": "chapter-2-h",
+    "hash": "#chapter-2",
+    "current": "marker-1",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 2 \u25be",
+    "expected_top": 660,
+    "chapter_current_events": [
+     1
+    ]
+   },
+   "next": {
+    "label": "next 2->3 @50ms",
+    "scrollY": 1316,
+    "focus": "chapter-3-h",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 1320
+   },
+   "history_entries_added": 0,
+   "escape_returns_focus": true,
+   "reload": {
+    "label": "reload",
+    "scrollY": 1316,
+    "focus": "",
+    "hash": "#chapter-3",
+    "current": "marker-2",
+    "jumpLabel": "YEAR \u00b7 CHAPTER 3 \u25be",
+    "expected_top": 1320
+   }
+  }
+ }
+}

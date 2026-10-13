@@ -1,16 +1,11 @@
-<<<<<<< HEAD
-# Allow all
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://yourdomain.com/sitemap.xml
-
-# Block any dev-only paths
-Disallow: /temp/
+Disallow: /dax-the-investor
+Disallow: /investor
+Disallow: /internal/
 Disallow: /private/
-=======
-# https://www.robotstxt.org/robotstxt.html
-User-agent: *
-Disallow:
->>>>>>> 5a8663fecde2d35c1194c25223400ef23ec4724c
+Disallow: /rollo-investor
+Disallow: /automation
+
+Sitemap: https://daxcollective.com/sitemap.xml

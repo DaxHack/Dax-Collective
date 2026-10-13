@@ -1,319 +1,389 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { useMemo, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { ArrowRight, ChevronRight, Activity, Terminal, Zap } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, ChevronDown, Film, Layers3, ScanLine } from 'lucide-react';
 import ApprovedMediaGallery from '../components/ApprovedMediaGallery';
-import Tilt from 'react-parallax-tilt';
 
-// ─── PALETTE & STYLES ────────────────────────────────────────────────────────
-const THEME = {
-  blue: '#00D4FF',
-  violet: '#8B5CF6',
-  cyan: '#06B6D4',
-  magenta: '#E879F9',
-  bg: '#05050A',
-  bgLight: '#0A0A12',
-};
-
-const scanlineStyle = {
-  backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.015) 2px, rgba(0,212,255,0.015) 4px)',
-};
-
-const grainStyle = {
-  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")`,
-};
-
-// ─── DATA ───────────────────────────────────────────────────────────────────
-const TOPICS = [
-  { id: 'all', label: 'All Takes', color: THEME.blue },
-  { id: 'character', label: 'Character Deep-Dives', color: THEME.violet },
-  { id: 'arc', label: 'Arc Reviews', color: THEME.cyan },
-  { id: 'seasonal', label: 'Seasonal Takes', color: THEME.magenta },
-  { id: 'theory', label: 'Theory Board', color: THEME.blue },
+const topics = [
+  { id: 'all', label: 'All notes' },
+  { id: 'character', label: 'Character studies' },
+  { id: 'arc', label: 'Arc readings' },
+  { id: 'seasonal', label: 'Seasonal notes' },
+  { id: 'theory', label: 'Theory board' },
 ];
 
-const LATEST_TAKES = [
+const concepts = [
   {
-    id: 1,
-    topic: 'Theory Board',
-    topicColor: THEME.blue,
-    headline: 'Return by Death Isn\'t a Power — It\'s a Psychological Sentence',
-    summary: 'The ability selects for high emotional capacity and low self-preservation. Subaru survives because he\'s built to absorb consequences others can\'t.',
-    asset: '/assets/approved-media/anidax/rezero-theory-research-notes.png',
+    id: 'rezero',
+    topic: 'theory',
+    topicLabel: 'Theory board',
+    format: 'Essay premise',
+    title: 'Return by Death Isn’t a Power — It’s a Psychological Sentence',
+    summary: 'The ability selects for high emotional capacity and low self-preservation. Subaru survives because he is built to absorb consequences others can’t.',
+    image: '/assets/approved-media/anidax/rezero-theory-research-notes.png',
+    imageAlt: 'Research notes and working materials for an anime theory',
+    number: '01',
   },
   {
-    id: 2,
-    topic: 'Arc Review',
-    topicColor: THEME.violet,
-    headline: 'Frieren\'s Silence Is the Argument, Not the Mood',
-    summary: 'The show is not about learning to care. It\'s about the gap between caring and being present. That distinction is what every arc is actually about.',
-    asset: '/assets/approved-media/anidax/character-files-editorial-workspace.png',
+    id: 'frieren',
+    topic: 'arc',
+    topicLabel: 'Arc reading',
+    format: 'Video essay premise',
+    title: 'Frieren’s Silence Is the Argument, Not the Mood',
+    summary: 'The show is not about learning to care. It is about the gap between caring and being present. That distinction is what every arc is actually about.',
+    image: '/assets/approved-media/anidax/character-files-editorial-workspace.png',
+    imageAlt: 'An editorial workspace with character notes',
+    number: '02',
   },
   {
-    id: 3,
-    topic: 'Seasonal Takes',
-    topicColor: THEME.cyan,
-    headline: 'Dungeon Meshi Did What Isekai Forgot: Make the World Feel Lived-In',
-    summary: 'Studio Trigger didn\'t add flash. They added texture. Every background, every meal, every monster death communicates a world that existed before the camera arrived.',
-    asset: '/assets/approved-media/anidax/anime-collection-shelf-display.png',
+    id: 'dungeon-meshi',
+    topic: 'seasonal',
+    topicLabel: 'Seasonal note',
+    format: 'Short-form premise',
+    title: 'Dungeon Meshi Did What Isekai Forgot: Make the World Feel Lived-In',
+    summary: 'Studio Trigger didn’t add flash. They added texture. Every background, every meal, every monster death communicates a world that existed before the camera arrived.',
+    image: '/assets/approved-media/anidax/anime-collection-shelf-display.png',
+    imageAlt: 'A collection of anime volumes and objects on a shelf',
+    number: '03',
   },
 ];
 
-// ─── COMPONENTS ─────────────────────────────────────────────────────────────
-const GlitchText = ({ text, className }) => {
+const conceptTopicStyle = {
+  theory: { color: '#ee7356', label: 'Theory board' },
+  arc: { color: '#a5bdff', label: 'Arc reading' },
+  seasonal: { color: '#d5d880', label: 'Seasonal note' },
+};
+
+function ConceptCard({ concept, index, expanded, onToggle, reduceMotion }) {
+  const topicStyle = conceptTopicStyle[concept.topic];
   return (
-    <div className={`relative inline-block ${className}`}>
-      <span className="relative z-10">{text}</span>
-      <span className="absolute top-0 left-[2px] -z-10 opacity-70 text-cyan-500 animate-pulse mix-blend-screen">{text}</span>
-      <span className="absolute top-0 -left-[2px] -z-10 opacity-70 text-fuchsia-500 animate-pulse mix-blend-screen" style={{ animationDelay: '0.1s' }}>{text}</span>
-    </div>
-  );
-};
-
-const AbstractSilhouette = () => (
-  <div className="relative w-full h-[500px] flex items-end justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A12]">
-    <div className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity" style={{ backgroundImage: "url('/assets/approved-media/anidax/setup-anidax-recording-space.png')" }} />
-    <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-transparent to-transparent z-10" />
-    
-    <motion.div 
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, delay: 0.2 }}
-      className="relative z-20 flex items-end gap-6 pb-0"
+    <motion.article
+      id={`concept-${concept.id}`}
+      data-testid={`card-concept-${concept.id}`}
+      className={`ani-concept ani-concept-${index + 1}`}
+      initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-45px' }}
+      transition={{ duration: 0.45, delay: reduceMotion ? 0 : index * 0.07 }}
     >
-      {/* Main Host Silhouette */}
-      <motion.div animate={{ y: [0, -4, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="flex flex-col items-center">
-        <div className="w-24 h-32 rounded-t-[3rem] bg-gradient-to-b from-[#00D4FF]/20 to-transparent border-t border-[#00D4FF]/40 backdrop-blur-sm" />
-      </motion.div>
-      {/* Secondary Element */}
-      <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }} className="flex flex-col items-center">
-        <div className="w-16 h-20 rounded-t-[2rem] bg-gradient-to-b from-[#8B5CF6]/20 to-transparent border-t border-[#8B5CF6]/40 backdrop-blur-sm" />
-      </motion.div>
-    </motion.div>
-    
-    <div className="absolute top-4 left-4 z-30 flex items-center gap-2 text-[10px] font-mono text-[#00D4FF]/70 tracking-widest uppercase">
-      <Activity size={12} className="animate-pulse" /> REC // STUDIO_01
-    </div>
-  </div>
-);
+      <div className="ani-card-image" style={{ backgroundImage: `linear-gradient(180deg, transparent 35%, rgba(7,13,25,.92)), url("${concept.image}")` }}>
+        <span className="ani-index">{concept.number} / 03</span>
+        <span className="ani-card-mark" aria-hidden="true">A—D</span>
+      </div>
+      <div className="ani-card-body">
+        <div className="ani-card-kickers">
+          <span className="ani-topic-tag" style={{ color: topicStyle.color }}>{concept.topicLabel}</span>
+          <span className="ani-format">{concept.format}</span>
+        </div>
+        <h3>{concept.title}</h3>
+        <p>{concept.summary}</p>
+        <div className="ani-card-foot">
+          <span className="ani-status"><i /> Premise · unpublished</span>
+          <button
+            type="button"
+            className="ani-expand"
+            aria-expanded={expanded}
+            aria-controls={`premise-${concept.id}`}
+            data-testid={`button-premise-${concept.id}`}
+            onClick={onToggle}
+          >
+            {expanded ? 'Close note' : 'About this premise'}
+            <ChevronDown size={14} className={expanded ? 'ani-chevron-open' : ''} />
+          </button>
+        </div>
+        {expanded && (
+          <div className="ani-premise-note" id={`premise-${concept.id}`} data-testid={`text-premise-status-${concept.id}`}>
+            <span>Editorial status</span>
+            <p>This is a working idea, not a published essay or finished video. The title and note describe the question under consideration.</p>
+          </div>
+        )}
+      </div>
+    </motion.article>
+  );
+}
 
-// ─── MAIN PAGE ──────────────────────────────────────────────────────────────
 export default function AniDaxPage() {
   const [activeTopic, setActiveTopic] = useState('all');
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll();
-  const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const [openConcept, setOpenConcept] = useState(null);
+  const reduceMotion = useReducedMotion();
+  const visibleConcepts = useMemo(
+    () => activeTopic === 'all' ? concepts : concepts.filter((concept) => concept.topic === activeTopic),
+    [activeTopic],
+  );
+
+  const goToTheory = () => {
+    setActiveTopic('theory');
+    document.getElementById('latest-notes')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  };
 
   return (
     <>
       <Helmet>
-        <title>Ani-Dax — Anime Editorial & Commentary | Dax Collective</title>
-        <meta name="description" content="Original anime analysis, character deep-dives, and seasonal commentary." />
+        <title>Ani-Dax — Anime, read closely | Dax Collective</title>
+        <meta name="description" content="Anime analysis, character writing, and story structure from Ani-Dax. Working premises are clearly marked; no unfinished essay is presented as published." />
       </Helmet>
+      <main className="ani-page" data-testid="page-anidax">
+        <style>{`
+          .ani-page {
+            --ink: #070d19; --ink-soft: #0b1524; --panel: #101b2c; --line: rgba(191,211,242,.14);
+            --paper: #eceddf; --muted: #a7b2c1; --quiet: #718094; --signal: #ee7356; --blue: #a5bdff;
+            min-height: 100dvh; overflow: clip; color: var(--paper); background: var(--ink);
+            font-family: 'Avenir Next', Avenir, 'Segoe UI', sans-serif; selection-background-color: var(--signal);
+          }
+          .ani-page * { box-sizing: border-box; }
+          .ani-page ::selection { color: var(--ink); background: var(--signal); }
+          .ani-wrap { width: min(1220px, calc(100% - 56px)); margin: 0 auto; }
+          .ani-topline { display:flex; justify-content:space-between; align-items:center; padding:24px 0; border-bottom:1px solid var(--line); }
+          .ani-wordmark { display:flex; align-items:center; gap:11px; color:var(--paper); text-decoration:none; font-weight:800; letter-spacing:-.055em; font-size:17px; }
+          .ani-wordmark-mark { display:grid; place-items:center; width:27px; height:27px; border:1px solid var(--signal); color:var(--signal); font-size:10px; letter-spacing:-.08em; }
+          .ani-edition { display:flex; gap:10px; align-items:center; color:var(--muted); font:10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform:uppercase; letter-spacing:.15em; }
+          .ani-edition b { color:var(--signal); font-weight:500; }
+          .ani-hero { min-height: min(790px, 86vh); padding:52px 0 72px; display:grid; grid-template-columns: 1fr .92fr; gap:7%; align-items:center; position:relative; }
+          .ani-hero-copy { position:relative; z-index:2; padding:15px 0; }
+          .ani-eyebrow { display:flex; align-items:center; gap:12px; color:var(--signal); text-transform:uppercase; letter-spacing:.19em; font:10px ui-monospace, SFMono-Regular, Menlo, monospace; }
+          .ani-eyebrow:before { content:''; width:28px; height:1px; background:currentColor; }
+          .ani-hero h1 { max-width:720px; margin:26px 0 22px; font:500 clamp(62px,8.2vw,116px)/.91 Georgia, 'Times New Roman', serif; letter-spacing:-.075em; }
+          .ani-hero h1 em { color:var(--signal); font-weight:400; }
+          .ani-intro { max-width:485px; color:#b5c0cf; font-size:16px; line-height:1.75; }
+          .ani-hero-cta { display:inline-flex; align-items:center; gap:22px; margin-top:29px; padding:13px 0; border-bottom:1px solid var(--signal); color:var(--paper); text-decoration:none; font:11px ui-monospace, SFMono-Regular, Menlo, monospace; text-transform:uppercase; letter-spacing:.13em; transition:color .2s ease, gap .2s ease; }
+          .ani-hero-cta:hover { color:var(--signal); gap:30px; }
+          .ani-hero-art { height: min(560px, 64vw); min-height:390px; position:relative; isolation:isolate; background:#0a1628; border:1px solid var(--line); }
+          .ani-hero-art:before { content:''; position:absolute; z-index:1; inset:0; background:linear-gradient(90deg, rgba(7,13,25,.22), transparent 60%), linear-gradient(0deg, rgba(7,13,25,.35), transparent 50%); pointer-events:none; }
+          .ani-hero-photo { position:absolute; inset:0; background-image:url('/assets/approved-media/anidax/setup-anidax-recording-space.png'); background-size:cover; background-position:center; filter:saturate(.62) contrast(1.08); opacity:.72; }
+          .ani-hero-serial { position:absolute; z-index:2; top:18px; left:18px; color:#d8dfeb; font:9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.16em; text-transform:uppercase; writing-mode:vertical-rl; }
+          .ani-art-caption { position:absolute; z-index:2; left:20px; right:20px; bottom:18px; display:flex; justify-content:space-between; gap:15px; align-items:end; color:#d5dae4; font:10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.09em; text-transform:uppercase; }
+          .ani-art-caption strong { font:italic 20px Georgia, serif; text-transform:none; letter-spacing:-.03em; }
+          .ani-art-frame { position:absolute; z-index:2; width:30%; aspect-ratio:1; right:-13px; top:24%; border-top:1px solid var(--signal); border-right:1px solid var(--signal); }
+          .ani-index-line { position:absolute; z-index:2; right:17px; top:18px; color:var(--signal); font:10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.12em; }
+          .ani-topics { position:sticky; top:0; z-index:20; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:rgba(7,13,25,.93); backdrop-filter:blur(16px); }
+          .ani-topic-inner { min-height:70px; display:flex; align-items:center; gap:10px; overflow:auto; scrollbar-width:none; }
+          .ani-topic-inner::-webkit-scrollbar { display:none; }
+          .ani-topic-label { flex:none; margin-right:13px; color:var(--quiet); font:9px ui-monospace, SFMono-Regular, Menlo, monospace; text-transform:uppercase; letter-spacing:.16em; }
+          .ani-topic-button { flex:none; padding:10px 13px; color:#9aa8bc; background:transparent; border:1px solid transparent; font:10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; transition:color .18s ease, border-color .18s ease, background .18s ease; }
+          .ani-topic-button:hover { color:var(--paper); border-color:var(--line); }
+          .ani-topic-button[aria-pressed="true"] { border-color:rgba(238,115,86,.55); background:rgba(238,115,86,.08); color:var(--signal); }
+          .ani-section { padding:116px 0 92px; scroll-margin-top:83px; }
+          .ani-section-heading { display:grid; grid-template-columns:1fr auto; gap:20px; align-items:end; margin-bottom:33px; }
+          .ani-section-kicker { color:var(--signal); font:10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.18em; text-transform:uppercase; }
+          .ani-section-heading h2 { margin:13px 0 0; font:500 clamp(38px,5vw,64px)/1 Georgia, 'Times New Roman', serif; letter-spacing:-.06em; }
+          .ani-section-heading h2 em { color:var(--blue); font-weight:400; }
+          .ani-section-count { color:var(--quiet); font:10px ui-monospace, SFMono-Regular, Menlo, monospace; text-transform:uppercase; letter-spacing:.1em; }
+          .ani-card-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:18px; align-items:start; }
+          .ani-concept { grid-column:span 4; border:1px solid var(--line); background:var(--ink-soft); min-width:0; }
+          .ani-concept-2 { margin-top:42px; }
+          .ani-concept-3 { margin-top:84px; }
+          .ani-card-image { height:236px; background-size:cover; background-position:center; position:relative; background-color:#17263a; }
+          .ani-index { position:absolute; top:14px; left:14px; padding:6px 8px; background:var(--ink); color:var(--paper); font:9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.1em; }
+          .ani-card-mark { position:absolute; right:14px; bottom:9px; color:rgba(236,237,223,.73); font:italic 30px Georgia,serif; letter-spacing:-.1em; }
+          .ani-card-body { padding:22px 20px 18px; }
+          .ani-card-kickers { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:17px; }
+          .ani-topic-tag { font:9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.12em; text-transform:uppercase; }
+          .ani-format { color:var(--quiet); font:9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.05em; text-transform:uppercase; }
+          .ani-format:before { content:'/'; margin-right:9px; color:#526075; }
+          .ani-card-body h3 { min-height:95px; margin:0 0 12px; font:500 clamp(23px,2.4vw,30px)/1.12 Georgia, 'Times New Roman', serif; letter-spacing:-.045em; }
+          .ani-card-body>p { min-height:105px; margin:0; color:var(--muted); font-size:13px; line-height:1.72; }
+          .ani-card-foot { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-top:24px; padding-top:15px; border-top:1px solid var(--line); }
+          .ani-status { display:flex; gap:7px; align-items:center; color:var(--quiet); font:9px ui-monospace, SFMono-Regular, Menlo, monospace; }
+          .ani-status i { display:block; width:5px; height:5px; background:var(--signal); border-radius:50%; }
+          .ani-expand { display:flex; gap:7px; align-items:center; padding:6px 0 6px 6px; border:0; color:#c4ccda; background:none; cursor:pointer; font:9px ui-monospace, SFMono-Regular, Menlo, monospace; text-transform:uppercase; letter-spacing:.05em; }
+          .ani-expand:hover { color:var(--signal); }
+          .ani-expand svg { transition:transform .2s ease; }
+          .ani-chevron-open { transform:rotate(180deg); }
+          .ani-premise-note { margin-top:15px; padding:14px; background:#121f31; border-left:2px solid var(--signal); }
+          .ani-premise-note>span { color:var(--signal); font:9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.12em; text-transform:uppercase; }
+          .ani-premise-note p { margin:8px 0 0; color:#b2bece; font-size:12px; line-height:1.65; }
+          .ani-empty { grid-column:1/-1; padding:34px; border:1px dashed var(--line); color:var(--muted); font:13px/1.6 Georgia,serif; }
+          .ani-empty b { display:block; margin-bottom:7px; color:var(--paper); font-size:22px; font-weight:400; }
+          .ani-feature { padding:77px 0 94px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:linear-gradient(105deg,#0b1828 0%,#0b1422 58%,#0a1220 100%); }
+          .ani-feature-grid { display:grid; grid-template-columns:.7fr 1.3fr; gap:9%; align-items:center; }
+          .ani-feature-index { color:var(--signal); font:10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.17em; text-transform:uppercase; }
+          .ani-feature-index span { display:block; margin:19px 0 0; color:rgba(165,189,255,.68); font:clamp(80px,14vw,168px)/.85 Georgia,serif; letter-spacing:-.1em; }
+          .ani-feature h2 { max-width:790px; margin:15px 0 20px; font:500 clamp(38px,5.8vw,76px)/1 Georgia, 'Times New Roman', serif; letter-spacing:-.063em; }
+          .ani-feature h2 em { color:var(--signal); font-weight:400; }
+          .ani-feature p { max-width:580px; color:var(--muted); font-size:15px; line-height:1.8; }
+          .ani-text-link { display:inline-flex; align-items:center; gap:12px; margin-top:17px; padding:12px 0; color:var(--paper); border-bottom:1px solid var(--signal); background:none; cursor:pointer; font:10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.13em; text-transform:uppercase; }
+          .ani-text-link:hover { color:var(--signal); }
+          .ani-archive { padding:100px 0 108px; }
+          .ani-archive-head { display:flex; justify-content:space-between; align-items:end; gap:20px; margin-bottom:29px; }
+          .ani-archive-head h2 { margin:11px 0 0; font:500 clamp(34px,4.5vw,55px)/1 Georgia,serif; letter-spacing:-.055em; }
+          .ani-archive-head p { max-width:290px; margin:0; color:var(--muted); font:12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace; }
+          .ani-dev { padding:0 0 104px; }
+          .ani-dev-panel { display:grid; grid-template-columns:.8fr 1.2fr; gap:50px; padding:34px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+          .ani-dev-title { display:flex; align-items:start; gap:12px; color:var(--signal); }
+          .ani-dev-title h2 { margin:0; color:var(--paper); font:500 32px/1 Georgia,serif; letter-spacing:-.05em; }
+          .ani-dev-copy p { max-width:610px; margin:0 0 20px; color:var(--muted); font-size:13px; line-height:1.75; }
+          .ani-dev-list { display:flex; flex-wrap:wrap; gap:8px; }
+          .ani-dev-list span { padding:9px 11px; border:1px solid var(--line); color:#aeb9c8; font:9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.06em; text-transform:uppercase; }
+          .ani-footer { padding:19px 0 27px; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:18px; color:var(--quiet); font:9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.1em; text-transform:uppercase; }
+          @media (max-width:850px) {
+            .ani-wrap { width:min(100% - 40px, 700px); }
+            .ani-hero { min-height:unset; padding:67px 0 59px; grid-template-columns:1fr; gap:35px; }
+            .ani-hero h1 { max-width:650px; }
+            .ani-hero-art { height:430px; min-height:unset; }
+            .ani-concept { grid-column:span 6; }
+            .ani-concept-3 { margin-top:0; }
+            .ani-concept-2 { margin-top:30px; }
+            .ani-card-body h3,.ani-card-body>p { min-height:unset; }
+            .ani-feature-grid { grid-template-columns:.45fr 1.55fr; gap:6%; }
+            .ani-dev-panel { grid-template-columns:1fr 1.4fr; gap:25px; }
+          }
+          @media (max-width:560px) {
+            .ani-wrap { width:calc(100% - 34px); }
+            .ani-topline { padding:17px 0; }
+            .ani-edition { font-size:8px; letter-spacing:.07em; }
+            .ani-hero { padding:54px 0 42px; gap:28px; }
+            .ani-hero h1 { margin:20px 0 17px; font-size:clamp(58px,16vw,87px); }
+            .ani-intro { font-size:14px; }
+            .ani-hero-art { height:340px; }
+            .ani-topic-inner { min-height:62px; gap:4px; }
+            .ani-topic-label { display:none; }
+            .ani-topic-button { padding:9px 10px; font-size:9px; }
+            .ani-section { padding:75px 0 63px; }
+            .ani-section-heading { grid-template-columns:1fr; gap:12px; }
+            .ani-section-count { justify-self:start; }
+            .ani-card-grid { display:flex; flex-direction:column; gap:13px; }
+            .ani-concept,.ani-concept-2,.ani-concept-3 { width:100%; margin:0; }
+            .ani-card-image { height:220px; }
+            .ani-card-body { padding:19px 17px 16px; }
+            .ani-card-body h3 { font-size:28px; }
+            .ani-card-foot { align-items:flex-start; }
+            .ani-status { max-width:130px; line-height:1.5; }
+            .ani-feature { padding:57px 0 61px; }
+            .ani-feature-grid { display:block; }
+            .ani-feature-index span { margin:14px 0 20px; font-size:90px; }
+            .ani-feature h2 { font-size:clamp(42px,11vw,58px); }
+            .ani-archive { padding:72px 0; }
+            .ani-archive-head { align-items:start; flex-direction:column; }
+            .ani-archive-head p { max-width:400px; }
+            .ani-dev { padding-bottom:70px; }
+            .ani-dev-panel { display:block; padding:25px 0; }
+            .ani-dev-copy { margin-top:20px; }
+            .ani-footer { font-size:8px; letter-spacing:.04em; }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .ani-page *, .ani-page *::before, .ani-page *::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+          }
+        `}</style>
 
-      <div className="min-h-screen bg-[#05050A] text-white selection:bg-[#00D4FF]/30 relative overflow-hidden" style={scanlineStyle}>
-        <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.03]" style={grainStyle} />
+        <div className="ani-wrap">
+          <header className="ani-topline">
+            <a className="ani-wordmark" href="#top" aria-label="Ani-Dax home">
+              <span className="ani-wordmark-mark">A·D</span><span>ANI—DAX</span>
+            </a>
+            <div className="ani-edition"><b>Independent anime analysis</b><span> / </span><span>Notes in progress</span></div>
+          </header>
 
-        {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
-        <section ref={heroRef} className="relative min-h-[90vh] flex items-center pt-24 pb-12 px-6 lg:px-12">
-          {/* Ambient Background Glows */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <motion.div style={{ y: yBg }} className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#00D4FF]/5 blur-[120px]" />
-            <motion.div style={{ y: yBg }} className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#8B5CF6]/5 blur-[120px]" />
-          </div>
-
-          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
-            <motion.div style={{ opacity }} className="flex flex-col items-start">
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
-                className="flex items-center gap-3 mb-8"
-              >
-                <Terminal size={14} className="text-[#00D4FF]" />
-                <span className="font-mono text-xs uppercase tracking-[0.3em] text-[#00D4FF]">Editorial Broadcast</span>
-              </motion.div>
-              
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-                className="text-6xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter mb-6"
-              >
-                ANIME.<br/>
-                <GlitchText text="DISSECTED." className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D4FF] via-[#8B5CF6] to-[#E879F9]" />
-              </motion.h1>
-
-              <motion.p 
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.3 }}
-                className="text-lg lg:text-xl text-white/50 max-w-md font-light leading-relaxed mb-10"
-              >
-                Opinionated commentary on character writing, arc construction, and storytelling. <span className="text-white/80">No filler. No fake metrics.</span>
-              </motion.p>
-
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
-                <a href="#featured" className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-full font-mono text-xs uppercase tracking-widest hover:bg-white/10 hover:border-[#00D4FF]/50 transition-all overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#00D4FF]/20 to-[#8B5CF6]/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <span className="relative z-10">Read Featured Story</span>
-                  <ArrowRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform text-[#00D4FF]" />
-                </a>
-              </motion.div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative hidden lg:block"
+          <section className="ani-hero" id="top" aria-labelledby="ani-title">
+            <motion.div
+              className="ani-hero-copy"
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
             >
-              <AbstractSilhouette />
+              <div className="ani-eyebrow">A closer reading of anime</div>
+              <h1 id="ani-title">Stories don’t<br />end at <em>the frame.</em></h1>
+              <p className="ani-intro">Opinionated commentary on character writing, arc construction, and storytelling. These are working ideas, clearly marked—not finished pieces dressed up as publication.</p>
+              <a className="ani-hero-cta" href="#latest-notes">Enter the reading room <ArrowDownRight size={15} /></a>
             </motion.div>
-          </div>
-        </section>
+            <motion.div
+              className="ani-hero-art"
+              initial={reduceMotion ? false : { opacity: 0, scale: .985 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: .7, delay: .08 }}
+              aria-label="Approved image of the Ani-Dax recording workspace"
+              role="img"
+            >
+              <div className="ani-hero-photo" />
+              <span className="ani-hero-serial">Visual notes / archive no. 001</span>
+              <span className="ani-index-line">A—D / 01</span>
+              <span className="ani-art-frame" />
+              <div className="ani-art-caption"><strong>Read what the scene leaves unsaid.</strong><span>Commentary, not recap</span></div>
+            </motion.div>
+          </section>
+        </div>
 
-        {/* ── 2. TOPIC RAIL ────────────────────────────────────────────────── */}
-        <section className="sticky top-[60px] z-40 bg-[#05050A]/80 backdrop-blur-xl border-y border-white/5 py-4">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-2 min-w-max">
-              {TOPICS.map((t) => {
-                const isActive = activeTopic === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    onClick={() => setActiveTopic(t.id)}
-                    className="relative px-5 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest transition-all duration-300"
-                    style={{
-                      color: isActive ? t.color : 'rgba(255,255,255,0.4)',
-                      backgroundColor: isActive ? `${t.color}15` : 'transparent',
-                      border: `1px solid ${isActive ? `${t.color}40` : 'rgba(255,255,255,0.05)'}`,
-                    }}
-                  >
-                    {t.label}
-                    {isActive && (
-                      <motion.div layoutId="topicGlow" className="absolute inset-0 rounded-full opacity-50 pointer-events-none" style={{ boxShadow: `0 0 15px ${t.color}` }} />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ── 3. FEATURED STORY ────────────────────────────────────────────── */}
-        <section id="featured" className="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <div className="flex items-center gap-4 mb-8">
-              <span className="w-12 h-px bg-gradient-to-r from-[#00D4FF] to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#00D4FF]">Spotlight Piece</span>
-            </div>
-
-            <Tilt tiltMaxAngleX={3} tiltMaxAngleY={3} scale={1.01} transitionSpeed={2000} className="w-full">
-              <div className="relative rounded-3xl overflow-hidden bg-[#0A0A12] border border-white/10 group min-h-[500px] flex flex-col justify-end">
-                <div
-                  className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-screen group-hover:opacity-30 transition-opacity duration-700"
-                  style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/assets/approved-media/anidax/rezero-theory-research-notes.png)` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-[#05050A]/80 to-transparent" />
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00D4FF]/10 blur-[100px] rounded-full pointer-events-none" />
-
-                <div className="relative z-10 p-8 lg:p-14 max-w-3xl">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-[#00D4FF]/30 bg-[#00D4FF]/10 text-[#00D4FF] font-mono text-[10px] uppercase tracking-widest mb-6">
-                    Theory Board // Re:Zero
-                  </div>
-                  <h2 className="text-3xl lg:text-5xl font-black leading-[1.1] tracking-tight mb-6">
-                    Why Return by Death Is the Most Psychologically Complex Ability in Contemporary Anime
-                  </h2>
-                  <p className="text-white/60 text-lg leading-relaxed mb-8 max-w-2xl font-light">
-                    It doesn't grant power — it sentences the bearer to live every consequence twice. The ability is designed around a specific psychological profile, and the narrative earns its reputation by understanding that difference.
-                  </p>
-                  <button className="flex items-center gap-2 text-[#00D4FF] font-mono text-xs uppercase tracking-widest hover:text-white transition-colors">
-                    Read Full Editorial <ChevronRight size={14} />
-                  </button>
-                </div>
-              </div>
-            </Tilt>
-          </motion.div>
-        </section>
-
-        {/* ── 4. LATEST TAKES ──────────────────────────────────────────────── */}
-        <section className="py-12 px-6 lg:px-12 max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            <h3 className="text-2xl lg:text-3xl font-black tracking-tight">Latest Transmissions</h3>
-            <div className="hidden sm:flex items-center gap-2 font-mono text-[10px] uppercase text-white/30 tracking-widest">
-              <Zap size={12} className="text-[#E879F9]" /> Max 3 Entries
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {LATEST_TAKES.map((take, i) => (
-              <motion.div 
-                key={take.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="group relative"
+        <nav className="ani-topics" aria-label="Filter editorial concepts">
+          <div className="ani-wrap ani-topic-inner">
+            <span className="ani-topic-label">Browse by lens</span>
+            {topics.map((topic) => (
+              <button
+                key={topic.id}
+                type="button"
+                aria-pressed={activeTopic === topic.id}
+                data-testid={`button-topic-${topic.id}`}
+                className="ani-topic-button"
+                onClick={() => setActiveTopic(topic.id)}
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent rounded-2xl border border-white/5 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-md" />
-                <div className="relative h-full flex flex-col p-6 rounded-2xl bg-[#0A0A12] border border-white/[0.05] group-hover:border-white/15 transition-colors overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity rounded-bl-3xl mix-blend-screen" style={{ backgroundImage: `url('${take.asset}')` }} />
-                  
-                  <span className="self-start text-[9px] font-mono uppercase tracking-[0.2em] mb-4 px-2 py-1 rounded border" style={{ color: take.topicColor, borderColor: `${take.topicColor}40`, backgroundColor: `${take.topicColor}10` }}>
-                    {take.topic}
-                  </span>
-                  
-                  <h4 className="text-xl font-bold leading-snug mb-3">{take.headline}</h4>
-                  <p className="text-sm text-white/50 leading-relaxed flex-grow font-light mb-6">{take.summary}</p>
-                  
-                  <button className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors mt-auto" style={{ color: take.topicColor }}>
-                    Access File <ChevronRight size={12} />
-                  </button>
-                </div>
-              </motion.div>
+                {topic.label}
+              </button>
             ))}
           </div>
-        </section>
+        </nav>
 
-        {/* ── 5. MEDIA ARCHIVE ─────────────────────────────────────────────── */}
-        <section className="py-24 px-6 lg:px-12 max-w-7xl mx-auto border-t border-white/[0.05]">
-           <div className="mb-10">
-             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8B5CF6] mb-2 block">Visual Context</span>
-             <h3 className="text-2xl font-black">Editorial Workspace Archives</h3>
-           </div>
-           <ApprovedMediaGallery brand="Ani-Dax" section="Behind the Commentary" />
-        </section>
-
-        {/* ── 6. IN DEVELOPMENT ────────────────────────────────────────────── */}
-        <section className="py-24 px-6 lg:px-12 max-w-7xl mx-auto mb-12">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative p-10 lg:p-16 rounded-3xl overflow-hidden border border-[#06B6D4]/20 bg-[#06B6D4]/[0.02]"
-          >
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJ0cmFuc3BhcmVudCI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJyZ2JhKDYsIDE4MiwgMjEyLCAwLjE1KSI+PC9yZWN0Pgo8L3N2Zz4=')] opacity-50" />
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#06B6D4]/10 blur-[80px] rounded-full" />
-            
-            <div className="relative z-10 max-w-2xl">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#06B6D4] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#06B6D4]"></span>
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#06B6D4]">Status: Building</span>
+        <section className="ani-section ani-wrap" id="latest-notes" aria-labelledby="notes-title">
+          <div className="ani-section-heading">
+            <div>
+              <span className="ani-section-kicker">Index / working concepts</span>
+              <h2 id="notes-title">The <em>idea</em> files.</h2>
+            </div>
+            <span className="ani-section-count" data-testid="text-concept-count">{visibleConcepts.length} {visibleConcepts.length === 1 ? 'concept' : 'concepts'} shown · none published</span>
+          </div>
+          <div className="ani-card-grid" aria-live="polite">
+            {visibleConcepts.length ? visibleConcepts.map((concept, index) => (
+              <ConceptCard
+                key={concept.id}
+                concept={concept}
+                index={index}
+                expanded={openConcept === concept.id}
+                onToggle={() => setOpenConcept(openConcept === concept.id ? null : concept.id)}
+                reduceMotion={reduceMotion}
+              />
+            )) : (
+              <div className="ani-empty" data-testid="text-empty-topic">
+                <b>No character study in this index yet.</b>
+                This shelf is intentionally empty for now. The available concepts remain visible under their own topics.
               </div>
-              
-              <h2 className="text-3xl lg:text-4xl font-black tracking-tight mb-4">The Next Phase</h2>
-              <p className="text-white/60 leading-relaxed mb-8 max-w-lg font-light">
-                Co-host integration, dedicated community architecture, and long-form video essays are currently in active development. We deploy when ready, not to meet an artificial calendar.
-              </p>
+            )}
+          </div>
+        </section>
 
-              <div className="flex flex-wrap gap-4">
-                {['Video Editorial Infrastructure', 'Community Protocols', 'Co-Host Audio Setup'].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2 px-4 py-2 bg-black/40 border border-white/5 rounded-md font-mono text-[10px] uppercase tracking-wider text-white/50">
-                    <Terminal size={12} className="text-[#06B6D4]/50" /> {item}
-                  </div>
-                ))}
+        <section className="ani-feature" aria-labelledby="feature-title">
+          <div className="ani-wrap ani-feature-grid">
+            <div className="ani-feature-index">In focus <span>01</span></div>
+            <div>
+              <span className="ani-section-kicker">Theory board / Re:Zero</span>
+              <h2 id="feature-title">Why Return by Death Is the Most Psychologically Complex Ability in Contemporary Anime</h2>
+              <p>Return by Death doesn’t grant power—it sentences the bearer to live every consequence twice. This is the central question behind a developing Re:Zero theory, not a published editorial.</p>
+              <button className="ani-text-link" type="button" onClick={goToTheory} data-testid="button-featured-premise">
+                Find the working premise <ArrowUpRight size={14} />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="ani-archive ani-wrap" aria-labelledby="archive-title">
+          <div className="ani-archive-head">
+            <div><span className="ani-section-kicker">Visual context / local archive</span><h2 id="archive-title">Behind the commentary.</h2></div>
+            <p>Approved material from the Ani-Dax workspace and collection. A view into the references behind the notes.</p>
+          </div>
+          <ApprovedMediaGallery brand="Ani-Dax" section="Behind the Commentary" />
+        </section>
+
+        <section className="ani-dev ani-wrap" aria-labelledby="next-phase-title">
+          <div className="ani-dev-panel">
+            <div className="ani-dev-title"><Layers3 size={17} strokeWidth={1.5} /><h2 id="next-phase-title">Still taking shape.</h2></div>
+            <div className="ani-dev-copy">
+              <p>Co-host integration, community architecture, and long-form video essays are in development. The format can wait until the thinking is ready.</p>
+              <div className="ani-dev-list">
+                <span><Film size={12} /> Video editorial infrastructure</span>
+                <span><ScanLine size={12} /> Community protocols</span>
+                <span>Co-host audio setup</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </section>
-      </div>
+        <footer className="ani-wrap ani-footer"><span>Ani-Dax / Dax Collective</span><span>Working notes, not publication</span></footer>
+      </main>
     </>
   );
 }

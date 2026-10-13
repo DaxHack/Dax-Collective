@@ -28,6 +28,10 @@
     "eject": "react-scripts eject",
     "lint": "eslint \"src/**/*.{js,jsx}\" --fix",
     "lint:check": "eslint \"src/**/*.{js,jsx}\"",
+    "lint:v3": "eslint src/App.jsx src/pages/experiments/universe-v3 --max-warnings 0",
+    "test:v3": "react-scripts test --watchAll=false --runInBand --testPathPattern=universe-v3",
+    "test:admin-client": "react-scripts test --watchAll=false --runInBand --testPathPattern=adminClientWiring",
+    "test:site": "react-scripts test --watchAll=false --runInBand --testPathPattern=__tests__",
     "format": "prettier --write \"src/**/*.{js,jsx,css,md}\""
   },
   "eslintConfig": {
@@ -35,6 +39,13 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^react-router-dom$": "<rootDir>/node_modules/react-router-dom/dist/index.js",
+      "^react-router/dom$": "<rootDir>/node_modules/react-router/dist/development/dom-export.js",
+      "^react-router$": "<rootDir>/node_modules/react-router/dist/development/index.js"
+    }
   },
   "browserslist": {
     "production": [
@@ -62,5 +73,10 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "overrides": {
+    "shell-quote": "1.12.0",
+    "websocket-driver": "0.7.5",
+    "proxy-addr": "2.0.8"
   }
 }

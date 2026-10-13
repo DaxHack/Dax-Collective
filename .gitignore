@@ -1,72 +1,59 @@
-# ─── ROOT WORKSPACE .gitignore ─────────────────────────────────────────────
-# Covers the monorepo root, dax-main (React), dax-backend (Node), and n8n.
-
-# ─── DEPENDENCIES ──────────────────────────────────────────────────────────
-**/node_modules/
+# dax-collective/.gitignore  :: ROOT
+# ───────── dax-collective/dax-main/.gitignore# ─── ROOT WORKSPACE ────────────────────
+# ignore installed deps & lockfiles in every package
+/node_modules
+/package-lock.json
+/yarn.lock
+/pnpm-lock.yaml
 /.pnp
 .pnp.js
 
-# ─── LOCKFILES (only track root, ignore workspace copies) ──────────────────
+# If you ever add other workspaces:
+#/frontend/node_modules
+#/backend/node_modules
+#/functions/node_modules
+
+# ─── LOCKFILES (only track the root one) ────────────────
+# ignore workspace lockfiles
 /dax-main/package-lock.json
 /dax-backend/package-lock.json
 /functions/package-lock.json
-**/yarn.lock
-**/pnpm-lock.yaml
 
-# ─── BUILD OUTPUTS ─────────────────────────────────────────────────────────
+# ─── BUILD OUTPUTS ─────────────────────────────────────
+/generated-artifacts/
+/backups/dax-site-v1-current-working-version-2026-10-11/
+/backups/dax-site-v1-current-working-version-2026-10-11-verified/
+# Backups, portable exports and pre-merge review snapshots are preservation
+# material. They live on the preserve/ and archive/ branches, never in the
+# product tree.
+/backups/
+/planning/review-backups/
+!/package-lock.json
+!/dax-main/package-lock.json
+# front-end
 /dax-main/build/
 /frontend/build/
+/.dax-main/build/
+/.dax-backend/dist/
 /functions/lib/
 /dist/
 /.next/
 /out/
-build/
 
-# ─── ENV & SECRETS ─────────────────────────────────────────────────────────
-# Never commit real environment files.
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-.env.*
-*.env
-!.env.example
-!**/.env.example
-dax-main/.env
-dax-backend/.env
-/functions/.env
+# ─── Summary files we don’t want in Git ───────────────────
+/dax-backend-structure-summary.txt
+/dax-main-structure-summary.txt
 
-# ─── CREDENTIALS & SERVICE ACCOUNTS ────────────────────────────────────────
-# All credential files must stay off git regardless of location.
-credentials/
-dax-backend/credentials/
-**/credentials/
-*firebase-adminsdk*.json
-*service-account*.json
-*serviceAccountKey*.json
-*.pem
-*.key
-/keys/
-**/keys/
+# ─── Never commit any node_modules folders ────────────────
+**/node_modules/
+/node_modules
+/dax-main/node_modules
+/dax-backend/node_modules
+/functions/node_modules
 
-# ─── FIREBASE ──────────────────────────────────────────────────────────────
-.firebaserc
-.firebase/
-firebase-debug.log*
-firebase-debug.*.log
-**/firebase-debug.*.log
-.firebase/**/*.cache
 
-# ─── CACHES & COVERAGE ─────────────────────────────────────────────────────
-.cache/
-.tmp/
-.nyc_output/
-coverage/
-jest-coverage/
-.eslintcache
-
-# ─── RUNTIME / DATA FILES ──────────────────────────────────────────────────
+# ─── RUNTIME / DATA FILES ──────────────────────────────
+# local uploads & db dumps
 /dax-backend/uploads/
 *.sqlite
 *.sqlite3
@@ -74,21 +61,50 @@ jest-coverage/
 dump.rdb
 *.bak
 *.pid
-*.pid.lock
 *.seed
+*.pid.lock
 
-# ─── LOGS & TEMP ───────────────────────────────────────────────────────────
+# ─── ENV & SECRETS ─────────────────────────────────────
+# local vars
+.env
+.env.*  
+!.env.example
+/dax-main/.env
+/dax-backend/.env
+/functions/.env
+
+# Firebase / Google service account
+/.firebaserc
+/.firebase
+firebase-debug.log*
+firebase-debug.*.log
+/credentials/firebase-adminsdk.json
+/keys
+*.key
+*.pem
+credentials/*.json
+
+# ─── CACHES & COVERAGE ──────────────────────────────────
+.cache/
+.tmp/
+.nyc_output/
+coverage/
+jest-coverage/
+/out/
+
+# ─── LOGS & TEMP ───────────────────────────────────────
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 *.log
 *.tmp
+*.bak
 *.swp
 *.swo
 *~
 
-# ─── IDE & OS ──────────────────────────────────────────────────────────────
+# ─── IDE & OS FILES ────────────────────────────────────
 .vscode/
 .idea/
 *.suo
@@ -96,20 +112,54 @@ pnpm-debug.log*
 *.DS_Store
 Thumbs.db
 
-# ─── DOCKER & COMPOSE ──────────────────────────────────────────────────────
+# ─── DOCKER & COMPOSE ──────────────────────────────────
 docker-compose.override.yml
 
-# ─── n8n ───────────────────────────────────────────────────────────────────
+
+
+
+# Built nodes & lockfiles
+**/node_modules/                # all node_modules under any folder
+**/package-lock.json
+**/yarn.lock
+!/package-lock.json
+!/dax-main/package-lock.json
+!/dax-backend/package-lock.json
+**/__pycache__/
+
+
+# Env & secrets
+**/.env
+**/serviceAccountKey.json
+**/credentials/                 # your firebase-adminsdk.json gs
+firebase-debug.log*
+**/firebase-debug.*.log
+
+# IDE + OS cruft
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local logs
+npm-debug.log*
+yarn-error.log*
+
+node_modules/
+.cache/                         # if you ever run a local cache here
+
+
+# ─── n8n project files ────────────────────────────────────
+# Never commit the live n8n data directory:
 /.n8n/
-.n8n-custom/
+
+# Ignore our local n8n sub-folder contents that shouldn’t be checked in:
 /n8n/env/
 /n8n/docker/
 /n8n/templates/*.sqlite
 /n8n/scripts/*.log
 
-# ─── SUMMARY FILES ─────────────────────────────────────────────────────────
-/dax-backend-structure-summary.txt
-/dax-main-structure-summary.txt
-dax-main/.firebase/
-attached_assets/Pasted-*.txt
-attached_assets/Pasted-*.svg
+# If you ever mount n8n runtime into .n8n-custom:
+.n8n-custom/
+
+# Local snapshots and verification output (never deployed or committed).
+/generated-artifacts/
