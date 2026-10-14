@@ -14,12 +14,16 @@ const jsonResponse = (status, body) => ({
 });
 
 beforeEach(() => {
-  global.fetch = jest.fn(async () => jsonResponse(200, { success: true, message: 'Subscribed successfully.' }));
+  global.fetch = jest.fn(async () =>
+    jsonResponse(200, { success: true, created: true, message: 'Subscribed successfully.' })
+  );
+  window.gtag = jest.fn();
   jest.spyOn(console, 'error').mockImplementation(() => {});
   jest.spyOn(console, 'warn').mockImplementation(() => {});
 });
 
 afterEach(() => {
+  delete window.gtag;
   jest.restoreAllMocks();
   jest.resetModules();
 });
@@ -76,7 +80,7 @@ describe('waitlist with a configured backend', () => {
     const waitlist = load();
     const result = await waitlist.joinWaitlist('  person@example.com ', 'gods-vessel-hero');
 
-    expect(result).toEqual({ alreadySubscribed: false });
+    expect(result).toEqual({ alreadySubscribed: false, created: true });
     expect(global.fetch).toHaveBeenCalledTimes(1);
     const [url, init] = global.fetch.mock.calls[0];
     expect(url).toBe('https://api.example.test/api/waitlist');
@@ -85,8 +89,53 @@ describe('waitlist with a configured backend', () => {
   });
 
   test('reports an existing sign-up', async () => {
-    global.fetch = jest.fn(async () => jsonResponse(200, { success: true, message: 'Already subscribed.' }));
-    expect(await load().joinWaitlist('person@example.com', 'gods-vessel-cta')).toEqual({ alreadySubscribed: true });
+    global.fetch = jest.fn(async () =>
+      jsonResponse(200, { success: true, created: false, message: 'Already subscribed.' })
+    );
+    expect(await load().joinWaitlist('person@example.com', 'gods-vessel-cta')).toEqual({
+      alreadySubscribed: true,
+      created: false
+    });
+  });
+
+  test('sends exactly one generate_lead event for a newly created sign-up, without the email', async () => {
+    await load().joinWaitlist('person@example.com', 'gods-vessel-merch-hoodie-cta');
+
+    expect(window.gtag).toHaveBeenCalledTimes(1);
+    expect(window.gtag).toHaveBeenCalledWith('event', 'generate_lead', {
+      lead_type: 'waitlist',
+      lead_source: 'gods-vessel-merch-hoodie-cta',
+      brand: 'gods-vessel',
+      placement: 'merch-hoodie-cta'
+    });
+    expect(JSON.stringify(window.gtag.mock.calls)).not.toMatch(/person|example\.com|@/);
+  });
+
+  test.each([
+    ['a repeat sign-up', jsonResponse(200, { success: true, created: false, message: 'Already subscribed.' })],
+    ['a confirmation without created:true', jsonResponse(200, { success: true, message: 'Subscribed successfully.' })],
+    ['a 200 with success:false', jsonResponse(200, { success: false, created: true })],
+    ['HTTP 400', jsonResponse(400, { error: 'invalid' })],
+    ['HTTP 429', jsonResponse(429, { error: 'Too many requests' })],
+    ['HTTP 503', jsonResponse(503, { error: 'unavailable' })]
+  ])('sends no generate_lead event for %s', async (label, response) => {
+    global.fetch = jest.fn(async () => response);
+    await load().joinWaitlist('person@example.com', 'gods-vessel-hero').catch(() => {});
+    expect(window.gtag).not.toHaveBeenCalled();
+  });
+
+  test('sends no generate_lead event on a network failure', async () => {
+    global.fetch = jest.fn(async () => { throw new TypeError('offline'); });
+    await load().joinWaitlist('person@example.com', 'gods-vessel-hero').catch(() => {});
+    expect(window.gtag).not.toHaveBeenCalled();
+  });
+
+  test('a sign-up still succeeds when analytics is not loaded', async () => {
+    delete window.gtag;
+    await expect(load().joinWaitlist('person@example.com', 'gods-vessel-hero')).resolves.toEqual({
+      alreadySubscribed: false,
+      created: true
+    });
   });
 
   test.each([

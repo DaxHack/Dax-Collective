@@ -7,10 +7,12 @@ There are two deployables:
 
 - **Frontend** (`dax-main`) — static build published to Firebase Hosting by
   `.github/workflows/firebase-hosting-merge.yml` on every push to `main`.
-  `REACT_APP_*` values are read **at build time**; the workflow currently
-  passes none.
-- **Backend** (`dax-backend`) — Express API. No workflow deploys it. See
-  `dax-backend/DEPLOYMENT.md` for run modes.
+  `REACT_APP_*` values are read **at build time**. Both Hosting workflows
+  pass `REACT_APP_API_BASE_URL` from the GitHub repository variable of the
+  same name; unset or empty means "no backend".
+- **Backend** (`dax-backend`) — Express API. No workflow deploys it. The
+  recommended target is Google Cloud Run in the `dax-collective` project;
+  see `dax-backend/DEPLOYMENT.md` section 8 for the commands.
 
 ## 1. Required for public launch
 
@@ -37,7 +39,7 @@ variables passed to the build step) when the matching backend exists:
 
 | Variable | Turns on | Needs |
 |---|---|---|
-| `REACT_APP_API_BASE_URL` | Waitlist sign-ups; Sheets-backed quotes, blogs and itineraries | A deployed backend reachable over `https`. A `localhost` value is ignored in production. |
+| `REACT_APP_API_BASE_URL` | Waitlist sign-ups; Sheets-backed quotes, blogs and itineraries | A deployed backend reachable over `https`, set as a GitHub repository **variable** (Settings → Secrets and variables → Actions → Variables). It is public — it ships in the bundle. A `localhost` value is ignored in production. |
 | `REACT_APP_SHEET_GODS_VESSEL_QUOTES`, `REACT_APP_SHEET_DAX_TRAVELER_BLOGS`, `REACT_APP_SHEET_TIMEZONE_TRAVELERS_BLOGS_ITINERARIES` | The three public content sheets | The same IDs set on the backend as `SHEET_*`, and backend Firebase credentials (the Sheets proxy uses the service account). |
 | `REACT_APP_FIREBASE_API_KEY`, `_AUTH_DOMAIN`, `_PROJECT_ID`, `_STORAGE_BUCKET`, `_MESSAGING_SENDER_ID`, `_APP_ID` | Firebase sign-in and comments | The Firebase web app config (public identifiers, not secrets). |
 
@@ -48,7 +50,8 @@ Backend settings for the public baseline:
 | `NODE_ENV=production` | |
 | `PRODUCTION_ORIGINS` | Only if the site is served from an origin other than `daxcollective.com`, `www.daxcollective.com` or `dax-collective.web.app`. |
 | `TRUST_PROXY` | Set to `1` behind a single reverse proxy. Without it all visitors share one rate-limit bucket. |
-| Firebase credential (`FIREBASE_SERVICE_ACCOUNT_JSON`) | Needed for the Sheets proxy and the Firestore copy of the waitlist. Without it the waitlist still records to the server's local file only — use durable storage or supply the credential before relying on it. |
+| `WAITLIST_STORE` | Defaults to `firestore` in production: a sign-up is confirmed only after Firestore accepts it, and the route answers `503` when Firestore is unavailable. No local file is used. |
+| Firebase identity | Required for the waitlist. On Cloud Run use the attached service account with `FIREBASE_USE_APPLICATION_DEFAULT=true` (no key). Elsewhere supply `FIREBASE_SERVICE_ACCOUNT_JSON` as a platform secret. The Sheets proxy needs the key form. |
 | `SHEET_GODS_VESSEL_QUOTES`, `SHEET_DAX_TRAVELER_BLOGS`, `SHEET_TIMEZONE_TRAVELERS_BLOGS_ITINERARIES` | Public content sheets. |
 
 ## 3. Required only for admin features
@@ -95,6 +98,13 @@ source that keep unapproved material out of production.
 | Investor concept page | `dax-main/src/App.jsx` | Loaded and routed in development builds only. The seven paths 404 in production and the page is not in the production bundle. |
 | `/automation` dashboard | `dax-main/src/pages/Dashboard.jsx` | 404 unless the build has a Firebase web config. Then sign-in is required, and the dashboard renders only after the backend's `GET /api/admin/access` confirms an admin. |
 | Waitlist, contact, footer sign-up | see section 1 | Disabled / mailto until a backend exists. |
+
+## 7. Conversion measurement
+
+A waitlist sign-up that the backend reports as newly created
+(`created: true`) sends one Google Analytics `generate_lead` event with
+`lead_type`, `lead_source`, `brand` and `placement`. Failed and repeat
+sign-ups send nothing. The email address is never sent to analytics.
 
 Backups, portable exports and pre-merge review snapshots are not part of the
 product tree (`/backups/` and `/planning/review-backups/` are git-ignored).

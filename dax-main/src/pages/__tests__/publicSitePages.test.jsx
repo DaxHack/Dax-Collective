@@ -85,7 +85,7 @@ describe('God’s Vessel merch waitlist form', () => {
     expect(mockWaitlist.joinWaitlist.mock.calls[0][0]).toBe('person@example.com');
     expect(screen.queryByText(/You’re in the archive/i)).not.toBeInTheDocument();
 
-    confirm({ alreadySubscribed: false });
+    confirm({ alreadySubscribed: false, created: true });
     expect(await screen.findByText(/You’re in the archive/i)).toBeInTheDocument();
   });
 

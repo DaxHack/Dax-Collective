@@ -122,6 +122,36 @@ export const trackSocialClick = (platform, action = 'click') => {
   }
 };
 
+// Describe a waitlist source label ("gods-vessel-merch-hoodie-cta") as the
+// brand it belongs to and where on the page the form sits.
+const LEAD_BRANDS = ['gods-vessel'];
+
+export const describeLeadSource = (source) => {
+  const label = typeof source === 'string' && source ? source : 'unknown';
+  const brand = LEAD_BRANDS.find((name) => label === name || label.startsWith(`${name}-`));
+  if (!brand) return { brand: 'unknown', placement: label };
+  return { brand, placement: label.slice(brand.length + 1) || 'page' };
+};
+
+// Track a confirmed waitlist sign-up (GA4 recommended event `generate_lead`).
+// Call this only after the backend has confirmed a NEW sign-up. Takes the
+// source label only — never pass an email address or other personal data.
+export const trackLead = (source) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    try {
+      const { brand, placement } = describeLeadSource(source);
+      window.gtag('event', 'generate_lead', {
+        lead_type: 'waitlist',
+        lead_source: typeof source === 'string' && source ? source : 'unknown',
+        brand,
+        placement
+      });
+    } catch (error) {
+      console.error('Error tracking lead:', error);
+    }
+  }
+};
+
 // Track user engagement
 export const trackEngagement = (action, category = 'engagement', value = 1) => {
   if (typeof window !== 'undefined' && window.gtag) {

@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: false
+      # Public HTTPS origin of the deployed backend (repository variable, not a
+      # secret: it ships in the bundle). Empty or unset keeps every
+      # backend-dependent feature in its "unavailable" state.
+      REACT_APP_API_BASE_URL: ${{ vars.REACT_APP_API_BASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - run: npm ci && npm ci --prefix dax-main && npm run build

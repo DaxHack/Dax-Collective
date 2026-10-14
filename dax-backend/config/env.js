@@ -62,10 +62,26 @@ const RATE_LIMIT_MAX = parsePositiveInt(process.env.RATE_LIMIT_MAX, 100);
 // one rate-limit bucket.
 const TRUST_PROXY = parsePositiveInt(process.env.TRUST_PROXY, 0);
 
+// ─── Waitlist storage ───────────────────────────────────────────────────────
+// "firestore": a sign-up is confirmed only after Firestore accepts it.
+// "file": local CSV, for development. Production defaults to "firestore" so
+// a deployment can never confirm sign-ups it keeps only on ephemeral disk.
+const WAITLIST_STORES = ["firestore", "file"];
+const WAITLIST_STORE = process.env.WAITLIST_STORE || (NODE_ENV === "production" ? "firestore" : "file");
+const WAITLIST_FILE_PATH = process.env.WAITLIST_FILE_PATH || "";
+
+// Opt-in: use the platform's attached service identity (Application Default
+// Credentials — e.g. the Cloud Run service account) instead of a key file.
+const FIREBASE_USE_APPLICATION_DEFAULT = isTrue(process.env.FIREBASE_USE_APPLICATION_DEFAULT);
+
 // ─── Validation ─────────────────────────────────────────────────────────────
 // Only validate what is actually needed for features that are enabled.
 // This keeps the public baseline (everything off) startup-clean.
 const errors = [];
+
+if (!WAITLIST_STORES.includes(WAITLIST_STORE)) {
+  errors.push(`WAITLIST_STORE must be one of: ${WAITLIST_STORES.join(", ")}.`);
+}
 
 if (ENABLE_ADMIN_UPLOADS) {
   if (!process.env.FIREBASE_STORAGE_BUCKET) {
@@ -104,6 +120,13 @@ if (ENABLE_ADMIN_UPLOADS && ADMIN_UIDS.length === 0) {
   );
 }
 
+if (NODE_ENV === "production" && WAITLIST_STORE === "file") {
+  warnings.push(
+      "WAITLIST_STORE=file in production: sign-ups are kept only on this server's local disk " +
+    "and are lost when the instance is replaced. Use the default (firestore).",
+  );
+}
+
 if (NODE_ENV === "production" && TRUST_PROXY === 0) {
   warnings.push(
       "TRUST_PROXY is not set. If this server runs behind a reverse proxy, all clients " +
@@ -123,6 +146,9 @@ const config = {
   RATE_LIMIT_WINDOW_MS,
   RATE_LIMIT_MAX,
   TRUST_PROXY,
+  WAITLIST_STORE,
+  WAITLIST_FILE_PATH,
+  FIREBASE_USE_APPLICATION_DEFAULT,
   validationErrors: errors,
   warnings,
 };
