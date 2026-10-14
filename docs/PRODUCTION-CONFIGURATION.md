@@ -110,3 +110,41 @@ Backups, portable exports and pre-merge review snapshots are not part of the
 product tree (`/backups/` and `/planning/review-backups/` are git-ignored).
 They are preserved on `preserve/main-local-2026-10-12` and
 `archive/main-pre-v3-2026-10-12`.
+
+## 8. Firestore and Storage security rules
+
+`firestore.rules` and `storage.rules` deny by default. "Signed in" is never
+sufficient, because the site can sign visitors in anonymously. Admin access
+requires the Firebase custom claim `admin: true` — the same claim the
+backend accepts — set from a trusted environment with
+`admin.auth().setCustomUserClaims(uid, {admin: true})`. The backend's
+`ADMIN_UIDS` allowlist is server-side only and does not apply to rules.
+
+| Path | Client access |
+|---|---|
+| Firestore `content`, `brands`, `workflows`, `notifications`, `analytics`, `settings` | Admin claim only |
+| Firestore `automation_logs` | Admin read; no client writes |
+| Firestore `public` | Anyone may read; admin claim to write |
+| Firestore `waitlist` | None, admins included (backend Admin SDK only) |
+| Firestore `comments`, `users` | None (disabled pending a product decision) |
+| Any other Firestore path | None |
+| Storage `public/` | Anyone may read; admin claim to write |
+| Storage `content/`, `brands/`, `temp/` | Admin claim only |
+| Storage `profile-pictures/`, `users/`, anything else | None |
+
+The backend and Cloud Functions use the Admin SDK, which bypasses rules.
+
+**Tests.** `rules-tests/` runs both files against the Firebase emulators
+(`npm ci && npm test` in that folder; needs Java). The "Security rules CI"
+workflow runs them on pull requests that touch the rules.
+
+**Deployment is manual.** No workflow deploys rules; the Hosting workflows
+deploy Hosting only. The rules in this repository may differ from what is
+live until the project owner runs, from the repository root:
+
+```bash
+firebase deploy --only firestore:rules,storage --project dax-collective
+```
+
+Do not use the root `npm run deploy` for this: it runs a full
+`firebase deploy`, which would also deploy Hosting and Cloud Functions.
