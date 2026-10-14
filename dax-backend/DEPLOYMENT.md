@@ -22,7 +22,7 @@ With no Firebase or admin configuration the server starts and serves:
 | Route | Behaviour without credentials |
 |---|---|
 | `GET /api/health` | `200`, reports `"firebase": false` and `"adminUploadsEnabled": false` |
-| `POST /api/waitlist` | Works. Saved to `data/waitlist.csv`; the Firestore copy is skipped |
+| `POST /api/waitlist` | Development (`WAITLIST_STORE=file`): saved to `data/waitlist.csv`. Production (`WAITLIST_STORE=firestore`, the default there): `503` — a sign-up is never confirmed without durable storage |
 | `GET /api/sheets` | `503` for public content spreadsheet IDs (it needs the service account); `403` for every other ID |
 | `/api/admin/*` | Not mounted — `404` |
 
@@ -32,8 +32,27 @@ service-account file. Missing credentials never grant access to anything.
 ### With Firebase credentials
 
 When a credential source is found (section 4) Firebase Admin is initialized:
-the waitlist is also written to Firestore and the Sheets proxy works. Admin
-routes are still not mounted unless the flag below is set.
+the waitlist is written to Firestore and (with a service-account key) the
+Sheets proxy works. Admin routes are still not mounted unless the flag below
+is set.
+
+### Waitlist storage
+
+`WAITLIST_STORE` selects where sign-ups go (`services/waitlistStore.js`):
+
+- `firestore` — default when `NODE_ENV=production`. The response is
+  `{success: true, created: true}` only after Firestore accepted the write;
+  a repeat sign-up returns `created: false`. If Firebase Admin is not
+  initialized or the write fails the route answers `503`. Nothing is written
+  to local disk.
+- `file` — default elsewhere. Local CSV for development, plus a best-effort
+  Firestore copy when Firebase Admin is available.
+
+Documents are stored in the `waitlist` collection under a SHA-256 of the
+normalized email, so the address is not in the document path and duplicates
+collapse. There is no route that reads the waitlist back, and
+`firestore.rules` has no rule for the collection, so clients have no access:
+only the Admin SDK (which bypasses rules) can read or write it.
 
 ### Admin routes (opt-in)
 
@@ -55,6 +74,9 @@ With this flag on the server **refuses to start** if Firebase credentials or
 | `RATE_LIMIT_WINDOW_MS` | `900000` | 15 minutes. |
 | `RATE_LIMIT_MAX` | `100` | Requests per client IP per window, across all routes. |
 | `TRUST_PROXY` | unset | Number of proxy hops to trust for the client IP. **Set to `1` behind a single reverse proxy**, otherwise all visitors share one rate-limit bucket. |
+| `WAITLIST_STORE` | `firestore` in production, `file` otherwise | See "Waitlist storage". Any other value stops startup. |
+| `WAITLIST_FILE_PATH` | `data/waitlist.csv` | Location of the CSV in `file` mode. |
+| `FIREBASE_USE_APPLICATION_DEFAULT` | `false` | `true` initializes Firebase Admin from the platform's attached service identity (Application Default Credentials) when no key is configured. No key file is needed. The Sheets proxy still requires a key. |
 | `ENABLE_ADMIN_UPLOADS` | `false` | Mounts `/api/admin/*`. |
 | `ENABLE_DRIVE_AUTOMATION` | `false` | Enables the Drive routes inside `/api/admin`. Requires `ENABLE_ADMIN_UPLOADS`. |
 | `ALLOW_PUBLIC_DRIVE_FILES` | `false` | When `true`, uploaded Drive files are shared with "anyone with the link". |
@@ -127,18 +149,69 @@ docker run -p 5000:5000 dax-backend
 
 The image contains no credentials and defaults every feature flag to `false`.
 `.dockerignore` keeps `data/waitlist.csv` (subscriber emails), `credentials/`,
-`.env` files and tests out of the build context; the server recreates the
-waitlist file with its header on first use. Mount a volume at `/app/data` if
-waitlist signups must survive container restarts.
+`.env` files and tests out of the build context. The image runs with
+`NODE_ENV=production`, so the waitlist uses Firestore and writes no file.
 Supply configuration at run time through the platform's environment/secret UI.
 
-## 8. Rollback
+## 8. Google Cloud Run (recommended production target)
+
+Cloud Run runs this Dockerfile unchanged, in the same Google Cloud project
+as Firebase Hosting and Firestore (`dax-collective`), over HTTPS. It needs a
+billing account on the project (Firebase "Blaze"); usage inside the monthly
+free allowance is not charged. Nothing in this repository deploys it
+automatically — the project owner runs the commands below.
+
+One-time setup:
+
+```bash
+gcloud config set project dax-collective
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com firestore.googleapis.com
+
+# A dedicated identity that can only use Firestore.
+gcloud iam service-accounts create dax-backend --display-name "Dax backend"
+gcloud projects add-iam-policy-binding dax-collective \
+  --member "serviceAccount:dax-backend@dax-collective.iam.gserviceaccount.com" \
+  --role "roles/datastore.user"
+```
+
+Deploy (run from the repository root; repeat for every backend release):
+
+```bash
+gcloud run deploy dax-backend \
+  --source dax-backend \
+  --region us-central1 \
+  --service-account dax-backend@dax-collective.iam.gserviceaccount.com \
+  --allow-unauthenticated \
+  --min-instances 0 --max-instances 1 \
+  --memory 512Mi --cpu 1 \
+  --set-env-vars NODE_ENV=production,TRUST_PROXY=1,WAITLIST_STORE=firestore,FIREBASE_USE_APPLICATION_DEFAULT=true,FIREBASE_PROJECT_ID=dax-collective
+```
+
+Notes:
+
+- `--max-instances 1` keeps the in-memory rate limiter meaningful and caps
+  cost. `--min-instances 0` scales to zero; the first request after idle
+  takes a few seconds.
+- `--allow-unauthenticated` makes the service reachable from browsers. The
+  routes it exposes are the public baseline only; `/api/admin/*` is not
+  mounted.
+- No key file or secret is involved: the service uses its attached identity.
+- Cloud Run sets `PORT`; the server already reads it.
+- The command prints the service URL (`https://dax-backend-….run.app`).
+  Check that `GET <url>/api/health` returns `"waitlistReady": true`, then set
+  that URL as the GitHub repository variable `REACT_APP_API_BASE_URL` and
+  re-run the Hosting deploy. Until then the site keeps its forms disabled.
+- To take the waitlist offline again, delete the repository variable and
+  redeploy Hosting. To remove the backend:
+  `gcloud run services delete dax-backend --region us-central1`.
+
+## 9. Rollback
 
 Every admin feature is gated by an explicit flag. Setting
 `ENABLE_ADMIN_UPLOADS=false` (or unsetting it) and restarting removes
 `/api/admin/*` without a code change.
 
-## 9. Known limitations
+## 10. Known limitations
 
 - The rate limiter is in-memory and per-process. It suits a single instance;
   a multi-instance deployment needs a shared store.

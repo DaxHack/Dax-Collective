@@ -35,6 +35,8 @@ function readJsonFile(filePath, label) {
  *   1. FIREBASE_SERVICE_ACCOUNT_JSON — full JSON string (deployment secret).
  *   2. FIREBASE_SERVICE_ACCOUNT_PATH — path to a gitignored local file.
  *   3. credentials/firebase-adminsdk.json — gitignored default location.
+ * When none of these exist, initFirebaseAdmin() may still use Application
+ * Default Credentials if FIREBASE_USE_APPLICATION_DEFAULT=true.
  * Never logs, prints, or returns credential contents in an error.
  * @return {object|null} parsed service account, or null when none is configured
  */
@@ -86,7 +88,22 @@ function initFirebaseAdmin() {
 
   const resolved = resolveServiceAccount();
   if (!resolved) {
-    return false;
+    // Opt-in keyless mode: the platform's attached service identity
+    // (Application Default Credentials). No key material is read or stored.
+    // getServiceAccount() stays null, so the Sheets proxy — which signs with
+    // a service-account key — reports itself unavailable in this mode.
+    if (process.env.FIREBASE_USE_APPLICATION_DEFAULT !== "true") {
+      return false;
+    }
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.applicationDefault(),
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      });
+    }
+    initialized = true;
+    return true;
   }
 
   if (!admin.apps.length) {

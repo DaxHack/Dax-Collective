@@ -8,8 +8,12 @@
 //     disable themselves; they must never show a success state.
 //   - Success is reported only when the backend confirms it.
 //   - Error messages shown to visitors are fixed strings, never backend text.
+//   - One `generate_lead` analytics event is sent per sign-up the backend
+//     reports as newly created. Failures and repeat sign-ups send nothing,
+//     and the email address is never passed to analytics.
 
 import { PUBLIC_API_BASE, isPublicApiConfigured } from '../config/publicApi';
+import { trackLead } from '../utils/analytics';
 
 export const isWaitlistAvailable = isPublicApiConfigured;
 
@@ -38,7 +42,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * Resolves only when the backend has confirmed the sign-up.
  * @param {string} email
  * @param {string} source - One of the sources the backend accepts
- * @returns {Promise<{alreadySubscribed: boolean}>}
+ * @returns {Promise<{alreadySubscribed: boolean, created: boolean}>}
  * @throws {WaitlistError}
  */
 export async function joinWaitlist(email, source) {
@@ -78,5 +82,12 @@ export async function joinWaitlist(email, source) {
     throw new WaitlistError('failed');
   }
 
-  return { alreadySubscribed: /already/i.test(String(data.message || '')) };
+  // `created` must be an explicit true from the backend; anything else
+  // (a repeat sign-up, an older backend) is not counted as a new lead.
+  const created = data.created === true;
+  if (created) {
+    trackLead(source);
+  }
+
+  return { alreadySubscribed: !created, created };
 }
