@@ -83,6 +83,7 @@ Data contradictions to resolve (owner):
 | Spec | Requirement |
 |---|---|
 | Source of truth | Canva `DAHVMRWx09E` page per name; edits only on a duplicated review copy |
+| Brand marks | Only God's Vessel marks (or Dax the Traveler where relevant). Never the "Dax and Lex" / D&L logo (Canva `DAF9l76dZ3s`) |
 | Print file | PNG, sRGB, real alpha channel, background removed, trimmed to ink bounds |
 | Resolution | ≥ 300 DPI at the provider's printed size for that placement (take dimensions from the provider's product page, not memory) |
 | Ink sets | dark ink (#000000) for Faded Cream; light ink (approved value) for Faded Black |
