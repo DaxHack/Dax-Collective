@@ -23,7 +23,7 @@ const PRODUCTS = {
     meaning: 'God Almighty — The All-Sufficient One',
     scripture: {
       reference: 'Genesis 17:1',
-      text: 'I am El Shaddai — walk before me faithfully and be blameless.',
+      text: 'I am the Almighty God; walk before me, and be thou perfect.',
     },
     etymology:
       'Derived from the Hebrew root "Shaddai," most likely from "shad" (breast, nourisher) combined with the intensifying suffix, conveying both overwhelming power and tender sufficiency. God introduced Himself by this name to Abraham at 99 years old — a name of covenant, abundance, and uncontainable provision.',
@@ -52,7 +52,7 @@ const PRODUCTS = {
     meaning: 'Lord, Master — The Sovereign One',
     scripture: {
       reference: 'Genesis 15:2',
-      text: 'But Abram said, "Sovereign Lord (Adonai), what can you give me since I remain childless…"',
+      text: 'And Abram said, Lord GOD, what wilt thou give me, seeing I go childless…',
     },
     etymology:
       'Adonai is the plural of "Adon" (lord, master), used as a title of reverent address. In Jewish tradition, it became the spoken substitute for the unutterable name YHWH — a mark of such reverence that the name itself was protected by a proxy. To wear Adonai is to carry the weight of that reverence.',
@@ -81,7 +81,7 @@ const PRODUCTS = {
     meaning: 'Six names. Six definitions. One archive.',
     scripture: {
       reference: 'Psalm 9:10',
-      text: 'Those who know your name trust in you, for you, Lord, have never forsaken those who seek you.',
+      text: 'And they that know thy name will put their trust in thee: for thou, LORD, hast not forsaken them that seek thee.',
     },
     etymology:
       'Each card in the set carries a single name: its archive number, original language rendering, phonetic pronunciation, etymological root, scripture reference, and a devotional note. The set is designed as a study companion — not a collector\'s item alone, but a daily reference built to be handled, marked, and returned to.',
@@ -110,7 +110,7 @@ const PRODUCTS = {
     meaning: 'Every surface becomes a study.',
     scripture: {
       reference: 'Deuteronomy 6:9',
-      text: 'Write them on the doorframes of your houses and on your gates.',
+      text: 'And thou shalt write them upon the posts of thy house, and on thy gates.',
     },
     etymology:
       'The command in Deuteronomy 6 — to fix the words on doorframes, gates, and hands — gave rise to the mezuzah and the tefillin. The Archive Sticker Set carries that same impulse into modern surfaces. Each sticker is a mark: a name placed deliberately in the spaces you inhabit.',
@@ -306,7 +306,7 @@ const GodsVesselMerchPage = () => {
                   &ldquo;{product.scripture.text}&rdquo;
                 </blockquote>
                 <div className="mt-1 font-mono text-[10px] text-stone-400">
-                  {product.scripture.reference}
+                  {product.scripture.reference} &middot; KJV
                 </div>
               </div>
 
@@ -334,6 +334,9 @@ const GodsVesselMerchPage = () => {
               <h2 className="mt-4 text-3xl text-[#2C2A26] md:text-4xl" style={serif}>
                 What it is made of.
               </h2>
+              <p className="mt-4 max-w-xl text-sm leading-relaxed text-stone-500">
+                Pre-production specifications. Final blank, fabric weight and print method are confirmed with our print partner before release.
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">
               {product.specs.map((spec, i) => (
