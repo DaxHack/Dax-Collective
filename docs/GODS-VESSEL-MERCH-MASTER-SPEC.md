@@ -45,9 +45,9 @@ Layout / print findings:
 1. **Canvas is 1536 × 1024 px (3:2 landscape).** Text is vector, so a large export stays sharp, but the
    canvas carries ~300 px empty side margins. Print files must be trimmed to the ink bounds before upload,
    otherwise the provider scales the empty canvas and the artwork prints smaller than intended.
-2. **Every page has a full-bleed background image** (Canva media `MAHGYcJSezg`). A "transparent background"
-   export will still contain it. If it is a white fill it will print as a white rectangle on Faded Black.
-   Must be verified on the exported PNG (alpha extrema) — **blocked: export download host not allowed.**
+2. **Every page has a full-bleed background photo** (Canva media `MAHGYcJSezg`, 1536 × 1024, a white wall
+   with a hanger hook; Canva tags "white, wall, empty, blank"). A "transparent background" export still
+   contains it and would print as an off-white rectangle. Delete it on a review copy before export.
 3. **Name size is fitted per name**, so cap height varies: YHWH 229 pt, ELOHIM 178, ADONAI 175,
    EL SHADDAI 119, YHWH YIREH 111 (and the name's top offset varies 34 → 175 px). The lower block
    (definition 562 / verse 665 / rule 921 / reference 951) is identical across pages 1–4; page 5 shifts
@@ -55,6 +55,11 @@ Layout / print findings:
    **typography decision** (flagged, not changed).
 4. Fonts: name = Canva ref `YAFdJhX-538`, body = `YAFdJs07v-8`. Human-readable names and commercial
    licence still unresolved (same gap recorded in the rights log). **Open owner decision.**
+6. **The GV monogram in Canva is not print-grade.** The study uses asset `MAGpd9s7mJI` ("3.png"):
+   500 × 500 px on white (≈1.7 in at 300 DPI) and containing "MINISTRY", hidden by a white rectangle that
+   would print as a white bar. Front files must come from the local "verified clean" monogram masters.
+7. Opening a read-only element view in Canva updates the design's "last edited" timestamp. Content is
+   unchanged (thumbnail hash and version identical), but the 2026-09-15 date is no longer shown in Canva.
 5. Ink colour is #000000 only — the dark-ink set. Light-ink (for Faded Black) is a colour swap to the
    approved bone/cream value; that value is not recorded anywhere reachable.
 

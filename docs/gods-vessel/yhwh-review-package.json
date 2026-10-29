@@ -1,0 +1,122 @@
+{
+  "packageVersion": "yhwh-review-r1",
+  "preparedAt": "2026-10-29",
+  "product": {
+    "sku": "GV-NOG-YHWH-TEEW-A",
+    "name": "YHWH",
+    "collection": "Names of God",
+    "brand": "God's Vessel",
+    "layout": "D - GV chest front / Name editorial back (APPROVED)",
+    "blank": "American Apparel 1301GD (per Product Master 2026-09-15; not re-verified)",
+    "colors": ["Faded Black", "Faded Cream"]
+  },
+  "approvalRecommendation": "NOT READY - do not approve",
+  "approvalBlockers": [
+    "Front chest print file does not exist in any reachable source",
+    "Back print file must be exported from a review copy with the wall-photo background removed",
+    "Font names and licences unresolved",
+    "Supplier size chart, current costs and Printify draft state unverified (network/access blocked)",
+    "No accurate mockups"
+  ],
+  "sources": {
+    "productMasterSheet": "https://docs.google.com/spreadsheets/d/14kZnyUF_bZAsoosp0SYVs0fRqaOYXZzkRHXgI0iUNFs/edit",
+    "rightsLog": "https://docs.google.com/document/d/1ZRED7Xnc_oFczI49R3NwVdfYhEnBtXmbuTTpJuoRRZ8/edit",
+    "masterSpec": "docs/GODS-VESSEL-MERCH-MASTER-SPEC.md"
+  },
+  "artwork": {
+    "back": {
+      "authoritativeSource": "Canva DAHVMRWx09E page 1 (Names of God - BACK ARTWORK MASTER)",
+      "contentVersionEvidence": "Canva thumbnail hash -1142632402, version 10, identical on 2026-10-29 reads before and after inspection",
+      "originalDate": "2026-09-15 (Canva updated_at before inspection)",
+      "timestampNote": "Canva updated_at now shows 2026-10-29 because a read-only element view was opened; no edit operations were sent and content is unchanged",
+      "exportedProductionFiles": {
+        "dark": "production/1-YHWH_back_dark-ink_transparent.png",
+        "light": "production/1-YHWH_back_light-ink_transparent.png",
+        "qcReport": "production/QC-report.json",
+        "location": "Owner's Windows PC (path from Product Master col R)",
+        "status": "NOT REACHABLE - not in Drive, repo, or any git branch",
+        "sha256": null
+      },
+      "canvas": { "widthPx": 1536, "heightPx": 1024, "orientation": "landscape 3:2" },
+      "background": {
+        "mediaId": "MAHGYcJSezg",
+        "description": "1536x1024 photo of a white wall with a hanger hook (Canva smart tags: white, wall, empty, blank)",
+        "printImpact": "A 'transparent background' export still contains this photo; it would print as an off-white rectangle with a hook. Must be deleted on a review copy before export."
+      },
+      "elements": [
+        { "text": "YHWH", "font": "Canva YAFdJhX-538", "sizePt": 229, "box": { "top": 34, "left": 306, "w": 924, "h": 274.2 } },
+        { "text": "The covenant name of the LORD", "font": "Canva YAFdJs07v-8 medium", "sizePt": 48, "box": { "top": 562, "left": 438, "w": 660, "h": 57.4 } },
+        { "text": "“I AM THAT I AM. / I AM hath sent me / unto you.”", "font": "Canva YAFdJs07v-8 italic", "sizePt": 53, "box": { "top": 665, "left": 438, "w": 660, "h": 198.7 } },
+        { "text": "rule", "box": { "top": 921, "left": 724, "w": 88, "h": 5 } },
+        { "text": "EXODUS 3:14", "font": "Canva YAFdJs07v-8 medium", "sizePt": 33, "box": { "top": 951, "left": 603, "w": 330, "h": 39.4 } }
+      ],
+      "inkColor": "#000000 (dark-ink set only; light-ink value not recorded in any reachable source)"
+    },
+    "front": {
+      "required": "GV monogram, wearer's left chest (layout D)",
+      "canvaSource": "Asset MAGpd9s7mJI '3.png' used in Canva DAHVJU7tZeA",
+      "canvaSourceFindings": [
+        "500 x 500 px raster on white - about 1.7 in at 300 DPI, too small for a chest print",
+        "Contains the word MINISTRY, hidden in the study by a white rectangle that would print as a white bar"
+      ],
+      "cleanMasters": "GV monogram dark/light transparent masters, recorded 'verified clean' in OPS-READINESS 2026-09-16 - stored locally, NOT REACHABLE",
+      "printFile": null,
+      "status": "MISSING - not created, to avoid degrading or recreating the approved mark",
+      "chestScaleDecision": "OPEN - small/medium/large studied in DAHVJU7tZeA, none recorded as chosen"
+    }
+  },
+  "inspection": {
+    "spelling": "PASS - no errors",
+    "scripture": {
+      "translation": "KJV (public domain)",
+      "result": "Words are KJV but Exodus 3:14 is elided without an ellipsis",
+      "kjvFullVerse": "And God said unto Moses, I AM THAT I AM: and he said, Thus shalt thou say unto the children of Israel, I AM hath sent me unto you.",
+      "referenceMismatch": "Art says Exodus 3:14; Product Master says Exodus 3:14-15"
+    },
+    "typography": "Two Canva fonts (YAFdJhX-538 name, YAFdJs07v-8 body); 4 name-font options in Canva DAHVMcNNfBA; names and licences unresolved",
+    "consistency": "Lower text block positions identical across Elohim/Adonai/El Shaddai; name size is fitted per name (decision open)",
+    "transparency": "FAIL on source - background photo present; export check blocked",
+    "dpi": "Not measured - export download blocked",
+    "printifyDraft": "No evidence found: Gmail has only Printify marketing mail; OPS-READINESS 2026-09-16 recorded 0 products"
+  },
+  "supplier": {
+    "sizeChartSource": null,
+    "availableSizes": null,
+    "status": "BLOCKED - printify.com and americanapparel.com not reachable from this session"
+  },
+  "mockups": {
+    "front": null,
+    "back": null,
+    "status": "BLOCKED - require final print files and Printify access",
+    "doNotUse": [
+      "dax-main/public/images/gods-vessel/merch/*.jpg|png (AI-generated, garbled text)",
+      "Canva placement boards (white-tee photo composites, not supplier mockups)"
+    ]
+  },
+  "pricing": {
+    "status": "UNVERIFIED - historical inputs only",
+    "historical": {
+      "observedAt": "2026-09-15",
+      "source": "Product Master row GV-NOG-YHWH-TEEW-A",
+      "baseCostStandardUsd": 15.6,
+      "baseCostPremiumUsd": 10.95,
+      "proposedRetailUsd": 42,
+      "printAreasCovered": "unknown - likely single print area; front + back cost not recorded"
+    },
+    "formula": "contribution = price + shipping charged - (front + back production) - provider shipping - fees - refund reserve",
+    "currentContributionUsd": null
+  },
+  "ownerDecisions": [
+    { "id": "font", "question": "Choose the YHWH name font (4 options in Canva DAHVMcNNfBA) and confirm commercial licence" },
+    { "id": "verse", "question": "Exodus 3:14: add an ellipsis for the omitted words, or keep as is? Reference 3:14 or 3:14-15?" },
+    { "id": "chestScale", "question": "GV monogram chest scale: small, medium or large (DAHVJU7tZeA)" },
+    { "id": "lightInk", "question": "Confirm the light-ink colour for Faded Black" },
+    { "id": "price", "question": "Confirm retail price once current front+back costs are verified" }
+  ],
+  "accessNeeded": [
+    "Upload the local production/ folder (YHWH PNGs, QC-report.json) and the GV monogram masters to Google Drive > God's Vessel > Merch",
+    "Allow network hosts: export-download.canva.com, media.canva.com, printify.com, api.printify.com, www.americanapparel.com",
+    "Printify: a read-only check of 'My new store' drafts (or a screenshot of My Products)"
+  ],
+  "protectedActionsTaken": "None - no listing created, nothing published, no payment settings changed, no money spent, no Canva design edited"
+}
