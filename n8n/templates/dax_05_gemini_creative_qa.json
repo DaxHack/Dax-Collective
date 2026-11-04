@@ -1,0 +1,151 @@
+{
+ "name": "DAX-05 Gemini Creative QA - Manual Review",
+ "nodes": [
+  {
+   "id": "a1",
+   "name": "Manual Start",
+   "type": "n8n-nodes-base.manualTrigger",
+   "typeVersion": 1,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "a2",
+   "name": "Draft Item",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    220,
+    0
+   ],
+   "parameters": {
+    "jsCode": "// Replace this sample with a real ContentItem draft. Nothing here is published.\nreturn [{json:{brand:\"God's Vessel\",platform:'Instagram',format:'Carousel caption',title:'YHWH YIREH - The Lord Will Provide',caption:\"YHWH YIREH. The Lord will provide. \\\"And Abraham called the name of that place Jehovahjireh\\\" (Genesis 22:14, KJV). Wear the reminder. New drop coming soon - link in bio.\",cta:'Join the drop list'}}];"
+   }
+  },
+  {
+   "id": "a3",
+   "name": "Build QA Prompt",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    440,
+    0
+   ],
+   "parameters": {
+    "jsCode": "const rubric = \"You are the Creative QA reviewer for The Dax Collective. Review ONE draft content item.\\nBrand rules:\\n- God's Vessel: reverent, scripture-accurate, premium streetwear tone, no hype or prosperity-gospel claims.\\nScripture rule: a quote may be a partial verse. It is OK when every quoted word matches the KJV wording of the cited verse (KJV spellings such as 'Jehovahjireh' are correct). Flag MISQUOTE only when quoted words differ from the KJV, and put the exact KJV verse you compared against in kjv_reference_text. If you are not certain of the verse wording, use UNSURE rather than MISQUOTE.\\n- Dax the Traveler: first-person, specific places and details, no generic travel filler.\\n- Ani-Dax: anime culture fluency, playful, no copyrighted character names used as branding.\\n- Time-Zone Travelers: practical, accurate time/logistics facts.\\n- All brands: no fabricated stats, prices, testimonials or demand; one clear CTA; no AI-generic phrasing.\\nReturn ONLY minified JSON, no markdown fence:\\n{\\\"verdict\\\":\\\"PASS|REVISE|REJECT\\\",\\\"score\\\":0-10,\\\"issues\\\":[\\\"...\\\"],\\\"fixes\\\":[\\\"...\\\"],\\\"scripture_check\\\":\\\"OK|MISQUOTE|UNSURE|NONE\\\",\\\"kjv_reference_text\\\":\\\"...\\\",\\\"revised_caption\\\":\\\"...\\\"}\\nDraft item:\\n\";\nreturn $input.all().map(i => ({json:{...i.json, prompt: rubric + JSON.stringify(i.json)}}));"
+   }
+  },
+  {
+   "id": "a4",
+   "name": "Gemini QA",
+   "type": "@n8n/n8n-nodes-langchain.googleGemini",
+   "typeVersion": 1.1,
+   "position": [
+    660,
+    0
+   ],
+   "parameters": {
+    "modelId": {
+     "__rl": true,
+     "value": "models/gemini-2.5-flash",
+     "mode": "list",
+     "cachedResultName": "models/gemini-2.5-flash"
+    },
+    "messages": {
+     "values": [
+      {
+       "content": "={{ $json.prompt }}"
+      }
+     ]
+    },
+    "options": {}
+   },
+   "credentials": {
+    "googlePalmApi": {
+     "id": "6Y9TCNhMNw4ucl4f",
+     "name": "Google Gemini(PaLM) Api"
+    }
+   }
+  },
+  {
+   "id": "a5",
+   "name": "Parse Verdict",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    880,
+    0
+   ],
+   "parameters": {
+    "jsCode": "const draft = $('Draft Item').first().json;\nreturn $input.all().map(i => {\n  const raw = JSON.stringify(i.json);\n  let text = '';\n  try { text = i.json.content?.parts?.map(p => p.text).join('') || i.json.text || i.json.output || ''; } catch (e) {}\n  if (!text) text = raw;\n  const m = text.replace(/```json|```/g,'').match(/\\{[\\s\\S]*\\}/);\n  let qa = null; try { qa = m ? JSON.parse(m[0]) : null; } catch (e) {}\n  return {json:{brand: draft.brand, title: draft.title, qa_ok: !!qa, verdict: qa?.verdict || 'UNPARSED', score: qa?.score ?? null, issues: qa?.issues || [], fixes: qa?.fixes || [], scripture_check: qa?.scripture_check || null, kjv_reference_text: qa?.kjv_reference_text || null, revised_caption: qa?.revised_caption || null, status_for_aria: qa?.verdict === 'PASS' ? 'NEEDS DANIEL' : 'QC', raw_preview: qa ? undefined : text.slice(0, 500)}};\n});"
+   }
+  },
+  {
+   "id": "a6",
+   "name": "Safety Note",
+   "type": "n8n-nodes-base.stickyNote",
+   "typeVersion": 1,
+   "position": [
+    0,
+    -220
+   ],
+   "parameters": {
+    "content": "Review only. No publish, upload, send or external write. Output is a QA verdict for Daniel. PASS still routes to NEEDS DANIEL (human approval)."
+   }
+  }
+ ],
+ "connections": {
+  "Manual Start": {
+   "main": [
+    [
+     {
+      "node": "Draft Item",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Draft Item": {
+   "main": [
+    [
+     {
+      "node": "Build QA Prompt",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Build QA Prompt": {
+   "main": [
+    [
+     {
+      "node": "Gemini QA",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Gemini QA": {
+   "main": [
+    [
+     {
+      "node": "Parse Verdict",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "settings": {
+  "executionOrder": "v1"
+ },
+ "active": false,
+ "id": "iDYd2znhzXNsVCtW"
+}
