@@ -41,6 +41,9 @@
   {
    "id": "a4",
    "name": "Gemini QA",
+   "retryOnFail": true,
+   "maxTries": 3,
+   "waitBetweenTries": 5000,
    "type": "@n8n/n8n-nodes-langchain.googleGemini",
    "typeVersion": 1.1,
    "position": [
@@ -61,7 +64,7 @@
       }
      ]
     },
-    "options": {}
+    "options": { "temperature": 0 }
    },
    "credentials": {
     "googlePalmApi": {
