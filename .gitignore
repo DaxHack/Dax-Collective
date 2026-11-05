@@ -163,3 +163,7 @@ node_modules/
 
 # Local snapshots and verification output (never deployed or committed).
 /generated-artifacts/
+
+# Emulator tests for the security rules need a lockfile for CI.
+!/rules-tests/package-lock.json
+/rules-tests/*.log

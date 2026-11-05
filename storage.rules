@@ -1,31 +1,53 @@
 rules_version = '2';
+
+// Dax Collective — Cloud Storage security rules
+//
+// Policy: deny by default. "Signed in" is never enough on its own, because
+// the site can sign visitors in anonymously. Writes require the Firebase
+// custom claim `admin: true` (see firestore.rules for how it is set).
+//
+// Admin uploads from the dashboard go through the backend, which uses the
+// Admin SDK and bypasses these rules. These rules govern direct
+// browser/mobile access only.
 service firebase.storage {
   match /b/{bucket}/o {
-    // Content media files - authenticated users only
-    match /content/{allPaths=**} {
-      allow read, write: if request.auth != null;
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.get('admin', false) == true;
     }
-    
-    // Brand assets - authenticated users only
-    match /brands/{allPaths=**} {
-      allow read, write: if request.auth != null;
-    }
-    
-    // Public assets - readable by all, writable by authenticated users
+
+    // Public assets: readable by anyone, writable by admins only.
     match /public/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
-    
-    // User uploads - users can only access their own files
-    match /users/{userId}/{allPaths=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+    // Internal content media and brand assets: admins only.
+    match /content/{allPaths=**} {
+      allow read, write: if isAdmin();
     }
-    
-    // Temporary files - authenticated users only, auto-delete after 24 hours
+
+    match /brands/{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Scratch space: admins only.
     match /temp/{allPaths=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isAdmin();
     }
+
+    // Admin profile pictures: written by the backend (Admin SDK) only. No
+    // direct client access through the Firebase SDK.
+    match /profile-pictures/{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // User-generated uploads: nothing in the app uses them yet. Closed until
+    // there is a product decision, size/type limits and moderation.
+    match /users/{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // Everything else is denied by default (no matching allow).
   }
 }
-

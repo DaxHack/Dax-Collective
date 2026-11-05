@@ -1,48 +1,85 @@
 rules_version = '2';
+
+// Dax Collective — Firestore security rules
+//
+// Policy: deny by default. A path is reachable from a browser only where a
+// rule below says so; anything not listed is denied.
+//
+// "Signed in" is never enough on its own. The site can sign visitors in
+// anonymously, so `request.auth != null` is true for anyone on the internet.
+// Operational and administrative data requires the Firebase custom claim
+// `admin: true`, set from a trusted environment with
+// admin.auth().setCustomUserClaims(uid, {admin: true}). This is the same
+// claim the backend's requireAdmin middleware accepts. (The backend's
+// ADMIN_UIDS allowlist is server-side only and is deliberately not mirrored
+// here: no account identifiers are hardcoded in rules.)
+//
+// The backend and Cloud Functions use the Admin SDK, which bypasses these
+// rules. These rules govern browser/mobile clients only.
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Content collections - authenticated users only
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.get('admin', false) == true;
+    }
+
+    // ── Admin-only operational data ─────────────────────────────────────────
     match /content/{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isAdmin();
     }
-    
-    // Brand configurations - authenticated users only
+
     match /brands/{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isAdmin();
     }
-    
-    // Workflow configurations - authenticated users only
+
     match /workflows/{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isAdmin();
     }
-    
-    // Analytics - read only for authenticated users, write for admin
-    match /analytics/{document=**} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && 
-        (request.auth.token.admin == true || request.auth.token.email == 'your-admin-email@example.com');
-    }
-    
-    // Notifications - authenticated users can read their own
+
     match /notifications/{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isAdmin();
     }
-    
-    // Settings - admin only
+
+    match /analytics/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
     match /settings/{document=**} {
-      allow read, write: if request.auth != null && 
-        (request.auth.token.admin == true || request.auth.token.email == 'your-admin-email@example.com');
+      allow read, write: if isAdmin();
     }
-    
-    // Public content for website display
+
+    // Written by Cloud Functions (Admin SDK); admins may read.
+    match /automation_logs/{document=**} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // ── Public website content ──────────────────────────────────────────────
+    // Readable by anyone; only admins may change it.
     match /public/{document=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
-    
-    // User profiles
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+    // ── Backend-only ────────────────────────────────────────────────────────
+    // Waitlist sign-ups (email addresses). Written only by the backend through
+    // the Admin SDK. No client may read or write it, admins included.
+    match /waitlist/{document=**} {
+      allow read, write: if false;
     }
+
+    // ── Disabled until a product decision is made ───────────────────────────
+    // Comments: the component exists but is not mounted anywhere, and there
+    // is no moderation. Kept closed rather than opened to anonymous writes.
+    match /comments/{document=**} {
+      allow read, write: if false;
+    }
+
+    // User profiles: nothing in the app reads or writes them yet.
+    match /users/{document=**} {
+      allow read, write: if false;
+    }
+
+    // Everything else is denied by default (no matching allow).
   }
 }
