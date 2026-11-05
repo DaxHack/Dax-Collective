@@ -1,0 +1,79 @@
+{
+  "video": "GV-001-strength-in-the-quiet-1080x1920.mp4",
+  "duration_s": 45.9,
+  "loudness_lufs": -14.7,
+  "true_peak_dbtp": -4.4,
+  "all_pass": true,
+  "checks": [
+    {
+      "check": "resolution 1080x1920",
+      "pass": true,
+      "detail": "1080x1920"
+    },
+    {
+      "check": "frame rate 30",
+      "pass": true,
+      "detail": "30/1"
+    },
+    {
+      "check": "H.264 yuv420p",
+      "pass": true,
+      "detail": "h264 yuv420p"
+    },
+    {
+      "check": "AAC 48kHz stereo",
+      "pass": true,
+      "detail": "aac 48000 ch=2"
+    },
+    {
+      "check": "duration 40-55s",
+      "pass": true,
+      "detail": "45.90s"
+    },
+    {
+      "check": "A/V durations match",
+      "pass": true,
+      "detail": "v=45.90 a=45.90"
+    },
+    {
+      "check": "file size < 50MB (GitHub-safe, upload-friendly)",
+      "pass": true,
+      "detail": "29.0MB"
+    },
+    {
+      "check": "integrated loudness -14 \u00b11.5 LUFS",
+      "pass": true,
+      "detail": "-14.7 LUFS"
+    },
+    {
+      "check": "true peak <= -1.0 dBTP",
+      "pass": true,
+      "detail": "-4.4 dBTP"
+    },
+    {
+      "check": "no dropouts during narration (>1.5s silence)",
+      "pass": true,
+      "detail": "silences before 42.33s: []"
+    },
+    {
+      "check": "no black frames",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "check": "no frozen video before end card (>2.5s)",
+      "pass": true,
+      "detail": "freezes at ['43.333333'] / ends []"
+    },
+    {
+      "check": "SRT cues sequential, no overlaps",
+      "pass": true,
+      "detail": "23 cues; overlaps=[]"
+    },
+    {
+      "check": "captions match every spoken word",
+      "pass": true,
+      "detail": "96 caption words vs 96 spoken"
+    }
+  ]
+}

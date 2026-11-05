@@ -1,0 +1,124 @@
+{
+  "production_id": "GV-001",
+  "brand": "Gods Vessel",
+  "title": "Strength in the Quiet",
+  "working_topic": "Trusting God when progress feels invisible",
+  "status": "ready-for-publishing",
+  "status_note": "All production and QC stages complete. Publishing requires Daniel's approval; nothing has been uploaded, scheduled or pushed.",
+  "created": "2026-08-01",
+  "last_updated": "2026-11-04",
+
+  "target": {
+    "dimensions": "1080x1920",
+    "aspect_ratio": "9:16",
+    "duration_target_seconds": "40-55",
+    "format": "mp4"
+  },
+
+  "deliverable": {
+    "video": "video-pipeline/productions/GV-001/06-render/GV-001-strength-in-the-quiet-1080x1920.mp4",
+    "md5": "b9748d6fda125a521e4aac5d25a95cc7",
+    "duration_seconds": 45.9,
+    "narration_seconds": 43.3,
+    "video_codec": "H.264 High, yuv420p, 30fps, CRF 20 (7Mbps cap)",
+    "audio_codec": "AAC 48kHz stereo 192kbps",
+    "loudness_lufs": -14.7,
+    "true_peak_dbtp": -4.4,
+    "size_mb": 29.0,
+    "cover": "video-pipeline/productions/GV-001/07-metadata/GV-001-cover.jpg",
+    "captions_srt": "video-pipeline/productions/GV-001/05-captions/GV-001.srt",
+    "captions_burned_in": true
+  },
+
+  "script": {
+    "path": "video-pipeline/productions/GV-001/02-script/canonical-script.md",
+    "word_count": 92,
+    "spoken_word_count": 96,
+    "scripture": "Psalm 27:14",
+    "scripture_translation": "World English Bible (WEB), public domain",
+    "scripture_source": "https://ebible.org/eng-web/PSA027.htm",
+    "scripture_verified": "2026-11-04",
+    "scripture_spoken_adaptation": "'Yahweh' spoken and shown as 'God' (approved in theology review; exact WEB text in description)",
+    "theology_review": "video-pipeline/productions/GV-001/02-script/theology-review.md",
+    "rubric_average": 4.8,
+    "rubric_passed": true
+  },
+
+  "audio": {
+    "engine": "edge-tts 7.3.1 (Microsoft neural TTS)",
+    "engine_cost": "$0",
+    "voice": "en-US-GuyNeural",
+    "rate": "-5%",
+    "pitch": "-3Hz",
+    "runtime_seconds": 43.3,
+    "status": "approved-locked",
+    "approved_by": "Daniel",
+    "approved_on": "2026-11-04",
+    "scope": "GV-001 only; permanent God's Vessel brand voice standard not changed",
+    "production_file": "video-pipeline/productions/GV-001/03-audio/FINAL-guy-r5pct-p-3hz.mp3",
+    "word_timings": "video-pipeline/productions/GV-001/05-captions/word-timings.json",
+    "comparison_files": [
+      "video-pipeline/productions/GV-001/03-audio/compare-guy-r15pct-p-3hz.mp3",
+      "video-pipeline/productions/GV-001/03-audio/compare-guy-r20pct-p-3hz.mp3",
+      "video-pipeline/productions/GV-001/03-audio/compare-guy-r25pct-p-3hz.mp3"
+    ],
+    "music": "none"
+  },
+
+  "visuals": {
+    "status": "complete",
+    "approach": "original procedural cinematic scenes with camera motion (code-drawn; no stock, no AI imagery, no faces)",
+    "source_types": ["original-procedural", "existing-repo-assets (logo only)"],
+    "asset_manifest": "video-pipeline/productions/GV-001/04-visuals/asset-manifest.md",
+    "qc_stills": "video-pipeline/productions/GV-001/04-visuals/stills/"
+  },
+
+  "qc": {
+    "av_qc": "PASS (14/14) — video-pipeline/productions/GV-001/08-qc/av-qc.json",
+    "scripture_text": "PASS",
+    "creative_qa": "PASS after 6 corrections, retested",
+    "report": "video-pipeline/productions/GV-001/08-qc/qc-report.md"
+  },
+
+  "publishing": {
+    "package": "video-pipeline/productions/GV-001/07-metadata/publish-package.md",
+    "published": false,
+    "approval_required": "Daniel",
+    "ai_disclosure": "synthetic narration disclosed in description; platform AI labels recommended On"
+  },
+
+  "cost_record": {
+    "tts": "$0",
+    "python_packages": "$0",
+    "ffmpeg": "$0 (open-source, local install)",
+    "visual_assets": "$0 (original, code-drawn)",
+    "music": "$0 (none)",
+    "total_to_date": "$0",
+    "estimated_per_video": "$0"
+  },
+
+  "pipeline_environment": {
+    "render": "python video-pipeline/productions/GV-001/06-render/build_gv001.py (numpy, Pillow, ffmpeg)",
+    "qc": "python video-pipeline/productions/GV-001/08-qc/run_qc.py",
+    "tts_notes": "edge-tts >= 7.3.1 required (7.2.8 now gets HTTP 403); use WindowsSelectorEventLoopPolicy on Windows",
+    "ffmpeg": "8.0.1 essentials build on PATH",
+    "os": "Windows 11"
+  },
+
+  "files": {
+    "source_manifest": "video-pipeline/productions/GV-001/01-source/source-manifest.md",
+    "draft_a": "video-pipeline/productions/GV-001/02-script/draft-A.md",
+    "draft_b": "video-pipeline/productions/GV-001/02-script/draft-B.md",
+    "draft_c": "video-pipeline/productions/GV-001/02-script/draft-C.md",
+    "theology_review": "video-pipeline/productions/GV-001/02-script/theology-review.md",
+    "canonical_script": "video-pipeline/productions/GV-001/02-script/canonical-script.md",
+    "voice_assessment": "video-pipeline/productions/GV-001/03-audio/voice-assessment.md",
+    "asset_manifest": "video-pipeline/productions/GV-001/04-visuals/asset-manifest.md",
+    "captions_srt": "video-pipeline/productions/GV-001/05-captions/GV-001.srt",
+    "build_script": "video-pipeline/productions/GV-001/06-render/build_gv001.py",
+    "publish_package": "video-pipeline/productions/GV-001/07-metadata/publish-package.md",
+    "production_manifest": "video-pipeline/productions/GV-001/07-metadata/production-manifest.json",
+    "qc_script": "video-pipeline/productions/GV-001/08-qc/run_qc.py",
+    "qc_report": "video-pipeline/productions/GV-001/08-qc/qc-report.md"
+  }
+}
